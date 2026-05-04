@@ -7,122 +7,133 @@
     <style>
         :root {
             --bg: #f8f2e0;
-            --card: #fff9f0;
+            --card: #fffcf5;
             --accent: #7a5c3a;
             --gold: #c99c2b;
             --green: #5b8c5a;
             --red: #b55b4a;
             --blue: #4a7b9c;
             --border: #d4b896;
-            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow: 0 4px 12px rgba(0,0,0,0.06);
             --text: #3e3a35;
-            --radius: 16px;
+            --radius: 18px;
             --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
             background: var(--bg); color: var(--text); font-family: var(--font);
-            line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column;
-            background-image: radial-gradient(circle at 20% 30%, #f5e7c8 1px, transparent 1px),
-                              radial-gradient(circle at 80% 70%, #ead9b8 1px, transparent 1px);
-            background-size: 60px 60px;
+            line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column;
+            background-image: radial-gradient(circle at 20% 30%, #f3e7cb 1px, transparent 1px),
+                              radial-gradient(circle at 80% 60%, #eddbb5 1px, transparent 1px);
+            background-size: 50px 50px;
         }
         header {
             background: linear-gradient(135deg, #5e3e1c, #8b5d34);
-            color: #f7e9c3; padding: 2rem 1.5rem; text-align: center;
+            color: #f7e9c3; padding: 1.8rem 1.5rem; text-align: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-bottom: 3px solid #c99c2b;
         }
-        header h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: 2px; text-shadow: 2px 2px 0 #3e2b14; }
-        header p { font-size: 1rem; opacity: 0.9; }
-        .container { max-width: 1300px; margin: 0 auto; padding: 1.5rem; flex: 1; width: 100%; }
-        .search-wrapper { position: relative; max-width: 700px; margin: -30px auto 2rem auto; z-index: 10; }
+        header h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: 1px; text-shadow: 2px 2px 0 #3e2b14; }
+        header p { font-size: 1rem; opacity: 0.9; margin-top: 0.3rem; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 1.5rem; flex: 1; width: 100%; }
+        .search-wrapper { position: relative; max-width: 680px; margin: -30px auto 2rem auto; z-index: 10; }
         .search-wrapper input {
-            width: 100%; padding: 1rem 1.5rem; font-size: 1.2rem; border: 3px solid var(--border);
+            width: 100%; padding: 1rem 1.6rem; font-size: 1.15rem; border: 3px solid var(--border);
             border-radius: 50px; background: white; box-shadow: var(--shadow); outline: none;
-            font-family: var(--font);
+            font-family: var(--font); transition: 0.2s;
         }
         .search-wrapper input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(122,92,58,0.2); }
-        .search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; color: var(--accent); pointer-events: none; }
-        .categories { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; margin-bottom: 2rem; }
+        .search-icon { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); font-size: 1.4rem; color: var(--accent); }
+        .categories { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; margin-bottom: 2rem; }
         .category-btn {
             background: white; border: 2px solid var(--border); padding: 0.6rem 1.3rem;
-            border-radius: 40px; font-weight: 600; cursor: pointer; font-size: 0.95rem;
-            transition: all 0.2s; color: var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            font-family: var(--font); display: flex; align-items: center; gap: 6px;
+            border-radius: 40px; font-weight: 600; cursor: pointer; font-size: 0.9rem;
+            transition: all 0.2s; color: var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            font-family: var(--font); display: flex; align-items: center; gap: 5px;
         }
         .category-btn:hover, .category-btn.active {
-            background: var(--accent); color: white; border-color: var(--accent);
-            transform: translateY(-2px);
+            background: var(--accent); color: white; border-color: var(--accent); transform: translateY(-2px);
         }
-        .content-area { background: var(--card); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); min-height: 400px; border: 1px solid #e4cfb0; }
-        .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+        .content-area { background: var(--card); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); min-height: 400px; border: 1px solid #e8d8be; }
+        .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
         .topic-card {
-            background: white; border-radius: 18px; padding: 1.8rem 1rem; box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+            background: white; border-radius: 16px; padding: 1.8rem 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             cursor: pointer; transition: 0.2s; border: 2px solid transparent; text-align: center;
-            font-weight: 700; font-size: 1.2rem; color: var(--accent);
-            display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+            font-weight: 700; font-size: 1.15rem; color: var(--accent);
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
         }
-        .topic-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .topic-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .topic-icon { font-size: 2.5rem; }
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.95rem; }
         th { background: var(--accent); color: white; padding: 0.8rem; text-align: left; font-weight: 600; }
         td, th { padding: 0.7rem 0.9rem; border-bottom: 1px solid #e5d5bb; }
         tr:hover td { background: #fdf8f0; }
         .search-result-item {
-            background: white; border-radius: 20px; padding: 1.8rem; margin-bottom: 2rem;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08); border-left: 6px solid var(--gold);
+            background: white; border-radius: 18px; padding: 1.8rem; margin-bottom: 2rem;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06); border-left: 5px solid var(--gold);
         }
-        .item-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+        .item-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
         .item-name { font-size: 2rem; font-weight: 800; color: #3e2b14; }
-        .item-type-badge { background: var(--accent); color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .item-type-badge { background: var(--accent); color: white; padding: 0.25rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .price-tag { color: #b8860b; font-weight: 700; }
 
         /* 决策流程 */
         .decision-flow {
-            background: #fef9f2; border-radius: 18px; padding: 1.2rem 1.5rem;
-            margin: 1rem 0 1.2rem; border: 2px solid #e6d0b3;
+            background: #fdf9f2; border-radius: 16px; padding: 1.2rem 1.5rem;
+            margin: 1rem 0 1.2rem; border: 1px solid #e6d0b3;
         }
-        .flow-step { margin-bottom: 1rem; }
+        .flow-step { margin-bottom: 0.8rem; }
         .flow-step:last-child { margin-bottom: 0; }
         .flow-title {
             font-weight: 700; font-size: 1.05rem; margin-bottom: 0.4rem;
             display: flex; align-items: center; gap: 0.5rem;
         }
         .flow-branch {
-            margin-left: 1.8rem; border-left: 2px dashed #d4b896; padding-left: 1.2rem;
+            margin-left: 0.9rem; border-left: 2px dashed #d0b894; padding-left: 1.2rem;
         }
         .flow-line {
             padding: 0.25rem 0; font-size: 0.95rem; display: flex; align-items: baseline;
-            gap: 0.3rem;
+            gap: 0.4rem; flex-wrap: wrap;
         }
         .flow-line .arrow { color: #b08968; }
-        .sub-branch { margin-left: 2rem; color: #6b5e4f; font-size: 0.9rem; }
-        .tag {
-            display: inline-block; background: #efe0c9; padding: 0.15rem 0.7rem;
-            border-radius: 12px; font-size: 0.8rem; margin-right: 0.3rem;
+        .flow-note {
+            font-size: 0.8rem; color: #6b5e4f; margin-left: 0.8rem;
+            background: #f2e9d9; padding: 0.15rem 0.6rem; border-radius: 8px;
+            display: inline-block;
         }
-        .tag.gold { background: #fbe5b3; color: #7a5800; }
-        .tag.normal { background: #d4c3a3; color: #4e3a24; }
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-top: 1rem; }
-        .info-card { background: #faf6ee; border-radius: 12px; padding: 1rem; border: 1px solid #e0cfad; }
-        .info-card h4 { margin-bottom: 0.6rem; color: var(--accent); }
+        .quality-tag {
+            font-size: 0.8rem; padding: 0.1rem 0.5rem; border-radius: 8px;
+            background: #e5d5bb; margin-left: 0.2rem;
+        }
+        .quality-tag.gold { background: #fbe5b3; color: #7a5800; }
+        .link-like {
+            color: var(--blue); text-decoration: underline; cursor: pointer;
+            font-weight: 500;
+        }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.2rem; margin-top: 1rem; }
+        .info-card { background: #faf6ee; border-radius: 12px; padding: 0.9rem 1rem; border: 1px solid #e0cfad; }
+        .info-card h4 { margin-bottom: 0.5rem; color: var(--accent); font-size: 1rem; }
+        .secondary-tip {
+            font-size: 0.85rem; color: #6b5e4f; margin-top: 0.6rem; padding-top: 0.5rem;
+            border-top: 1px dashed #d4b896;
+        }
         footer { text-align: center; padding: 1.5rem; color: #7b6e5a; font-size: 0.9rem; margin-top: 2rem; }
 
         @media (max-width: 600px) {
-            .item-name { font-size: 1.5rem; }
-            header h1 { font-size: 1.8rem; }
-            .flow-branch { margin-left: 1rem; padding-left: 0.8rem; }
+            .item-name { font-size: 1.6rem; }
+            header h1 { font-size: 1.9rem; }
+            .flow-branch { margin-left: 0.5rem; padding-left: 0.6rem; }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>🌾 星露谷物语 · 全能攻略</h1>
-        <p>搜索物品，即刻知道该留、该卖、该加工</p>
+        <p>搜玉米，立刻知道留几个、卖几颗、丢哪个机器</p>
     </header>
 
     <div class="container">
         <div class="search-wrapper">
-            <input type="text" id="searchInput" placeholder="搜 玉米 / 杨桃 / 奶酪 / 太阳鱼..." autocomplete="off">
+            <input type="text" id="searchInput" placeholder="搜 玉米 / 杨桃 / 太阳鱼..." autocomplete="off">
             <span class="search-icon">🔍</span>
         </div>
 
@@ -141,145 +152,142 @@
     </div>
 
     <footer>
-        🐔 星露谷攻略手册 · 基于游戏1.6 · 祝农场兴旺 ⭐
+        🐔 星露谷攻略手册 · 基于1.6版本 · 数据持续更新
     </footer>
 
     <script>
         (function() {
-            // 物品数据库 (使用结构化献祭信息)
+            // ---------- 物品数据库 ----------
+            // 新增字段：goldPrice（金星售价），若未提供则按作物1.5倍估算
             const items = [
-                // === 春季作物 ===
-                { id:"strawberry", name:"草莓", type:"crop", seasons:["春季"], growthDays:8, regrowDays:4, basePrice:120,
-                  processing:[ {method:"罐头瓶(果酱)", product:"草莓果酱", price:290, days:3, note:"产量大"},{method:"小桶(酿酒)", product:"草莓酒", price:360, days:7} ],
-                  sacrifices:[ {room:"茶水间", bundle:"春季作物收集包", need:1} ],
-                  decision:"先留献祭，普通品质做果酱周转快，后期可酿酒。" },
-                { id:"cauliflower", name:"花椰菜", type:"crop", seasons:["春季"], growthDays:12, basePrice:175,
-                  processing:[ {method:"罐头瓶(腌菜)", product:"花椰菜腌菜", price:400, days:3} ],
-                  sacrifices:[ {room:"茶水间", bundle:"春季作物收集包", need:1} ],
-                  decision:"高价值蔬菜，直接腌菜，也可送玛鲁。" },
-                { id:"potato", name:"土豆", type:"crop", seasons:["春季"], growthDays:6, basePrice:80,
-                  processing:[ {method:"罐头瓶(腌菜)", product:"土豆腌菜", price:210, days:3} ],
-                  sacrifices:[ {room:"茶水间", bundle:"春季作物收集包", need:1} ],
+                // 春季作物
+                { id:"strawberry", name:"草莓", type:"crop", seasons:["春季"], growthDays:8, regrowDays:4,
+                  basePrice:120, goldPrice:180,
+                  processing:[ {method:"罐头瓶", product:"草莓果酱", price:290, days:3}, {method:"小桶", product:"草莓酒", price:360, days:7, note:"收益更高但周期长"} ],
+                  sacrifices:[ {room:"茶水间", bundle:"春季作物收集包", need:1, quality:"普通"} ],
+                  decision:"先留献祭，普通品质做果酱周转快。" },
+                { id:"cauliflower", name:"花椰菜", type:"crop", seasons:["春季"], growthDays:12,
+                  basePrice:175, goldPrice:262,
+                  processing:[ {method:"罐头瓶", product:"花椰菜腌菜", price:400, days:3} ],
+                  sacrifices:[ {room:"茶水间", bundle:"春季作物收集包", need:1, quality:"普通"} ],
+                  decision:"高价值蔬菜，直接腌菜。" },
+                { id:"potato", name:"土豆", type:"crop", seasons:["春季"], growthDays:6,
+                  basePrice:80, goldPrice:120,
+                  processing:[ {method:"罐头瓶", product:"土豆腌菜", price:210, days:3} ],
+                  sacrifices:[ {room:"茶水间", bundle:"春季作物收集包", need:1, quality:"普通"} ],
                   decision:"普通作物，丢罐头瓶。" },
-                { id:"green_bean", name:"青豆", type:"crop", seasons:["春季"], growthDays:10, regrowDays:3, basePrice:40,
-                  processing:[ {method:"罐头瓶(腌菜)", product:"青豆腌菜", price:130, days:3} ],
-                  sacrifices:[ {room:"茶水间", bundle:"春季作物收集包", need:1} ],
-                  decision:"多次收获，进罐头瓶。" },
-                { id:"parsnip", name:"防风草", type:"crop", seasons:["春季"], growthDays:4, basePrice:35,
-                  processing:[ {method:"罐头瓶(腌菜)", product:"防风草腌菜", price:120, days:3} ],
-                  sacrifices:[ {room:"茶水间", bundle:"春季作物收集包", need:1}, {room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"} ],
-                  decision:"前期直接卖，有罐头瓶可腌，留5金星献祭。" },
-                { id:"garlic", name:"大蒜", type:"crop", seasons:["春季"], growthDays:4, basePrice:60,
-                  processing:[ {method:"罐头瓶(腌菜)", product:"大蒜腌菜", price:170, days:3} ],
-                  sacrifices:[],
-                  decision:"量少，直接卖或烹饪。" },
-                { id:"blue_jazz", name:"蓝爵", type:"flower", seasons:["春季"], growthDays:7, basePrice:50,
-                  processing:[],
-                  sacrifices:[ {room:"工艺室", bundle:"花园收集包", need:1} ],
-                  decision:"种蜂房旁，花直接送人或献祭。" },
+                { id:"parsnip", name:"防风草", type:"crop", seasons:["春季"], growthDays:4,
+                  basePrice:35, goldPrice:52,
+                  processing:[ {method:"罐头瓶", product:"防风草腌菜", price:120, days:3} ],
+                  sacrifices:[ {room:"茶水间", bundle:"春季作物收集包", need:1, quality:"普通"},
+                               {room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"} ],
+                  decision:"留5金星献祭，普通进罐头瓶或直接卖。" },
 
-                // === 夏季作物 ===
-                { id:"starfruit", name:"杨桃", type:"crop", seasons:["夏季"], growthDays:13, basePrice:750,
-                  processing:[ {method:"小桶(酿酒)", product:"杨桃酒", price:2250, days:7, note:"必陈酿"} ],
+                // 夏季作物
+                { id:"starfruit", name:"杨桃", type:"crop", seasons:["夏季"], growthDays:13,
+                  basePrice:750, goldPrice:1125,
+                  processing:[ {method:"小桶", product:"杨桃酒", price:2250, days:7, note:"陈酿后翻倍"} ],
                   sacrifices:[],
-                  decision:"全部酿酒陈酿，游戏最赚钱作物之一。" },
-                { id:"hops", name:"啤酒花", type:"crop", seasons:["夏季"], growthDays:11, regrowDays:1, basePrice:25,
-                  processing:[ {method:"小桶(淡啤酒)", product:"淡啤酒", price:300, days:1.5} ],
-                  sacrifices:[ {room:"茶水间", bundle:"酿酒师收集包", need:1} ],
-                  decision:"每日收割直接酿淡啤酒，日收益之王。" },
-                { id:"melon", name:"甜瓜", type:"crop", seasons:["夏季"], growthDays:12, basePrice:250,
-                  processing:[ {method:"小桶(酿酒)", product:"甜瓜酒", price:750, days:7} ],
-                  sacrifices:[ {room:"茶水间", bundle:"夏季作物收集包", need:1}, {room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"} ],
-                  decision:"高价值作物，酿酒收益高，留5金星献祭。" },
-                { id:"blueberry", name:"蓝莓", type:"crop", seasons:["夏季"], growthDays:13, regrowDays:4, basePrice:50,
-                  processing:[ {method:"罐头瓶(果酱)", product:"蓝莓果酱", price:150, days:3} ],
-                  sacrifices:[ {room:"茶水间", bundle:"夏季作物收集包", need:1} ],
-                  decision:"产量极大，无脑丢罐头瓶。" },
-                { id:"red_cabbage", name:"红卷心菜", type:"crop", seasons:["夏季"], growthDays:9, basePrice:260,
-                  processing:[ {method:"罐头瓶(腌菜)", product:"红卷心菜腌菜", price:570, days:3} ],
-                  sacrifices:[ {room:"工艺室", bundle:"染料收集包", need:1} ],
-                  decision:"高价值蔬菜，优先腌菜。" },
-                { id:"tomato", name:"番茄", type:"crop", seasons:["夏季"], growthDays:11, regrowDays:4, basePrice:60,
-                  processing:[ {method:"罐头瓶(果酱)", product:"番茄果酱", price:170, days:3} ],
-                  sacrifices:[ {room:"茶水间", bundle:"夏季作物收集包", need:1} ],
+                  decision:"全部酿酒陈酿，绝不直接卖。" },
+                { id:"hops", name:"啤酒花", type:"crop", seasons:["夏季"], growthDays:11, regrowDays:1,
+                  basePrice:25, goldPrice:37,
+                  processing:[ {method:"小桶", product:"淡啤酒", price:300, days:1.5} ],
+                  sacrifices:[ {room:"茶水间", bundle:"酿酒师收集包", need:1, quality:"普通"} ],
+                  decision:"每日收割直接酿淡啤酒。" },
+                { id:"melon", name:"甜瓜", type:"crop", seasons:["夏季"], growthDays:12,
+                  basePrice:250, goldPrice:375,
+                  processing:[ {method:"小桶", product:"甜瓜酒", price:750, days:7} ],
+                  sacrifices:[ {room:"茶水间", bundle:"夏季作物收集包", need:1, quality:"普通"},
+                               {room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"} ],
+                  decision:"高价值，留5金星献祭，其余酿酒。" },
+                { id:"blueberry", name:"蓝莓", type:"crop", seasons:["夏季"], growthDays:13, regrowDays:4,
+                  basePrice:50, goldPrice:75,
+                  processing:[ {method:"罐头瓶", product:"蓝莓果酱", price:150, days:3} ],
+                  sacrifices:[ {room:"茶水间", bundle:"夏季作物收集包", need:1, quality:"普通"} ],
+                  decision:"产量巨大，无脑丢罐头瓶。" },
+                { id:"tomato", name:"番茄", type:"crop", seasons:["夏季"], growthDays:11, regrowDays:4,
+                  basePrice:60, goldPrice:90,
+                  processing:[ {method:"罐头瓶", product:"番茄果酱", price:170, days:3} ],
+                  sacrifices:[ {room:"茶水间", bundle:"夏季作物收集包", need:1, quality:"普通"} ],
                   decision:"进罐头瓶做果酱。" },
-                { id:"hot_pepper", name:"辣椒", type:"crop", seasons:["夏季"], growthDays:5, regrowDays:3, basePrice:40,
-                  processing:[ {method:"罐头瓶(果酱)", product:"辣椒果酱", price:130, days:3} ],
-                  sacrifices:[ {room:"茶水间", bundle:"夏季作物收集包", need:1} ],
-                  decision:"送礼佳品，也可做果酱。" },
-                { id:"wheat", name:"小麦", type:"crop", seasons:["夏季","秋季"], growthDays:4, basePrice:25,
-                  processing:[ {method:"小桶(啤酒)", product:"啤酒", price:200, days:1} ],
-                  sacrifices:[ {room:"布告栏", bundle:"饲料收集包", need:10} ],
-                  decision:"酿啤酒速度极快，留10个献祭。" },
+                { id:"wheat", name:"小麦", type:"crop", seasons:["夏季","秋季"], growthDays:4,
+                  basePrice:25, goldPrice:37,
+                  processing:[ {method:"小桶", product:"啤酒", price:200, days:1} ],
+                  sacrifices:[ {room:"布告栏", bundle:"饲料收集包", need:10, quality:"普通"} ],
+                  decision:"酿酒速度快，留10个献祭。" },
 
-                // === 秋季作物 ===
-                { id:"corn", name:"玉米", type:"crop", seasons:["夏季","秋季"], growthDays:14, regrowDays:4, basePrice:50,
-                  processing:[ {method:"罐头瓶(腌菜)", product:"腌玉米", price:150, days:3, note:"推荐"},{method:"小桶(果汁)", product:"玉米汁", price:112, days:4} ],
-                  sacrifices:[ {room:"茶水间", bundle:"秋季作物收集包", need:1}, {room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"} ],
-                  decision:"留献祭，普通/银星进罐头瓶，金星直接卖。" },
-                { id:"pumpkin", name:"南瓜", type:"crop", seasons:["秋季"], growthDays:13, basePrice:320,
-                  processing:[ {method:"罐头瓶(腌菜)", product:"南瓜腌菜", price:690, days:3} ],
-                  sacrifices:[ {room:"茶水间", bundle:"秋季作物收集包", need:1}, {room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"} ],
-                  decision:"高价值，腌菜，留金星献祭。" },
-                { id:"cranberry", name:"蔓越莓", type:"crop", seasons:["秋季"], growthDays:7, regrowDays:5, basePrice:75,
-                  processing:[ {method:"罐头瓶(果酱)", product:"蔓越莓果酱", price:200, days:3} ],
-                  sacrifices:[ {room:"茶水间", bundle:"秋季作物收集包", need:1} ],
-                  decision:"产量巨大，全丢罐头瓶。" },
-                { id:"eggplant", name:"茄子", type:"crop", seasons:["秋季"], growthDays:5, regrowDays:5, basePrice:60,
-                  processing:[ {method:"罐头瓶(腌菜)", product:"茄子腌菜", price:170, days:3} ],
-                  sacrifices:[ {room:"茶水间", bundle:"秋季作物收集包", need:1} ],
+                // 秋季作物
+                { id:"corn", name:"玉米", type:"crop", seasons:["夏季","秋季"], growthDays:14, regrowDays:4,
+                  basePrice:50, goldPrice:75,
+                  processing:[ {method:"罐头瓶", product:"腌玉米", price:150, days:3}, {method:"小桶", product:"玉米汁", price:112, days:4, note:"不推荐，收益低"} ],
+                  sacrifices:[ {room:"茶水间", bundle:"秋季作物收集包", need:1, quality:"普通"},
+                               {room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"} ],
+                  decision:"留献祭，普通品质进罐头瓶，金星直接卖。" },
+                { id:"pumpkin", name:"南瓜", type:"crop", seasons:["秋季"], growthDays:13,
+                  basePrice:320, goldPrice:480,
+                  processing:[ {method:"罐头瓶", product:"南瓜腌菜", price:690, days:3} ],
+                  sacrifices:[ {room:"茶水间", bundle:"秋季作物收集包", need:1, quality:"普通"},
+                               {room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"} ],
+                  decision:"高价值，留金星献祭，普通腌菜。" },
+                { id:"cranberry", name:"蔓越莓", type:"crop", seasons:["秋季"], growthDays:7, regrowDays:5,
+                  basePrice:75, goldPrice:112,
+                  processing:[ {method:"罐头瓶", product:"蔓越莓果酱", price:200, days:3} ],
+                  sacrifices:[ {room:"茶水间", bundle:"秋季作物收集包", need:1, quality:"普通"} ],
+                  decision:"产量极大，全丢罐头瓶。" },
+                { id:"eggplant", name:"茄子", type:"crop", seasons:["秋季"], growthDays:5, regrowDays:5,
+                  basePrice:60, goldPrice:90,
+                  processing:[ {method:"罐头瓶", product:"茄子腌菜", price:170, days:3} ],
+                  sacrifices:[ {room:"茶水间", bundle:"秋季作物收集包", need:1, quality:"普通"} ],
                   decision:"留1献祭，其余腌菜。" },
-                { id:"fairy_rose", name:"仙女玫瑰", type:"flower", seasons:["秋季"], growthDays:12, basePrice:290,
+                { id:"fairy_rose", name:"仙女玫瑰", type:"flower", seasons:["秋季"], growthDays:12,
+                  basePrice:290, goldPrice:435,
                   processing:[],
-                  sacrifices:[ {room:"工艺室", bundle:"花园收集包", need:1} ],
-                  decision:"种蜂房旁产最贵蜂蜜，绝不要酿酒！" },
-                { id:"sweet_gem_berry", name:"宝石甜莓", type:"crop", seasons:["秋季"], growthDays:24, basePrice:3000,
+                  sacrifices:[ {room:"工艺室", bundle:"花园收集包", need:1, quality:"普通"} ],
+                  decision:"种蜂房旁产蜂蜜(680G)，别酿酒。" },
+                { id:"sweet_gem_berry", name:"宝石甜莓", type:"crop", seasons:["秋季"], growthDays:24,
+                  basePrice:3000, goldPrice:4500,
                   processing:[],
-                  sacrifices:[ {room:"布告栏", bundle:"稀有作物收集包", need:1} ],
+                  sacrifices:[ {room:"布告栏", bundle:"稀有作物收集包", need:1, quality:"普通"} ],
                   decision:"无法加工，换星之果实或直接卖。" },
 
-                // === 特殊/多季节 ===
-                { id:"ancient_fruit", name:"远古果实", type:"crop", seasons:["春","夏","秋"], growthDays:28, regrowDays:7, basePrice:550,
-                  processing:[ {method:"小桶(酿酒)", product:"远古果酒", price:1650, days:7} ],
-                  sacrifices:[ {room:"布告栏", bundle:"稀有作物收集包", need:1} ],
+                // 特殊/多季节
+                { id:"ancient_fruit", name:"远古果实", type:"crop", seasons:["春","夏","秋"], growthDays:28, regrowDays:7,
+                  basePrice:550, goldPrice:825,
+                  processing:[ {method:"小桶", product:"远古果酒", price:1650, days:7, note:"陈酿翻倍"} ],
+                  sacrifices:[ {room:"布告栏", bundle:"稀有作物收集包", need:1, quality:"普通"} ],
                   decision:"温室种满酿酒，绝不卖原果。" },
-                { id:"tea_leaves", name:"茶叶", type:"crop", seasons:["春","夏","秋"], growthDays:20, regrowDays:1, basePrice:50,
-                  processing:[ {method:"小桶(绿茶)", product:"绿茶", price:100, days:0.12} ],
+                { id:"tea_leaves", name:"茶叶", type:"crop", seasons:["春","夏","秋"], growthDays:20, regrowDays:1,
+                  basePrice:50, goldPrice:75,
+                  processing:[ {method:"小桶", product:"绿茶", price:100, days:0.12} ],
                   sacrifices:[],
                   decision:"花盆种，每天收，酿绿茶。" },
 
-                // === 畜牧 ===
-                { id:"egg", name:"鸡蛋", type:"animal_product", basePrice:50,
+                // 畜牧产品
+                { id:"egg", name:"鸡蛋", type:"animal_product", basePrice:50, goldPrice:75,
                   processing:[ {method:"蛋黄酱机", product:"蛋黄酱", price:190, days:0.5} ],
-                  sacrifices:[ {room:"茶水间", bundle:"动物收集包", need:1} ],
-                  decision:"必加工成蛋黄酱。" },
-                { id:"milk", name:"牛奶", type:"animal_product", basePrice:125,
+                  sacrifices:[ {room:"茶水间", bundle:"动物收集包", need:1, quality:"普通"} ],
+                  decision:"必加工蛋黄酱，大鸡蛋直接出金星。" },
+                { id:"milk", name:"牛奶", type:"animal_product", basePrice:125, goldPrice:187,
                   processing:[ {method:"奶酪机", product:"奶酪", price:230, days:1.5} ],
-                  sacrifices:[ {room:"茶水间", bundle:"动物收集包", need:1} ],
-                  decision:"大壶奶出金星奶酪，下矿神器。" },
-                { id:"truffle", name:"松露", type:"animal_product", basePrice:625,
-                  processing:[ {method:"产油机", product:"松露油", price:1065, days:0.25} ],
-                  sacrifices:[],
-                  decision:"有工匠榨油，植物学家直接卖铱星。" },
+                  sacrifices:[ {room:"茶水间", bundle:"动物收集包", need:1, quality:"大瓶"} ],
+                  decision:"大壶牛奶出金星奶酪，下矿神药。" },
 
-                // === 鱼类 ===
-                { id:"sunfish", name:"太阳鱼", type:"fish", seasons:["春","夏"], basePrice:30,
+                // 鱼类
+                { id:"sunfish", name:"太阳鱼", type:"fish", seasons:["春","夏"], basePrice:30, goldPrice:45,
                   processing:[ {method:"生鱼片", product:"生鱼片", price:75} ],
                   sacrifices:[ {room:"鱼缸", bundle:"河鱼收集包", need:1} ],
                   decision:"低价值，做生鱼片或献祭。" },
-                { id:"sturgeon", name:"鲟鱼", type:"fish", seasons:["夏","冬"], basePrice:200,
-                  processing:[ {method:"鱼塘(鱼子酱)", product:"鱼子酱", price:500, days:4} ],
+                { id:"sturgeon", name:"鲟鱼", type:"fish", seasons:["夏","冬"], basePrice:200, goldPrice:300,
+                  processing:[ {method:"鱼塘→鱼子酱", product:"鱼子酱", price:500, days:4} ],
                   sacrifices:[ {room:"鱼缸", bundle:"湖鱼收集包", need:1} ],
                   decision:"放鱼塘产鱼籽做鱼子酱。" },
 
-                // === 矿物 ===
+                // 矿物
                 { id:"prismatic_shard", name:"五彩碎片", type:"mineral", basePrice:2000,
-                  processing:[],
-                  sacrifices:[],
-                  decision:"换银河剑，别送。" },
+                  processing:[], sacrifices:[], decision:"换银河剑，别送。" },
             ];
 
-            // NPC 数据（略作保留）
+            // NPC 数据
             const npcs = [
                 { name:"阿比盖尔", loves:["紫水晶","南瓜","巧克力蛋糕"] },
                 { name:"塞巴斯蒂安", loves:["泪晶","虚空蛋","生鱼片"] },
@@ -288,7 +296,7 @@
                 { name:"哈维", loves:["咖啡","腌菜","果酒"] },
             ];
 
-            // 献祭包（仍用于分类浏览）
+            // 献祭包列表（用于分类浏览）
             const bundles = [
                 { room:"茶水间", name:"春季作物", items:"防风草、青豆、花椰菜、土豆" },
                 { room:"茶水间", name:"夏季作物", items:"番茄、辣椒、蓝莓、甜瓜" },
@@ -302,11 +310,8 @@
             ];
 
             const categoryMap = {
-                crops: ['crop','flower'],
-                animal: ['animal_product'],
-                fish: ['fish'],
-                mining: ['mineral'],
-                artisan: ['artisan_good'],
+                crops: ['crop','flower'], animal: ['animal_product'], fish: ['fish'],
+                mining: ['mineral'], artisan: ['artisan_good']
             };
 
             const contentArea = document.getElementById('contentArea');
@@ -314,6 +319,7 @@
             const categoryBtns = document.querySelectorAll('.category-btn');
             let currentCat = 'all', searchQuery = '';
 
+            // 渲染主题卡片
             function renderTopics() {
                 const ts = [
                     { n:"作物种植", i:"🌽", c:"crops" }, { n:"畜牧产品", i:"🐄", c:"animal" },
@@ -325,6 +331,7 @@
                     <div class="topic-card" data-category="${t.c}"><span class="topic-icon">${t.i}</span>${t.n}</div>`).join('')+'</div>';
             }
 
+            // 分类列表
             function renderCatList(cat) {
                 if(cat==='bundles') return '<h2>🎁 献祭包</h2><div class="info-grid">'+bundles.map(b=>`
                     <div class="info-card"><h4>${b.room} · ${b.name}</h4><p>${b.items}</p></div>`).join('')+'</div>';
@@ -335,60 +342,94 @@
                 const filtered = items.filter(i=>types.includes(i.type));
                 if(!filtered.length) return '<p class="no-results">暂无数据。</p>';
                 return `<h2>📋 列表</h2><table><tr><th>物品</th><th>季节</th><th>售价</th><th>建议</th></tr>
-                    ${filtered.map(i=>`<tr><td><strong>${i.name}</strong></td><td>${i.seasons?.join('、')||'—'}</td><td>${i.basePrice}G</td><td>${i.decision?.substring(0,12)}…</td></tr>`).join('')}</table>`;
+                    ${filtered.map(i=>`<tr><td><strong>${i.name}</strong></td><td>${i.seasons?.join('、')||'—'}</td><td>${i.basePrice}G</td><td>${i.decision?.substring(0,15)}</td></tr>`).join('')}</table>`;
             }
 
-            function renderFlow(item) {
+            // 构建决策流程图（新设计）
+            function buildFlow(item) {
                 let html = '<div class="decision-flow">';
-                // 献祭分支
-                if(item.sacrifices?.length) {
-                    html += '<div class="flow-step"><div class="flow-title">🎯 先献祭</div><div class="flow-branch">';
-                    item.sacrifices.forEach(s=>{
-                        html += `<div class="flow-line"><span class="arrow">→</span> <strong>${s.room}</strong> / ${s.bundle}：留 ${s.need} 个${s.quality?' ('+s.quality+')':''}</div>`;
+
+                // 献祭步骤：合并同房间
+                if (item.sacrifices?.length) {
+                    const roomGroups = {};
+                    item.sacrifices.forEach(s => {
+                        if (!roomGroups[s.room]) roomGroups[s.room] = [];
+                        roomGroups[s.room].push(s);
                     });
-                    html += '</div></div>';
-                }
-                // 加工/品质分支
-                if(item.processing?.length || item.basePrice) {
-                    html += '<div class="flow-step"><div class="flow-title">⚡ 看品质</div><div class="flow-branch">';
-                    // 判断是否有加工建议
-                    const mainProc = item.processing?.[0];
-                    if(mainProc) {
-                        html += `<div class="flow-line"><span class="arrow">→</span> <span class="tag gold">⭐金/铱星</span> 直接卖</div>`;
-                        html += `<div class="flow-line"><span class="arrow">→</span> <span class="tag normal">🟤普通/银星</span> 进${mainProc.method.split('(')[0]}做 ${mainProc.product}
-                            <div class="sub-branch">└ 没机器？暂存，急用钱再卖</div></div>`;
-                    } else {
-                        html += `<div class="flow-line">直接出售或根据用途保留。</div>`;
+
+                    html += '<div class="flow-step"><div class="flow-title">🎯 先献祭</div><div class="flow-branch">';
+                    for (const [room, sacs] of Object.entries(roomGroups)) {
+                        html += `<div class="flow-line"><span class="arrow">→</span> <strong>${room}</strong></div>`;
+                        sacs.forEach(s => {
+                            const q = s.quality === '金星' ? ' <span class="quality-tag gold">金星</span>' : (s.quality === '普通' ? ' <span class="quality-tag">普通</span>' : '');
+                            html += `<div class="flow-line" style="margin-left:1.6rem;">${s.bundle}：留 ${s.need} 个${q}</div>`;
+                        });
                     }
                     html += '</div></div>';
+                }
+
+                // 品质处理分支
+                const mainProc = item.processing?.[0];
+                if (mainProc) {
+                    const sellPrice = item.basePrice || 0;
+                    const goldSell = item.goldPrice || sellPrice;
+                    const procName = mainProc.product;
+                    const procPrice = mainProc.price;
+                    html += '<div class="flow-step"><div class="flow-title">⚡ 看品质</div><div class="flow-branch">';
+                    html += `<div class="flow-line"><span class="arrow">→</span> ⭐金/铱星 → 直接卖 <span class="flow-note">${goldSell}G</span></div>`;
+                    html += `<div class="flow-line"><span class="arrow">→</span> 🟤普通/银星 → 进<strong>${mainProc.method}</strong>做<strong>${procName}</strong> <span class="flow-note">${procPrice}G</span>`;
+                    // 没机器链接
+                    const device = mainProc.method;
+                    html += `<div class="flow-line" style="margin-left:2rem; font-size:0.9rem;">↳ 没机器？<span class="link-like" data-search="${device}">查看${device}怎么做</span> 或暂存急用钱卖</div>`;
+                    html += '</div>';
+                    html += '</div>';
+                } else if (item.basePrice) {
+                    html += '<div class="flow-step"><div class="flow-title">⚡ 处理</div><div class="flow-branch">';
+                    html += `<div class="flow-line">根据用途保留或直接出售。</div>`;
+                    html += '</div>';
                 }
                 html += '</div>';
                 return html;
             }
 
+            // 搜索结果渲染
             function performSearch(q) {
                 if(!q.trim()) return renderCurrent();
                 const kw = q.toLowerCase().trim();
                 const res = items.filter(i=>i.name.toLowerCase().includes(kw));
                 if(!res.length) { contentArea.innerHTML='<p class="no-results">😕 未找到，试试“玉米”“杨桃”“太阳鱼”</p>'; return; }
-                contentArea.innerHTML = res.map(item=>`
+                contentArea.innerHTML = res.map(item=>{
+                    const mainProc = item.processing?.[0];
+                    const otherProc = item.processing?.slice(1);
+                    return `
                     <div class="search-result-item">
                         <div class="item-header">
                             <span class="item-name">${item.name}</span>
                             <span class="item-type-badge">${item.type}</span>
-                            ${item.basePrice?`<span style="color:#b8860b;font-weight:700;">${item.basePrice}G</span>`:''}
+                            <span class="price-tag">卖${item.basePrice}G</span>
+                            ${item.goldPrice ? `<span class="price-tag" style="color:#b8860b;">⭐${item.goldPrice}G</span>` : ''}
                         </div>
-                        ${renderFlow(item)}
+                        ${buildFlow(item)}
                         <div class="info-grid">
                             <div class="info-card"><h4>📅 基础</h4>
                                 <p>季节：${item.seasons?.join('、')||'—'}</p>
                                 ${item.growthDays?`<p>成熟：${item.growthDays}天</p>`:''}
                                 ${item.regrowDays?`<p>再收获：${item.regrowDays}天</p>`:''}
                             </div>
-                            ${item.processing?.length?`<div class="info-card"><h4>🏭 加工参考</h4><ul style="padding-left:1.2rem;">${item.processing.map(p=>`<li>${p.method} → ${p.product} (${p.price}G)</li>`).join('')}</ul></div>`:''}
-                            ${item.gifts?`<div class="info-card"><h4>💝 NPC</h4>${Object.entries(item.gifts).filter(([k,v])=>v.length).map(([k,v])=>`<p>${k==='loves'?'❤️':k==='likes'?'👍':k} ${v.join('、')}</p>`).join('')}</div>`:''}
+                            ${otherProc?.length ? `
+                            <div class="info-card">
+                                <h4>🔍 其他加工</h4>
+                                ${otherProc.map(p=>`<div style="font-size:0.9rem; margin-bottom:0.3rem;">${p.method} → ${p.product} (${p.price}G) ${p.note ? `<span class="flow-note">${p.note}</span>` : ''}</div>`).join('')}
+                            </div>` : ''}
+                            ${item.sacrifices?.length ? `
+                            <div class="info-card">
+                                <h4>📦 献祭</h4>
+                                ${item.sacrifices.map(s=>`<div>${s.room} · ${s.bundle}：${s.need}个 ${s.quality||''}</div>`).join('')}
+                            </div>` : ''}
                         </div>
-                    </div>`).join('');
+                        ${otherProc?.length ? `<div class="secondary-tip">💡 ${item.name}的其它加工方式收益较低，仅作为补充参考。</div>` : ''}
+                    </div>`;
+                }).join('');
             }
 
             function renderCurrent() {
@@ -396,6 +437,7 @@
                 else contentArea.innerHTML = renderCatList(currentCat);
             }
 
+            // 分类切换
             categoryBtns.forEach(b=>b.addEventListener('click', function(){
                 categoryBtns.forEach(x=>x.classList.remove('active'));
                 this.classList.add('active');
@@ -405,6 +447,7 @@
                 renderCurrent();
             }));
 
+            // 搜索输入
             searchInput.addEventListener('input', function(){
                 searchQuery = this.value;
                 if(searchQuery.trim()) {
@@ -415,9 +458,20 @@
                 renderCurrent();
             });
 
+            // 点击主题卡片切换分类
             contentArea.addEventListener('click', function(e){
                 const card = e.target.closest('.topic-card');
-                if(card?.dataset.category) document.querySelector(`.category-btn[data-category="${card.dataset.category}"]`).click();
+                if(card?.dataset.category) {
+                    document.querySelector(`.category-btn[data-category="${card.dataset.category}"]`).click();
+                }
+                // 处理设备链接点击
+                const link = e.target.closest('.link-like');
+                if (link && link.dataset.search) {
+                    searchInput.value = link.dataset.search;
+                    searchQuery = link.dataset.search;
+                    renderCurrent();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
             });
 
             renderCurrent();
