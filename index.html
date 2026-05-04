@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星露谷物语 · 全能攻略手册</title>
+    <style>
+        :root {
+            --bg: #f8f2e0;
+            --card: #fff9f0;
+            --accent: #7a5c3a;
+            --gold: #c99c2b;
+            --green: #5b8c5a;
+            --red: #b55b4a;
+            --blue: #4a7b9c;
+            --border: #d4b896;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --text: #3e3a35;
+            --light-text: #6b5e4f;
+            --radius: 16px;
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at 20% 30%, #f5e7c8 1px, transparent 1px),
+                              radial-gradient(circle at 80% 70%, #ead9b8 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #5e3e1c, #8b5d34);
+            color: #f7e9c3;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            position: relative;
+            border-bottom: 3px solid #c99c2b;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 0.25rem;
+            text-shadow: 2px 2px 0 #3e2b14;
+        }
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* 搜索栏 */
+        .search-wrapper {
+            position: relative;
+            max-width: 700px;
+            margin: -30px auto 2rem auto;
+            z-index: 10;
+        }
+        .search-wrapper input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1.2rem;
+            border: 3px solid var(--border);
+            border-radius: 50px;
+            background: white;
+            box-shadow: var(--shadow);
+            outline: none;
+            transition: 0.2s;
+            font-family: var(--font);
+        }
+        .search-wrapper input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(122,92,58,0.2);
+        }
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--accent);
+            pointer-events: none;
+        }
+
+        /* 分类导航 */
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+        .category-btn {
+            background: white;
+            border: 2px solid var(--border);
+            padding: 0.7rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            color: var(--accent);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .category-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .category-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 6px 14px rgba(122,92,58,0.3);
+        }
+
+        /* 主内容区域 */
+        .content-area {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            min-height: 400px;
+            border: 1px solid #e4cfb0;
+        }
+
+        /* 板块卡片（分类视图） */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .topic-card {
+            background: white;
+            border-radius: 18px;
+            padding: 1.8rem 1.2rem;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid transparent;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--accent);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .topic-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        .topic-icon {
+            font-size: 2.8rem;
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th {
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        td, th {
+            padding: 0.7rem 0.9rem;
+            border-bottom: 1px solid #e5d5bb;
+        }
+        tr:hover td {
+            background: #fdf8f0;
+        }
+
+        /* 搜索结果卡片 */
+        .search-result-item {
+            background: white;
+            border-radius: 20px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-left: 6px solid var(--gold);
+        }
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .item-name {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #3e2b14;
+        }
+        .item-type-badge {
+            background: var(--accent);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .decision-box {
+            background: #fef6e8;
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            margin: 1.2rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            border: 1px solid #e5c687;
+        }
+        .decision-icon {
+            font-size: 2rem;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+        .info-card {
+            background: #faf6ee;
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid #e0cfad;
+        }
+        .info-card h4 {
+            margin-bottom: 0.6rem;
+            color: var(--accent);
+            font-size: 1rem;
+        }
+        .tag {
+            display: inline-block;
+            background: #e8d8bb;
+            color: #4e3a24;
+            padding: 0.2rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-right: 0.4rem;
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+        }
+        .tag.green {
+            background: #c8e0c4;
+            color: #2b4d22;
+        }
+        .tag.red {
+            background: #f0d4d0;
+            color: #772d24;
+        }
+        .tag.blue {
+            background: #c9ddeb;
+            color: #1e4158;
+        }
+        .no-results {
+            text-align: center;
+            color: #888;
+            font-size: 1.2rem;
+            padding: 3rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #7b6e5a;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .item-name {
+                font-size: 1.5rem;
+            }
+            header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌾 星露谷物语 · 全能攻略</h1>
+        <p>搜索物品，一目了然 · 从种植到送礼，决策尽在指尖</p>
+    </header>
+
+    <div class="container">
+        <!-- 搜索栏 -->
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" placeholder="搜索物品，例如：玉米、杨桃、奶酪、太阳鱼..." autocomplete="off">
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <!-- 分类导航 -->
+        <div class="categories" id="categoryNav">
+            <button class="category-btn active" data-category="all">🏠 全部板块</button>
+            <button class="category-btn" data-category="crops">🌽 作物种植</button>
+            <button class="category-btn" data-category="animal">🐄 畜牧产品</button>
+            <button class="category-btn" data-category="fish">🎣 钓鱼蟹笼</button>
+            <button class="category-btn" data-category="mining">⛏ 矿场战斗</button>
+            <button class="category-btn" data-category="artisan">🍷 工匠加工</button>
+            <button class="category-btn" data-category="cooking">🍳 烹饪食谱</button>
+            <button class="category-btn" data-category="bundles">🎁 献祭收集</button>
+            <button class="category-btn" data-category="npcs">💬 NPC社交</button>
+        </div>
+
+        <!-- 内容展示区 -->
+        <div class="content-area" id="contentArea">
+            <!-- 动态渲染 -->
+        </div>
+    </div>
+
+    <footer>
+        🐔 星露谷攻略手册 · 数据基于游戏1.6版本 · 祝您农场兴旺 ⭐
+    </footer>
+
+    <script>
+        (function() {
+            // ---------- 数据库 ----------
+            // 物品数据 (示例核心物品，完整版可继续扩充)
+            const items = [
+                {
+                    id: "corn",
+                    name: "玉米",
+                    type: "crop",
+                    seasons: ["夏季", "秋季"],
+                    growthDays: 14,
+                    regrowDays: 4,
+                    basePrice: 50,
+                    goldPrice: 62,
+                    processing: [
+                        { method: "罐头瓶(腌菜)", product: "玉米腌菜", price: 150, days: 3, note: "✅ 推荐！产量大，收益高" },
+                        { method: "小桶(果汁)", product: "玉米果汁", price: 112, days: 4, note: "收益低于罐头瓶" },
+                        { method: "产油机", product: "玉米油", price: 100, days: 1.5, note: "烹饪用，经济价值一般" }
+                    ],
+                    retention: { "秋季留存": 0, "其他": "用于万灵节献祭(玉米×10)" },
+                    gifts: {
+                        loves: [],
+                        likes: ["乔迪", "肯特"],
+                        neutral: ["玛妮", "刘易斯"],
+                        dislikes: ["阿比盖尔"]
+                    },
+                    sacrifices: ["万灵节收集包 (需玉米×10)", "秋季作物收集包(可能)"],
+                    cooking: [{ dish: "巨无霸餐", effect: "+90体力 +40生命 速度+1" }],
+                    decision: "🟢 优先放入罐头瓶做腌菜。产量巨大，加工收益远超直接出售。记得留10个用于万灵节献祭。"
+                },
+                {
+                    id: "ancient_fruit",
+                    name: "远古果实",
+                    type: "crop",
+                    seasons: ["春季", "夏季", "秋季"],
+                    growthDays: 28,
+                    regrowDays: 7,
+                    basePrice: 550,
+                    goldPrice: 687,
+                    processing: [
+                        { method: "小桶(果酒)", product: "远古果酒", price: 1650, days: 7, note: "💰 印钞机！地窖陈酿后价值翻倍" },
+                        { method: "罐头瓶(果酱)", product: "远古果酱", price: 1150, days: 3, note: "快速变现，但不如酿酒" }
+                    ],
+                    retention: { "温室/姜岛": "永久种植" },
+                    gifts: {
+                        loves: [],
+                        likes: ["法师", "科罗布斯"],
+                        neutral: ["艾芙琳"],
+                        dislikes: []
+                    },
+                    sacrifices: ["稀有作物收集包(需上古水果×1)"],
+                    cooking: [],
+                    decision: "🔴 绝对不要直接卖原果！酿酒并放入地窖陈酿是终极赚钱手段。"
+                },
+                {
+                    id: "blueberry",
+                    name: "蓝莓",
+                    type: "crop",
+                    seasons: ["夏季"],
+                    growthDays: 13,
+                    regrowDays: 4,
+                    basePrice: 50,
+                    goldPrice: 62,
+                    processing: [
+                        { method: "罐头瓶(果酱)", product: "蓝莓果酱", price: 150, days: 3, note: "✅ 产量极大，快速周转" },
+                        { method: "小桶(酿酒)", product: "蓝莓酒", price: 150, days: 7, note: "价格相同但周期更长" }
+                    ],
+                    retention: { "夏季留存": 0 },
+                    gifts: {
+                        loves: [],
+                        likes: ["艾米丽", "海莉"],
+                        neutral: ["德米特里厄斯"],
+                        dislikes: []
+                    },
+                    sacrifices: ["夏季作物收集包(需求之一)"],
+                    cooking: [{ dish: "蓝莓千层酥", effect: "+115体力 +51生命" }],
+                    decision: "🟢 优先罐头瓶做果酱。单株产量极高，罐头瓶2-3天即可加工完毕。"
+                },
+                {
+                    id: "starfruit",
+                    name: "杨桃",
+                    type: "crop",
+                    seasons: ["夏季"],
+                    growthDays: 13,
+                    regrowDays: 0,
+                    basePrice: 750,
+                    goldPrice: 937,
+                    processing: [
+                        { method: "小桶(酿酒)", product: "杨桃酒", price: 2250, days: 7, note: "💎 单体价值之王！务必地窖陈酿" },
+                        { method: "罐头瓶(果酱)", product: "杨桃果酱", price: 1550, days: 3, note: "缺钱可暂用" }
+                    ],
+                    retention: { "夏季留存": 0 },
+                    gifts: {
+                        loves: [],
+                        likes: ["肯特"],
+                        neutral: [],
+                        dislikes: []
+                    },
+                    sacrifices: ["稀有作物收集包?"],
+                    cooking: [],
+                    decision: "🔴 务必全部酿酒并陈酿。这是游戏里最赚钱的作物之一。"
+                },
+                {
+                    id: "hops",
+                    name: "啤酒花",
+                    type: "crop",
+                    seasons: ["夏季"],
+                    growthDays: 11,
+                    regrowDays: 1,
+                    basePrice: 25,
+                    goldPrice: 31,
+                    processing: [
+                        { method: "小桶(淡啤酒)", product: "淡啤酒", price: 300, days: 1.5, note: "🔥 日收益之王！天天收割天天酿" }
+                    ],
+                    retention: { "夏季留存": 0 },
+                    gifts: {
+                        loves: [],
+                        likes: ["潘姆"],
+                        neutral: ["谢恩"],
+                        dislikes: []
+                    },
+                    sacrifices: ["酿酒师收集包(需淡啤酒)"],
+                    cooking: [],
+                    decision: "🟢 种下后每天收获，直接丢进小桶酿淡啤酒，收益爆炸。"
+                },
+                {
+                    id: "cheese",
+                    name: "奶酪",
+                    type: "animal_product",
+                    basePrice: 230,
+                    goldPrice: 345,
+                    processing: [
+                        { method: "地窖陈酿", product: "铱星奶酪", price: 460, days: 14, note: "极品回血食物" }
+                    ],
+                    gifts: {
+                        loves: ["罗宾", "德米特里厄斯"],
+                        likes: ["大多数NPC"],
+                        neutral: [],
+                        dislikes: ["文森特", "贾斯"]
+                    },
+                    sacrifices: ["厨师收集包(需奶酪)"],
+                    cooking: [{ dish: "披萨", effect: "+90体力 +40生命" }],
+                    decision: "🟢 大壶牛奶直接产出金星奶酪，下矿回血神物。"
+                },
+                {
+                    id: "sunfish",
+                    name: "太阳鱼",
+                    type: "fish",
+                    seasons: ["春季", "夏季"],
+                    locations: ["煤矿森林河流(晴天 6AM-7PM)"],
+                    basePrice: 30,
+                    processing: [
+                        { method: "熏鱼机", product: "熏太阳鱼", price: 60, days: 0.04, note: "1.6版本熏鱼保留星级" },
+                        { method: "生鱼片", product: "生鱼片", price: 75, days: 0, note: "售价<75G时划算" }
+                    ],
+                    gifts: {
+                        loves: [],
+                        likes: [],
+                        neutral: ["威利"],
+                        dislikes: ["艾芙琳"]
+                    },
+                    sacrifices: ["河鱼收集包(太阳鱼)"],
+                    cooking: [{ dish: "烤鱼", effect: "+75体力 +33生命" }],
+                    decision: "🔵 基础价低，做成生鱼片或用于献祭。"
+                },
+                {
+                    id: "sturgeon",
+                    name: "鲟鱼",
+                    type: "fish",
+                    seasons: ["夏季", "冬季"],
+                    locations: ["深山湖泊(6AM-7PM)"],
+                    basePrice: 200,
+                    processing: [
+                        { method: "熏鱼机", product: "熏鲟鱼", price: 400, days: 0.04, note: "工匠加成后更高" },
+                        { method: "鱼塘", product: "鲟鱼鱼籽→鱼子酱", price: 500, days: 4, note: "唯一能做鱼子酱的鱼" }
+                    ],
+                    gifts: {
+                        loves: ["威利"],
+                        likes: [],
+                        neutral: [],
+                        dislikes: []
+                    },
+                    sacrifices: ["湖鱼收集包(需鲟鱼)"],
+                    cooking: [],
+                    decision: "🟡 放鱼塘产鱼籽做鱼子酱，或直接熏制卖高价。"
+                },
+                {
+                    id: "prismatic_shard",
+                    name: "五彩碎片",
+                    type: "mineral",
+                    basePrice: 2000,
+                    processing: [],
+                    gifts: {
+                        loves: ["所有人(除了海莉)"],
+                        likes: [],
+                        neutral: [],
+                        dislikes: ["海莉"]
+                    },
+                    sacrifices: [],
+                    cooking: [],
+                    decision: "🔴 极其稀有！用来换银河剑，不要送人或卖掉第一个。"
+                }
+            ];
+
+            // NPC数据 (简化，用于反向查询)
+            const npcs = [
+                { id: "jodi", name: "乔迪", loves: ["薄煎饼", "钻石"], likes: ["玉米", "所有蛋"] },
+                { id: "kent", name: "肯特", loves: ["烤榛子"], likes: ["玉米", "杨桃"] },
+                { id: "pam", name: "潘姆", loves: ["啤酒"], likes: ["啤酒花"] },
+                { id: "willy", name: "威利", loves: ["鲟鱼", "章鱼"], likes: [] },
+                { id: "robin", name: "罗宾", loves: ["奶酪"], likes: [] },
+                // ...更多NPC可按需补充
+            ];
+
+            // 献祭包数据
+            const bundles = [
+                { name: "河鱼收集包", room: "鱼缸", reward: "高级鱼饵×30", items: ["太阳鱼", "西鲱", "鲈鱼", "大头鱼", "鲤鱼"] },
+                { name: "夏季作物收集包", room: "茶水间", reward: "优质洒水器", items: ["西红柿","辣椒","蓝莓","甜瓜"] },
+                { name: "万灵节收集包", room: "布告栏(随机)", reward: "完美早餐×5", items: ["玉米×10","南瓜灯","蝙蝠翅膀×10"] },
+                { name: "稀有作物收集包", room: "茶水间(随机)", reward: "罐头瓶", items: ["上古水果","宝石甜莓"] },
+                { name: "厨师收集包", room: "布告栏", reward: "粉红蛋糕×3", items: ["奶酪","面粉","糖","蛋"] },
+                { name: "酿酒师收集包", room: "茶水间(随机)", reward: "小桶", items: ["淡啤酒","果酒","果汁","蜂蜜酒"] }
+            ];
+
+            // 分类映射
+            const categoryMap = {
+                crops: ['crop'],
+                animal: ['animal_product'],
+                fish: ['fish'],
+                mining: ['mineral', 'equipment'],
+                artisan: ['artisan_good'],
+                cooking: ['food'],
+                bundles: [], // 特殊处理
+                npcs: []
+            };
+
+            // ---------- 渲染函数 ----------
+            const contentArea = document.getElementById('contentArea');
+            const searchInput = document.getElementById('searchInput');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+
+            let currentCategory = 'all';
+            let searchQuery = '';
+
+            // 渲染全部板块视图
+            function renderTopics() {
+                const topics = [
+                    { name: "作物种植", icon: "🌽", category: "crops", desc: "播种、浇水、加工收益" },
+                    { name: "畜牧产品", icon: "🐄", category: "animal", desc: "奶酪、蛋黄酱、羊毛" },
+                    { name: "钓鱼蟹笼", icon: "🎣", category: "fish", desc: "鱼类、蟹笼、熏鱼" },
+                    { name: "矿场战斗", icon: "⛏", category: "mining", desc: "武器、戒指、矿物" },
+                    { name: "工匠加工", icon: "🍷", category: "artisan", desc: "小桶、罐头瓶、织布机" },
+                    { name: "烹饪食谱", icon: "🍳", category: "cooking", desc: "料理效果与材料" },
+                    { name: "献祭收集", icon: "🎁", category: "bundles", desc: "社区中心全收集包" },
+                    { name: "NPC社交", icon: "💬", category: "npcs", desc: "礼物喜好、日程" }
+                ];
+                let html = '<div class="topic-grid">';
+                topics.forEach(t => {
+                    html += `
+                        <div class="topic-card" data-category="${t.category}">
+                            <span class="topic-icon">${t.icon}</span>
+                            <div>${t.name}</div>
+                            <small style="font-weight:400;color:#7b6e5a;">${t.desc}</small>
+                        </div>`;
+                });
+                html += '</div>';
+                return html;
+            }
+
+            // 分类列表视图
+            function renderCategoryList(category) {
+                if (category === 'bundles') return renderBundles();
+                if (category === 'npcs') return renderNpcList();
+                if (category === 'all') return renderTopics();
+
+                const types = categoryMap[category] || [];
+                const filtered = items.filter(item => types.includes(item.type));
+                if (filtered.length === 0) return '<p class="no-results">该分类暂无示例数据，可继续补充。</p>';
+
+                let html = `<h2 style="margin-bottom:1rem;">📋 ${getCategoryName(category)} 列表</h2>`;
+                html += '<table><thead><tr><th>物品</th><th>季节/来源</th><th>基础售价</th><th>推荐处理</th></tr></thead><tbody>';
+                filtered.forEach(item => {
+                    const seasonStr = item.seasons ? item.seasons.join('、') : (item.locations ? item.locations[0] : '—');
+                    html += `<tr>
+                        <td><strong>${item.name}</strong></td>
+                        <td>${seasonStr}</td>
+                        <td>${item.basePrice}G</td>
+                        <td>${item.decision ? item.decision.substring(0,2) : '—'}</td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                return html;
+            }
+
+            function renderBundles() {
+                let html = '<h2>🎁 献祭收集包</h2><div class="info-grid">';
+                bundles.forEach(b => {
+                    html += `<div class="info-card">
+                        <h4>${b.name} <span style="color:#888;font-size:0.8rem;">(${b.room})</span></h4>
+                        <p><strong>奖励：</strong>${b.reward}</p>
+                        <p><strong>需求：</strong>${b.items.join('、')}</p>
+                    </div>`;
+                });
+                html += '</div>';
+                return html;
+            }
+
+            function renderNpcList() {
+                let html = '<h2>💬 NPC 礼物速查</h2><div class="info-grid">';
+                npcs.forEach(npc => {
+                    html += `<div class="info-card">
+                        <h4>${npc.name}</h4>
+                        <p>❤️ 最爱：${npc.loves.join('、') || '—'}</p>
+                        <p>👍 喜欢：${npc.likes.join('、') || '—'}</p>
+                    </div>`;
+                });
+                html += '</div>';
+                return html;
+            }
+
+            function getCategoryName(cat) {
+                const map = { crops:'作物', animal:'畜牧', fish:'钓鱼', mining:'矿场', artisan:'工匠', cooking:'烹饪', bundles:'献祭', npcs:'NPC' };
+                return map[cat] || cat;
+            }
+
+            // 搜索并渲染结果
+            function performSearch(query) {
+                if (!query.trim()) {
+                    renderCurrentView();
+                    return;
+                }
+                const q = query.toLowerCase().trim();
+                const results = items.filter(item => item.name.toLowerCase().includes(q) ||
+                    (item.type && item.type.includes(q)) ||
+                    (item.processing && item.processing.some(p => p.product.includes(q))) ||
+                    (item.sacrifices && item.sacrifices.some(s => s.includes(q)))
+                );
+
+                if (results.length === 0) {
+                    contentArea.innerHTML = '<p class="no-results">😕 没有找到相关物品，试试“玉米”、“蓝莓”、“太阳鱼”等。</p>';
+                    return;
+                }
+
+                let html = '';
+                results.forEach(item => {
+                    html += renderItemDetail(item);
+                });
+                contentArea.innerHTML = html;
+            }
+
+            function renderItemDetail(item) {
+                // 加工建议
+                let procHtml = '';
+                if (item.processing && item.processing.length > 0) {
+                    procHtml = '<div class="info-card"><h4>🏭 加工方式</h4><ul style="list-style:none;padding-left:0;">';
+                    item.processing.forEach(p => {
+                        procHtml += `<li style="margin-bottom:6px;"><strong>${p.method}</strong> → ${p.product} (${p.price}G, ${p.days}天) <br><small>${p.note}</small></li>`;
+                    });
+                    procHtml += '</ul></div>';
+                }
+
+                // NPC喜好
+                let giftHtml = '';
+                if (item.gifts) {
+                    giftHtml = '<div class="info-card"><h4>💝 NPC 好感</h4>';
+                    if (item.gifts.loves.length) giftHtml += `<p>❤️ 最爱：${item.gifts.loves.join('、')}</p>`;
+                    if (item.gifts.likes.length) giftHtml += `<p>👍 喜欢：${item.gifts.likes.join('、')}</p>`;
+                    if (item.gifts.neutral.length) giftHtml += `<p>😐 一般：${item.gifts.neutral.join('、')}</p>`;
+                    if (item.gifts.dislikes.length) giftHtml += `<p>👎 讨厌：${item.gifts.dislikes.join('、')}</p>`;
+                    giftHtml += '</div>';
+                }
+
+                // 献祭
+                let sacHtml = '';
+                if (item.sacrifices && item.sacrifices.length) {
+                    sacHtml = `<div class="info-card"><h4>📦 献祭</h4><p>${item.sacrifices.join('<br>')}</p></div>`;
+                }
+
+                // 烹饪
+                let cookHtml = '';
+                if (item.cooking && item.cooking.length) {
+                    cookHtml = '<div class="info-card"><h4>🍲 烹饪</h4><ul>';
+                    item.cooking.forEach(c => {
+                        cookHtml += `<li>${c.dish} (${c.effect})</li>`;
+                    });
+                    cookHtml += '</ul></div>';
+                }
+
+                const seasonStr = item.seasons ? item.seasons.join('、') : '—';
+                const locationStr = item.locations ? item.locations.join('；') : '—';
+
+                return `
+                <div class="search-result-item">
+                    <div class="item-header">
+                        <span class="item-name">${item.name}</span>
+                        <span class="item-type-badge">${item.type}</span>
+                        ${item.basePrice ? `<span style="color:#b8860b; font-weight:bold;">${item.basePrice}G</span>` : ''}
+                    </div>
+                    <div class="decision-box">
+                        <span class="decision-icon">🧭</span>
+                        <div><strong>行动建议：</strong>${item.decision || '暂无特别建议。'}</div>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h4>📅 基本信息</h4>
+                            <p>季节：${seasonStr}</p>
+                            ${item.growthDays ? `<p>成熟：${item.growthDays}天</p>` : ''}
+                            ${item.regrowDays ? `<p>再收获：${item.regrowDays}天</p>` : ''}
+                            <p>来源：${locationStr}</p>
+                            ${item.retention ? `<p>留存：${Object.entries(item.retention).map(([k,v])=>`${k}:${v}`).join('；')}</p>` : ''}
+                        </div>
+                        ${procHtml}
+                        ${giftHtml}
+                        ${sacHtml}
+                        ${cookHtml}
+                    </div>
+                </div>`;
+            }
+
+            function renderCurrentView() {
+                if (searchQuery.trim()) {
+                    performSearch(searchQuery);
+                } else {
+                    contentArea.innerHTML = renderCategoryList(currentCategory);
+                }
+            }
+
+            // 事件绑定
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.dataset.category;
+                    searchInput.value = '';
+                    searchQuery = '';
+                    renderCurrentView();
+                });
+            });
+
+            searchInput.addEventListener('input', function() {
+                searchQuery = this.value;
+                if (searchQuery.trim()) {
+                    // 清除分类高亮
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    document.querySelector('[data-category="all"]').classList.add('active');
+                    currentCategory = 'all';
+                }
+                renderCurrentView();
+            });
+
+            // 点击板块卡片跳转分类
+            contentArea.addEventListener('click', function(e) {
+                const card = e.target.closest('.topic-card');
+                if (card && card.dataset.category) {
+                    const cat = card.dataset.category;
+                    document.querySelector(`.category-btn[data-category="${cat}"]`).click();
+                }
+            });
+
+            // 初始渲染
+            renderCurrentView();
+        })();
+    </script>
+</body>
+</html>
