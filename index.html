@@ -133,231 +133,351 @@
     <script>
         (function() {
             const items = [
-                // ===== 春季作物 =====
-                { id:"parsnip", name:"防风草", type:"crop", seasons:["春季"], growthDays:4, basePrice:35, goldPrice:52,
-                  processing:[{method:"罐头瓶", product:"防风草腌菜", price:120, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1, quality:"普通"},{room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"}], isHot:false },
-                { id:"green_bean", name:"青豆", type:"crop", seasons:["春季"], growthDays:10, regrowDays:3, basePrice:40, goldPrice:60,
-                  processing:[{method:"罐头瓶", product:"青豆腌菜", price:130, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}], isHot:false },
-                { id:"cauliflower", name:"花椰菜", type:"crop", seasons:["春季"], growthDays:12, basePrice:175, goldPrice:262,
-                  processing:[{method:"罐头瓶", product:"花椰菜腌菜", price:400, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}], isHot:false },
-                { id:"potato", name:"土豆", type:"crop", seasons:["春季"], growthDays:6, basePrice:80, goldPrice:120,
-                  processing:[{method:"罐头瓶", product:"土豆腌菜", price:210, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}], isHot:false },
-                { id:"kale", name:"甘蓝", type:"crop", seasons:["春季"], growthDays:6, basePrice:110, goldPrice:165,
-                  processing:[{method:"罐头瓶", product:"甘蓝腌菜", price:270, days:3}], sacrifices:[], isHot:false },
-                { id:"garlic", name:"大蒜", type:"crop", seasons:["春季"], growthDays:4, basePrice:60, goldPrice:90,
-                  processing:[{method:"罐头瓶", product:"大蒜腌菜", price:170, days:3}], sacrifices:[], isHot:false },
-                { id:"blue_jazz", name:"蓝爵", type:"flower", seasons:["春季"], growthDays:7, basePrice:50, goldPrice:75,
-                  processing:[], sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}], isHot:false },
-                { id:"tulip", name:"郁金香", type:"flower", seasons:["春季"], growthDays:6, basePrice:30, goldPrice:45,
-                  processing:[], sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}], isHot:false },
+                // ===== 春季作物 (对照作物攻略.md 春季表格) =====
                 { id:"rhubarb", name:"大黄", type:"crop", seasons:["春季"], growthDays:13, basePrice:220, goldPrice:330,
-                  processing:[{method:"小桶", product:"大黄酒", price:660, days:7}], sacrifices:[], isHot:true },
+                  processing:[
+                    {method:"小桶", product:"大黄酒", price:660, days:7, priority:1},
+                    {method:"罐头瓶", product:"大黄果酱", price:490, days:3, priority:2},
+                  ],
+                  retention:0, isHot:true,
+                  gifts:{loves:[], likes:["玛鲁"], dislikes:[]},
+                  sacrifices:[], cooking:[],
+                  decision:"春季利润担当，优先酿酒。" },
                 { id:"strawberry", name:"草莓", type:"crop", seasons:["春季"], growthDays:8, regrowDays:4, basePrice:120, goldPrice:180,
-                  processing:[{method:"罐头瓶", product:"草莓果酱", price:290, days:3},{method:"小桶", product:"草莓酒", price:360, days:7}],
-                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}], isHot:true },
+                  processing:[
+                    {method:"罐头瓶", product:"草莓果酱", price:290, days:3, priority:1, note:"产量大，快速周转"},
+                    {method:"小桶", product:"草莓酒", price:360, days:7, priority:2},
+                  ],
+                  retention:0, isHot:true,
+                  gifts:{loves:["德米特里厄斯","玛鲁"], likes:[], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}],
+                  decision:"优先做果酱快速积累资金，后期可酿酒。" },
+                { id:"cauliflower", name:"花椰菜", type:"crop", seasons:["春季"], growthDays:12, basePrice:175, goldPrice:262,
+                  processing:[
+                    {method:"罐头瓶", product:"花椰菜腌菜", price:400, days:3, priority:1},
+                    {method:"小桶", product:"花椰菜汁", price:393, days:4, priority:2},
+                  ],
+                  retention:0, isHot:false,
+                  gifts:{loves:["玛鲁"], likes:[], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}],
+                  cooking:[{dish:"乳酪花椰菜", effect:"+138体力 +62生命"}],
+                  decision:"高价值蔬菜，优先腌菜。" },
                 { id:"coffee_bean", name:"咖啡豆", type:"crop", seasons:["春季","夏季"], growthDays:10, regrowDays:2, basePrice:15,
-                  processing:[{method:"小桶", product:"咖啡", price:150, days:0.08}], sacrifices:[], isHot:false, multiSeason:true },
+                  processing:[
+                    {method:"小桶", product:"咖啡", price:150, days:0.08, priority:1, note:"5豆酿1杯"},
+                  ],
+                  retention:0, isHot:false, multiSeason:true,
+                  gifts:{loves:["哈维"], likes:[], dislikes:[]},
+                  sacrifices:[], cooking:[],
+                  decision:"酿成咖啡自用或出售，每日加速神饮。" },
+                { id:"potato", name:"土豆", type:"crop", seasons:["春季"], growthDays:6, basePrice:80, goldPrice:120,
+                  processing:[
+                    {method:"罐头瓶", product:"土豆腌菜", price:210, days:3, priority:1},
+                    {method:"小桶", product:"土豆汁", price:180, days:4, priority:2},
+                  ],
+                  retention:0, isHot:false,
+                  gifts:{loves:[], likes:["艾芙琳"], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}],
+                  decision:"普通作物，丢罐头瓶。" },
+                { id:"kale", name:"甘蓝", type:"crop", seasons:["春季"], growthDays:6, basePrice:110, goldPrice:165,
+                  processing:[
+                    {method:"罐头瓶", product:"甘蓝腌菜", price:270, days:3, priority:1},
+                  ],
+                  retention:0, isHot:false,
+                  gifts:{loves:[], likes:[], dislikes:[]},
+                  sacrifices:[], cooking:[],
+                  decision:"高价值蔬菜，直接腌菜或送人。" },
+                { id:"green_bean", name:"青豆", type:"crop", seasons:["春季"], growthDays:10, regrowDays:3, basePrice:40, goldPrice:60,
+                  processing:[
+                    {method:"罐头瓶", product:"青豆腌菜", price:130, days:3, priority:1},
+                  ],
+                  retention:0, isHot:false,
+                  gifts:{loves:[], likes:["肯特"], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}],
+                  cooking:[{dish:"豆类火锅", effect:"+125体力 +56生命"}],
+                  decision:"多次收获，进罐头瓶。" },
+                { id:"parsnip", name:"防风草", type:"crop", seasons:["春季"], growthDays:4, basePrice:35, goldPrice:52,
+                  processing:[
+                    {method:"罐头瓶", product:"防风草腌菜", price:120, days:3, priority:2},
+                  ],
+                  retention:0, isHot:false,
+                  gifts:{loves:["潘姆"], likes:["克林特"], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1},{room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"}],
+                  cooking:[{dish:"防风草汤", effect:"+85体力 +38生命"}],
+                  decision:"留5金星献祭，其余直接卖或送潘姆。" },
+                { id:"garlic", name:"大蒜", type:"crop", seasons:["春季"], growthDays:4, basePrice:60, goldPrice:90,
+                  processing:[
+                    {method:"罐头瓶", product:"大蒜腌菜", price:170, days:3, priority:2},
+                  ],
+                  retention:0, isHot:false,
+                  gifts:{loves:[], likes:["乔治"], dislikes:[]},
+                  sacrifices:[], cooking:[{dish:"蒜蓉面包", effect:"+105体力 +47生命"}],
+                  decision:"量少，直接卖或烹饪。" },
+                { id:"blue_jazz", name:"蓝爵", type:"flower", seasons:["春季"], growthDays:7, basePrice:50, goldPrice:75,
+                  processing:[],
+                  retention:0, isHot:false,
+                  gifts:{loves:["贾斯"], likes:["艾米丽","海莉"], dislikes:[]},
+                  sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}],
+                  decision:"种在蜂房旁产蓝爵蜂蜜(200G)，花直接送人或献祭。" },
+                { id:"tulip", name:"郁金香", type:"flower", seasons:["春季"], growthDays:6, basePrice:30, goldPrice:45,
+                  processing:[],
+                  retention:0, isHot:false,
+                  gifts:{loves:["艾芙琳"], likes:["海莉"], dislikes:[]},
+                  sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}],
+                  decision:"郁金香蜂蜜价值一般，主要送人或献祭。" },
 
-                // ===== 夏季作物 =====
-                { id:"melon", name:"甜瓜", type:"crop", seasons:["夏季"], growthDays:12, basePrice:250, goldPrice:375,
-                  processing:[{method:"小桶", product:"甜瓜酒", price:750, days:7}],
-                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1},{room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"}], isHot:true },
-                { id:"tomato", name:"番茄", type:"crop", seasons:["夏季"], growthDays:11, regrowDays:4, basePrice:60, goldPrice:90,
-                  processing:[{method:"罐头瓶", product:"番茄果酱", price:170, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}], isHot:false },
-                { id:"hot_pepper", name:"辣椒", type:"crop", seasons:["夏季"], growthDays:5, regrowDays:3, basePrice:40, goldPrice:60,
-                  processing:[{method:"罐头瓶", product:"辣椒果酱", price:130, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}], isHot:false },
-                { id:"blueberry", name:"蓝莓", type:"crop", seasons:["夏季"], growthDays:13, regrowDays:4, basePrice:50, goldPrice:75,
-                  processing:[{method:"罐头瓶", product:"蓝莓果酱", price:150, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}], isHot:true },
+                // ===== 夏季作物 (对照作物攻略.md 夏季表格) =====
                 { id:"starfruit", name:"杨桃", type:"crop", seasons:["夏季"], growthDays:13, basePrice:750, goldPrice:1125,
-                  processing:[{method:"小桶", product:"杨桃酒", price:2250, days:7}], sacrifices:[], isHot:true },
+                  processing:[
+                    {method:"小桶", product:"杨桃酒", price:2250, days:7, priority:1, note:"陈酿后翻倍"},
+                    {method:"罐头瓶", product:"杨桃果酱", price:1550, days:3, priority:2},
+                  ],
+                  retention:0, isHot:true,
+                  gifts:{loves:[], likes:["肯特"], dislikes:[]},
+                  sacrifices:[], cooking:[],
+                  decision:"单体价值之王，全部酿酒陈酿，绝不直接卖。" },
                 { id:"hops", name:"啤酒花", type:"crop", seasons:["夏季"], growthDays:11, regrowDays:1, basePrice:25, goldPrice:37,
-                  processing:[{method:"小桶", product:"淡啤酒", price:300, days:1.5}],
-                  sacrifices:[{room:"茶水间", bundle:"酿酒师收集包", need:1}], isHot:true },
+                  processing:[
+                    {method:"小桶", product:"淡啤酒", price:300, days:1.5, priority:1},
+                  ],
+                  retention:0, isHot:true,
+                  gifts:{loves:[], likes:["潘姆"], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"酿酒师收集包", need:1}],
+                  decision:"日收益之王，每日收割直接酿淡啤酒。" },
+                { id:"melon", name:"甜瓜", type:"crop", seasons:["夏季"], growthDays:12, basePrice:250, goldPrice:375,
+                  processing:[
+                    {method:"小桶", product:"甜瓜酒", price:750, days:7, priority:1},
+                    {method:"罐头瓶", product:"甜瓜果酱", price:550, days:3, priority:2},
+                  ],
+                  retention:5, isHot:true,
+                  gifts:{loves:["潘妮"], likes:["德米特里厄斯"], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1},{room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"}],
+                  decision:"高价值，留5金星献祭，其余酿酒。" },
+                { id:"blueberry", name:"蓝莓", type:"crop", seasons:["夏季"], growthDays:13, regrowDays:4, basePrice:50, goldPrice:75,
+                  processing:[
+                    {method:"罐头瓶", product:"蓝莓果酱", price:150, days:3, priority:1},
+                    {method:"小桶", product:"蓝莓酒", price:150, days:7, priority:2},
+                  ],
+                  retention:0, isHot:true,
+                  gifts:{loves:[], likes:["莱纳斯"], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}],
+                  cooking:[{dish:"蓝莓千层酥", effect:"+115体力 +51生命"}],
+                  decision:"产量巨大，无脑丢罐头瓶做果酱。" },
                 { id:"red_cabbage", name:"红卷心菜", type:"crop", seasons:["夏季"], growthDays:9, basePrice:260, goldPrice:390,
-                  processing:[{method:"罐头瓶", product:"红卷心菜腌菜", price:570, days:3}],
-                  sacrifices:[{room:"工艺室", bundle:"染料收集包", need:1}], isHot:false },
+                  processing:[
+                    {method:"罐头瓶", product:"红卷心菜腌菜", price:570, days:3, priority:1},
+                    {method:"小桶", product:"红卷心菜汁", price:585, days:4, priority:2},
+                  ],
+                  retention:0, isHot:false,
+                  gifts:{loves:[], likes:["玛妮"], dislikes:[]},
+                  sacrifices:[{room:"工艺室", bundle:"染料收集包", need:1}],
+                  decision:"高价值蔬菜，优先腌菜。" },
                 { id:"wheat", name:"小麦", type:"crop", seasons:["夏季","秋季"], growthDays:4, basePrice:25, goldPrice:37,
-                  processing:[{method:"小桶", product:"啤酒", price:200, days:1}],
-                  sacrifices:[{room:"布告栏", bundle:"饲料收集包", need:10}], isHot:false, multiSeason:true },
+                  processing:[
+                    {method:"小桶", product:"啤酒", price:200, days:1, priority:1},
+                    {method:"磨坊", product:"小麦粉", price:50, days:0, priority:2},
+                  ],
+                  retention:0, isHot:false, multiSeason:true,
+                  gifts:{loves:[], likes:[], neutral:["大多数"]},
+                  sacrifices:[{room:"布告栏", bundle:"饲料收集包", need:10}],
+                  decision:"酿酒速度极快，留10个献祭。" },
+                { id:"tomato", name:"番茄", type:"crop", seasons:["夏季"], growthDays:11, regrowDays:4, basePrice:60, goldPrice:90,
+                  processing:[
+                    {method:"罐头瓶", product:"番茄果酱", price:170, days:3, priority:1},
+                  ],
+                  retention:0, isHot:false,
+                  gifts:{loves:["德米特里厄斯"], likes:[], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}],
+                  cooking:[{dish:"番茄沙拉", effect:"+125体力 +56生命"}],
+                  decision:"多次收获，进罐头瓶。" },
+                { id:"hot_pepper", name:"辣椒", type:"crop", seasons:["夏季"], growthDays:5, regrowDays:3, basePrice:40, goldPrice:60,
+                  processing:[
+                    {method:"罐头瓶", product:"辣椒果酱", price:130, days:3, priority:1},
+                  ],
+                  retention:0, isHot:false,
+                  gifts:{loves:["刘易斯","谢恩"], likes:["潘姆"], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}],
+                  cooking:[{dish:"爆炒青椒", effect:"+30体力 +13生命"}],
+                  decision:"送礼佳品，也可做果酱。" },
                 { id:"radish", name:"萝卜", type:"crop", seasons:["夏季"], growthDays:6, basePrice:90, goldPrice:135,
-                  processing:[{method:"罐头瓶", product:"萝卜腌菜", price:230, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}], isHot:false },
+                  processing:[
+                    {method:"罐头瓶", product:"萝卜腌菜", price:230, days:3, priority:1},
+                  ],
+                  retention:0, isHot:false,
+                  gifts:{loves:[], likes:["艾芙琳"], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}],
+                  decision:"普通蔬菜，腌菜或直接卖。" },
                 { id:"sunflower", name:"向日葵", type:"flower", seasons:["夏季","秋季"], growthDays:8, basePrice:80, goldPrice:120,
-                  processing:[], sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}], isHot:false, multiSeason:true },
+                  processing:[
+                    {method:"产油机", product:"油", price:100, days:1, priority:1},
+                  ],
+                  retention:0, isHot:false, multiSeason:true,
+                  gifts:{loves:[], likes:["海莉"], dislikes:[]},
+                  sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}],
+                  decision:"主要榨油，收获时掉种子。" },
                 { id:"poppy", name:"罂粟", type:"flower", seasons:["夏季"], growthDays:7, basePrice:140, goldPrice:210,
-                  processing:[], sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}], isHot:false },
+                  processing:[],
+                  retention:0, isHot:false,
+                  gifts:{loves:["潘妮"], likes:[], dislikes:[]},
+                  sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}],
+                  decision:"罂粟蜂蜜(380G)直接卖，别酿酒。" },
                 { id:"summer_spangle", name:"夏季金鸡菊", type:"flower", seasons:["夏季"], growthDays:8, basePrice:90, goldPrice:135,
-                  processing:[], sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}], isHot:true },
+                  processing:[],
+                  retention:0, isHot:true,
+                  gifts:{loves:[], likes:["卡洛琳"], dislikes:[]},
+                  sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}],
+                  decision:"蜂房旁种，产金鸡菊蜂蜜(280G)，直接卖。" },
 
-                // ===== 秋季作物 =====
-                { id:"corn", name:"玉米", type:"crop", seasons:["夏季","秋季"], growthDays:14, regrowDays:4, basePrice:50, goldPrice:75,
-                  processing:[{method:"罐头瓶", product:"腌玉米", price:150, days:3},{method:"小桶", product:"玉米汁", price:112, days:4}],
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1},{room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"}], isHot:false, multiSeason:true },
-                { id:"eggplant", name:"茄子", type:"crop", seasons:["秋季"], growthDays:5, regrowDays:5, basePrice:60, goldPrice:90,
-                  processing:[{method:"罐头瓶", product:"茄子腌菜", price:170, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}], isHot:false },
+                // ===== 秋季作物 (对照作物攻略.md 秋季表格) =====
                 { id:"pumpkin", name:"南瓜", type:"crop", seasons:["秋季"], growthDays:13, basePrice:320, goldPrice:480,
-                  processing:[{method:"罐头瓶", product:"南瓜腌菜", price:690, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1},{room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"}], isHot:true },
-                { id:"yam", name:"山药", type:"crop", seasons:["秋季"], growthDays:10, basePrice:160, goldPrice:240,
-                  processing:[{method:"罐头瓶", product:"山药腌菜", price:370, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}], isHot:false },
+                  processing:[
+                    {method:"罐头瓶", product:"南瓜腌菜", price:690, days:3, priority:1},
+                    {method:"小桶", product:"南瓜汁", price:720, days:4, priority:2},
+                  ],
+                  retention:26, isHot:true,
+                  gifts:{loves:["阿比盖尔","科罗布斯","威利"], likes:[], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1},{room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"}],
+                  cooking:[{dish:"南瓜汤", effect:"+90体力 +40生命"}],
+                  decision:"高价值，留26个(5金星)，普通腌菜。" },
                 { id:"cranberry", name:"蔓越莓", type:"crop", seasons:["秋季"], growthDays:7, regrowDays:5, basePrice:75, goldPrice:112,
-                  processing:[{method:"罐头瓶", product:"蔓越莓果酱", price:200, days:3}],
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}], isHot:true },
+                  processing:[
+                    {method:"罐头瓶", product:"蔓越莓果酱", price:200, days:3, priority:1},
+                  ],
+                  retention:19, isHot:true,
+                  gifts:{loves:[], likes:["莱纳斯"], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}],
+                  cooking:[{dish:"蔓越莓糖", effect:"+125体力 +56生命"}],
+                  decision:"产量极大，全丢罐头瓶，留19个。" },
                 { id:"grape", name:"葡萄", type:"crop", seasons:["秋季"], growthDays:10, regrowDays:3, basePrice:80, goldPrice:120,
-                  processing:[{method:"小桶", product:"葡萄酒", price:240, days:7}],
-                  sacrifices:[{room:"工艺室", bundle:"夏季采集收集包", need:1}], isHot:false },
+                  processing:[
+                    {method:"小桶", product:"葡萄酒", price:240, days:7, priority:1},
+                    {method:"罐头瓶", product:"葡萄果酱", price:210, days:3, priority:2},
+                  ],
+                  retention:0, isHot:false,
+                  gifts:{loves:[], likes:["乔迪"], dislikes:[]},
+                  sacrifices:[{room:"工艺室", bundle:"夏季采集收集包", need:1}],
+                  decision:"酿酒收益略高于果酱，多次收获。" },
                 { id:"beet", name:"甜菜", type:"crop", seasons:["秋季"], growthDays:6, basePrice:100, goldPrice:150,
-                  processing:[{method:"磨坊", product:"糖", price:50},{method:"罐头瓶", product:"甜菜腌菜", price:250, days:3}],
-                  sacrifices:[], isHot:false },
+                  processing:[
+                    {method:"磨坊", product:"糖", price:50, days:0, priority:1},
+                    {method:"罐头瓶", product:"甜菜腌菜", price:250, days:3, priority:2},
+                  ],
+                  retention:27, isHot:false,
+                  gifts:{loves:[], likes:["艾芙琳"], dislikes:[]},
+                  sacrifices:[{room:"布告栏", bundle:"齐先生任务", need:10}],
+                  decision:"留27个+10个给任务，主要做糖。" },
+                { id:"yam", name:"山药", type:"crop", seasons:["秋季"], growthDays:10, basePrice:160, goldPrice:240,
+                  processing:[
+                    {method:"罐头瓶", product:"山药腌菜", price:370, days:3, priority:1},
+                  ],
+                  retention:18, isHot:false,
+                  gifts:{loves:[], likes:["莱纳斯"], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}],
+                  decision:"普通蔬菜，腌菜出售，留18个。" },
                 { id:"artichoke", name:"洋蓟", type:"crop", seasons:["秋季"], growthDays:8, basePrice:160, goldPrice:240,
-                  processing:[{method:"罐头瓶", product:"洋蓟腌菜", price:370, days:3}], sacrifices:[], isHot:false },
+                  processing:[
+                    {method:"罐头瓶", product:"洋蓟腌菜", price:370, days:3, priority:1},
+                  ],
+                  retention:17, isHot:false,
+                  gifts:{loves:[], likes:["艾米丽"], dislikes:[]},
+                  sacrifices:[], cooking:[{dish:"水煮洋蓟", effect:"+100体力 +45生命"}],
+                  decision:"腌菜，留17个。" },
+                { id:"eggplant", name:"茄子", type:"crop", seasons:["秋季"], growthDays:5, regrowDays:5, basePrice:60, goldPrice:90,
+                  processing:[
+                    {method:"罐头瓶", product:"茄子腌菜", price:170, days:3, priority:1},
+                  ],
+                  retention:18, isHot:false,
+                  gifts:{loves:[], likes:["哈维"], dislikes:[]},
+                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}],
+                  cooking:[{dish:"帕尔玛奶酪茄子", effect:"+175体力 +78生命"}],
+                  decision:"留18个，其余腌菜。" },
                 { id:"bok_choy", name:"小白菜", type:"crop", seasons:["秋季"], growthDays:4, basePrice:80, goldPrice:120,
-                  processing:[{method:"罐头瓶", product:"小白菜腌菜", price:210, days:3}], sacrifices:[], isHot:false },
+                  processing:[
+                    {method:"罐头瓶", product:"小白菜腌菜", price:210, days:3, priority:2},
+                  ],
+                  retention:16, isHot:false,
+                  gifts:{loves:[], likes:["罗宾"], dislikes:[]},
+                  sacrifices:[], cooking:[],
+                  decision:"留16个，其余腌菜或直接卖。" },
                 { id:"fairy_rose", name:"仙女玫瑰", type:"flower", seasons:["秋季"], growthDays:12, basePrice:290, goldPrice:435,
-                  processing:[], sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}], isHot:true },
+                  processing:[],
+                  retention:2, isHot:true,
+                  gifts:{loves:[], likes:["贾斯","艾芙琳"], dislikes:[]},
+                  sacrifices:[{room:"工艺室", bundle:"花园收集包", need:1}],
+                  decision:"种蜂房旁产最贵蜂蜜(680G)，绝不要酿酒！留2个。" },
                 { id:"sweet_gem_berry", name:"宝石甜莓", type:"crop", seasons:["秋季"], growthDays:24, basePrice:3000, goldPrice:4500,
-                  processing:[], sacrifices:[{room:"布告栏", bundle:"稀有作物收集包", need:1}], isHot:true },
+                  processing:[],
+                  retention:2, isHot:true,
+                  gifts:{loves:[], likes:[], dislikes:[]},
+                  sacrifices:[{room:"布告栏", bundle:"稀有作物收集包", need:1}],
+                  decision:"无法加工，留2个换星之果实或直接卖。" },
 
                 // ===== 姜岛作物 =====
                 { id:"pineapple", name:"菠萝", type:"crop", seasons:["姜岛"], growthDays:14, regrowDays:7, basePrice:300, goldPrice:450,
-                  processing:[{method:"小桶", product:"菠萝酒", price:900, days:7}], sacrifices:[], isHot:true },
+                  processing:[
+                    {method:"小桶", product:"菠萝酒", price:900, days:7, priority:1},
+                    {method:"罐头瓶", product:"菠萝果酱", price:650, days:3, priority:2},
+                  ],
+                  retention:2, isHot:true,
+                  gifts:{loves:[], likes:["格斯"], dislikes:[]},
+                  sacrifices:[], cooking:[],
+                  decision:"姜岛种菠萝酿酒，留2个。" },
                 { id:"taro_root", name:"芋头", type:"crop", seasons:["姜岛"], growthDays:10, basePrice:100, goldPrice:150,
-                  processing:[{method:"罐头瓶", product:"芋头腌菜", price:250, days:3}], sacrifices:[], isHot:false },
+                  processing:[
+                    {method:"罐头瓶", product:"芋头腌菜", price:250, days:3, priority:1},
+                  ],
+                  retention:6, isHot:false,
+                  gifts:{loves:[], likes:["雷欧"], dislikes:[]},
+                  sacrifices:[], cooking:[],
+                  decision:"水边种植，留6个，其余腌菜。" },
                 { id:"ginger", name:"姜", type:"crop", seasons:["姜岛"], growthDays:0, basePrice:100, goldPrice:150,
-                  processing:[{method:"罐头瓶", product:"腌姜", price:250, days:3}], sacrifices:[], isHot:false },
+                  processing:[
+                    {method:"罐头瓶", product:"腌姜", price:250, days:3, priority:1},
+                  ],
+                  retention:5, isHot:false,
+                  gifts:{loves:[], likes:[], dislikes:[]},
+                  sacrifices:[], cooking:[],
+                  decision:"留5个，其余腌姜或烹饪用。" },
 
-                // ===== 特殊 =====
+                // ===== 特殊/多季节作物 =====
                 { id:"ancient_fruit", name:"远古果实", type:"crop", seasons:["春","夏","秋"], growthDays:28, regrowDays:7, basePrice:550, goldPrice:825,
-                  processing:[{method:"小桶", product:"远古果酒", price:1650, days:7}], sacrifices:[{room:"布告栏", bundle:"稀有作物收集包", need:1}], isHot:true },
+                  processing:[
+                    {method:"小桶", product:"远古果酒", price:1650, days:7, priority:1, note:"陈酿翻倍"},
+                    {method:"罐头瓶", product:"远古果酱", price:1150, days:3, priority:2},
+                  ],
+                  retention:2, isHot:true,
+                  gifts:{loves:[], likes:["法师","科罗布斯"], dislikes:[]},
+                  sacrifices:[{room:"布告栏", bundle:"稀有作物收集包", need:1}],
+                  decision:"温室种满酿酒，绝不卖原果，留2个。" },
                 { id:"tea_leaves", name:"茶叶", type:"crop", seasons:["春","夏","秋"], growthDays:20, regrowDays:1, basePrice:50, goldPrice:75,
-                  processing:[{method:"小桶", product:"绿茶", price:100, days:0.12}], sacrifices:[], isHot:false },
-
-                // ===== 畜牧 =====
-                { id:"egg", name:"鸡蛋", type:"animal_product", basePrice:50, goldPrice:75,
-                  processing:[{method:"蛋黄酱机", product:"蛋黄酱", price:190, days:0.5}],
-                  sacrifices:[{room:"茶水间", bundle:"动物收集包", need:1}] },
-                { id:"large_egg", name:"大鸡蛋", type:"animal_product", basePrice:95, goldPrice:142,
-                  processing:[{method:"蛋黄酱机", product:"金星蛋黄酱", price:285, days:0.5}], sacrifices:[] },
-                { id:"duck_egg", name:"鸭蛋", type:"animal_product", basePrice:95, goldPrice:142,
-                  processing:[{method:"蛋黄酱机", product:"鸭蛋黄酱", price:375, days:0.5}], sacrifices:[] },
-                { id:"void_egg", name:"虚空蛋", type:"animal_product", basePrice:65, goldPrice:97,
-                  processing:[{method:"蛋黄酱机", product:"虚空蛋黄酱", price:275, days:0.5}], sacrifices:[] },
-                { id:"dino_egg", name:"恐龙蛋", type:"animal_product", basePrice:350, goldPrice:525,
-                  processing:[{method:"蛋黄酱机", product:"恐龙蛋黄酱", price:800, days:0.5}], sacrifices:[] },
-                { id:"milk", name:"牛奶", type:"animal_product", basePrice:125, goldPrice:187,
-                  processing:[{method:"奶酪机", product:"奶酪", price:230, days:1.5}],
-                  sacrifices:[{room:"茶水间", bundle:"动物收集包", need:1}] },
-                { id:"large_milk", name:"大壶牛奶", type:"animal_product", basePrice:190, goldPrice:285,
-                  processing:[{method:"奶酪机", product:"金星奶酪", price:345, days:1.5}], sacrifices:[] },
-                { id:"goat_milk", name:"羊奶", type:"animal_product", basePrice:225, goldPrice:337,
-                  processing:[{method:"奶酪机", product:"山羊奶酪", price:400, days:1.5}], sacrifices:[] },
-                { id:"wool", name:"羊毛", type:"animal_product", basePrice:340, goldPrice:510,
-                  processing:[{method:"织布机", product:"布料", price:470, days:2}], sacrifices:[] },
-                { id:"truffle", name:"松露", type:"animal_product", basePrice:625, goldPrice:937,
-                  processing:[{method:"产油机", product:"松露油", price:1065, days:0.25}], sacrifices:[] },
-
-                // ===== 鱼类 =====
-                { id:"legend", name:"传说之鱼", type:"fish", seasons:["春季"], basePrice:5000, location:"深山湖泊·雨天·全天", sacrifices:[] },
-                { id:"sunfish", name:"太阳鱼", type:"fish", seasons:["春季","夏季"], basePrice:30, location:"河流·晴天·6AM-7PM", sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}] },
-                { id:"catfish", name:"鲶鱼", type:"fish", seasons:["春季","秋季"], basePrice:200, location:"河流·雨天·6AM-12AM", sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}] },
-                { id:"shad", name:"西鲱", type:"fish", seasons:["春季","夏季","秋季"], basePrice:60, location:"河流·雨天·9AM-2AM", sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}] },
-                { id:"smallmouth_bass", name:"小嘴鲈鱼", type:"fish", seasons:["春季","秋季"], basePrice:50, location:"河流·湖泊·全天", sacrifices:[] },
-                { id:"sardine", name:"沙丁鱼", type:"fish", seasons:["春季","秋季","冬季"], basePrice:40, location:"海洋·6AM-7PM", sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"anchovy", name:"鳀鱼", type:"fish", seasons:["春季","秋季"], basePrice:30, location:"海洋·全天", sacrifices:[] },
-                { id:"herring", name:"鲱鱼", type:"fish", seasons:["春季","冬季"], basePrice:30, location:"海洋·全天", sacrifices:[] },
-                { id:"halibut", name:"大比目鱼", type:"fish", seasons:["春季","夏季","冬季"], basePrice:80, location:"海洋·6AM-11AM·7PM-2AM", sacrifices:[] },
-                { id:"eel", name:"鳗鱼", type:"fish", seasons:["春季","秋季"], basePrice:85, location:"海洋·雨天·4PM-2AM", sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}] },
-                { id:"largemouth_bass", name:"大嘴鲈鱼", type:"fish", seasons:["全季"], basePrice:100, location:"深山湖泊·6AM-7PM", sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}] },
-                { id:"carp", name:"鲤鱼", type:"fish", seasons:["全季"], basePrice:30, location:"深山湖泊·全天", sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}] },
-                { id:"sturgeon", name:"鲟鱼", type:"fish", seasons:["夏季","冬季"], basePrice:200, location:"深山湖泊·6AM-7PM", sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}] },
-                { id:"rainbow_trout", name:"虹鳟鱼", type:"fish", seasons:["夏季"], basePrice:65, location:"河流·晴天·6AM-7PM", sacrifices:[] },
-                { id:"dorado", name:"麻哈脂鲤", type:"fish", seasons:["夏季"], basePrice:100, location:"煤矿森林河流·晴天·6AM-7PM", sacrifices:[] },
-                { id:"pufferfish", name:"河豚", type:"fish", seasons:["夏季"], basePrice:200, location:"海洋·晴天·12PM-4PM", sacrifices:[] },
-                { id:"tuna", name:"金枪鱼", type:"fish", seasons:["夏季","冬季"], basePrice:100, location:"海洋·6AM-7PM", sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"red_snapper", name:"红鲫鱼", type:"fish", seasons:["夏季","秋季"], basePrice:50, location:"海洋·雨天·6AM-7PM", sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"tilapia", name:"罗非鱼", type:"fish", seasons:["夏季","秋季"], basePrice:75, location:"海洋·6AM-2PM", sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"walleye", name:"大眼鱼", type:"fish", seasons:["秋季","冬季"], basePrice:105, location:"河流·雨天·12PM-2AM", sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}] },
-                { id:"midnight_carp", name:"午夜鲤鱼", type:"fish", seasons:["秋季","冬季"], basePrice:150, location:"深山湖泊·10PM-2AM", sacrifices:[] },
-                { id:"salmon", name:"鲑鱼", type:"fish", seasons:["秋季"], basePrice:75, location:"河流·6AM-7PM", sacrifices:[] },
-                { id:"sea_cucumber", name:"海参", type:"fish", seasons:["秋季","冬季"], basePrice:75, location:"海洋·6AM-7PM", sacrifices:[] },
-                { id:"lingcod", name:"蛇齿单线鱼", type:"fish", seasons:["冬季"], basePrice:120, location:"河流·全天", sacrifices:[] },
-                { id:"perch", name:"河鲈", type:"fish", seasons:["冬季"], basePrice:55, location:"河流·全天", sacrifices:[] },
-                { id:"squid", name:"鱿鱼", type:"fish", seasons:["冬季"], basePrice:80, location:"海洋·6PM-2AM", sacrifices:[] },
-
-                // ===== 矿石 =====
-                { id:"copper_ore", name:"铜矿石", type:"mineral", basePrice:5, processing:[{method:"熔炉", product:"铜锭", price:60, days:0.5, note:"+1煤炭"}], sacrifices:[{room:"锅炉室", bundle:"铁匠收集包", need:1}] },
-                { id:"iron_ore", name:"铁矿石", type:"mineral", basePrice:10, processing:[{method:"熔炉", product:"铁锭", price:120, days:2, note:"+1煤炭"}], sacrifices:[{room:"锅炉室", bundle:"铁匠收集包", need:1}] },
-                { id:"gold_ore", name:"金矿石", type:"mineral", basePrice:25, processing:[{method:"熔炉", product:"金锭", price:250, days:5, note:"+1煤炭"}], sacrifices:[{room:"锅炉室", bundle:"铁匠收集包", need:1}] },
-                { id:"iridium_ore", name:"铱矿石", type:"mineral", basePrice:100, processing:[{method:"熔炉", product:"铱锭", price:1000, days:8, note:"+1煤炭"}], sacrifices:[] },
-                { id:"coal", name:"煤炭", type:"mineral", basePrice:15, processing:[], sacrifices:[] },
-                { id:"quartz", name:"石英", type:"mineral", basePrice:25, processing:[{method:"熔炉", product:"精炼石英", price:50, days:1.5, note:"+1煤炭"}], sacrifices:[{room:"工艺室", bundle:"建筑收集包", need:1}] },
-                { id:"fire_quartz", name:"火水晶", type:"mineral", basePrice:100, processing:[{method:"熔炉", product:"精炼石英x3", price:150, days:1.5, note:"+1煤炭"}], sacrifices:[] },
-                { id:"prismatic_shard", name:"五彩碎片", type:"mineral", basePrice:2000, processing:[], sacrifices:[] },
-
-                // ===== 工匠设备 (完整数据) =====
-                { id:"keg", name:"小桶", type:"artisan", basePrice:0, processing:[],
-                  recipe:"木材x30 铜锭x1 铁锭x1 橡树树脂x1", unlock:"耕种8级",
-                  desc:"放入水果(3倍价酿酒)、蔬菜(2.25倍榨汁)、啤酒花(淡啤酒)、小麦(啤酒)、蜂蜜(蜂蜜酒)、咖啡豆(咖啡)、茶叶(绿茶)。果酒可陈酿。" },
-                { id:"jar", name:"罐头瓶", type:"artisan", basePrice:0, processing:[],
-                  recipe:"木材x50 石头x40 煤炭x8", unlock:"耕种4级",
-                  desc:"放入蔬菜(2倍+50G腌菜)、水果(2倍+50G果酱)、鲟鱼鱼籽(鱼子酱)、其他鱼籽(腌鱼籽)。比小桶快但利润通常更低。" },
-                { id:"cheese_press", name:"奶酪机", type:"artisan", basePrice:0, processing:[],
-                  recipe:"木材x45 石头x45 硬木x10 铜锭x1", unlock:"耕种6级",
-                  desc:"放入牛奶(普通奶酪230G/金星345G)、羊奶(山羊奶酪400G/金星600G)。大壶奶必出金星品质。" },
-                { id:"mayo_machine", name:"蛋黄酱机", type:"artisan", basePrice:0, processing:[],
-                  recipe:"木材x15 石头x15 地晶x1 铜锭x1", unlock:"耕种2级",
-                  desc:"放入鸡蛋(普通蛋黄酱190G)、大鸡蛋/恐龙蛋(金星蛋黄酱285G/800G)、鸭蛋(鸭蛋黄酱375G)、虚空蛋(虚空蛋黄酱275G)。" },
-                { id:"loom", name:"织布机", type:"artisan", basePrice:0, processing:[],
-                  recipe:"木材x60 纤维x30 松焦油x1", unlock:"耕种7级",
-                  desc:"放入羊毛(布料470G)、高品质羊毛有几率产出双份布料。" },
-                { id:"oil_maker", name:"产油机", type:"artisan", basePrice:0, processing:[],
-                  recipe:"史莱姆x50 硬木x20 金锭x1", unlock:"耕种8级",
-                  desc:"放入松露(松露油1065G)、向日葵/向日葵种子/玉米(普通油100G)。" },
-                { id:"dehydrator", name:"烘干机", type:"artisan", basePrice:0, processing:[],
-                  recipe:"木材x30 粘土x2 火水晶x1", unlock:"杂货店购买(10000G)",
-                  desc:"1.6版本新增。放入5个蘑菇或水果，1天产出干果/干蘑菇，大幅提升觅食物品价值。" },
-                { id:"fish_smoker", name:"熏鱼机", type:"artisan", basePrice:0, processing:[],
-                  recipe:"硬木x10 海凝胶x1 河凝胶x1 洞穴凝胶x1", unlock:"鱼店购买(10000G)",
-                  desc:"1.6版本新增。放入鱼+1煤炭，产出熏鱼(2倍基础价)，保留星级，配合工匠技能收益惊人。" },
-                { id:"cask", name:"木桶", type:"artisan", basePrice:0, processing:[],
-                  recipe:"木材x20 硬木x1", unlock:"地窖升级后",
-                  desc:"放入果酒或奶酪进行陈酿，铱星品质价格翻倍。仅能放置在地窖中。" },
-                { id:"furnace", name:"熔炉", type:"artisan", basePrice:0, processing:[],
-                  recipe:"铜矿石x20 石头x25", unlock:"克林特初始赠送",
-                  desc:"放入矿石+1煤炭烧制成金属锭。可升级为重型熔炉(一次烧25个矿石)。" },
-                { id:"recycling_machine", name:"回收机", type:"artisan", basePrice:0, processing:[],
-                  recipe:"木材x25 石头x25 铁锭x1", unlock:"钓鱼4级",
-                  desc:"放入垃圾/破损眼镜/报纸等，转换成木材、煤炭、铁矿石、精炼石英等资源。" },
-                { id:"seed_maker", name:"种子生产器", type:"artisan", basePrice:0, processing:[],
-                  recipe:"木材x25 煤炭x10 金锭x1", unlock:"耕种9级",
-                  desc:"放入作物产出1-3个同种种子，0.5%概率出上古种子。不能放果树水果。" },
-                { id:"tapper", name:"树液采集器", type:"artisan", basePrice:0, processing:[],
-                  recipe:"木材x40 铜锭x2", unlock:"采集3级",
-                  desc:"挂在树上产出：枫糖浆(枫树,9天,200G)、橡树树脂(橡树,7天,150G)、松焦油(松树,5天,100G)。" },
-                { id:"bee_house", name:"蜂房", type:"artisan", basePrice:0, processing:[],
-                  recipe:"木材x40 煤炭x8 铁锭x1 枫糖浆x1", unlock:"耕种3级",
-                  desc:"周围5格内有成熟花朵时产特色蜂蜜(直接卖)，无花时产野生蜂蜜(200G，可酿蜂蜜酒)。" },
+                  processing:[
+                    {method:"小桶", product:"绿茶", price:100, days:0.12, priority:1},
+                  ],
+                  retention:2, isHot:false,
+                  gifts:{loves:["刘易斯","卡洛琳"], likes:[], dislikes:[]},
+                  sacrifices:[], cooking:[],
+                  decision:"花盆种，每天收，酿绿茶，留2个。" },
+                { id:"corn", name:"玉米", type:"crop", seasons:["夏季","秋季"], growthDays:14, regrowDays:4, basePrice:50, goldPrice:75,
+                  processing:[
+                    {method:"罐头瓶", product:"腌玉米", price:150, days:3, priority:1},
+                    {method:"小桶", product:"玉米汁", price:112, days:4, priority:2},
+                  ],
+                  retention:0, isHot:false, multiSeason:true,
+                  gifts:{loves:[], likes:["乔迪","肯特"], dislikes:["阿比盖尔"]},
+                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1},{room:"茶水间", bundle:"高品质作物收集包", need:5, quality:"金星"}],
+                  cooking:[{dish:"墨西哥薄饼", effect:"+90体力 +40生命"}],
+                  decision:"留5金星献祭，普通进罐头瓶。" },
             ];
 
             const npcs = [
-                { name:"阿比盖尔", loves:["紫水晶","南瓜","巧克力蛋糕"] },
-                { name:"塞巴斯蒂安", loves:["泪晶","虚空蛋","生鱼片"] },
-                { name:"山姆", loves:["仙人掌果子","披萨","虎眼石"] },
-                { name:"潘妮", loves:["绿宝石","罂粟","甜瓜"] },
-                { name:"哈维", loves:["咖啡","腌菜","果酒"] },
-                { name:"艾利欧特", loves:["蟹黄糕","鸭毛","石榴"] },
-                { name:"莉亚", loves:["山羊奶酪","沙拉","松露"] },
-                { name:"玛鲁", loves:["电池组","花椰菜","钻石"] },
-                { name:"海莉", loves:["椰子","粉红蛋糕","向日葵"] },
+                { name:"阿比盖尔", loves:["紫水晶","南瓜","巧克力蛋糕"], likes:["石英"] },
+                { name:"塞巴斯蒂安", loves:["泪晶","虚空蛋","生鱼片"], likes:["石英"] },
+                { name:"山姆", loves:["仙人掌果子","披萨","虎眼石"], likes:["所有蛋"] },
+                { name:"潘妮", loves:["绿宝石","罂粟","甜瓜"], likes:["所有奶类"] },
+                { name:"哈维", loves:["咖啡","腌菜","果酒"], likes:["普通蘑菇"] },
+                { name:"艾利欧特", loves:["蟹黄糕","鸭毛","石榴"], likes:["章鱼","鱿鱼"] },
+                { name:"莉亚", loves:["山羊奶酪","沙拉","松露"], likes:["所有水果"] },
+                { name:"玛鲁", loves:["电池组","花椰菜","钻石"], likes:["铜锭","铁锭"] },
             ];
 
             const bundles = [
@@ -365,12 +485,8 @@
                 { room:"茶水间", name:"夏季作物收集包", items:"番茄、辣椒、蓝莓、甜瓜" },
                 { room:"茶水间", name:"秋季作物收集包", items:"玉米、茄子、南瓜、山药" },
                 { room:"茶水间", name:"高品质作物收集包", items:"5个金星品质作物" },
-                { room:"茶水间", name:"动物收集包", items:"大鸡蛋、大牛奶等" },
                 { room:"鱼缸", name:"河鱼收集包", items:"太阳鱼、鲶鱼、小嘴鲈鱼" },
                 { room:"鱼缸", name:"湖鱼收集包", items:"大嘴鲈鱼、鲤鱼、鲟鱼" },
-                { room:"鱼缸", name:"海鱼收集包", items:"沙丁鱼、金枪鱼、红鲫鱼、罗非鱼" },
-                { room:"锅炉室", name:"铁匠收集包", items:"铜矿石、铁矿石、金矿石" },
-                { room:"工艺室", name:"建筑收集包", items:"木材x99、石头x99、硬木x10" },
                 { room:"工艺室", name:"花园收集包", items:"郁金香、蓝爵、金鸡菊、向日葵、罂粟、仙女玫瑰" },
                 { room:"布告栏", name:"稀有作物收集包", items:"上古水果、宝石甜莓" },
             ];
@@ -420,13 +536,12 @@
                 const types = categoryMap[cat]||[];
                 const filtered = items.filter(i=>types.includes(i.type));
                 if(!filtered.length) return '<p>暂无数据。</p>';
-                return `<h2>📋 ${cat==='artisan'?'工匠设备':'物品'}列表</h2><table><tr><th>名称</th><th>${cat==='artisan'?'解锁/用途':'来源'}</th><th>基础价</th></tr>
-                    ${filtered.map(i=>`<tr><td><span class="link-like" data-search="${i.name}">${i.name}</span></td><td>${i.unlock || i.seasons?.join('、') || i.desc?.substring(0,20)+'…' || '—'}</td><td>${i.basePrice}G</td></tr>`).join('')}</table>`;
+                return `<h2>📋 列表</h2><table><tr><th>名称</th><th>来源</th><th>基础价</th></tr>
+                    ${filtered.map(i=>`<tr><td><span class="link-like" data-search="${i.name}">${i.name}</span></td><td>${i.seasons?.join('、')||'—'}</td><td>${i.basePrice}G</td></tr>`).join('')}</table>`;
             }
 
             function buildFlow(item) {
                 let html = '<div class="decision-flow">';
-                
                 // 献祭分支
                 if(item.sacrifices?.length){
                     const groups={};
@@ -441,41 +556,36 @@
                     }
                     html+='</div></div>';
                 }
-
-                // 加工/处理分支
-                if(item.type === 'artisan') {
-                    html += '<div class="flow-step"><div class="flow-title">🛠 设备详情</div><div class="flow-branch">';
-                    if(item.recipe) html += `<div class="flow-line"><span class="arrow">→</span> 配方：${item.recipe}</div>`;
-                    if(item.unlock) html += `<div class="flow-line"><span class="arrow">→</span> 解锁：${item.unlock}</div>`;
-                    if(item.desc) html += `<div class="flow-line"><span class="arrow">→</span> 用途：${item.desc}</div>`;
-                    html += '</div></div>';
-                } else if(item.type === 'mineral') {
-                    html += '<div class="flow-step"><div class="flow-title">⚒ 处理方式</div><div class="flow-branch">';
-                    if(item.processing?.length) {
-                        const p = item.processing[0];
-                        html += `<div class="flow-line"><span class="arrow">→</span> 放入<span class="link-like" data-search="熔炉">熔炉</span>烧制 <strong>${p.product}</strong> <span class="price-note">(${p.price}G, +1煤炭, ${p.days}天)</span></div>`;
-                    } else {
-                        html += `<div class="flow-line">直接出售或用于合成/送礼。</div>`;
-                    }
-                    html += '</div></div>';
-                } else if(item.type === 'fish') {
-                    html += '<div class="flow-step"><div class="flow-title">🎣 垂钓指南</div><div class="flow-branch">';
-                    html += `<div class="flow-line"><span class="arrow">→</span> 位置/条件：${item.location || '—'}</div>`;
-                    html += `<div class="flow-line"><span class="arrow">→</span> 售价：${item.basePrice}G</div>`;
-                    if(item.basePrice <= 75) html += `<div class="flow-line"><span class="arrow">→</span> 低价鱼可做成<span class="link-like" data-search="生鱼片">生鱼片</span> (75G) 增值。</div>`;
-                    html += '</div></div>';
-                } else {
-                    const mainProc = item.processing?.[0];
-                    if(mainProc) {
-                        html += '<div class="flow-step"><div class="flow-title">⚡ 看品质</div><div class="flow-branch">';
-                        const goldSell = item.goldPrice || item.basePrice;
-                        html += `<div class="flow-line"><span class="arrow">→</span> ⭐金/铱星 → 直接卖 <span class="price-note">(${goldSell}G)</span></div>`;
-                        html += `<div class="flow-line"><span class="arrow">→</span> 🟤普通/银星 → 进 <span class="link-like" data-search="${mainProc.method}">${mainProc.method}</span> 做 <strong>${mainProc.product}</strong> <span class="price-note">(${mainProc.price}G)</span></div>`;
-                        html += `<div class="flow-line" style="margin-left:2rem; font-size:0.85rem;">↳ 没机器？暂存，急用钱再卖</div>`;
-                        html += '</div></div>';
-                    }
+                // 留存数量
+                if(item.retention && item.retention > 0) {
+                    html+=`<div class="flow-step"><div class="flow-title">📦 留存</div><div class="flow-branch">`;
+                    html+=`<div class="flow-line"><span class="arrow">→</span> 需留存 <strong>${item.retention} 个</strong>（烹饪/任务/礼物）</div>`;
+                    html+='</div></div>';
                 }
-                html += '</div>';
+                // 加工分支
+                if(item.processing?.length){
+                    html+='<div class="flow-step"><div class="flow-title">⚡ 看品质</div><div class="flow-branch">';
+                    const goldSell = item.goldPrice||item.basePrice;
+                    html+=`<div class="flow-line"><span class="arrow">→</span> ⭐金/铱星 → 直接卖 <span class="price-note">(${goldSell}G)</span></div>`;
+                    const mainProc = item.processing[0];
+                    html+=`<div class="flow-line"><span class="arrow">→</span> 🟤普通/银星 → 进 <span class="link-like" data-search="${mainProc.method}">${mainProc.method}</span> 做 <strong>${mainProc.product}</strong> <span class="price-note">(${mainProc.price}G)</span></div>`;
+                    if(item.processing.length > 1) {
+                        const altProc = item.processing[1];
+                        html+=`<div class="flow-line" style="margin-left:2rem; font-size:0.85rem;">↳ 备选：${altProc.method} → ${altProc.product} <span class="price-note">(${altProc.price}G, ${altProc.days}天)</span></div>`;
+                    }
+                    html+=`<div class="flow-line" style="margin-left:2rem; font-size:0.85rem;">↳ 没机器？暂存，急用钱再卖</div>`;
+                    html+='</div></div>';
+                } else {
+                    html+='<div class="flow-step"><div class="flow-title">⚡ 处理</div><div class="flow-branch"><div class="flow-line">根据用途保留或直接出售。</div></div>';
+                }
+                // NPC喜好
+                if(item.gifts && (item.gifts.loves?.length || item.gifts.likes?.length)) {
+                    html+='<div class="flow-step"><div class="flow-title">💝 送谁</div><div class="flow-branch">';
+                    if(item.gifts.loves?.length) html+=`<div class="flow-line"><span class="arrow">→</span> ❤️ 最爱：${item.gifts.loves.join('、')}</div>`;
+                    if(item.gifts.likes?.length) html+=`<div class="flow-line"><span class="arrow">→</span> 👍 喜欢：${item.gifts.likes.join('、')}</div>`;
+                    html+='</div></div>';
+                }
+                html+='</div>';
                 return html;
             }
 
@@ -483,30 +593,23 @@
                 if(!q.trim()) return renderCurrent();
                 const kw=q.toLowerCase().trim();
                 const res=items.filter(i=>i.name.toLowerCase().includes(kw));
-                if(!res.length){ contentArea.innerHTML='<p>😕 未找到，试试"玉米""小桶""传说之鱼"</p>'; return; }
-                contentArea.innerHTML=res.map(item=>{
-                    let infoHtml = '';
-                    if(item.type === 'artisan' && item.recipe) {
-                        infoHtml = `<div class="info-card"><h4>🔧 合成配方</h4><p>${item.recipe}</p></div>
-                                    <div class="info-card"><h4>📌 解锁方式</h4><p>${item.unlock}</p></div>`;
-                    } else {
-                        infoHtml = `<div class="info-card"><h4>📅 基础</h4>
-                            <p>季节：${item.seasons?.join('、')||'—'}</p>
-                            ${item.growthDays?`<p>成熟：${item.growthDays}天</p>`:''}
-                            ${item.location?`<p>地点：${item.location}</p>`:''}
-                        </div>`;
-                    }
-                    return `
+                if(!res.length){ contentArea.innerHTML='<p>😕 未找到</p>'; return; }
+                contentArea.innerHTML=res.map(item=>`
                     <div class="search-result-item">
                         <div class="item-header">
                             <span class="item-name">${item.name}</span>
                             <span class="item-type-badge">${item.type}</span>
-                            ${item.basePrice > 0 ? `<span style="color:#b8860b; font-weight:700;">${item.basePrice}G</span>` : ''}
+                            ${item.basePrice ? `<span style="color:#b8860b; font-weight:700;">${item.basePrice}G</span>` : ''}
                         </div>
                         ${buildFlow(item)}
-                        <div class="info-grid">${infoHtml}</div>
-                    </div>`;
-                }).join('');
+                        <div class="info-grid">
+                            <div class="info-card"><h4>📅 基础</h4>
+                                <p>季节：${item.seasons?.join('、')||'—'}</p>
+                                ${item.growthDays?`<p>成熟：${item.growthDays}天</p>`:''}
+                                ${item.regrowDays?`<p>再收获：${item.regrowDays}天</p>`:''}
+                            </div>
+                        </div>
+                    </div>`).join('');
             }
 
             function renderCurrent(){
