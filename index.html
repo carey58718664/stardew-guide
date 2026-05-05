@@ -147,11 +147,6 @@ const toolDB = [
     { id:"steel_water", name:"钢喷壶", type:"工具", source:"铁匠铺升级", cost:"5,000G+铁锭×5", desc:"浇灌前方直线5格。" },
     { id:"gold_water", name:"金喷壶", type:"工具", source:"铁匠铺升级", cost:"10,000G+金锭×5", desc:"浇灌3x3格。" },
     { id:"iridium_water", name:"铱喷壶", type:"工具", source:"铁匠铺升级", cost:"25,000G+铱锭×5", desc:"浇灌6x3格。" },
-    { id:"training_rod", name:"训练用鱼竿", type:"工具", source:"威利鱼店", cost:"25G", desc:"只钓普通鱼，钓鱼条更大（新手练习）。" },
-    { id:"bamboo_pole", name:"竹鱼竿", type:"工具", source:"威利赠送", cost:"-", desc:"基础鱼竿，不可用鱼饵。" },
-    { id:"fiberglass_rod", name:"玻璃纤维鱼竿", type:"工具", source:"威利鱼店购买(钓鱼2级)", cost:"1,800G", desc:"可使用鱼饵。" },
-    { id:"iridium_rod", name:"铱金鱼竿", type:"工具", source:"威利鱼店购买(钓鱼6级)", cost:"7,500G", desc:"可使用鱼饵+渔具。" },
-    { id:"advanced_rod", name:"高级铱金鱼竿", type:"☕ 1.6", source:"钓鱼精通后威利鱼店", cost:"25,000G", desc:"可使用鱼饵+两个渔具，终极鱼竿。" },
     { id:"trash_can", name:"垃圾桶", type:"工具", source:"初始赠送", cost:"-", desc:"丢弃物品无回收。" },
     { id:"copper_can", name:"铜垃圾桶", type:"工具", source:"铁匠铺升级", cost:"1,000G+铜锭×5", desc:"丢弃后回收15%价值。" },
     { id:"steel_can", name:"钢垃圾桶", type:"工具", source:"铁匠铺升级", cost:"2,500G+铁锭×5", desc:"丢弃后回收30%价值。" },
@@ -161,6 +156,31 @@ const toolDB = [
     { id:"golden_scythe", name:"黄金镰刀", type:"工具", source:"采石场矿井宝箱", cost:"-", desc:"范围更大，割草效率高。" },
     { id:"iridium_scythe", name:"铱镰刀", type:"☕ 1.6", source:"精通耕种后解锁", cost:"-", desc:"全能收割机，范围巨大，可收作物，攻击+20。" },
     { id:"auto_petter", name:"自动抚摸机", type:"☕ 1.6", source:"骷髅洞穴宝箱/Joja购买", cost:"Joja: 50,000G", desc:"自动抚摸动物，不掉好感。" }
+];
+       // ==================== 鱼饵与渔具数据库 ====================
+const fishingGearDB = [
+    // --- 鱼饵 Bait ---
+    { id:"bait", name:"鱼饵", type:"鱼饵", source:"鱼店购买 / 钓鱼2级打造", cost:"5G / 虫肉×1", desc:"减少50%上钩等待时间，降低钓到垃圾的概率。" },
+    { id:"magnet", name:"磁铁", type:"鱼饵", source:"鱼店购买 / 钓鱼9级打造", cost:"1,000G / 铁锭×1", desc:"宝箱出现概率15%→30%。同样减少50%等待时间。" },
+    { id:"wild_bait", name:"万能鱼饵", type:"鱼饵", source:"莱纳斯4❤事件配方", cost:"纤维×10 + 史莱姆×5 + 虫肉×5 (产5个)", desc:"减少62.5%等待时间，有概率一次钓到两条鱼（传说鱼类无效）。" },
+    { id:"deluxe_bait", name:"高级鱼饵", type:"☕ 1.6", source:"齐先生核桃房配方 (20齐钻)", cost:"鱼饵×5 + 苔藓×2 (产5个)", desc:"减少67%等待时间，钓鱼条增大12像素。" },
+    { id:"challenge_bait", name:"挑战鱼饵", type:"☕ 1.6", source:"钓鱼精通后解锁配方", cost:"骨头碎片×5 + 苔藓×2 (产5个)", desc:"完美钓鱼时获得3条鱼，但鱼每次逃离钓鱼条产量-1。" },
+    { id:"magic_bait", name:"魔法鱼饵", type:"☕ 1.6", source:"齐先生核桃房购买 (5齐钻/20个)", cost:"5齐钻 / 20个", desc:"无视季节、时间、天气限制，可钓出对应水域的任何鱼。" },
+    { id:"targeted_bait", name:"针对性鱼饵", type:"☕ 1.6", source:"鱼饵制造机 / 威利鱼店每日8-12个", cost:"任意鱼→产5-10个该鱼鱼饵", desc:"钓特定鱼概率+66%。需在该鱼可能出现的条件下使用。鱼店版价格=鱼基础价×40%。" },
+
+    // --- 渔具 Tackle ---
+    { id:"trap_bobber", name:"陷阱浮标", type:"渔具", source:"鱼店购买 / 钓鱼6级打造", cost:"500G / 铜锭×1 + 树液×10", desc:"鱼逃离时右侧进度条下降速度减慢33%，新手稳钓神器。" },
+    { id:"cork_bobber", name:"软木塞浮标", type:"渔具", source:"鱼店购买 / 钓鱼7级打造", cost:"750G / 木材×10 + 硬木×5 + 史莱姆×10", desc:"钓鱼条增大13%-25%，直接降低操作难度。" },
+    { id:"treasure_hunter", name:"寻宝者", type:"渔具", source:"鱼店购买 / 钓鱼7级打造", cost:"750G / 金锭×2", desc:"宝箱概率15%→20%，收集宝藏时鱼不会逃跑。" },
+    { id:"dressed_spinner", name:"精装旋式鱼饵", type:"渔具", source:"鱼店购买 / 钓鱼8级打造", cost:"1,000G / 铁锭×2 + 布料×1", desc:"减少7.5秒上钩等待时间。" },
+    { id:"barbed_hook", name:"倒刺钩", type:"渔具", source:"鱼店购买 / 钓鱼8级打造", cost:"1,000G / 铜锭×1 + 铁锭×1 + 金锭×1", desc:"钓鱼条自动吸附在鱼上，适合钓移动缓慢的鱼。" },
+    { id:"spinner", name:"旋式鱼饵", type:"渔具", source:"鱼店购买 / 钓鱼6级打造", cost:"500G / 铁锭×2", desc:"减少3.75秒上钩等待时间。" },
+    { id:"lead_bobber", name:"铅制浮标", type:"渔具", source:"鱼店购买 (钓鱼6级解锁)", cost:"200G (不可打造)", desc:"防止钓鱼条触底反弹，可通过操作避免。" },
+    { id:"quality_bobber", name:"优质浮标", type:"渔具", source:"鱼店购买 (钓鱼4级解锁)", cost:"500G (不可打造)", desc:"提升钓到的鱼的品质（提高星级概率）。" },
+    { id:"sonar_bobber", name:"声纳浮标", type:"渔具", source:"鱼店购买 (钓鱼5级解锁)", cost:"500G (不可打造)", desc:"上钩前显示鱼的类型，方便判断是否收杆。" },
+    { id:"curiosity_lure", name:"好奇诱钩", type:"☕ 1.6", source:"采石场矿井/骷髅洞穴/火山地牢箱子掉落", cost:"不可购买或打造", desc:"增加钓到稀有鱼类的几率。" },
+    { id:"deluxe_tackle", name:"高级渔具", type:"☕ 1.6", source:"钓鱼精通后解锁配方", cost:"材料待定", desc:"降低渔具耐久消耗，延长使用寿命。" },
+    { id:"training_tackle", name:"训练用渔具", type:"☕ 1.6", source:"鱼店免费 / 威利任务奖励", cost:"免费", desc:"新手专用，略微增大钓鱼条，耐久较低。" }
 ];
         
         // ==================== NPC数据库 ====================
@@ -649,17 +669,26 @@ const toolDB = [
     return;
             }
             if (cat === 'construction') {
-                let h = '<div class="card-grid">';
-                for (let b of buildingDB) {
-                    h += `<div class="item-card" id="card-${b.id}"><h3>${b.name} <span class="badge">${b.type}</span></h3><div class="meta">📍 ${b.source}</div><div class="meta">💰 ${b.cost}</div><p>${b.desc}</p></div>`;
-                }
-                contentArea.innerHTML = h + '</div>'; return;
-            }
+    let h = '<div class="card-grid">';
+    // 建筑部分
+    for (let b of buildingDB) {
+        h += `<div class="item-card" id="card-${b.id}"><h3>${b.name} <span class="badge">${b.type}</span></h3><div class="meta">📍 来源: ${b.source}</div><div class="meta">💰 价格: ${b.cost}</div><p>${b.desc}</p></div>`;
+    }
+    // 工具部分
+    for (let t of toolDB) {
+        h += `<div class="item-card" id="card-${t.id}"><h3>${t.name} <span class="badge">${t.type}</span></h3><div class="meta">📍 来源: ${t.source}</div><div class="meta">💰 花费: ${t.cost}</div><p>${t.desc}</p></div>`;
+    }
+    contentArea.innerHTML = h + '</div>'; return;
+}
             if (cat === 'npcs') {
                 let h = '<div class="card-grid">';
                 for (let n of Object.values(npcDB)) {
                     h += `<div class="item-card" id="card-${n.id}"><h3>${n.name}</h3><div class="meta">❤️ 最爱礼物: ${n.loves}</div><p>📍 日程位置: ${n.schedule}</p></div>`;
                 }
+              // 鱼饵和渔具部分 (新增)
+            for (let g of fishingGearDB) {
+                h += `<div class="item-card" id="card-${g.id}"><h3>${g.name} <span class="badge">${g.type}</span></h3><div class="meta">📍 来源: ${g.source}</div><div class="meta">💰 花费: ${g.cost}</div><p>${g.desc}</p></div>`;
+            }              
                 contentArea.innerHTML = h + '</div>'; return;
             }
 
