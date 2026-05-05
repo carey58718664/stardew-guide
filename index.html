@@ -97,22 +97,72 @@
         };
 
         // ==================== 建筑与工具 ====================
-        const buildingDB = [
-            { id:"coop", name:"鸡舍", type:"建筑", source:"罗宾木匠商店", cost:"4,000G + 木材×300 + 石头×100", desc:"养4只鸡。" },
-            { id:"big_coop", name:"大鸡舍", type:"建筑", source:"升级", cost:"10,000G + 木材×400 + 石头×150", desc:"8只，可孵化。" },
-            { id:"deluxe_coop", name:"高级鸡舍", type:"建筑", source:"升级", cost:"20,000G + 木材×500 + 石头×200", desc:"12只，自动喂食。" },
-            { id:"barn", name:"畜棚", type:"建筑", source:"罗宾木匠商店", cost:"6,000G + 木材×350 + 石头×150", desc:"养4头牛。" },
-            { id:"big_barn", name:"大畜棚", type:"建筑", source:"升级", cost:"12,000G + 木材×450 + 石头×200", desc:"8头，可养猪/羊。" },
-            { id:"deluxe_barn", name:"高级畜棚", type:"建筑", source:"升级", cost:"25,000G + 木材×550 + 石头×300", desc:"12头，自动喂食，可养鸵鸟。" },
-            { id:"stable", name:"马厩", type:"建筑", source:"罗宾木匠商店", cost:"10,000G + 硬木×100 + 铁锭×5", desc:"获得马匹。" },
-            { id:"silo", name:"筒仓", type:"建筑", source:"罗宾木匠商店", cost:"100G + 石头×100 + 粘土×10 + 铜锭×5", desc:"储存草料(240个)。" },
-            { id:"mill_b", name:"磨坊", type:"建筑", source:"罗宾木匠商店", cost:"2,500G + 石材×50 + 木材×150 + 布料×4", desc:"小麦→面粉，甜菜→糖。" },
-            { id:"fish_pond", name:"鱼塘", type:"建筑", source:"罗宾木匠商店", cost:"5,000G + 石材×200 + 海草×5 + 绿藻×5", desc:"养鱼产鱼籽。鲟鱼→鱼子酱。" },
-            { id:"house1", name:"房屋升级1", type:"建筑", source:"罗宾木匠商店", cost:"10,000G + 木材×450", desc:"加厨房和双人床，可结婚。" },
-            { id:"house2", name:"房屋升级2", type:"建筑", source:"罗宾木匠商店", cost:"50,000G + 硬木×150", desc:"加儿童房。" },
-            { id:"house3", name:"房屋升级3", type:"建筑", source:"罗宾木匠商店", cost:"100,000G", desc:"加地窖，可用陈酿桶。" }
-        ];
+const buildingDB = [
+    { id:"coop", name:"鸡舍", type:"建筑", source:"罗宾木匠商店", cost:"4,000G + 木材×300 + 石头×100", desc:"🏠 容量：4只鸡。每天产蛋，稳定收入。" },
+    { id:"big_coop", name:"大鸡舍", type:"建筑", source:"升级", cost:"10,000G + 木材×400 + 石头×150", desc:"🏠 容量：8只，可孵化。养鸭子下鸭蛋。" },
+    { id:"deluxe_coop", name:"高级鸡舍", type:"建筑", source:"升级", cost:"20,000G + 木材×500 + 石头×200", desc:"🏠 容量：12只，自动喂食。养兔子（产毛/兔脚）和恐龙。" },
+    { id:"barn", name:"畜棚", type:"建筑", source:"罗宾木匠商店", cost:"6,000G + 木材×350 + 石头×150", desc:"🐄 容量：4头。养奶牛产奶。" },
+    { id:"big_barn", name:"大畜棚", type:"建筑", source:"升级", cost:"12,000G + 木材×450 + 石头×200", desc:"🐄 容量：8头，可生育。养山羊（羊奶）、绵羊（羊毛）。" },
+    { id:"deluxe_barn", name:"高级畜棚", type:"建筑", source:"升级", cost:"25,000G + 木材×550 + 石头×300", desc:"🐄 容量：12头，自动喂食。养猪（挖松露）和鸵鸟。" },
+    { id:"silo", name:"筒仓", type:"建筑", source:"罗宾木匠商店", cost:"100G + 石头×100 + 粘土×10 + 铜锭×5", desc:"🌿 储存240个干草。镰刀割草自动存入，冬天必备。" },
+    { id:"stable", name:"马厩", type:"建筑", source:"罗宾木匠商店", cost:"10,000G + 硬木×100 + 铁锭×5", desc:"🐴 获得马匹，移动速度+30%。" },
+    { id:"fish_pond", name:"鱼塘", type:"建筑", source:"罗宾木匠商店", cost:"5,000G + 石材×200 + 海草×5 + 绿藻×5", desc:"🐟 养鱼产鱼籽。鲟鱼→鱼子酱(500G)。" },
+    { id:"mill", name:"磨坊", type:"建筑", source:"罗宾木匠商店", cost:"2,500G + 石材×50 + 木材×150 + 布料×4", desc:"🌾 小麦→面粉，甜菜→糖。" },
+    { id:"well", name:"水井", type:"建筑", source:"罗宾木匠商店", cost:"1,000G + 石头×75", desc:"💧 提供水源，附近有池塘则不需要。" },
+    { id:"house1", name:"房屋升级1", type:"建筑", source:"罗宾木匠商店", cost:"10,000G + 木材×450", desc:"🏡 增加厨房，解锁烹饪。" },
+    { id:"house2", name:"房屋升级2", type:"建筑", source:"罗宾木匠商店", cost:"50,000G + 硬木×150", desc:"🏡 增加儿童房，可结婚生子。" },
+    { id:"house3", name:"房屋升级3", type:"建筑", source:"罗宾木匠商店", cost:"100,000G", desc:"🏡 增加地窖，可用陈酿桶。" },
+    { id:"house_dining", name:"房屋装修：餐厅", type:"☕ 1.6", source:"罗宾木匠商店", cost:"免费", desc:"改建右侧房间为餐厅（需2次升级后）。" },
+    { id:"house_attic", name:"房屋装修：阁楼", type:"☕ 1.6", source:"罗宾木匠商店", cost:"免费", desc:"改建右上角为阁楼（需2次升级后）。" },
+    { id:"house_corner", name:"房屋装修：扩展角房", type:"☕ 1.6", source:"罗宾木匠商店", cost:"免费", desc:"改建左侧为角落房间（需2次升级后）。" },
+    { id:"house_cubby", name:"房屋装修：储藏室", type:"☕ 1.6", source:"罗宾木匠商店", cost:"免费", desc:"增添储物空间（需2次升级后）。" },
+    { id:"pet_bowl", name:"宠物碗", type:"🐾 1.6", source:"罗宾木匠商店", cost:"5,000G + 硬木×25", desc:"每只宠物需一个碗，否则好感隔天-10。" },
+    { id:"island_farmhouse", name:"姜岛农舍", type:"🏝️ 姜岛", source:"鹦鹉（金色核桃）", cost:"20金色核桃", desc:"可在姜岛过夜恢复体力。" },
+    { id:"island_trader", name:"姜岛商人", type:"🏝️ 姜岛", source:"鹦鹉（金色核桃）", cost:"10金色核桃", desc:"以物易物，换热带电视等。" },
+    { id:"island_resort", name:"姜岛度假村", type:"🏝️ 姜岛", source:"鹦鹉（金色核桃）", cost:"20金色核桃", desc:"村民会来度假，有互动彩蛋。" },
+    { id:"island_farm", name:"姜岛农场", type:"🏝️ 姜岛", source:"鹦鹉（需先有农舍）", cost:"-", desc:"西部大片土地，无季节限制，无乌鸦。" },
+    { id:"island_parrot", name:"鹦鹉特快", type:"🏝️ 姜岛", source:"鹦鹉（金色核桃）", cost:"10金色核桃", desc:"姜岛内部快速传送系统。" },
+    { id:"island_obelisk", name:"姜岛图腾柱", type:"🏝️ 姜岛", source:"法师塔", cost:"1,000,000G + 铱锭×10 + 龙牙×10 + 香蕉×10", desc:"放在农场：一键传送到姜岛。" }
+];
 
+// ==================== 工具数据库 ====================
+const toolDB = [
+    { id:"hoe", name:"锄头", type:"工具", source:"初始赠送", cost:"-", desc:"范围1格。翻地。" },
+    { id:"copper_hoe", name:"铜锄头", type:"工具", source:"铁匠铺升级", cost:"2,000G+铜锭×5", desc:"范围前方直线3格。" },
+    { id:"steel_hoe", name:"钢锄头", type:"工具", source:"铁匠铺升级", cost:"5,000G+铁锭×5", desc:"范围前方直线5格。" },
+    { id:"gold_hoe", name:"金锄头", type:"工具", source:"铁匠铺升级", cost:"10,000G+金锭×5", desc:"范围3x3格。" },
+    { id:"iridium_hoe", name:"铱锄头", type:"工具", source:"铁匠铺升级", cost:"25,000G+铱锭×5", desc:"范围6x3格。" },
+    { id:"pickaxe", name:"十字镐", type:"工具", source:"初始赠送", cost:"-", desc:"破石采矿。" },
+    { id:"copper_pick", name:"铜十字镐", type:"工具", source:"铁匠铺升级", cost:"2,000G+铜锭×5", desc:"可砸开大石块，减少挖掘次数。" },
+    { id:"steel_pick", name:"钢十字镐", type:"工具", source:"铁匠铺升级", cost:"5,000G+铁锭×5", desc:"可砸开农场大石头，解锁与矮人对话。" },
+    { id:"gold_pick", name:"金十字镐", type:"工具", source:"铁匠铺升级", cost:"10,000G+金锭×5", desc:"可砸开陨石，采矿速度更快。" },
+    { id:"iridium_pick", name:"铱十字镐", type:"工具", source:"铁匠铺升级", cost:"25,000G+铱锭×5", desc:"最高效率采矿。" },
+    { id:"axe", name:"斧头", type:"工具", source:"初始赠送", cost:"-", desc:"砍树伐木。" },
+    { id:"copper_axe", name:"铜斧头", type:"工具", source:"铁匠铺升级", cost:"2,000G+铜锭×5", desc:"可砍伐大树桩，获得少量硬木。" },
+    { id:"steel_axe", name:"钢斧头", type:"工具", source:"铁匠铺升级", cost:"5,000G+铁锭×5", desc:"可砍开秘密森林入口圆木（每日硬木来源）。" },
+    { id:"gold_axe", name:"金斧头", type:"工具", source:"铁匠铺升级", cost:"10,000G+金锭×5", desc:"伐木速度极大提升。" },
+    { id:"iridium_axe", name:"铱斧头", type:"工具", source:"铁匠铺升级", cost:"25,000G+铱锭×5", desc:"伐木如切菜。" },
+    { id:"watering_can", name:"喷壶", type:"工具", source:"初始赠送", cost:"-", desc:"浇灌前方1格。" },
+    { id:"copper_water", name:"铜喷壶", type:"工具", source:"铁匠铺升级", cost:"2,000G+铜锭×5", desc:"浇灌前方直线3格。" },
+    { id:"steel_water", name:"钢喷壶", type:"工具", source:"铁匠铺升级", cost:"5,000G+铁锭×5", desc:"浇灌前方直线5格。" },
+    { id:"gold_water", name:"金喷壶", type:"工具", source:"铁匠铺升级", cost:"10,000G+金锭×5", desc:"浇灌3x3格。" },
+    { id:"iridium_water", name:"铱喷壶", type:"工具", source:"铁匠铺升级", cost:"25,000G+铱锭×5", desc:"浇灌6x3格。" },
+    { id:"training_rod", name:"训练用鱼竿", type:"工具", source:"威利鱼店", cost:"25G", desc:"只钓普通鱼，钓鱼条更大（新手练习）。" },
+    { id:"bamboo_pole", name:"竹鱼竿", type:"工具", source:"威利赠送", cost:"-", desc:"基础鱼竿，不可用鱼饵。" },
+    { id:"fiberglass_rod", name:"玻璃纤维鱼竿", type:"工具", source:"威利鱼店购买(钓鱼2级)", cost:"1,800G", desc:"可使用鱼饵。" },
+    { id:"iridium_rod", name:"铱金鱼竿", type:"工具", source:"威利鱼店购买(钓鱼6级)", cost:"7,500G", desc:"可使用鱼饵+渔具。" },
+    { id:"advanced_rod", name:"高级铱金鱼竿", type:"☕ 1.6", source:"钓鱼精通后威利鱼店", cost:"25,000G", desc:"可使用鱼饵+两个渔具，终极鱼竿。" },
+    { id:"trash_can", name:"垃圾桶", type:"工具", source:"初始赠送", cost:"-", desc:"丢弃物品无回收。" },
+    { id:"copper_can", name:"铜垃圾桶", type:"工具", source:"铁匠铺升级", cost:"1,000G+铜锭×5", desc:"丢弃后回收15%价值。" },
+    { id:"steel_can", name:"钢垃圾桶", type:"工具", source:"铁匠铺升级", cost:"2,500G+铁锭×5", desc:"丢弃后回收30%价值。" },
+    { id:"gold_can", name:"金垃圾桶", type:"工具", source:"铁匠铺升级", cost:"5,000G+金锭×5", desc:"丢弃后回收45%价值。" },
+    { id:"iridium_can", name:"铱垃圾桶", type:"工具", source:"铁匠铺升级", cost:"12,500G+铱锭×5", desc:"丢弃后回收60%价值，清包神器。" },
+    { id:"scythe", name:"镰刀", type:"工具", source:"初始赠送", cost:"-", desc:"收割干草和杂草。" },
+    { id:"golden_scythe", name:"黄金镰刀", type:"工具", source:"采石场矿井宝箱", cost:"-", desc:"范围更大，割草效率高。" },
+    { id:"iridium_scythe", name:"铱镰刀", type:"☕ 1.6", source:"精通耕种后解锁", cost:"-", desc:"全能收割机，范围巨大，可收作物，攻击+20。" },
+    { id:"auto_petter", name:"自动抚摸机", type:"☕ 1.6", source:"骷髅洞穴宝箱/Joja购买", cost:"Joja: 50,000G", desc:"自动抚摸动物，不掉好感。" }
+];
+        
         // ==================== NPC数据库 ====================
         const npcDB = {
             "abigail": { id:"abigail", name:"阿比盖尔", loves:"紫水晶、黑莓脆皮饼、巧克力蛋糕、河豚、南瓜、香辣鳗鱼", schedule:"春季卧室，周三图书馆，周五餐吧打游戏，周日法师塔。" },
