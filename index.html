@@ -15,17 +15,22 @@
         body {
             background: var(--bg); color: var(--text); font-family: var(--font);
             line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column;
+            background-image: radial-gradient(circle at 20% 30%, #f3e7cb 1px, transparent 1px),
+            radial-gradient(circle at 80% 60%, #eddbb5 1px, transparent 1px);
+            background-size: 50px 50px;
         }
         header { background: linear-gradient(135deg, #5e3e1c, #8b5d34); color: #f7e9c3; padding: 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-bottom: 3px solid #c99c2b; }
         header h1 { font-size: 2rem; font-weight: 800; }
+        header p { font-size: 0.85rem; opacity: 0.9; margin-top: 0.2rem; }
         .container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0.5rem 1rem; flex: 1; }
         .search-wrapper { position: relative; max-width: 680px; margin: 0.8rem auto; }
         .search-wrapper input { width: 100%; padding: 0.8rem 1.4rem; font-size: 1.1rem; border: 3px solid var(--border); border-radius: 50px; background: white; box-shadow: var(--shadow); outline: none; font-family: var(--font); }
+        .search-wrapper input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(122,92,58,0.2); }
         .back-button-wrapper { display: flex; justify-content: flex-start; max-width: 1400px; margin: 0 auto 0.5rem auto; padding: 0 1rem; }
         .back-button { background: var(--accent); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 0.9rem; font-family: var(--font); box-shadow: 0 2px 6px rgba(0,0,0,0.1); display: none; align-items: center; gap: 4px; }
         .back-button.show { display: inline-flex; }
         .categories { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-bottom: 1rem; }
-        .category-btn { background: white; border: 2px solid var(--border); padding: 0.4rem 1rem; border-radius: 30px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; color: var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.04); font-family: var(--font); }
+        .category-btn { background: white; border: 2px solid var(--border); padding: 0.4rem 1rem; border-radius: 30px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; color: var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.04); font-family: var(--font); display: flex; align-items: center; gap: 4px; }
         .category-btn:hover, .category-btn.active { background: var(--accent); color: white; border-color: var(--accent); transform: translateY(-2px); }
         .content-area { background: var(--card); border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow); min-height: 400px; border: 1px solid #e8d8be; }
         .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
@@ -38,8 +43,9 @@
         @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.7;} }
         .meta { font-size: 0.85rem; color: #5f5545; margin: 0.2rem 0; }
         .section-title { font-weight: 700; color: var(--accent); margin-top: 0.8rem; border-bottom: 1px dashed var(--border); padding-bottom: 0.2rem; display: block; }
-        .priority-item, .sacrifice-item, .gift-item { font-size: 0.88rem; padding: 0.15rem 0; display: flex; align-items: baseline; gap: 0.2rem; }
-        .prio { font-weight: 700; min-width: 28px; }
+        .sacrifice-item, .gift-item, .priority-item { font-size: 0.88rem; padding: 0.15rem 0; display: flex; align-items: baseline; }
+        .prefix { display: inline-block; width: 2.2em; text-align: left; flex-shrink: 0; }
+        .prio { font-weight: 700; }
         .note { font-size: 0.8rem; color: #8a7a62; margin-top: 0.3rem; font-style: italic; }
         .link-inline { color: var(--blue); cursor: pointer; text-decoration: underline; margin: 0 0.2rem; font-weight: 500; transition: 0.2s; }
         .link-inline:visited { color: #5b4a7a; }
@@ -139,7 +145,8 @@
             "willy": { id:"willy", name:"威利", loves:"南瓜、蜂蜜酒、钻石、铱锭、鲶鱼、鲟鱼、章鱼、海参", schedule:"鱼店9:00-17:00(周六休息)，晚上餐吧。" },
             "wizard": { id:"wizard", name:"法师", loves:"紫蘑菇、太阳精华、大海参、虚空精华", schedule:"法师塔内，基本不离开。" }
         };
-// ==================== HOT 标签判定 ====================
+
+        // ==================== HOT 标签判定 ====================
         function isHotItem(itemId) {
             const hotIds = [
                 "starfruit","ancient_fruit","hops","blueberry","cranberries","sturgeon",
@@ -233,11 +240,9 @@
                 { id:"dandelion", name:"蒲公英", type:"觅食", season:"春", basePrice:40, sacrifices:[{room:"工艺室", bundle:"春季采集收集包", need:1}] }
             ]
         };
-
         // ==================== 合并所有物品 ====================
         const allItems = [...DB.fish, ...DB.crops_all, ...DB.animal, ...DB.foraging];
-
-        // ==================== 历史栈 ====================
+        // ==================== 历史记录管理 ====================
         const historyStack = [];
         const MAX_HISTORY = 30;
         function pushHistory(cat, term) {
@@ -252,7 +257,7 @@
             return null;
         }
 
-        // ==================== 全局函数 ====================
+        // ==================== 全局跳转函数 ====================
         window.goBack = function() {
             const prev = popHistory();
             if (prev) {
@@ -267,7 +272,7 @@
             if (id) {
                 setTimeout(() => {
                     const el = document.getElementById('card-' + id);
-                    if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 150);
             }
         };
@@ -287,10 +292,124 @@
             if (!silent) pushHistory(cat, term);
         }
 
-        // ==================== 静态页面 ====================
-        const bundlesGuide = `<!-- 献祭思维导图保持原有结构不变 -->`;
-        const cookingGuide = `<!-- 食谱内容保持原有结构不变 -->`;
-        const miningGuide = `<!-- 矿场内容保持原有结构不变 -->`;
+        // ==================== 静态页面内容 ====================
+        const bundlesGuide = `
+            <div class="static-page">
+                <h2>🎁 社区中心献祭 · 完整思维导图</h2>
+                <div class="tree">
+┌─ 🏠 <strong>工艺室</strong> (初始开放) 奖励: 修复采石场桥梁
+│  ├─ <span class='link-inline' onclick="searchAndShow('野山葵')">春季采集收集包</span> (4选4): 野山葵 黄水仙 韭葱 蒲公英 → 奖励: 春季种子×30
+│  ├─ <span class='link-inline' onclick="searchAndShow('葡萄')">夏季采集收集包</span> (3选3): 葡萄 香味浆果 甜豌豆 → 奖励: 夏季种子×30
+│  ├─ <span class='link-inline' onclick="searchAndShow('普通蘑菇')">秋季采集收集包</span> (4选4): 普通蘑菇 野李子 榛子 黑莓 → 奖励: 秋季种子×30
+│  ├─ 冬季采集收集包 (4选4): 冬根 水晶果 雪山药 番红花 → 奖励: 冬季种子×30
+│  ├─ 建筑收集包 (4选4): 木材×99 木材×99 石头×99 硬木×10 → 奖励: 煤炭窑
+│  └─ <span class='link-inline' onclick="searchAndShow('椰子')">异国情调采集收集包</span> (9选5): 椰子 仙人掌果子 山洞萝卜 红蘑菇 紫蘑菇 龙葵 枫糖浆 松焦油 橡树树脂
+│
+├─ 🍴 <strong>茶水间</strong> (完成任意工艺室包后解锁) 奖励: <strong>温室</strong>
+│  ├─ <span class='link-inline' onclick="searchAndShow('防风草')">春季作物收集包</span> (4选4): 防风草 青豆 花椰菜 土豆
+│  ├─ <span class='link-inline' onclick="searchAndShow('番茄')">夏季作物收集包</span> (4选4): 番茄 辣椒 蓝莓 甜瓜
+│  ├─ <span class='link-inline' onclick="searchAndShow('玉米')">秋季作物收集包</span> (4选4): 玉米 茄子 南瓜 山药
+│  ├─ 优质作物收集包 (4选3): 金星防风草×5 金星甜瓜×5 金星南瓜×5 金星玉米×5
+│  ├─ 动物收集包 (6选5): 大壶牛奶 大鸡蛋(白) 大鸡蛋(棕) 大瓶羊奶 羊毛 鸭蛋
+│  └─ 工匠收集包 (12选6): 松露油 布料 山羊奶酪 奶酪 蜂蜜 果酱 苹果 杏子 橙子 桃子 石榴 樱桃
+│
+├─ 🐟 <strong>鱼缸</strong> (完成任意工艺室包后解锁) 奖励: 移除巨大闪石
+│  ├─ <span class='link-inline' onclick="searchAndShow('太阳鱼')">河鱼收集包</span> (4选4): 太阳鱼 鲶鱼 西鲱 虎纹鳟鱼
+│  ├─ <span class='link-inline' onclick="searchAndShow('大嘴鲈鱼')">湖鱼收集包</span> (4选4): 大嘴鲈鱼 鲤鱼 大头鱼 鲟鱼
+│  ├─ <span class='link-inline' onclick="searchAndShow('沙丁鱼')">海鱼收集包</span> (4选4): 沙丁鱼 金枪鱼 红鲫鱼 罗非鱼
+│  ├─ 夜间垂钓收集包 (3选3): 大眼鱼 鲷鱼 鳗鱼
+│  ├─ 蟹笼收集包 (10选5): 龙虾 小龙虾 螃蟹 鸟蛤 蚌 虾 蜗牛 玉黍螺 牡蛎 蛤
+│  └─ 特色鱼类收集包 (4选4): 河豚 鬼鱼 沙鱼 木跃鱼
+│
+├─ ⚡ <strong>锅炉房</strong> (完成任意茶水间包后解锁) 奖励: 修复矿车
+│  ├─ 铁匠收集包 (3选3): 铜锭 铁锭 金锭
+│  ├─ 地理学家收集包 (4选4): 石英 泪晶 地晶 火水晶
+│  └─ 冒险家收集包 (4选4): 史莱姆×99 蝙蝠翅膀×10 太阳精华 虚空精华
+│
+├─ 📋 <strong>布告栏</strong> (完成任意鱼缸包后解锁) 奖励: 友谊+2❤️全体村民
+│  ├─ 厨师收集包 (6选6): 枫糖浆 蕨菜 松露 罂粟 鲭鱼 蜗牛 → 需烹饪产出
+│  ├─ 染料收集包 (6选6): 红蘑菇 海胆 向日葵 羽毛 蓝莓 葡萄
+│  ├─ 土地研究收集包 (4选4): 紫蘑菇 鹦鹉螺化石 山洞萝卜 石英
+│  ├─ 饲料收集包 (3选3): 小麦×10 干草×10 苹果×3
+│  └─ 魔法师收集包 (4选4): 橡树树脂 葡萄酒 兔子脚 石榴
+│
+└─ 💰 <strong>金库</strong> (完成任意鱼缸包后解锁) 奖励: <strong>修复巴士→沙漠</strong>
+   ├─ 2,500G 收集包 (1选1): 缴纳 2,500 金币
+   ├─ 5,000G 收集包 (1选1): 缴纳 5,000 金币
+   ├─ 10,000G 收集包 (1选1): 缴纳 10,000 金币
+   └─ 25,000G 收集包 (1选1): 缴纳 25,000 金币 → 总计: 42,500G
+                </div>
+                <p><strong>解锁流程提示：</strong>完成任意工艺室包→解锁茶水间+鱼缸 → 完成茶水间包→解锁锅炉房 → 完成鱼缸包→解锁布告栏+金库。建议优先做春季作物和蟹笼包，早期快速推进。</p>
+            </div>
+        `;
+
+        const cookingGuide = `
+            <div class="static-page">
+                <h2>🍲 全食谱速查 (1.6版本共81个)</h2>
+                <p>食谱来源分4类: ①电视<span class='link-inline' onclick="searchAndShow('酱料女皇')">酱料女皇</span>(每周日/三) ②村民好感度3❤️/7❤️ ③技能升级解锁 ④商店购买。</p>
+                <div class="card-grid">
+                    <div class="item-card">
+                        <h3>🧑‍🍳 核心增益食谱推荐</h3>
+                        <div class="meta">⭐ <strong>香辣鳗鱼</strong>: <span class="link-inline" onclick="searchAndShow('鳗鱼')">鳗鱼</span>+辣椒 → +1运气+1速度 (7分钟) | 来源: 乔治7❤️/沙漠商人(1红宝石) <span class="badge hot">HOT</span></div>
+                        <div class="meta">⭐ <strong>矿工特供</strong>: <span class="link-inline" onclick="searchAndShow('山洞萝卜')">山洞萝卜</span>×2+糖+牛奶 → +3采矿+32磁性 (5分35秒) | 来源: 战斗3级解锁</div>
+                        <div class="meta">⭐ <strong>生鱼片</strong>: 任意鱼(售价<75G的优先) → 75G | 来源: 莱纳斯3❤️</div>
+                        <div class="meta">⭐ <strong>块茎拼盘</strong>: <span class="link-inline" onclick="searchAndShow('山洞萝卜')">山洞萝卜</span>+冬根 → +3攻击 (5分35秒) | 来源: 战斗3级解锁</div>
+                        <div class="meta">⭐ <strong>炒蘑菇</strong>: 普通蘑菇+羊肚菌+红蘑菇 → +2攻击 | 来源: 德米特里厄斯3❤️</div>
+                        <div class="meta">⭐ <strong>奶酪</strong>(非食谱但核心食物): <span class="link-inline" onclick="jumpTo('artisan','cheese')">奶酪机</span>加工，金星回血极高 <span class="badge hot">HOT</span></div>
+                        <div class="meta">⭐ <strong>浓缩咖啡</strong>: 仅需咖啡豆 → +1速度 | 来源: 酒吧购买(5,000G) <span class="badge hot">HOT</span></div>
+                        <div class="meta">⭐ <strong>法式田螺</strong>: <span class="link-inline" onclick="searchAndShow('蜗牛')">蜗牛</span>+蒜 → +2钓鱼 | 来源: 威利3❤️</div>
+                        <div class="meta">⭐ <strong>蟹黄糕</strong>: <span class="link-inline" onclick="searchAndShow('螃蟹')">螃蟹</span>+大麦粉+蛋+油 → +1速度+1防御(16分47秒) | 来源: 酱料女皇偶数年秋21日</div>
+                        <div class="meta">⭐ <strong>巨无霸餐</strong>: 菠萝+芒果+芋头 → +2采矿+2防御 | 来源:姜岛火山商店(1,000G)</div>
+                    </div>
+                    <div class="item-card">
+                        <h3>📺 村民赠送食谱速查</h3>
+                        <div class="tree">
+        <span class='link-inline' onclick="jumpTo('npcs','caroline')">卡洛琳</span>: 防风草汤(3❤️)、蔬菜杂烩(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','clint')">克林特</span>: 海藻汤(3❤️)、豆类火锅(7❤️)
+        <span class='link-inline' onclick="jumpTo('npcs','demetrius')">德米特里厄斯</span>: 炒蘑菇(3❤️)、秋日恩赐(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','emily')">艾米丽</span>: 沙拉(3❤️)、红色拼盘(7❤️)
+        <span class='link-inline' onclick="jumpTo('npcs','evelyn')">艾芙琳</span>: 饼干(4❤️)、大米布丁(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','george')">乔治</span>: 炒鳗鱼(3❤️)、香辣鳗鱼(7❤️) <span class="badge hot">HOT</span>
+        <span class='link-inline' onclick="jumpTo('npcs','gus')">格斯</span>: 鲑鱼晚餐(3❤️)、海鲜杂烩汤(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','jodi')">乔迪</span>: 炸鱿鱼(3❤️)、帕尔玛奶酪(7❤️)
+        <span class='link-inline' onclick="jumpTo('npcs','kent')">肯特</span>: 香酥鲈鱼(3❤️)、巨无霸(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','leah')">莉亚</span>: 蔬菜什锦盖饭(3❤️)、虞美人籽松糕(7❤️)
+        <span class='link-inline' onclick="jumpTo('npcs','linus')">莱纳斯</span>: 生鱼片(3❤️)、生鱼寿司(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','pam')">潘姆</span>: 乳酪花椰菜(3❤️)、墨西哥薄饼(7❤️)
+        <span class='link-inline' onclick="jumpTo('npcs','robin')">罗宾</span>: 南瓜汤(3❤️)、鱼肉卷(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','shane')">谢恩</span>: 爆炒青椒(3❤️)、奇怪的小面包(7❤️)
+        <span class='link-inline' onclick="jumpTo('npcs','willy')">威利</span>: 法式田螺(3❤️)、海泡布丁(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','marnie')">玛妮</span>: 烤鱼(3❤️)、南瓜派(7❤️)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const miningGuide = `
+            <div class="static-page">
+                <h2>⛏ 矿场深度全攻略</h2>
+                <div class="card-grid">
+                    <div class="item-card">
+                        <h3>📋 矿井 (1-120层)</h3>
+                        <div class="meta">1-39层(主题: 泥土/铜): 地晶、晶球、铜矿较多。怪物: <strong>史莱姆</strong>(掉落:史莱姆泥)、<strong>臭虫</strong>(虫肉)、<strong>苍蝇</strong>(虫肉)。</div>
+                        <div class="meta">40-79层(主题: 冰/铁): 铁矿出现，泪晶、冰封晶球。怪物: <strong>冰霜蝙蝠</strong>(蝙蝠翅膀)、<strong>灰尘精灵</strong>(煤炭)——击杀500只得<span class='link-inline' onclick="jumpTo('artisan','mayo')">[窃贼戒指]</span>。</div>
+                        <div class="meta">80-119层(主题: 岩浆/金): 金矿出现，火水晶、绿宝石。怪物: <strong>暗影萨满</strong>(虚空精华)、<strong>暗影狂徒</strong>(虚空精华)、<strong>乌贼娃</strong>(太阳精华)。</div>
+                        <div class="meta">120层: 头骨钥匙，解锁<span class='link-inline' onclick="searchAndShow('骷髅洞穴')">骷髅洞穴</span>。</div>
+                        <div class="meta">特殊层: 20层(<strong>石鱼</strong>)、60层(<strong>冰柱鱼</strong>)、100层(<strong>岩浆鳗鱼</strong>)。</div>
+                    </div>
+                    <div class="item-card">
+                        <h3>💀 骷髅洞穴 (沙漠·无限层)</h3>
+                        <div class="meta"><strong>进入条件:</strong> 完成金库献祭(42,500G)解锁沙漠巴士 → 获取矿井120层骷髅钥匙。</div>
+                        <div class="meta"><strong>核心目的:</strong> 刷<span class='link-inline' onclick="jumpTo('construction','pickaxe')">铱矿</span>、五彩碎片、宝箱。铱矿密度随层数增加。</div>
+                        <div class="meta"><strong>必备物品:</strong> 🗡️ 银河剑/无限之刃 | 💣 超级炸弹(100+) | 🪜 楼梯(翡翠周日沙漠商人兑换/99石合成) | 🍖 <span class='link-inline' onclick="searchAndShow('奶酪')">金星奶酪</span> ×50 | ☕ <span class='link-inline' onclick="searchAndShow('浓缩咖啡')">浓缩咖啡</span> ×10 | 🌵 沙漠传送图腾</div>
+                        <div class="meta"><strong>怪物:</strong> <strong>飞龙</strong>(高伤，长手武器反击)、<strong>骷髅</strong>(掉落骨头碎片)、<strong>史莱姆</strong>(大史莱姆有多只)、<strong>木乃伊</strong>(打倒后炸死才掉太阳精华)。</div>
+                        <div class="meta"><strong>冲层技巧:</strong> 看电视占卜→紫星天最佳 → 早6点传送沙漠 → 看到坑洞优先跳(一次3-15层) → 怪物层/烂运层直接放楼梯 → 不纠结单块矿石只管下层。</div>
+                        <div class="note">💡 第100层齐先生任务: 完成获25永久生命值(首次)。100层后铱矿大量出现。</div>
+                    </div>
+                    <div class="item-card">
+                        <h3>🌋 火山地牢 (姜岛·10层固定)</h3>
+                        <div class="meta"><strong>进入条件:</strong> 完成社区中心 → 修船到姜岛 → 爬到火山顶。</div>
+                        <div class="meta"><strong>特点:</strong> 每层固定，离开后重置。第10层为锻造台，可融合武器+戒指。</div>
+                        <div class="meta"><strong>怪物:</strong> <strong>熔岩精灵</strong>(快速穿墙，火水晶/龙牙)、<strong>熔岩潜伏怪</strong>(掉龙牙)、<strong>火焰史莱姆</strong>、<strong>熔岩蝙蝠</strong>。</div>
+                        <div class="meta"><strong>核心掉落:</strong> <strong>龙牙</strong>(造姜岛图腾柱)、<strong>火山晶石</strong>(商店货币)、<strong>鸵鸟蛋</strong>(稀有宝箱)。</div>
+                        <div class="meta"><strong>推荐装备:</strong> 银河剑 + 史莱姆克星戒指 + <span class='link-inline' onclick="searchAndShow('螃蟹')">蟹黄糕</span>BUFF(速度+防御)。</div>
+                    </div>
+                </div>
+            </div>
+        `;
 
         // ==================== 核心渲染 ====================
         let currentCategory = 'all';
@@ -314,18 +433,18 @@
             let s = '';
             if (item.sacrifices) {
                 s += '<span class="section-title">🎁 献祭需求</span>';
-                item.sacrifices.forEach(sc => s += `<div class="sacrifice-item">📦 ${sc.room} → <span class="link-inline" onclick='jumpTo("bundles","#")'>${sc.bundle}</span>${sc.need ? ` ×${sc.need}` : ''}${sc.quality ? ` (${sc.quality})` : ''}</div>`);
+                item.sacrifices.forEach(sc => s += `<div class="sacrifice-item"><span class="prefix">📦</span>${sc.room} → <span class="link-inline" onclick='jumpTo("bundles","#")'>${sc.bundle}</span>${sc.need ? ` ×${sc.need}` : ''}${sc.quality ? ` (${sc.quality})` : ''}</div>`);
             }
             if (item.processing) {
                 s += '<span class="section-title">⚙️ 加工建议（优先级从高到低）</span>';
                 item.processing.forEach((p,i) => {
                     const eqLink = p.eq ? `<span class="link-inline" onclick='jumpTo("artisan","${p.eq}")'>[${equipmentDB[p.eq]?.name||'设备'}]</span>` : '';
-                    s += `<div class="priority-item"><span class="prio">P${i+1}</span> ${p.m}${p.p ? ` (${p.p}G)` : ''} ${eqLink}</div>`;
+                    s += `<div class="priority-item"><span class="prefix"><span class="prio">P${i+1}</span></span> ${p.m}${p.p ? ` (${p.p}G)` : ''} ${eqLink}</div>`;
                 });
             }
             if (item.gifts) {
-                s += '<span class="section-title">🛍️ 送礼推荐</span>';
-                item.gifts.forEach(g => s += `<div class="gift-item">🎁 <span class="link-inline" onclick='jumpTo("npcs","${g}")'>${npcDB[g]?.name||g}</span></div>`);
+                s += '<span class="section-title">❤️ 送礼推荐</span>';
+                item.gifts.forEach(g => s += `<div class="gift-item"><span class="prefix">🛍️</span><span class="link-inline" onclick='jumpTo("npcs","${g}")'>${npcDB[g]?.name||g}</span></div>`);
             }
             if (item.source) s += `<div class="meta">🏠 来源：${item.source}</div>`;
             if (item.note) s += `<div class="note">💡 ${item.note}</div>`;
@@ -377,19 +496,19 @@
 
         function updateUI() { renderContent(currentCategory, searchInput.value); }
 
-        // 分类点击
+        // ==================== 事件监听 ====================
         categoryNav.addEventListener('click', e => {
             const btn = e.target.closest('.category-btn'); if (!btn) return;
             const cat = btn.dataset.category;
             _applyState(cat, '', false);
         });
-        // 搜索输入
+
         searchInput.addEventListener('input', () => {
-            // 搜索时也推入历史
             pushHistory(currentCategory, searchInput.value);
             updateUI();
         });
-        // 初始
+
+        // 初始加载
         pushHistory('all', '');
         updateUI();
     </script>
