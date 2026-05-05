@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>星露谷物语 · 深度整合攻略 v3.0</title>
+    <title>星露谷物语 · 全能攻略手册</title>
     <style>
         :root {
             --bg: #fdf8ed; --card: #fffcf5; --accent: #7a5c3a; --gold: #c99c2b;
-            --green: #5b8c5a; --red: #b55b4a; --blue: #4a7b9c; --border: #d4b896;
+            --green: #5b8c5a; --red: #e0553d; --blue: #4a7b9c; --border: #d4b896;
             --shadow: 0 4px 12px rgba(0,0,0,0.06); --text: #3e3a35; --radius: 14px;
             --font: system-ui, -apple-system, sans-serif;
         }
@@ -19,46 +19,50 @@
             radial-gradient(circle at 80% 60%, #eddbb5 1px, transparent 1px);
             background-size: 50px 50px;
         }
-        header { background: linear-gradient(135deg, #5e3e1c, #8b5d34); color: #f7e9c3; padding: 1.2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-bottom: 3px solid #c99c2b; }
+        header { background: linear-gradient(135deg, #5e3e1c, #8b5d34); color: #f7e9c3; padding: 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-bottom: 3px solid #c99c2b; }
         header h1 { font-size: 2rem; font-weight: 800; }
-        header p { font-size: 0.9rem; opacity: 0.9; margin-top: 0.2rem; }
-        .container { width: 100%; max-width: 1300px; margin: 0 auto; padding: 0.5rem 1rem; flex: 1; }
+        header p { font-size: 0.85rem; opacity: 0.9; margin-top: 0.2rem; }
+        .container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0.5rem 1rem; flex: 1; }
         .search-wrapper { position: relative; max-width: 680px; margin: 0.8rem auto; }
         .search-wrapper input { width: 100%; padding: 0.8rem 1.4rem; font-size: 1.1rem; border: 3px solid var(--border); border-radius: 50px; background: white; box-shadow: var(--shadow); outline: none; font-family: var(--font); }
         .search-wrapper input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(122,92,58,0.2); }
-        .search-icon { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: var(--accent); }
         .categories { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-bottom: 1rem; }
         .category-btn { background: white; border: 2px solid var(--border); padding: 0.4rem 1rem; border-radius: 30px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; color: var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.04); font-family: var(--font); display: flex; align-items: center; gap: 4px; }
         .category-btn:hover, .category-btn.active { background: var(--accent); color: white; border-color: var(--accent); transform: translateY(-2px); }
         .content-area { background: var(--card); border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow); min-height: 400px; border: 1px solid #e8d8be; }
         .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
-        .item-card { background: white; border-radius: 12px; padding: 1rem; border: 1px solid #e0cfad; transition: 0.2s; }
-        .item-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .item-card { background: white; border-radius: 12px; padding: 1rem; border: 1px solid #e0cfad; transition: 0.2s; position: relative; }
+        .item-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
         .item-card h3 { font-size: 1.1rem; color: var(--accent); margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
-        .badge { font-size: 0.7rem; background: var(--accent); color: white; padding: 0.1rem 0.6rem; border-radius: 12px; font-weight: 600; white-space: nowrap; }
+        .badge { font-size: 0.65rem; background: var(--accent); color: white; padding: 0.1rem 0.6rem; border-radius: 12px; font-weight: 600; white-space: nowrap; }
         .badge.season { background: #6b8c42; }
-        .meta { font-size: 0.85rem; color: #5f5545; margin: 0.3rem 0; }
+        .badge.hot { background: var(--red); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
+        .meta { font-size: 0.85rem; color: #5f5545; margin: 0.2rem 0; }
         .section-title { font-weight: 700; color: var(--accent); margin-top: 0.8rem; border-bottom: 1px dashed var(--border); padding-bottom: 0.2rem; display: block; }
-        .priority-list, .sacrifice-list, .gift-list { margin-top: 0.3rem; }
-        .priority-item, .sacrifice-item, .gift-item { font-size: 0.9rem; padding: 0.15rem 0; display: flex; align-items: baseline; gap: 0.3rem; }
+        .priority-item, .sacrifice-item, .gift-item { font-size: 0.88rem; padding: 0.15rem 0; display: flex; align-items: baseline; gap: 0.3rem; }
         .prio { font-weight: 700; min-width: 28px; }
         .note { font-size: 0.8rem; color: #8a7a62; margin-top: 0.3rem; font-style: italic; }
-        .link-inline { color: var(--blue); cursor: pointer; text-decoration: underline; margin-left: 0.3rem; font-weight: 500; }
+        .link-inline { color: var(--blue); cursor: pointer; text-decoration: underline; margin: 0 0.2rem; font-weight: 500; transition: 0.2s; }
+        .link-inline:hover { color: #2d5a7a; }
         .static-page { padding: 1rem; line-height: 1.7; }
         .static-page h2 { color: var(--accent); margin-bottom: 0.8rem; }
         .static-page ul { padding-left: 1.5rem; }
-        footer { text-align: center; padding: 1rem; color: #7b6e5a; font-size: 0.8rem; margin-top: 1.5rem; }
+        .static-page li { margin: 0.3rem 0; }
+        footer { text-align: center; padding: 1rem; color: #7b6e5a; font-size: 0.8rem; margin-top: 1rem; }
         @media (max-width: 600px) {
-            .card-grid { grid-template-columns: 1fr; } header h1 { font-size: 1.6rem; }
+            .card-grid { grid-template-columns: 1fr; } header h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
-    <header><h1>🌾 星露谷物语 · 深度攻略 v3.0</h1><p>全物品 · 献祭→加工→送礼 一站式查询 | 1.6适配</p></header>
+    <header>
+        <h1>🌾 星露谷物语 · 全能攻略手册</h1>
+        <p>1.6适配 · 献祭/加工/送礼/建筑 · 搜索或点击均可全网跳转</p>
+    </header>
     <div class="container">
         <div class="search-wrapper">
-            <input type="text" id="searchInput" placeholder="搜 上古种子 / 熏鱼 / 紫蘑菇 / 阿比盖尔 ..." autocomplete="off">
-            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="搜 上古种子 / 小桶 / 太阳鱼 / 鸡舍 / 阿比盖尔 ..." autocomplete="off">
         </div>
         <div class="categories" id="categoryNav">
             <button class="category-btn active" data-category="all">🏠 全部</button>
@@ -68,629 +72,313 @@
             <button class="category-btn" data-category="foraging">🍄 觅食</button>
             <button class="category-btn" data-category="mining">⛏ 矿场</button>
             <button class="category-btn" data-category="artisan">🍷 工匠设备</button>
+            <button class="category-btn" data-category="construction">🏗 建筑/工具</button>
             <button class="category-btn" data-category="bundles">🎁 献祭</button>
             <button class="category-btn" data-category="cooking">🍲 食谱</button>
             <button class="category-btn" data-category="npcs">💬 NPC</button>
         </div>
         <div class="content-area" id="contentArea"></div>
     </div>
-    <footer>🐔 星露谷攻略手册 · 深度整合攻略文件 · 数据基于1.6</footer>
+    <footer>🐔 星露谷攻略手册 · 基于1.6版本 · 全网状超链接</footer>
+
     <script>
-        // ==================== 设备数据库 ====================
+        // ==================== 工匠设备数据 ====================
         const equipmentDB = {
-            "keg": {
-                name: "小桶",
-                category: "artisan",
-                source: "耕种8级解锁打造配方",
-                recipe: "木材×30 + 铜锭×1 + 铁锭×1 + 橡树树脂×1",
-                description: "放入水果或蔬菜，7天后酿成酒或果汁。水果3倍价值，蔬菜2.25倍。也可制作绿茶、咖啡。"
-            },
-            "jar": {
-                name: "罐头瓶",
-                category: "artisan",
-                source: "耕种4级解锁打造配方",
-                recipe: "木材×50 + 石头×40 + 煤炭×8",
-                description: "蔬菜→泡菜，水果→果酱，鱼籽→腌鱼籽/鱼子酱。耗时2-3天，2倍基础价+50G。"
-            },
-            "smoker": {
-                name: "熏鱼机",
-                category: "artisan",
-                source: "1.6版本：完成社区中心鱼缸后，威利处以10,000G购买配方",
-                recipe: "硬木×10 + 海洋凝胶×1 + 洞穴凝胶×1 + 史莱姆×20",
-                description: "放入鱼+1煤炭，产出熏鱼，价格翻倍且保留星级。"
-            },
-            "mayo": {
-                name: "蛋黄酱机",
-                category: "artisan",
-                source: "耕种2级解锁打造配方",
-                recipe: "木材×15 + 石头×15 + 地晶×1 + 铜锭×1",
-                description: "蛋→蛋黄酱，大鸡蛋产出金星品质。"
-            },
-            "cheese": {
-                name: "奶酪机",
-                category: "artisan",
-                source: "耕种6级解锁打造配方",
-                recipe: "木材×45 + 石头×45 + 硬木×10 + 铜锭×1",
-                description: "牛奶→奶酪，大壶牛奶产出金星品质。"
-            },
-            "loom": {
-                name: "织布机",
-                category: "artisan",
-                source: "耕种7级解锁打造配方",
-                recipe: "木材×60 + 纤维×30 + 松焦油×1",
-                description: "羊毛→布料，高品质羊毛可能产出2个布料。"
-            },
-            "oil": {
-                name: "产油机",
-                category: "artisan",
-                source: "耕种8级解锁打造配方",
-                recipe: "史莱姆×50 + 硬木×20 + 金锭×1",
-                description: "松露、向日葵、玉米等→油。松露油价值极高。"
-            },
-            "dehydrator": {
-                name: "烘干机",
-                category: "artisan",
-                source: "1.6版本：完成工艺室后，皮埃尔处以10,000G购买配方",
-                recipe: "木材×30 + 粘土×2 + 火水晶×1",
-                description: "放入5个水果/蘑菇，1天后产出干果/干蘑菇，提升价值。"
-            },
-            "cask": {
-                name: "陈酿桶",
-                category: "artisan",
-                source: "房屋第三次升级后地窖自动可用",
-                recipe: "木材×20 + 硬木×1",
-                description: "酒和奶酪陈酿提升品质（普通→银星→金星→铱星）。"
-            },
-            "seedmaker": {
-                name: "种子生产器",
-                category: "artisan",
-                source: "耕种9级解锁打造配方 / 完成染料收集包奖励1个",
-                recipe: "木材×25 + 煤炭×10 + 金锭×1",
-                description: "作物→1-3个同种种子，1.5%概率出古代种子。"
-            },
-            "mill": {
-                name: "磨坊",
-                category: "artisan",
-                source: "木匠商店罗宾处建造：2,500G + 石材×50 + 木材×150 + 布料×4",
-                recipe: "不可打造",
-                description: "小麦→大麦粉，甜菜→糖，未碾米→大米。"
-            }
+            "keg": { id:"keg", name:"小桶", source:"耕种8级解锁打造配方", recipe:"木材×30 + 铜锭×1 + 铁锭×1 + 橡树树脂×1", desc:"水果/蔬菜→酒/果汁。水果3倍价，蔬菜2.25倍。也可制咖啡、绿茶。" },
+            "jar": { id:"jar", name:"罐头瓶", source:"耕种4级解锁打造配方", recipe:"木材×50 + 石头×40 + 煤炭×8", desc:"蔬菜→泡菜，水果→果酱，鱼籽→腌鱼籽/鱼子酱。耗时2-3天，收益2倍基础价+50G。" },
+            "smoker": { id:"smoker", name:"熏鱼机", source:"1.6：完成鱼缸后威利处10,000G购买配方", recipe:"硬木×10 + 海洋凝胶×1 + 洞穴凝胶×1 + 史莱姆×20", desc:"鱼+煤→熏鱼，价格翻倍且保留星级。" },
+            "mayo": { id:"mayo", name:"蛋黄酱机", source:"耕种2级解锁", recipe:"木材×15 + 石头×15 + 地晶×1 + 铜锭×1", desc:"蛋→蛋黄酱。大鸡蛋产出金星品质。" },
+            "cheese": { id:"cheese", name:"奶酪机", source:"耕种6级解锁", recipe:"木材×45 + 石头×45 + 硬木×10 + 铜锭×1", desc:"牛奶→奶酪，大壶奶出金星奶酪。高回复食物。" },
+            "loom": { id:"loom", name:"织布机", source:"耕种7级解锁", recipe:"木材×60 + 纤维×30 + 松焦油×1", desc:"羊毛→布料，高品质羊毛可能产出2个。" },
+            "oil": { id:"oil", name:"产油机", source:"耕种8级解锁", recipe:"史莱姆×50 + 硬木×20 + 金锭×1", desc:"松露/向日葵/玉米→油。松露油价值极高。" },
+            "dehydrator": { id:"dehydrator", name:"烘干机", source:"1.6：完成工艺室后皮埃尔处10,000G购买配方", recipe:"木材×30 + 粘土×2 + 火水晶×1", desc:"5个水果/蘑菇→干果/干蘑菇，1天完成。" },
+            "cask": { id:"cask", name:"陈酿桶", source:"房屋3次升级后地窖自动可用", recipe:"木材×20 + 硬木×1", desc:"酒和奶酪陈酿提升品质(普通→银→金→铱)。" },
+            "seedmaker": { id:"seedmaker", name:"种子生产器", source:"耕种9级解锁/染料收集包奖励", recipe:"木材×25 + 煤炭×10 + 金锭×1", desc:"作物→1-3种子，1.5%古代种子。" }
         };
 
-        // ==================== NPC数据库（含位置）====================
+        // ==================== 建筑与工具 ====================
+        const buildingDB = [
+            { id:"coop", name:"鸡舍", type:"建筑", source:"罗宾木匠商店", cost:"4,000G + 木材×300 + 石头×100", desc:"养4只鸡。可升级为大鸡舍(8只)、高级鸡舍(12只+自动喂食)。" },
+            { id:"big_coop", name:"大鸡舍", type:"建筑", source:"罗宾木匠商店(升级)", cost:"10,000G + 木材×400 + 石头×150", desc:"养8只鸡，可孵化蛋。" },
+            { id:"deluxe_coop", name:"高级鸡舍", type:"建筑", source:"罗宾木匠商店(升级)", cost:"20,000G + 木材×500 + 石头×200", desc:"养12只鸡，自动喂食。" },
+            { id:"barn", name:"畜棚", type:"建筑", source:"罗宾木匠商店", cost:"6,000G + 木材×350 + 石头×150", desc:"养4头牛。可升级。" },
+            { id:"big_barn", name:"大畜棚", type:"建筑", source:"罗宾木匠商店(升级)", cost:"12,000G + 木材×450 + 石头×200", desc:"养8头牛，可养猪/羊。" },
+            { id:"deluxe_barn", name:"高级畜棚", type:"建筑", source:"罗宾木匠商店(升级)", cost:"25,000G + 木材×550 + 石头×300", desc:"养12头，自动喂食，可养鸵鸟。" },
+            { id:"stable", name:"马厩", type:"建筑", source:"罗宾木匠商店", cost:"10,000G + 硬木×100 + 铁锭×5", desc:"获得马匹，移动速度大幅提升。" },
+            { id:"silo", name:"筒仓", type:"建筑", source:"罗宾木匠商店", cost:"100G + 石头×100 + 粘土×10 + 铜锭×5", desc:"储存草料，每个240干草。" },
+            { id:"mill_b", name:"磨坊", type:"建筑", source:"罗宾木匠商店", cost:"2,500G + 石材×50 + 木材×150 + 布料×4", desc:"小麦→面粉，甜菜→糖，未碾米→大米。" },
+            { id:"fish_pond", name:"鱼塘", type:"建筑", source:"罗宾木匠商店", cost:"5,000G + 石材×200 + 海草×5 + 绿藻×5", desc:"养鱼产鱼籽，鲟鱼可产鱼子酱。" },
+            { id:"house1", name:"房屋升级1", type:"建筑", source:"罗宾木匠商店", cost:"10,000G + 木材×450", desc:"加厨房和双人床，可结婚。" },
+            { id:"house2", name:"房屋升级2", type:"建筑", source:"罗宾木匠商店", cost:"50,000G + 硬木×150", desc:"加儿童房和两个房间。" },
+            { id:"house3", name:"房屋升级3", type:"建筑", source:"罗宾木匠商店", cost:"100,000G", desc:"加地窖，可用陈酿桶。" },
+            { id:"slime_hutch", name:"史莱姆屋", type:"建筑", source:"罗宾木匠商店", cost:"10,000G + 石材×500 + 精炼石英×10 + 铱锭×1", desc:"饲养史莱姆产史莱姆泥。" },
+            { id:"axe", name:"斧头升级", type:"工具", source:"铁匠铺克林特", cost:"铜2k/钢5k/金10k/铱25k + 对应锭×5", desc:"砍树更快，钢斧可砍硬木。" },
+            { id:"pickaxe", name:"镐子升级", type:"工具", source:"铁匠铺克林特", cost:"铜2k/钢5k/金10k/铱25k + 对应锭×5", desc:"破石更快，钢镐可采铁矿。" },
+            { id:"hoe", name:"锄头升级", type:"工具", source:"铁匠铺克林特", cost:"铜2k/钢5k/金10k/铱25k + 对应锭×5", desc:"蓄力范围增大。" },
+            { id:"watering_can", name:"洒水壶升级", type:"工具", source:"铁匠铺克林特", cost:"铜2k/钢5k/金10k/铱25k + 对应锭×5", desc:"蓄力范围增大。" },
+            { id:"trash_can", name:"垃圾桶升级", type:"工具", source:"铁匠铺克林特", cost:"铜1k/钢2.5k/金5k/铱12.5k + 对应锭×5", desc:"丢弃物品可回收价值。" }
+        ];
+
+        // ==================== NPC数据 ====================
         const npcDB = {
-            "alex": { name:"亚历克斯", location:"夏季白天常在沙滩或温泉，冬季在温泉，其余时间在家附近。" },
-            "elliott": { name:"艾利欧特", location:"春季12点去沙滩南边，3点站在桥上。周四杂货店，周五/日餐吧。" },
-            "harvey": { name:"哈维", location:"诊所8:30-12:00和13:30-16:30。周二/四/六下午博物馆，周五杂货店。" },
-            "sam": { name:"山姆", location:"卧室，周一/三Joja超市(或博物馆)，周五打台球，周六河边。" },
-            "sebastian": { name:"塞巴斯泰安", location:"地下室房间，傍晚湖边抽烟，周五打台球，周四火车站。" },
-            "abigail": { name:"阿比盖尔", location:"春季卧室，周三图书馆，周五餐吧打游戏，周日法师塔。" },
-            "leah": { name:"莉亚", location:"上午雕塑，12点去湖边，下午画画。周一杂货店，周五/六餐吧。" },
-            "penny": { name:"潘妮", location:"周二/三/四博物馆教书，其他时间拖车或小镇广场。" },
-            "haley": { name:"海莉", location:"春季卧室，12点在家附近，15:30去餐吧工作到凌晨。" },
-            "emily": { name:"艾米丽", location:"春季下午餐吧工作到凌晨，白天在家或杂货店附近。" },
-            "maru": { name:"玛鲁", location:"实验室或诊所，周二/四在医院，周末在家或社区中心。" },
-            "shane": { name:"谢恩", location:"玛妮牧场，下午Joja超市，晚上餐吧。" },
-            "marnie": { name:"玛妮", location:"牧场柜台9:00-16:00，晚上餐吧，周二杂货店。" },
-            "pam": { name:"潘姆", location:"上午家中沙发，12点Joja超市，16点餐吧直到凌晨。" },
-            "gus": { name:"格斯", location:"餐吧吧台12:00-0:00，上午在杂货店。" },
-            "clint": { name:"克林特", location:"铁匠铺9:00-16:00(周五休息)，晚上餐吧。" },
-            "willy": { name:"威利", location:"鱼店柜台9:00-17:00(周六休息)，晚上餐吧。" },
-            "lewis": { name:"刘易斯", location:"庄园8:30起床，上午打理花园，周二杂货店，周三牧场，周五餐吧。" },
-            "linus": { name:"莱纳斯", location:"帐篷附近，早晚篝火旁，白天深山湖泊或镇上。" },
-            "robin": { name:"罗宾", location:"木匠商店9:00-17:00(周二休息)，晚上在家。" },
-            "demetrius": { name:"德米特里厄斯", location:"实验室或家，周二杂货店，周五餐吧。" },
-            "caroline": { name:"卡洛琳", location:"杂货店走廊或厨房，周二下午和乔迪锻炼。" },
-            "pierre": { name:"皮埃尔", location:"杂货店柜台9:00-17:00(周三休息)。" },
-            "george": { name:"乔治", location:"家中餐桌或客厅，周日去杂货店看雕像。" },
-            "evelyn": { name:"艾芙琳", location:"家中厨房或广场花坛，周四社区中心工艺室。" },
-            "jodi": { name:"乔迪", location:"家厨房或客厅，周二杂货店锻炼，周三/五Joja超市。" },
-            "kent": { name:"肯特", location:"第二年春归，在家或树下，周日在教堂。" },
-            "jas": { name:"贾斯", location:"牧场家或外面大树下，周二/三博物馆上学。" },
-            "vincent": { name:"文森特", location:"家中玩或小镇闲逛，周二/三/四博物馆上课。" },
-            "sandy": { name:"桑迪", location:"沙漠绿洲商店内，几乎不出门。" },
-            "wizard": { name:"法师", location:"法师塔内，基本不离开。" },
-            "dwarf": { name:"矮人", location:"矿井入口东侧，全天在。" },
-            "krobus": { name:"科罗布斯", location:"下水道，一直待在那里。" },
-            "leo": { name:"雷欧", location:"姜岛树屋，6心后搬到星露谷，常在博物馆或山顶湖。" }
+            "alex": { id:"alex", name:"亚历克斯", loves:"完美早餐、鲑鱼晚餐", schedule:"夏季白天常在沙滩/温泉，冬季温泉。周三下午诊所。", note:"所有普遍最爱礼物也适用" },
+            "elliott": { id:"elliott", name:"艾利欧特", loves:"蟹黄糕、鸭毛、龙虾、石榴、椰汁汤、鱿鱼墨汁", schedule:"春季12点去沙滩南边，3点站在桥上。周四杂货店，周五/日餐吧。" },
+            "harvey": { id:"harvey", name:"哈维", loves:"咖啡、腌菜、巨无霸餐、松露油、果酒", schedule:"诊所8:30-12:00和13:30-16:30。周二/四/六下午博物馆。" },
+            "sam": { id:"sam", name:"山姆", loves:"仙人掌果子、枫糖棒、披萨、虎眼石", schedule:"卧室，周一/三Joja超市(博物馆)，周五打台球，周六河边。" },
+            "sebastian": { id:"sebastian", name:"塞巴斯泰安", loves:"泪晶、黑曜石、南瓜汤、生鱼片、虚空蛋", schedule:"地下室房间，傍晚湖边抽烟，周五打台球，周四火车站。" },
+            "abigail": { id:"abigail", name:"阿比盖尔", loves:"紫水晶、黑莓脆皮饼、巧克力蛋糕、河豚、南瓜、香辣鳗鱼", schedule:"春季卧室，周三图书馆，周五餐吧打游戏，周日法师塔。" },
+            "leah": { id:"leah", name:"莉亚", loves:"山羊奶酪、虞美人籽松糕、沙拉、蔬菜杂烩、松露、果酒", schedule:"上午雕塑，12点去湖边，下午画画。周一杂货店，周五/六餐吧。" },
+            "penny": { id:"penny", name:"潘妮", loves:"钻石、绿宝石、罂粟、虞美人籽松糕、红之盛宴、块茎拼盘、沙鱼、椰汁汤", schedule:"周二/三/四博物馆教书，其他时间拖车或小镇广场。" },
+            "haley": { id:"haley", name:"海莉", loves:"椰子、水果沙拉、粉红蛋糕、向日葵", schedule:"春季卧室，12点在家附近，15:30去餐吧工作到凌晨。" },
+            "emily": { id:"emily", name:"艾米丽", loves:"紫水晶、海蓝宝石、布料、绿宝石、翡翠、红宝石、救生汉堡、黄水晶、动物毛", schedule:"春季下午餐吧工作到凌晨，白天在家或杂货店附近。" },
+            "maru": { id:"maru", name:"玛鲁", loves:"电池组、花椰菜、乳酪花椰菜、钻石、金锭、铱锭、矿工特供、爆炒青椒、大黄派、草莓", schedule:"实验室或诊所，周二/四在医院，周末在家或社区中心。" },
+            "shane": { id:"shane", name:"谢恩", loves:"啤酒、爆炒青椒、披萨", schedule:"玛妮牧场，下午Joja超市，晚上餐吧。" },
+            "marnie": { id:"marnie", name:"玛妮", loves:"钻石、农夫午餐、粉红蛋糕、南瓜派", schedule:"牧场柜台9:00-16:00，晚上餐吧，周二杂货店。" },
+            "pam": { id:"pam", name:"潘姆", loves:"啤酒、仙人掌果子、琉璃山药、蜜蜂酒、淡啤酒、防风草、防风草汤", schedule:"上午家中沙发，12点Joja超市，16点餐吧直到凌晨。" },
+            "gus": { id:"gus", name:"格斯", loves:"钻石、法式田螺、鱼肉卷、橙子、热带咖喱", schedule:"餐吧吧台12:00-0:00，上午在杂货店。" },
+            "clint": { id:"clint", name:"克林特", loves:"紫水晶、海蓝宝石、绿宝石、金锭、铱锭、翡翠、万象晶石、红宝石、黄水晶、意式蕨菜炖饭", schedule:"铁匠铺9:00-16:00(周五休息)，晚上餐吧。" },
+            "willy": { id:"willy", name:"威利", loves:"南瓜、蜂蜜酒、钻石、铱锭、鲶鱼、鲟鱼、章鱼、海参", schedule:"鱼店柜台9:00-17:00(周六休息)，晚上餐吧。" },
+            "lewis": { id:"lewis", name:"刘易斯", loves:"秋日恩赐、琉璃山药、陈酿、蔬菜杂烩、绿茶", schedule:"庄园8:30起床，上午打理花园，周二杂货店，周三牧场，周五餐吧。" },
+            "linus": { id:"linus", name:"莱纳斯", loves:"蓝莓千层酥、酱汁蔬菜、椰子、仙人掌果子、山药", schedule:"帐篷附近，早晚篝火旁，白天深山湖泊或镇上。" },
+            "robin": { id:"robin", name:"罗宾", loves:"山羊奶酪、桃子、意大利面", schedule:"木匠商店9:00-17:00(周二休息)，晚上在家。" },
+            "demetrius": { id:"demetrius", name:"德米特里厄斯", loves:"豆类火锅、冰淇淋、大米布丁、草莓", schedule:"实验室或家，周二杂货店，周五餐吧。" },
+            "caroline": { id:"caroline", name:"卡洛琳", loves:"鱼肉卷、夏季亮片、绿茶、热带咖喱", schedule:"杂货店走廊或厨房，周二下午和乔迪锻炼。" },
+            "pierre": { id:"pierre", name:"皮埃尔", loves:"炸鱿鱼", schedule:"杂货店柜台9:00-17:00(周三休息)。" },
+            "george": { id:"george", name:"乔治", loves:"炒蘑菇、韭葱", schedule:"家中餐桌或客厅，周日去杂货店看雕像。" },
+            "evelyn": { id:"evelyn", name:"艾芙琳", loves:"甜菜、巧克力蛋糕、钻石、玫瑰仙子、蜜料面包、郁金香", schedule:"家中厨房或广场花坛，周四社区中心工艺室。" },
+            "jodi": { id:"jodi", name:"乔迪", loves:"香酥鲈鱼、钻石、帕尔玛奶酪、炒鳗鱼、薄煎饼、大黄派、蔬菜杂烩", schedule:"家厨房或客厅，周二杂货店锻炼，周三/五Joja超市。" },
+            "kent": { id:"kent", name:"肯特", loves:"榛子、烤榛子", schedule:"第二年春归，在家或树下，周日在教堂。" },
+            "jas": { id:"jas", name:"贾斯", loves:"玫瑰仙子、粉红蛋糕、葡萄干布丁", schedule:"牧场家或外面大树下，周二/三博物馆上学。" },
+            "vincent": { id:"vincent", name:"文森特", loves:"蔓越莓糖果、番茄、粉红蛋糕、蜗牛", schedule:"家中玩或小镇闲逛，周二/三/四博物馆上课。" },
+            "sandy": { id:"sandy", name:"桑迪", loves:"番红花、黄水仙、甜豌豆、芒果糯米饭", schedule:"沙漠绿洲商店内，几乎不出门。" },
+            "wizard": { id:"wizard", name:"法师", loves:"紫蘑菇、太阳精华、大海参、虚空精华", schedule:"法师塔内，基本不离开。" },
+            "dwarf": { id:"dwarf", name:"矮人", loves:"紫水晶、海盗宝石、绿宝石、翡翠、红宝石、万象晶石", schedule:"矿井入口东侧，全天在。" },
+            "krobus": { id:"krobus", name:"科罗布斯", loves:"钻石、铱锭、南瓜、虚空蛋、虚空蛋黄酱、野山葵", schedule:"下水道，一直待在那里。" },
+            "leo": { id:"leo", name:"雷欧", loves:"鸭毛、芒果、鸵鸟蛋、夏威夷芋泥", schedule:"姜岛树屋，6心后搬到星露谷，常在博物馆或山顶湖。" }
         };
 
+        // ==================== 物品数据库 ====================
+        const hotItems = ["starfruit","ancient_fruit","hops","blueberry","cranberries","sturgeon"];
 
-        // ==================== 物品数据 ====================
-        // 结构：id, name, type, basePrice, location, season, time,
-        // sacrifices:[{room,bundle,need,quality,note}],
-        // processing:[{method,equipment,product,price,priority,note}],
-        // gifts:[{npc,note}]
         const DB = {
             fish: [
-                { id:"legend", name:"传说之鱼", type:"fish", season:"春季", location:"深山湖泊深水区", time:"雨天·全天", basePrice:5000, sacrifices:[], processing:[], note:"仅此一条！收藏或直接出售。" },
-                { id:"crimsonfish", name:"绯红鱼", type:"fish", season:"夏季", location:"沙滩东侧码头深水区", time:"全天", basePrice:1500, sacrifices:[], processing:[] },
-                { id:"angler", name:"琵琶鱼", type:"fish", season:"秋季", location:"Joja超市北木桥往北深水区", time:"全天", basePrice:900 },
-                { id:"glacierfish", name:"冰川鱼", type:"fish", season:"冬季", location:"煤矿森林箭头小岛最南端", time:"全天", basePrice:1000 },
-                { id:"mutant_carp", name:"突变鲤鱼", type:"fish", location:"下水道", season:"任何", time:"全天", basePrice:1000 },
-                { id:"sunfish", name:"太阳鱼", type:"fish", season:"春/夏季", location:"煤矿森林河流/鹈鹕镇河流", time:"晴天 6AM-7PM", basePrice:30,
-                  sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}],
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75, priority:1}] },
-                { id:"catfish", name:"鲶鱼", type:"fish", season:"春/秋季", location:"煤矿森林河流/鹈鹕镇河流", time:"雨天 6AM-12AM", basePrice:200,
-                  sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}],
-                  processing:[{method:"熏鱼机", product:"熏鲶鱼", price:400, priority:1, equipment:'smoker'}],
-                  gifts:[{npc:'willy'}] },
-                { id:"shad", name:"西鲱", type:"fish", season:"春/夏/秋季", location:"煤矿森林河流/鹈鹕镇河流", time:"雨天 9AM-2AM", basePrice:60,
-                  sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}],
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75, priority:1}] },
-                { id:"smallmouth_bass", name:"小嘴鲈鱼", type:"fish", season:"春/秋季", location:"鹈鹕镇河流/煤矿森林池塘", time:"全天", basePrice:50,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75, priority:1}] },
-                { id:"largemouth_bass", name:"大嘴鲈鱼", type:"fish", season:"任何", location:"深山湖泊", time:"6AM-7PM", basePrice:100,
-                  sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}] },
-                { id:"carp", name:"鲤鱼", type:"fish", season:"任何", location:"深山湖泊/煤矿森林/沙滩", time:"全天", basePrice:30,
-                  sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}],
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75, priority:1}] },
-                { id:"sturgeon", name:"鲟鱼", type:"fish", season:"夏/冬季", location:"深山湖泊", time:"6AM-7PM", basePrice:200,
-                  sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}],
-                  processing:[{method:"鱼塘+罐头瓶", product:"鱼子酱", price:500, priority:1, equipment:'jar', note:"唯一能做鱼子酱"}],
-                  gifts:[{npc:'willy'}] },
-                { id:"bullhead", name:"大头鱼", type:"fish", season:"任何", location:"深山湖泊", time:"全天", basePrice:75,
-                  sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}] },
-                { id:"walleye", name:"大眼鱼", type:"fish", season:"秋/冬季", location:"深山湖泊/鹈鹕镇", time:"雨天 12AM-2AM", basePrice:105,
-                  sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}] },
-                { id:"midnight_carp", name:"午夜鲤鱼", type:"fish", season:"秋/冬季", location:"深山湖泊/煤矿森林池塘", time:"10PM-2AM", basePrice:150 },
-                { id:"rainbow_trout", name:"虹鳟鱼", type:"fish", season:"夏季", location:"煤矿森林河流/深山湖泊", time:"晴天 6AM-7PM", basePrice:65 },
-                { id:"dorado", name:"麻哈脂鲤", type:"fish", season:"夏季", location:"煤矿森林河流", time:"雨天 6AM-7PM", basePrice:100 },
-                { id:"sardine", name:"沙丁鱼", type:"fish", season:"春/秋/冬季", location:"沙滩", time:"6AM-7PM", basePrice:40,
-                  sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"herring", name:"鲱鱼", type:"fish", season:"春/冬季", location:"沙滩", time:"全天", basePrice:30,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75, priority:1}] },
-                { id:"halibut", name:"大比目鱼", type:"fish", season:"春/夏/冬季", location:"沙滩", time:"6AM-11AM & 7PM-2AM", basePrice:80 },
-                { id:"eel", name:"鳗鱼", type:"fish", season:"春/秋季", location:"沙滩", time:"雨天 4PM-2AM", basePrice:85,
-                  sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}] },
-                { id:"red_snapper", name:"红鲫鱼", type:"fish", season:"夏/秋季", location:"沙滩", time:"雨天 6AM-7PM", basePrice:50,
-                  sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"tilapia", name:"罗非鱼", type:"fish", season:"夏/秋季", location:"沙滩", time:"6AM-2PM", basePrice:75,
-                  sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"tuna", name:"金枪鱼", type:"fish", season:"夏/冬季", location:"沙滩", time:"6AM-7PM", basePrice:100,
-                  sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"pufferfish", name:"河豚", type:"fish", season:"夏季", location:"沙滩", time:"晴天 12PM-4PM", basePrice:200,
-                  sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}] },
-                { id:"sea_cucumber", name:"海参", type:"fish", season:"秋/冬季", location:"沙滩", time:"6AM-7PM", basePrice:75 },
-                { id:"squid", name:"鱿鱼", type:"fish", season:"冬季", location:"沙滩", time:"6PM-2AM", basePrice:80,
-                  gifts:[{npc:'elliott'}] },
-                { id:"octopus", name:"章鱼", type:"fish", season:"夏季", location:"沙滩", time:"6AM-1PM", basePrice:150,
-                  gifts:[{npc:'willy'},{npc:'elliott'}] },
-                { id:"super_cucumber", name:"大海参", type:"fish", season:"夏/秋季", location:"沙滩", time:"6PM-2AM", basePrice:250 },
-                { id:"stonefish", name:"石鱼", type:"fish", location:"矿井20层", season:"任何", time:"全天", basePrice:300 },
-                { id:"ice_pip", name:"冰柱鱼", type:"fish", location:"矿井60层", season:"任何", time:"全天", basePrice:500 },
-                { id:"lava_eel", name:"岩浆鳗鱼", type:"fish", location:"矿井100层", season:"任何", time:"全天", basePrice:700,
-                  processing:[{method:"熏鱼机", product:"熏岩浆鳗鱼", price:1400, priority:1, equipment:'smoker'}] },
-                { id:"ghostfish", name:"鬼鱼", type:"fish", location:"矿井20/60/100层", season:"任何", time:"全天", basePrice:45,
-                  sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}] },
-                { id:"woodskip", name:"木跃鱼", type:"fish", location:"秘密森林池塘", season:"任何", time:"全天", basePrice:75,
-                  sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}] },
-                { id:"sandfish", name:"沙鱼", type:"fish", location:"沙漠池塘", season:"任何", time:"全天", basePrice:75,
-                  sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}] },
-                { id:"scorpion_carp", name:"蝎鲤鱼", type:"fish", location:"沙漠池塘", season:"任何", time:"全天", basePrice:150 },
-                // 蟹笼
-                { id:"lobster", name:"龙虾", type:"fish", location:"蟹笼(海洋)", time:"放置即捕", basePrice:120,
-                  sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"crab", name:"螃蟹", type:"fish", location:"蟹笼(海洋)", time:"放置即捕", basePrice:100,
-                  sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"shrimp", name:"虾", type:"fish", location:"蟹笼(海洋)", time:"放置即捕", basePrice:60,
-                  sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"crayfish", name:"小龙虾", type:"fish", location:"蟹笼(淡水)", time:"放置即捕", basePrice:75,
-                  sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"snail", name:"蜗牛", type:"fish", location:"蟹笼(淡水)", time:"放置即捕", basePrice:65,
-                  sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75, priority:1}] },
-                { id:"periwinkle", name:"玉黍螺", type:"fish", location:"蟹笼(淡水)", time:"放置即捕", basePrice:20,
-                  sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75, priority:1}] },
-                { id:"clam", name:"蛤", type:"fish", location:"蟹笼(海洋)", time:"放置即捕", basePrice:50,
-                  sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"cockle", name:"鸟蛤", type:"fish", location:"蟹笼(海洋)", time:"放置即捕", basePrice:50,
-                  sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"mussel", name:"蚌", type:"fish", location:"蟹笼(海洋)", time:"放置即捕", basePrice:30,
-                  sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75, priority:1}] },
-                { id:"oyster", name:"牡蛎", type:"fish", location:"蟹笼(海洋)", time:"放置即捕", basePrice:40,
-                  sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75, priority:1}] },
-                // 夜市/姜岛
-                { id:"midnight_squid", name:"午夜鱿鱼", type:"fish", location:"夜市潜水艇", season:"冬季15-17", time:"5PM-2AM", basePrice:100 },
-                { id:"spook_fish", name:"灵鱼", type:"fish", location:"夜市潜水艇", season:"冬季15-17", time:"5PM-2AM", basePrice:220 },
-                { id:"blobfish", name:"水滴鱼", type:"fish", location:"夜市潜水艇", season:"冬季15-17", time:"5PM-2AM", basePrice:500 },
-                { id:"blue_discus", name:"蓝铁饼鱼", type:"fish", location:"姜岛淡水", season:"任何", time:"全天", basePrice:120 },
-                { id:"lionfish", name:"狮子鱼", type:"fish", location:"姜岛海洋/海盗湾", season:"任何", time:"全天", basePrice:100 },
-                { id:"stingray", name:"黄貂鱼", type:"fish", location:"海盗湾", season:"任何", time:"全天", basePrice:180 },
-                { id:"flounder", name:"比目鱼", type:"fish", location:"姜岛海洋", season:"任何", time:"6AM-8PM", basePrice:200 }
+                { id:"sunfish", name:"太阳鱼", type:"鱼", season:"春/夏", location:"煤矿森林河流/鹈鹕镇", time:"晴天6AM-7PM", basePrice:30, sacrifices:[{bundle:"河鱼收集包"}], processing:[{m:"低价值鱼→厨房烹饪→生鱼片", p:75}] },
+                { id:"catfish", name:"鲶鱼", type:"鱼", season:"春/秋", location:"煤矿森林河流/鹈鹕镇", time:"雨天6AM-12AM", basePrice:200, sacrifices:[{bundle:"河鱼收集包"}], processing:[{m:"熏鱼机→熏鲶鱼", p:400, eq:"smoker"}], gifts:["willy"] },
+                { id:"shad", name:"西鲱", type:"鱼", season:"春/夏/秋", location:"煤矿森林河流/鹈鹕镇", time:"雨天9AM-2AM", basePrice:60, sacrifices:[{bundle:"河鱼收集包"}], processing:[{m:"厨房烹饪→生鱼片", p:75}] },
+                { id:"largemouth_bass", name:"大嘴鲈鱼", type:"鱼", season:"任何", location:"深山湖泊", time:"6AM-7PM", basePrice:100, sacrifices:[{bundle:"湖鱼收集包"}] },
+                { id:"carp", name:"鲤鱼", type:"鱼", season:"任何", location:"深山湖泊/煤矿森林/沙滩", time:"全天", basePrice:30, sacrifices:[{bundle:"湖鱼收集包"}], processing:[{m:"厨房烹饪→生鱼片", p:75}] },
+                { id:"sturgeon", name:"鲟鱼", type:"鱼", season:"夏/冬", location:"深山湖泊", time:"6AM-7PM", basePrice:200, sacrifices:[{bundle:"湖鱼收集包"}], processing:[{m:"鱼塘+罐头瓶→鱼子酱", p:500, eq:"jar"}], gifts:["willy"], note:"唯一能做鱼子酱的鱼！" },
+                { id:"bullhead", name:"大头鱼", type:"鱼", season:"任何", location:"深山湖泊", time:"全天", basePrice:75, sacrifices:[{bundle:"湖鱼收集包"}] },
+                { id:"walleye", name:"大眼鱼", type:"鱼", season:"秋/冬", location:"深山湖泊/鹈鹕镇", time:"雨天12AM-2AM", basePrice:105, sacrifices:[{bundle:"夜间垂钓收集包"}] },
+                { id:"sardine", name:"沙丁鱼", type:"鱼", season:"春/秋/冬", location:"沙滩", time:"6AM-7PM", basePrice:40, sacrifices:[{bundle:"海鱼收集包"}] },
+                { id:"red_snapper", name:"红鲫鱼", type:"鱼", season:"夏/秋", location:"沙滩", time:"雨天6AM-7PM", basePrice:50, sacrifices:[{bundle:"海鱼收集包"}] },
+                { id:"tilapia", name:"罗非鱼", type:"鱼", season:"夏/秋", location:"沙滩", time:"6AM-2PM", basePrice:75, sacrifices:[{bundle:"海鱼收集包"}] },
+                { id:"tuna", name:"金枪鱼", type:"鱼", season:"夏/冬", location:"沙滩", time:"6AM-7PM", basePrice:100, sacrifices:[{bundle:"海鱼收集包"}] },
+                { id:"pufferfish", name:"河豚", type:"鱼", season:"夏", location:"沙滩", time:"晴天12PM-4PM", basePrice:200, sacrifices:[{bundle:"特色鱼类收集包"}] },
+                { id:"eel", name:"鳗鱼", type:"鱼", season:"春/秋", location:"沙滩", time:"雨天4PM-2AM", basePrice:85, sacrifices:[{bundle:"夜间垂钓收集包"}] },
+                { id:"squid", name:"鱿鱼", type:"鱼", season:"冬", location:"沙滩", time:"6PM-2AM", basePrice:80, gifts:["elliott"] },
+                { id:"octopus", name:"章鱼", type:"鱼", season:"夏", location:"沙滩", time:"6AM-1PM", basePrice:150, gifts:["willy","elliott"] },
+                { id:"lava_eel", name:"岩浆鳗鱼", type:"鱼", season:"任何", location:"矿井100层", time:"全天", basePrice:700, processing:[{m:"熏鱼机→熏岩浆鳗鱼", p:1400, eq:"smoker"}] },
+                { id:"ghostfish", name:"鬼鱼", type:"鱼", season:"任何", location:"矿井20/60/100层", time:"全天", basePrice:45, sacrifices:[{bundle:"特色鱼类收集包"}] },
+                { id:"woodskip", name:"木跃鱼", type:"鱼", season:"任何", location:"秘密森林池塘", time:"全天", basePrice:75, sacrifices:[{bundle:"特色鱼类收集包"}] },
+                { id:"sandfish", name:"沙鱼", type:"鱼", season:"任何", location:"沙漠池塘", time:"全天", basePrice:75, sacrifices:[{bundle:"特色鱼类收集包"}] },
+                { id:"lobster", name:"龙虾", type:"鱼", location:"蟹笼(海洋)", basePrice:120, sacrifices:[{bundle:"蟹笼收集包"}] },
+                { id:"crab", name:"螃蟹", type:"鱼", location:"蟹笼(海洋)", basePrice:100, sacrifices:[{bundle:"蟹笼收集包"}] },
+                { id:"shrimp", name:"虾", type:"鱼", location:"蟹笼(海洋)", basePrice:60, sacrifices:[{bundle:"蟹笼收集包"}] },
+                { id:"clam", name:"蛤", type:"鱼", location:"蟹笼(海洋)", basePrice:50, sacrifices:[{bundle:"蟹笼收集包"}] },
+                { id:"mussel", name:"蚌", type:"鱼", location:"蟹笼(海洋)", basePrice:30, sacrifices:[{bundle:"蟹笼收集包"}], processing:[{m:"厨房烹饪→生鱼片", p:75}] },
+                { id:"oyster", name:"牡蛎", type:"鱼", location:"蟹笼(海洋)", basePrice:40, sacrifices:[{bundle:"蟹笼收集包"}], processing:[{m:"厨房烹饪→生鱼片", p:75}] },
+                { id:"periwinkle", name:"玉黍螺", type:"鱼", location:"蟹笼(淡水)", basePrice:20, sacrifices:[{bundle:"蟹笼收集包"}], processing:[{m:"厨房烹饪→生鱼片", p:75}] },
+                { id:"snail", name:"蜗牛", type:"鱼", location:"蟹笼(淡水)", basePrice:65, sacrifices:[{bundle:"蟹笼收集包"}], processing:[{m:"厨房烹饪→生鱼片", p:75}] },
             ],
-            crops_spring: [
-                { id:"rhubarb", name:"大黄", type:"crop", season:"春季", basePrice:220,
-                  sacrifices:[],
-                  processing:[
-                    {method:"小桶", product:"大黄酒", price:660, priority:1, equipment:'keg'},
-                    {method:"罐头瓶", product:"大黄果酱", price:490, priority:2, equipment:'jar'},
-                    {method:"直接出售 (金/铱星)", product:"大黄", price:220, priority:3}
-                  ]},
-                { id:"strawberry", name:"草莓", type:"crop", season:"春季", basePrice:120,
-                  sacrifices:[],
-                  processing:[
-                    {method:"罐头瓶", product:"草莓酱", price:290, priority:1, equipment:'jar', note:"产量大，周转快"},
-                    {method:"小桶", product:"草莓酒", price:360, priority:2, equipment:'keg'},
-                    {method:"种子生产器", product:"古代种子", priority:3, equipment:'seedmaker'}
-                  ]},
-                { id:"cauliflower", name:"花椰菜", type:"crop", season:"春季", basePrice:175,
-                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1, quality:"普通"}],
-                  processing:[
-                    {method:"罐头瓶", product:"腌花椰菜", price:400, priority:1, equipment:'jar'},
-                    {method:"小桶", product:"花椰菜汁", price:393, priority:2, equipment:'keg'}
-                  ]},
-                { id:"coffee_bean", name:"咖啡豆", type:"crop", season:"春/夏", basePrice:15,
-                  processing:[{method:"小桶", product:"咖啡", price:150, priority:1, equipment:'keg', note:"5粒豆=1杯咖啡"}] },
-                { id:"potato", name:"土豆", type:"crop", season:"春季", basePrice:80,
-                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"腌土豆", price:210, priority:1, equipment:'jar'},{method:"直接出售 (金/铱星)", product:"土豆", price:80, priority:2}] },
-                { id:"kale", name:"甘蓝", type:"crop", season:"春季", basePrice:110,
-                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"腌甘蓝", price:270, priority:1, equipment:'jar'}] },
-                { id:"green_bean", name:"青豆", type:"crop", season:"春季", basePrice:40,
-                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"腌青豆", price:130, priority:1, equipment:'jar'}] },
-                { id:"parsnip", name:"防风草", type:"crop", season:"春季", basePrice:35,
-                  sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}],
-                  processing:[{method:"直接出售", product:"防风草", price:35, priority:1},{method:"罐头瓶", product:"腌防风草", price:120, priority:2, equipment:'jar'}] },
-                { id:"garlic", name:"大蒜", type:"crop", season:"春季", basePrice:60,
-                  processing:[{method:"直接出售", priority:1}] },
-                { id:"blue_jazz", name:"蓝爵", type:"crop", season:"春季", basePrice:50,
-                  sacrifices:[],
-                  processing:[{method:"蜂房旁种植→特色蜂蜜", product:"蓝爵士蜂蜜", price:200, priority:1}], note:"花卉，种在蜂房周围。" },
-                { id:"tulip", name:"郁金香", type:"crop", season:"春季", basePrice:30,
-                  processing:[{method:"蜂房旁→特色蜂蜜", priority:1}] },
-            ],
-            crops_summer: [
-                { id:"starfruit", name:"杨桃", type:"crop", season:"夏季", basePrice:750,
-                  sacrifices:[],
-                  processing:[{method:"小桶→陈酿", product:"杨桃酒", price:2250, priority:1, equipment:'keg'},{method:"罐头瓶", product:"杨桃酱", price:1550, priority:2, equipment:'jar'}] },
-                { id:"hops", name:"啤酒花", type:"crop", season:"夏季", basePrice:25,
-                  sacrifices:[],
-                  processing:[{method:"小桶", product:"淡啤酒", price:300, priority:1, equipment:'keg', note:"1.5天完成"}] },
-                { id:"melon", name:"甜瓜", type:"crop", season:"夏季", basePrice:250,
-                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}],
-                  processing:[{method:"小桶", product:"甜瓜酒", price:750, priority:1, equipment:'keg'},{method:"罐头瓶", product:"甜瓜酱", price:550, priority:2, equipment:'jar'}] },
-                { id:"blueberry", name:"蓝莓", type:"crop", season:"夏季", basePrice:50,
-                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"蓝莓酱", price:150, priority:1, equipment:'jar'},{method:"直接出售 (银星以上)", priority:2}] },
-                { id:"red_cabbage", name:"红卷心菜", type:"crop", season:"夏季", basePrice:260,
-                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"腌红卷心菜", price:570, priority:1, equipment:'jar'},{method:"小桶", product:"红卷心菜汁", price:585, priority:2, equipment:'keg'}] },
-                { id:"wheat", name:"小麦", type:"crop", season:"夏/秋", basePrice:25,
-                  sacrifices:[],
-                  processing:[{method:"小桶", product:"啤酒", price:200, priority:1, equipment:'keg'},{method:"磨坊", product:"大麦粉", price:50, priority:2, equipment:'mill'}] },
-                { id:"tomato", name:"番茄", type:"crop", season:"夏季", basePrice:60,
-                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"腌番茄", price:170, priority:1, equipment:'jar'}] },
-                { id:"hot_pepper", name:"辣椒", type:"crop", season:"夏季", basePrice:40,
-                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"腌辣椒", price:130, priority:1, equipment:'jar'}] },
-                { id:"corn", name:"玉米", type:"crop", season:"夏/秋", basePrice:50,
-                  sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"腌玉米", price:150, priority:1, equipment:'jar'}] },
-                { id:"radish", name:"萝卜", type:"crop", season:"夏季", basePrice:90,
-                  processing:[{method:"直接出售", priority:1},{method:"罐头瓶", product:"腌萝卜", price:230, priority:2, equipment:'jar'}] },
-                { id:"sunflower", name:"向日葵", type:"crop", season:"夏/秋", basePrice:80,
-                  processing:[{method:"产油机", product:"食用油", price:100, priority:1, equipment:'oil'}] },
-                { id:"poppy", name:"罂粟", type:"crop", season:"夏季", basePrice:140,
-                  processing:[{method:"蜂房旁→特色蜂蜜", product:"罂粟蜂蜜", price:380, priority:1}] },
-                { id:"summer_spangle", name:"夏季金鸡菊", type:"crop", season:"夏季", basePrice:90,
-                  processing:[{method:"蜂房旁→特色蜂蜜", product:"夏季金鸡菊蜂蜜", price:280, priority:1}] },
-            ],
-            crops_fall: [
-                { id:"pumpkin", name:"南瓜", type:"crop", season:"秋季", basePrice:320,
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"腌南瓜", price:690, priority:1, equipment:'jar'},{method:"小桶", product:"南瓜汁", price:720, priority:2, equipment:'keg'}] },
-                { id:"cranberries", name:"蔓越莓", type:"crop", season:"秋季", basePrice:75,
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"蔓越莓酱", price:200, priority:1, equipment:'jar'},{method:"直接出售 (银星以上)", priority:2}] },
-                { id:"grape", name:"葡萄", type:"crop", season:"秋季", basePrice:80,
-                  sacrifices:[],
-                  processing:[{method:"小桶", product:"葡萄酒", price:240, priority:1, equipment:'keg'},{method:"罐头瓶", product:"葡萄酱", price:210, priority:2, equipment:'jar'}] },
-                { id:"beet", name:"甜菜", type:"crop", season:"秋季", basePrice:100,
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}],
-                  processing:[{method:"磨坊", product:"糖", price:100, priority:1, equipment:'mill'},{method:"罐头瓶", product:"腌甜菜", price:250, priority:2, equipment:'jar'}], note:"齐先生任务需10个" },
-                { id:"yam", name:"山药", type:"crop", season:"秋季", basePrice:160,
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"腌山药", price:370, priority:1, equipment:'jar'}] },
-                { id:"artichoke", name:"洋蓟", type:"crop", season:"秋季", basePrice:160,
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"腌洋蓟", price:370, priority:1, equipment:'jar'}] },
-                { id:"eggplant", name:"茄子", type:"crop", season:"秋季", basePrice:60,
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}],
-                  processing:[{method:"直接出售", product:"茄子", price:60, priority:1},{method:"罐头瓶", product:"腌茄子", price:170, priority:2, equipment:'jar'}] },
-                { id:"bok_choy", name:"小白菜", type:"crop", season:"秋季", basePrice:80,
-                  sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}],
-                  processing:[{method:"直接出售", product:"小白菜", price:80, priority:1},{method:"罐头瓶", product:"腌小白菜", price:210, priority:2, equipment:'jar'}] },
-                { id:"fairy_rose", name:"仙女玫瑰", type:"crop", season:"秋季", basePrice:290,
-                  processing:[{method:"蜂房旁→特色蜂蜜", product:"仙女玫瑰蜂蜜", price:680, priority:1}], note:"全游戏最贵蜂蜜。" },
-            ],
-            crops_special: [
-                { id:"ancient_fruit", name:"远古果实", type:"crop", season:"春/夏/秋(温室)", basePrice:550,
-                  sacrifices:[],
-                  processing:[{method:"小桶→陈酿", product:"远古果酒", price:1650, priority:1, equipment:'keg'},{method:"种子生产器", product:"古代种子", priority:2, equipment:'seedmaker'}] },
-                { id:"sweet_gem_berry", name:"宝石甜莓", type:"crop", season:"秋季", basePrice:3000,
-                  processing:[], note:"无法加工，直接出售或给森林雕像换取星之果实。" },
-                { id:"pineapple", name:"菠萝", type:"crop", season:"姜岛", basePrice:300,
-                  processing:[{method:"小桶", product:"菠萝酒", price:900, priority:1, equipment:'keg'},{method:"罐头瓶", product:"菠萝酱", price:650, priority:2, equipment:'jar'}] },
-                { id:"tea_leaves", name:"茶叶", type:"crop", season:"春/夏/秋", basePrice:50,
-                  processing:[{method:"小桶", product:"绿茶", price:100, priority:1, equipment:'keg'}] },
-                { id:"taro_root", name:"芋头", type:"crop", season:"姜岛", basePrice:100,
-                  processing:[{method:"罐头瓶", product:"腌芋头", price:250, priority:1, equipment:'jar'}] },
+            crops_all: [
+                { id:"rhubarb", name:"大黄", type:"作物", season:"春", basePrice:220, processing:[{m:"小桶→大黄酒", p:660, eq:"keg"},{m:"罐头瓶→大黄果酱", p:490, eq:"jar"}] },
+                { id:"strawberry", name:"草莓", type:"作物", season:"春", basePrice:120, processing:[{m:"罐头瓶→草莓酱(产量大周转快)", p:290, eq:"jar"},{m:"小桶→草莓酒", p:360, eq:"keg"}] },
+                { id:"cauliflower", name:"花椰菜", type:"作物", season:"春", basePrice:175, sacrifices:[{bundle:"春季作物收集包"}], processing:[{m:"罐头瓶→腌花椰菜", p:400, eq:"jar"}] },
+                { id:"potato", name:"土豆", type:"作物", season:"春", basePrice:80, sacrifices:[{bundle:"春季作物收集包"}], processing:[{m:"罐头瓶→腌土豆", p:210, eq:"jar"}] },
+                { id:"green_bean", name:"青豆", type:"作物", season:"春", basePrice:40, sacrifices:[{bundle:"春季作物收集包"}], processing:[{m:"罐头瓶→腌青豆", p:130, eq:"jar"}] },
+                { id:"starfruit", name:"杨桃", type:"作物", season:"夏", basePrice:750, hot:true, processing:[{m:"小桶→陈酿→杨桃酒", p:2250, eq:"keg"}], note:"单体价值之王！" },
+                { id:"hops", name:"啤酒花", type:"作物", season:"夏", basePrice:25, hot:true, processing:[{m:"小桶→淡啤酒(1.5天)", p:300, eq:"keg"}], note:"日收益之王！" },
+                { id:"melon", name:"甜瓜", type:"作物", season:"夏", basePrice:250, sacrifices:[{bundle:"夏季作物收集包"}], processing:[{m:"小桶→甜瓜酒", p:750, eq:"keg"}] },
+                { id:"blueberry", name:"蓝莓", type:"作物", season:"夏", basePrice:50, sacrifices:[{bundle:"夏季作物收集包"}], processing:[{m:"罐头瓶→蓝莓酱(产量大)", p:150, eq:"jar"}] },
+                { id:"red_cabbage", name:"红卷心菜", type:"作物", season:"夏", basePrice:260, sacrifices:[{bundle:"夏季作物收集包"}], processing:[{m:"罐头瓶→腌红卷心菜", p:570, eq:"jar"}] },
+                { id:"pumpkin", name:"南瓜", type:"作物", season:"秋", basePrice:320, sacrifices:[{bundle:"秋季作物收集包"}], processing:[{m:"罐头瓶→腌南瓜", p:690, eq:"jar"},{m:"小桶→南瓜汁", p:720, eq:"keg"}] },
+                { id:"cranberries", name:"蔓越莓", type:"作物", season:"秋", basePrice:75, sacrifices:[{bundle:"秋季作物收集包"}], processing:[{m:"罐头瓶→蔓越莓酱(产量极大)", p:200, eq:"jar"}] },
+                { id:"grape", name:"葡萄", type:"作物", season:"秋", basePrice:80, processing:[{m:"小桶→葡萄酒", p:240, eq:"keg"},{m:"罐头瓶→葡萄酱", p:210, eq:"jar"}] },
+                { id:"ancient_fruit", name:"远古果实", type:"作物", season:"春/夏/秋(温室)", basePrice:550, hot:true, processing:[{m:"小桶→陈酿→远古果酒", p:1650, eq:"keg"}], note:"印钞机，绝不直接卖原果！" },
+                { id:"pineapple", name:"菠萝", type:"作物", season:"姜岛", basePrice:300, processing:[{m:"小桶→菠萝酒", p:900, eq:"keg"}] },
+                { id:"taro_root", name:"芋头", type:"作物", season:"姜岛", basePrice:100, processing:[{m:"罐头瓶→腌芋头", p:250, eq:"jar"}] },
             ],
             animal: [
-                { id:"egg", name:"鸡蛋", type:"animal", basePrice:50, processing:[{method:"蛋黄酱机", product:"蛋黄酱", price:190, priority:1, equipment:'mayo'}] },
-                { id:"large_egg", name:"大鸡蛋", type:"animal", basePrice:95, processing:[{method:"蛋黄酱机", product:"金星蛋黄酱", price:285, priority:1, equipment:'mayo'}] },
-                { id:"duck_egg", name:"鸭蛋", type:"animal", basePrice:95, processing:[{method:"蛋黄酱机", product:"鸭蛋黄酱", price:375, priority:1, equipment:'mayo'}] },
-                { id:"dinosaur_egg", name:"恐龙蛋", type:"animal", basePrice:350, processing:[{method:"孵化器", product:"恐龙", priority:1, note:"第一个必须孵化！"},{method:"蛋黄酱机", product:"恐龙蛋黄酱", price:800, priority:2, equipment:'mayo'}] },
-                { id:"ostrich_egg", name:"鸵鸟蛋", type:"animal", basePrice:600, processing:[{method:"蛋黄酱机", product:"10个蛋黄酱", price:1900, priority:1, equipment:'mayo'}] },
-                { id:"void_egg", name:"虚空蛋", type:"animal", basePrice:65, processing:[{method:"蛋黄酱机", product:"虚空蛋黄酱", price:275, priority:1, equipment:'mayo'}] },
-                { id:"golden_egg", name:"金蛋", type:"animal", basePrice:500, processing:[{method:"蛋黄酱机", product:"3个金星蛋黄酱", price:855, priority:1, equipment:'mayo'}] },
-                { id:"milk", name:"牛奶", type:"animal", basePrice:125, processing:[{method:"奶酪机", product:"奶酪", price:230, priority:1, equipment:'cheese'}] },
-                { id:"large_milk", name:"大壶牛奶", type:"animal", basePrice:190, processing:[{method:"奶酪机", product:"金星奶酪", price:345, priority:1, equipment:'cheese'}] },
-                { id:"goat_milk", name:"羊奶", type:"animal", basePrice:225, processing:[{method:"奶酪机", product:"山羊奶酪", price:400, priority:1, equipment:'cheese'}] },
-                { id:"wool", name:"羊毛", type:"animal", basePrice:340, processing:[{method:"织布机", product:"布料", price:470, priority:1, equipment:'loom'}] },
-                { id:"truffle", name:"松露", type:"animal", basePrice:625, processing:[{method:"产油机", product:"松露油", price:1065, priority:1, equipment:'oil'},{method:"直接出售 (植物学家铱星)", product:"铱星松露", price:1250, priority:2}] },
+                { id:"egg", name:"鸡蛋", type:"畜牧", basePrice:50, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"coop\")'>[鸡舍]</span>", processing:[{m:"蛋黄酱机→蛋黄酱", p:190, eq:"mayo"}] },
+                { id:"large_egg", name:"大鸡蛋", type:"畜牧", basePrice:95, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"coop\")'>[鸡舍]</span>", processing:[{m:"蛋黄酱机→金星蛋黄酱", p:285, eq:"mayo"}] },
+                { id:"duck_egg", name:"鸭蛋", type:"畜牧", basePrice:95, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"big_coop\")'>[大鸡舍]</span>", processing:[{m:"蛋黄酱机→鸭蛋黄酱", p:375, eq:"mayo"}] },
+                { id:"dinosaur_egg", name:"恐龙蛋", type:"畜牧", basePrice:350, processing:[{m:"孵化器→恐龙(第一个必须孵化！)"},{m:"蛋黄酱机→恐龙蛋黄酱", p:800, eq:"mayo"}] },
+                { id:"ostrich_egg", name:"鸵鸟蛋", type:"畜牧", basePrice:600, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"deluxe_barn\")'>[高级畜棚]</span>", processing:[{m:"蛋黄酱机→10个蛋黄酱", p:1900, eq:"mayo"}] },
+                { id:"void_egg", name:"虚空蛋", type:"畜牧", basePrice:65, processing:[{m:"蛋黄酱机→虚空蛋黄酱", p:275, eq:"mayo"}] },
+                { id:"golden_egg", name:"金蛋", type:"畜牧", basePrice:500, processing:[{m:"蛋黄酱机→3个金星蛋黄酱", p:855, eq:"mayo"}] },
+                { id:"milk", name:"牛奶", type:"畜牧", basePrice:125, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"barn\")'>[畜棚]</span>", processing:[{m:"奶酪机→奶酪", p:230, eq:"cheese"}] },
+                { id:"large_milk", name:"大壶牛奶", type:"畜牧", basePrice:190, processing:[{m:"奶酪机→金星奶酪", p:345, eq:"cheese"}] },
+                { id:"goat_milk", name:"羊奶", type:"畜牧", basePrice:225, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"big_barn\")'>[大畜棚]</span>", processing:[{m:"奶酪机→山羊奶酪", p:400, eq:"cheese"}] },
+                { id:"wool", name:"羊毛", type:"畜牧", basePrice:340, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"big_barn\")'>[大畜棚]</span>", processing:[{m:"织布机→布料", p:470, eq:"loom"}] },
+                { id:"truffle", name:"松露", type:"畜牧", basePrice:625, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"deluxe_barn\")'>[高级畜棚]</span>", processing:[{m:"产油机→松露油", p:1065, eq:"oil"},{m:"直接出售(植物学家铱星)", p:1250}] },
             ],
             foraging: [
-                { id:"morel", name:"普通蘑菇", type:"foraging", season:"春季/秘密森林", basePrice:40,
-                  sacrifices:[{room:"工艺室", bundle:"异国情调采集收集包", need:1, note:"或秋季采集包"}],
-                  processing:[{method:"烘干机", product:"干蘑菇", price:80, priority:1, equipment:'dehydrator'},{method:"种子生产器", product:"秋季种子", priority:3, equipment:'seedmaker'}] },
-                { id:"chanterelle", name:"鸡油菇", type:"foraging", season:"秋季/秘密森林", basePrice:160,
-                  processing:[{method:"烘干机", product:"干鸡油菇", price:320, priority:1, equipment:'dehydrator'}] },
-                { id:"purple_mushroom", name:"紫蘑菇", type:"foraging", season:"矿井/秋季", basePrice:250,
-                  sacrifices:[{room:"工艺室", bundle:"异国情调采集收集包", need:1}],
-                  processing:[{method:"烘干机", product:"干紫蘑菇", price:500, priority:1, equipment:'dehydrator'}] },
-                { id:"salmonberry", name:"美洲大树莓", type:"foraging", season:"春季15-18", basePrice:5,
-                  sacrifices:[],
-                  processing:[{method:"罐头瓶", product:"树莓酱", price:60, priority:1, equipment:'jar'},{method:"直接吃/下矿口粮", priority:2}] },
-                { id:"blackberry", name:"黑莓", type:"foraging", season:"秋季8-11", basePrice:20,
-                  sacrifices:[],
-                  processing:[{method:"罐头瓶", product:"黑莓酱", price:90, priority:1, equipment:'jar'}] },
-                { id:"wild_plum", name:"野李子", type:"foraging", season:"秋季", basePrice:80,
-                  sacrifices:[{room:"工艺室", bundle:"秋季采集收集包", need:1}],
-                  processing:[{method:"小桶", product:"野李酒", price:240, priority:1, equipment:'keg'},{method:"罐头瓶", product:"野李酱", price:210, priority:2, equipment:'jar'}] },
-                { id:"coconut", name:"椰子", type:"foraging", season:"沙漠/姜岛", basePrice:100,
-                  sacrifices:[{room:"工艺室", bundle:"异国情调采集收集包", need:1}],
-                  processing:[{method:"小桶", product:"椰子酒", price:300, priority:1, equipment:'keg'}] },
-                { id:"cactus_fruit", name:"仙人掌果子", type:"foraging", season:"沙漠", basePrice:75,
-                  sacrifices:[{room:"工艺室", bundle:"异国情调采集收集包", need:1}],
-                  processing:[{method:"小桶", product:"仙人掌酒", price:225, priority:1, equipment:'keg'}] },
-                { id:"hazelnut", name:"榛子", type:"foraging", season:"秋季", basePrice:90,
-                  sacrifices:[{room:"工艺室", bundle:"秋季采集收集包", need:1}],
-                  processing:[{method:"厨房烹饪", product:"烤榛子", price:180, priority:1},{method:"烘干机", product:"干榛子", price:180, priority:2, equipment:'dehydrator'}] },
-                { id:"wild_horseradish", name:"野山葵", type:"foraging", season:"春季", basePrice:50,
-                  sacrifices:[{room:"工艺室", bundle:"春季采集收集包", need:1}],
-                  processing:[{method:"种子生产器", product:"春季种子", priority:2, equipment:'seedmaker'}] },
-                { id:"daffodil", name:"黄水仙", type:"foraging", season:"春季", basePrice:30,
-                  sacrifices:[{room:"工艺室", bundle:"春季采集收集包", need:1}] },
-                { id:"leek", name:"韭葱", type:"foraging", season:"春季", basePrice:60,
-                  sacrifices:[{room:"工艺室", bundle:"春季采集收集包", need:1}] },
-                { id:"dandelion", name:"蒲公英", type:"foraging", season:"春季", basePrice:40,
-                  sacrifices:[{room:"工艺室", bundle:"春季采集收集包", need:1}] },
-                { id:"spice_berry", name:"香味浆果", type:"foraging", season:"夏季", basePrice:80,
-                  sacrifices:[{room:"工艺室", bundle:"夏季采集收集包", need:1}],
-                  processing:[{method:"罐头瓶", product:"香味浆果酱", price:210, priority:1, equipment:'jar'}] },
-                { id:"grape_forage", name:"葡萄(觅食)", type:"foraging", season:"夏季", basePrice:80,
-                  sacrifices:[{room:"工艺室", bundle:"夏季采集收集包", need:1}],
-                  processing:[{method:"小桶", product:"葡萄酒", price:240, priority:1, equipment:'keg'}] },
-                { id:"fiddlehead_fern", name:"蕨菜", type:"foraging", season:"夏季秘密森林", basePrice:90,
-                  processing:[{method:"直接出售", priority:1}] },
-                { id:"red_mushroom", name:"红蘑菇", type:"foraging", season:"矿井/夏季", basePrice:75,
-                  sacrifices:[{room:"工艺室", bundle:"异国情调采集收集包", need:1}],
-                  processing:[{method:"烘干机", product:"干红蘑菇", price:150, priority:1, equipment:'dehydrator'}] },
+                { id:"salmonberry", name:"美洲大树莓", type:"觅食", season:"春15-18", basePrice:5, processing:[{m:"罐头瓶→树莓酱", p:60, eq:"jar"},{m:"直接吃/下矿口粮"}] },
+                { id:"blackberry", name:"黑莓", type:"觅食", season:"秋8-11", basePrice:20, processing:[{m:"罐头瓶→黑莓酱", p:90, eq:"jar"}] },
+                { id:"wild_plum", name:"野李子", type:"觅食", season:"秋", basePrice:80, sacrifices:[{bundle:"秋季采集收集包"}], processing:[{m:"小桶→野李酒", p:240, eq:"keg"}] },
+                { id:"hazelnut", name:"榛子", type:"觅食", season:"秋", basePrice:90, sacrifices:[{bundle:"秋季采集收集包"}], processing:[{m:"厨房→烤榛子", p:180},{m:"烘干机→干榛子", p:180, eq:"dehydrator"}] },
+                { id:"morel", name:"普通蘑菇", type:"觅食", season:"春/秘森", basePrice:40, processing:[{m:"烘干机→干蘑菇", p:80, eq:"dehydrator"}] },
+                { id:"chanterelle", name:"鸡油菇", type:"觅食", season:"秋/秘森", basePrice:160, processing:[{m:"烘干机→干鸡油菇", p:320, eq:"dehydrator"}] },
+                { id:"purple_mushroom", name:"紫蘑菇", type:"觅食", season:"矿井/秋", basePrice:250, processing:[{m:"烘干机→干紫蘑菇", p:500, eq:"dehydrator"}] },
+                { id:"coconut", name:"椰子", type:"觅食", season:"沙漠/姜岛", basePrice:100, processing:[{m:"小桶→椰子酒", p:300, eq:"keg"}] },
+                { id:"cactus_fruit", name:"仙人掌果子", type:"觅食", season:"沙漠", basePrice:75, processing:[{m:"小桶→仙人掌酒", p:225, eq:"keg"}] },
             ]
         };
 
-        // 所有物品合并
-        const allItems = [
-            ...DB.fish,
-            ...DB.crops_spring, ...DB.crops_summer, ...DB.crops_fall, ...DB.crops_special,
-            ...DB.animal,
-            ...DB.foraging
-        ];
+        // ==================== 合并与搜索 ====================
+        const allItems = [...DB.fish, ...DB.crops_all, ...DB.animal, ...DB.foraging];
 
-        // ==================== 静态页面生成 ====================
-        const miningGuide = `
-            <div class="static-page">
-                <h2>⛏ 矿场深度指南</h2>
-                <h3>🥩 核心食物</h3><ul>
-                    <li><strong>金星奶酪</strong>：高体力高回复，性价比之王。</li>
-                    <li><strong>香辣鳗鱼</strong>：+1运气 +1速度，冲层必备。</li>
-                    <li><strong>三倍浓缩咖啡</strong>：速度叠加，与食物Buff共存。</li>
-                </ul>
-                <h3>💣 必备工具</h3><ul>
-                    <li><strong>炸弹（樱桃/普通/超级）</strong>：清石头堆快于镐子，冲层核心。</li>
-                    <li><strong>楼梯（99个石头合成）</strong>：直接跳层，怪物层、螺旋层、烂运层必用。</li>
-                    <li><strong>传送图腾</strong>：深夜1:50紧急撤离，损失降到最低。</li>
-                </ul>
-                <h3>🎯 采矿逻辑</h3>
-                <p>优先用炸弹炸密集石头堆；手动敲击找梯子时优先敲当前层入口附近的石头。铱矿/金矿/神秘矿点必采；大石块消耗体力多，非炸弹覆盖则跳过。</p>
-                <h3>⚔️ 战斗策略</h3>
-                <p>普通层：能跑就跑，利用走位和击退推开怪物，重点找路。飞龙（沙漠矿）：保持距离用长手武器反击。甲壳虫无敌状态直接躲。遇到怪物层直接放楼梯跳过，不浪费时间清怪。</p>
-                <h3>🍀 运气与跳洞</h3>
-                <p>看电视"神谕"查每日运气；运气好时出梯子概率大增。杀死怪物有15%概率出楼梯。在沙漠矿坑，看到坑洞优先于楼梯，可下降3-15层（掉少量血但收益极高）。</p>
-            </div>
-        `;
-        const artisanGuide = () => {
-            let html = '<div class="static-page"><h2>🍷 工匠设备详情</h2><div class="card-grid">';
-            for (let eq of Object.values(equipmentDB)) {
-                html += `<div class="item-card" id="eq-${eq.name}">
-                    <h3>${eq.name}</h3>
-                    <div class="meta"><strong>来源：</strong>${eq.source}</div>
-                    <div class="meta"><strong>合成/建造：</strong>${eq.recipe}</div>
-                    <p>${eq.description}</p>
-                </div>`;
-            }
-            return html + '</div></div>';
-        };
+        // ==================== 静态页面内容 ====================
         const bundlesGuide = `
-            <div class="static-page">
-                <h2>🎁 常用收集包速查</h2>
-                <p><strong>河鱼收集包</strong>：太阳鱼、鲶鱼、西鲱、大嘴鲈鱼、大头鱼、鲟鱼 (选4)</p>
-                <p><strong>湖鱼收集包</strong>：大嘴鲈鱼、鲤鱼、鲟鱼、大头鱼 (选4)</p>
-                <p><strong>海鱼收集包</strong>：沙丁鱼、红鲫鱼、金枪鱼、罗非鱼 (选4)</p>
-                <p><strong>夜间垂钓收集包</strong>：大眼鱼、鳗鱼</p>
-                <p><strong>蟹笼收集包</strong>：龙虾、螃蟹、虾、小龙虾、蜗牛、玉黍螺、蛤、鸟蛤、蚌、牡蛎 (选5)</p>
-                <p><strong>特色鱼类收集包</strong>：河豚、鬼鱼、木跃鱼、沙鱼</p>
-                <p><strong>春季作物收集包</strong>：防风草、青豆、花椰菜、土豆 (选4)</p>
-                <p><strong>夏季作物收集包</strong>：番茄、辣椒、蓝莓、甜瓜 (选4)</p>
-                <p><strong>秋季作物收集包</strong>：玉米、茄子、南瓜、山药 (选4)</p>
-                <p><strong>异国情调采集收集包</strong>：椰子、仙人掌果子、山洞萝卜、红蘑菇、紫蘑菇、龙葵、枫糖浆、松焦油、橡树树脂、韭葱、蒲公英、野梅、黑莓、雪山药、番红花 (选5)</p>
-                <p><strong>春季采集收集包</strong>：野山葵、黄水仙、韭葱、蒲公英 (选4)</p>
-                <p><strong>夏季采集收集包</strong>：葡萄、香味浆果、甜豌豆 (选3)</p>
-                <p><strong>秋季采集收集包</strong>：普通蘑菇、野李子、榛子、黑莓 (选4)</p>
-            </div>
-        `;
+            <div class="static-page"><h2>🎁 常用收集包速查</h2>
+            <p><strong>河鱼</strong>：太阳鱼、鲶鱼、西鲱、大嘴鲈鱼、大头鱼、鲟鱼(选4)</p>
+            <p><strong>湖鱼</strong>：大嘴鲈鱼、鲤鱼、鲟鱼、大头鱼(选4)</p>
+            <p><strong>海鱼</strong>：沙丁鱼、红鲫鱼、金枪鱼、罗非鱼(选4)</p>
+            <p><strong>夜间垂钓</strong>：大眼鱼、鳗鱼</p>
+            <p><strong>蟹笼</strong>：龙虾、螃蟹、虾、小龙虾、蜗牛、玉黍螺、蛤、鸟蛤、蚌、牡蛎(选5)</p>
+            <p><strong>特色鱼类</strong>：河豚、鬼鱼、木跃鱼、沙鱼</p>
+            <p><strong>春季作物</strong>：防风草、青豆、花椰菜、土豆(选4)</p>
+            <p><strong>夏季作物</strong>：番茄、辣椒、蓝莓、甜瓜(选4)</p>
+            <p><strong>秋季作物</strong>：玉米、茄子、南瓜、山药(选4)</p>
+            <p><strong>春季采集</strong>：野山葵、黄水仙、韭葱、蒲公英(选4)</p>
+            <p><strong>夏季采集</strong>：葡萄、香味浆果、甜豌豆(选3)</p>
+            <p><strong>秋季采集</strong>：普通蘑菇、野李子、榛子、黑莓(选4)</p></div>`;
         const cookingGuide = `
-            <div class="static-page">
-                <h2>🍲 实用食谱推荐</h2>
-                <p><strong>生鱼片</strong>：任意鱼（售价＜75G优先） → 75G。低价值鱼（鲤鱼、玉黍螺等）最佳处理方式。</p>
-                <p><strong>炒蘑菇</strong>：普通蘑菇+羊肚菌+红蘑菇 → +90体力 攻击+2</p>
-                <p><strong>香辣鳗鱼</strong>：鳗鱼+辣椒 → +115体力 运气+1 速度+1</p>
-                <p><strong>法式田螺</strong>：蜗牛+蒜 → +125体力 钓鱼+2</p>
-                <p><strong>巨无霸餐</strong>：菠萝+芒果+芋头 → +150体力 采矿+2 防御+2 (姜岛)</p>
-                <p><strong>龙虾浓汤</strong>：龙虾+牛奶 → +125体力 钓鱼+3</p>
-                <p><strong>蟹黄糕</strong>：螃蟹+大麦粉+蛋+油 → +125体力 防御+1 速度+1</p>
-                <p><strong>大黄派</strong>：大黄+大麦粉+糖 → +215体力 采矿+2</p>
-                <p>更多食谱请在游戏中查看或参考官方wiki。</p>
-            </div>
-        `;
-        const npcPage = () => {
-            let html = '<div class="static-page"><h2>💬 NPC最爱礼物与位置</h2><div class="card-grid">';
-            for (let npc of Object.values(npcDB)) {
-                html += `<div class="item-card" id="npc-${npc.name}"><h3>${npc.name}</h3><p>📍 ${npc.location}</p></div>`;
-            }
-            return html + '</div></div>';
-        };
+            <div class="static-page"><h2>🍲 实用食谱</h2>
+            <p><strong>生鱼片</strong>：任意鱼(售价<75G优先)→75G。低价值鱼最佳处理。</p>
+            <p><strong>炒蘑菇</strong>：普通蘑菇+羊肚菌+红蘑菇→+90体力 攻击+2</p>
+            <p><span class='link-inline' onclick='searchAndShow(\"香辣鳗鱼\")'>香辣鳗鱼</span>：鳗鱼+辣椒→+115体力 运+1速+1</p>
+            <p><strong>法式田螺</strong>：蜗牛+蒜→+125体力 钓鱼+2</p></div>`;
 
-        // ==================== 工具函数：跳转 ====================
-        window.showEquipment = function(eqId) {
+        // ==================== 跳转函数 ====================
+        window.jumpTo = function(cat, id) {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('[data-category="artisan"]').classList.add('active');
-            currentCategory = 'artisan';
+            const btn = document.querySelector(`[data-category="${cat}"]`);
+            if (btn) btn.classList.add('active');
+            currentCategory = cat;
             updateUI();
             setTimeout(() => {
-                const el = document.getElementById('eq-' + (equipmentDB[eqId]?.name || eqId));
-                if (el) el.scrollIntoView({behavior:'smooth'});
-            }, 100);
+                const el = document.getElementById('card-' + id);
+                if (el) el.scrollIntoView({behavior:'smooth', block:'center'});
+            }, 150);
         };
-        window.showNpc = function(npcId) {
+        window.searchAndShow = function(term) {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('[data-category="npcs"]').classList.add('active');
-            currentCategory = 'npcs';
+            document.querySelector('[data-category="all"]').classList.add('active');
+            currentCategory = 'all';
+            document.getElementById('searchInput').value = term;
             updateUI();
-            setTimeout(() => {
-                const el = document.getElementById('npc-' + (npcDB[npcId]?.name || npcId));
-                if (el) el.scrollIntoView({behavior:'smooth'});
-            }, 100);
         };
 
-        // ==================== 核心渲染与交互 ====================
+        // ==================== 渲染函数 ====================
         let currentCategory = 'all';
         const contentArea = document.getElementById('contentArea');
         const searchInput = document.getElementById('searchInput');
         const categoryNav = document.getElementById('categoryNav');
 
-        function getItemsByCategory(cat) {
-            if (cat === 'all') return allItems;
-            if (cat === 'fish') return DB.fish;
-            if (cat === 'crops') return [...DB.crops_spring, ...DB.crops_summer, ...DB.crops_fall, ...DB.crops_special];
-            if (cat === 'animal') return DB.animal;
-            if (cat === 'foraging') return DB.foraging;
-            return [];
+        function getItems(cat) {
+            switch(cat) {
+                case 'all': return allItems;
+                case 'fish': return DB.fish;
+                case 'crops': return DB.crops_all;
+                case 'animal': return DB.animal;
+                case 'foraging': return DB.foraging;
+                default: return [];
+            }
         }
 
-        function processItemCard(item) {
+        function renderCard(item) {
             let sections = '';
             // 献祭
-            if (item.sacrifices && item.sacrifices.length > 0) {
-                sections += '<span class="section-title">🎁 献祭需求</span><div class="sacrifice-list">';
-                item.sacrifices.forEach(s => {
-                    sections += `<div class="sacrifice-item">📦 ${s.room} → ${s.bundle}${s.need ? ` (需要${s.need}个)` : ''}${s.quality ? ` 品质:${s.quality}` : ''}${s.note ? ` <small>(${s.note})</small>` : ''}</div>`;
-                });
-                sections += '</div>';
+            if (item.sacrifices) {
+                sections += '<span class="section-title">🎁 献祭需求</span>';
+                item.sacrifices.forEach(s => sections += `<div class="sacrifice-item">📦 <span class="link-inline" onclick='jumpTo(\"bundles\")'>[${s.bundle}]</span></div>`);
             }
-            // 加工优先级
-            if (item.processing && item.processing.length > 0) {
-                sections += '<span class="section-title">⚙️ 加工建议（优先级从高到低）</span><div class="priority-list">';
-                item.processing.sort((a,b) => (a.priority||9) - (b.priority||9)).forEach(p => {
-                    const eqName = equipmentDB[p.equipment] ? equipmentDB[p.equipment].name : '';
-                    const eqLink = p.equipment ? `<span class="link-inline" onclick="showEquipment('${p.equipment}')">[${eqName}详情]</span>` : '';
-                    sections += `<div class="priority-item"><span class="prio">P${p.priority||'?'}</span> ${p.method} → ${p.product || ''} ${p.price ? `(${p.price}G)` : ''} ${eqLink} ${p.note ? `<small>${p.note}</small>` : ''}</div>`;
+            // 加工
+            if (item.processing) {
+                sections += '<span class="section-title">⚙️ 加工建议</span>';
+                item.processing.forEach((p,i) => {
+                    const eqLink = p.eq ? `<span class="link-inline" onclick='jumpTo(\"artisan\",\"${p.eq}\")'>[${equipmentDB[p.eq]?.name||'设备'}]</span>` : '';
+                    sections += `<div class="priority-item"><span class="prio">P${i+1}</span>${p.m}${p.p?` (${p.p}G)` : ''} ${eqLink}</div>`;
                 });
-                sections += '</div>';
             }
             // 送礼
-            if (item.gifts && item.gifts.length > 0) {
-                sections += '<span class="section-title">❤️ 送礼推荐</span><div class="gift-list">';
-                item.gifts.forEach(g => {
-                    const npc = npcDB[g.npc] ? npcDB[g.npc].name : g.npc;
-                    sections += `<div class="gift-item">🎁 ${npc} <span class="link-inline" onclick="showNpc('${g.npc}')">[位置]</span></div>`;
-                });
-                sections += '</div>';
+            if (item.gifts) {
+                sections += '<span class="section-title">❤️ 送礼</span>';
+                item.gifts.forEach(g => sections += `<div class="gift-item">🎁 <span class="link-inline" onclick='jumpTo(\"npcs\",\"${g}\")'>[${npcDB[g]?.name||g}]</span></div>`);
             }
+            // 来源
+            if (item.source) sections += `<div class="meta">🏠 来源：${item.source}</div>`;
             return sections;
         }
 
-        function renderItems(category, searchTerm) {
-            if (category === 'mining') { contentArea.innerHTML = miningGuide; return; }
-            if (category === 'artisan') { contentArea.innerHTML = artisanGuide(); return; }
-            if (category === 'bundles') { contentArea.innerHTML = bundlesGuide; return; }
-            if (category === 'cooking') { contentArea.innerHTML = cookingGuide; return; }
-            if (category === 'npcs') { contentArea.innerHTML = npcPage(); return; }
-
-            let items = getItemsByCategory(category);
-            if (searchTerm) {
-                const term = searchTerm.toLowerCase();
-                items = items.filter(item => item.name.toLowerCase().includes(term) ||
-                    (item.location && item.location.toLowerCase().includes(term)) ||
-                    (item.season && item.season.toLowerCase().includes(term)));
-            }
-
-            if (items.length === 0) {
-                contentArea.innerHTML = '<p style="text-align:center; padding:2rem;">没有找到匹配项，换个关键词试试~</p>';
+        function renderContent(cat, term) {
+            // 静态页面
+            if (cat === 'bundles') { contentArea.innerHTML = bundlesGuide; return; }
+            if (cat === 'cooking') { contentArea.innerHTML = cookingGuide; return; }
+            if (cat === 'mining') {
+                contentArea.innerHTML = `<div class="static-page"><h2>⛏ 矿场指南</h2><p>核心食物：<span class='link-inline' onclick='searchAndShow(\"奶酪\")'>金星奶酪</span>、<span class='link-inline' onclick='searchAndShow(\"香辣鳗鱼\")'>香辣鳗鱼</span>、咖啡。必备：炸弹、楼梯、传送图腾。冲层：优先炸弹清石头，看到坑洞跳，怪物层放楼梯跳过。</p></div>`;
                 return;
             }
+            if (cat === 'artisan') {
+                let html = '<div class="card-grid">';
+                for (let e of Object.values(equipmentDB)) {
+                    html += `<div class="item-card" id="card-${e.id}"><h3>${e.name} <span class="badge">工匠设备</span></h3><div class="meta">📜 ${e.source}</div><div class="meta">🔧 ${e.recipe}</div><p>${e.desc}</p></div>`;
+                }
+                contentArea.innerHTML = html + '</div>'; return;
+            }
+            if (cat === 'construction') {
+                let html = '<div class="card-grid">';
+                for (let b of buildingDB) {
+                    html += `<div class="item-card" id="card-${b.id}"><h3>${b.name} <span class="badge">${b.type}</span></h3><div class="meta">📍 ${b.source}</div><div class="meta">💰 ${b.cost}</div><p>${b.desc}</p></div>`;
+                }
+                contentArea.innerHTML = html + '</div>'; return;
+            }
+            if (cat === 'npcs') {
+                let html = '<div class="card-grid">';
+                for (let n of Object.values(npcDB)) {
+                    html += `<div class="item-card" id="card-${n.id}"><h3>${n.name}</h3><div class="meta">❤️ 最爱：${n.loves}</div><p>📍 ${n.schedule}</p>${n.note?`<div class="note">${n.note}</div>`:''}</div>`;
+                }
+                contentArea.innerHTML = html + '</div>'; return;
+            }
 
+            // 动态物品
+            let items = getItems(cat);
+            if (term) items = items.filter(i => i.name.includes(term) || (i.location||'').includes(term));
+            if (!items.length) { contentArea.innerHTML = '<p style="text-align:center;padding:2rem;">无结果</p>'; return; }
             let html = '<div class="card-grid">';
-            items.forEach(item => {
-                const seasonBadge = item.season ? `<span class="badge season">${item.season}</span>` : '';
-                html += `<div class="item-card">
-                    <h3>${item.name} <span class="badge">${item.type || '物品'}</span>${seasonBadge}</h3>`;
-                if (item.location) html += `<div class="meta">📍 ${item.location}</div>`;
-                if (item.time) html += `<div class="meta">🕒 ${item.time}</div>`;
-                if (item.basePrice) html += `<div class="meta">💰 基础售价: ${item.basePrice}G</div>`;
-                html += processItemCard(item);
-                if (item.note) html += `<div class="note">💡 ${item.note}</div>`;
+            items.forEach(i => {
+                const hot = i.hot ? '<span class="badge hot">HOT</span>' : '';
+                html += `<div class="item-card" id="card-${i.id}"><h3>${i.name} <span class="badge">${i.type}</span>${hot}${i.season?`<span class="badge season">${i.season}</span>`:''}</h3>`;
+                if (i.location) html += `<div class="meta">📍 ${i.location} | 🕒 ${i.time||''}</div>`;
+                if (i.basePrice) html += `<div class="meta">💰 基础价：${i.basePrice}G</div>`;
+                html += renderCard(i);
+                if (i.note) html += `<div class="note">💡 ${i.note}</div>`;
                 html += '</div>';
             });
-            html += '</div>';
-            contentArea.innerHTML = html;
+            contentArea.innerHTML = html + '</div>';
         }
 
-        function updateUI() {
-            renderItems(currentCategory, searchInput.value);
-        }
+        function updateUI() { renderContent(currentCategory, searchInput.value); }
 
-        // 事件绑定
-        categoryNav.addEventListener('click', (e) => {
-            const btn = e.target.closest('.category-btn');
-            if (!btn) return;
+        categoryNav.addEventListener('click', e => {
+            const btn = e.target.closest('.category-btn'); if (!btn) return;
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentCategory = btn.dataset.category;
-            updateUI();
+            btn.classList.add('active'); currentCategory = btn.dataset.category; updateUI();
         });
         searchInput.addEventListener('input', updateUI);
-
-        // 初始加载
         updateUI();
     </script>
 </body>
-</html>        
+</html>
