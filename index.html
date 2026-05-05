@@ -586,11 +586,17 @@
             if (cat === 'mining') { contentArea.innerHTML = miningGuide; return; }
             if (cat === 'ginger_island') { contentArea.innerHTML = gingerIslandGuide; return; }
             if (cat === 'artisan') {
-                let h = '<div class="card-grid">';
-                for (let e of Object.values(equipmentDB)) {
-                    h += `<div class="item-card" id="card-${e.id}"><h3>${e.name} <span class="badge">工匠设备</span></h3><div class="meta">📜 ${e.source}</div><div class="meta">🔧 ${e.recipe}</div><p>${e.desc}</p></div>`;
-                }
-                contentArea.innerHTML = h + '</div>'; return;
+    let h = '<div class="card-grid">';
+    for (let e of Object.values(equipmentDB)) {
+        h += `<div class="item-card" id="card-${e.id}">
+            <h3>${e.name} <span class="badge">工匠设备</span></h3>
+            <div class="meta">📜 来源：${e.source}</div>
+            <div class="meta">🥄 材料：${e.recipe}</div>
+            <div class="meta">💰 收益：${e.desc}</div>
+        </div>`;
+    }
+    contentArea.innerHTML = h + '</div>';
+    return;
             }
             if (cat === 'construction') {
                 let h = '<div class="card-grid">';
