@@ -39,14 +39,15 @@
         .category-btn { background: white; border: 2px solid var(--border); padding: 0.5rem 1.1rem; border-radius: 40px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; color: var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.04); font-family: var(--font); display: flex; align-items: center; gap: 4px; }
         .category-btn:hover, .category-btn.active { background: var(--accent); color: white; border-color: var(--accent); transform: translateY(-2px); }
         .content-area { background: var(--card); border-radius: var(--radius); padding: 1rem 1rem; box-shadow: var(--shadow); min-height: 400px; border: 1px solid #e8d8be; }
-        .season-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
-        .season-block { background: #fff; border-radius: 12px; padding: 1rem; border: 1px solid #e0cfad; }
-        .season-block h3 { font-size: 1.1rem; margin-bottom: 0.6rem; color: var(--accent); }
-        .crop-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-        .crop-link { background: #f5ede0; padding: 0.2rem 0.7rem; border-radius: 12px; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: 0.1s; border: 1px solid transparent; }
-        .crop-link:hover { background: var(--accent); color: white; border-color: var(--accent); }
-        .crop-link.multi { font-style: italic; border-color: #c9ad7a; }
+
+        .animal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .animal-col { background: #fff; border-radius: 12px; padding: 1rem; border: 1px solid #e0cfad; }
+        .animal-col h3 { font-size: 1.15rem; margin-bottom: 0.6rem; color: var(--accent); }
+        .animal-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .item-link { background: #f5ede0; padding: 0.2rem 0.7rem; border-radius: 12px; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: 0.1s; border: 1px solid transparent; }
+        .item-link:hover { background: var(--accent); color: white; border-color: var(--accent); }
         .hot-tag { font-size: 0.65rem; background: #e0553d; color: white; padding: 0 4px; border-radius: 6px; margin-left: 2px; }
+
         .search-result-item { background: white; border-radius: 14px; padding: 1.2rem; margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(0,0,0,0.05); border-left: 5px solid var(--gold); }
         .item-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
         .item-name { font-size: 1.7rem; font-weight: 800; color: #3e2b14; }
@@ -71,6 +72,7 @@
             header h1 { font-size: 1.6rem; }
             .container { padding: 0.3rem; }
             .content-area { padding: 0.7rem 0.5rem; }
+            .animal-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -86,7 +88,7 @@
             <span class="current-path" id="currentPath">主页</span>
         </div>
         <div class="search-wrapper">
-            <input type="text" id="searchInput" placeholder="搜 鸡蛋 / 大壶牛奶 / 松露..." autocomplete="off">
+            <input type="text" id="searchInput" placeholder="搜 鸡蛋 / 大壶牛奶 / 兔子的脚..." autocomplete="off">
             <span class="search-icon">🔍</span>
         </div>
         <div class="categories" id="categoryNav">
@@ -108,80 +110,78 @@
         (function() {
             // ========== 完整畜牧数据库 ==========
             const items = [
-                // === 蛋类 ===
-                { id:"egg", name:"鸡蛋", type:"animal_product", source:"鸡舍（白鸡/棕鸡）", basePrice:50, goldPrice:75,
-                  processing:[{method:"蛋黄酱机", product:"蛋黄酱", price:190, days:0.5, priority:1}],
+                // === 鸡舍产品 ===
+                { id:"egg", name:"鸡蛋", type:"animal_product", source:"鸡舍（白鸡/棕鸡）", sourceLink:"鸡舍", basePrice:50, goldPrice:75,
+                  processing:[{method:"蛋黄酱机", product:"蛋黄酱", price:190, days:0.5}],
                   sacrifices:[], gifts:{loves:[], likes:["大多数村民"], dislikes:[]},
                   note:"普通鸡蛋不能献祭，动物收集包需要的是大鸡蛋。" },
-                { id:"large_egg", name:"大鸡蛋", type:"animal_product", source:"鸡舍（白鸡/棕鸡，高好感度）", basePrice:95, goldPrice:142,
-                  processing:[{method:"蛋黄酱机", product:"金星蛋黄酱", price:285, days:0.5, priority:1}],
+                { id:"large_egg", name:"大鸡蛋", type:"animal_product", source:"鸡舍（白鸡/棕鸡，高好感度）", sourceLink:"鸡舍", basePrice:95, goldPrice:142,
+                  processing:[{method:"蛋黄酱机", product:"金星蛋黄酱", price:285, days:0.5}],
                   sacrifices:[{room:"茶水间", bundle:"动物收集包", need:1, quality:"大鸡蛋"}], gifts:{loves:[], likes:["大多数村民"], dislikes:[]},
                   note:"动物收集包必需品，直接产出金星蛋黄酱。" },
-                { id:"duck_egg", name:"鸭蛋", type:"animal_product", source:"鸡舍（鸭子，需升级大鸡舍）", basePrice:95, goldPrice:142,
-                  processing:[{method:"蛋黄酱机", product:"鸭蛋黄酱", price:375, days:0.5, priority:1}],
+                { id:"duck_egg", name:"鸭蛋", type:"animal_product", source:"鸡舍（鸭子，需升级大鸡舍）", sourceLink:"鸡舍", basePrice:95, goldPrice:142,
+                  processing:[{method:"蛋黄酱机", product:"鸭蛋黄酱", price:375, days:0.5}],
                   sacrifices:[], gifts:{loves:["艾利欧特"], likes:[], dislikes:[]},
                   note:"售价高可送礼，不献祭。" },
-                { id:"dino_egg", name:"恐龙蛋", type:"animal_product", source:"鸡舍（恐龙，首个必孵化，矿井/钓鱼宝箱也可获得）", basePrice:350, goldPrice:525,
-                  processing:[{method:"孵化器", product:"孵化→小恐龙", price:0, days:12, priority:1, note:"第一个绝对不能做蛋黄酱"},{method:"蛋黄酱机", product:"恐龙蛋黄酱", price:800, days:0.5, priority:2}],
+                { id:"duck_feather", name:"鸭毛", type:"animal_product", source:"鸡舍（鸭子，好感度越高越容易产出）", sourceLink:"鸡舍", basePrice:110, goldPrice:165,
+                  processing:[{method:"直接出售", product:"—", price:110, days:0}],
+                  sacrifices:[], gifts:{loves:["艾利欧特"], likes:[], dislikes:[]},
+                  note:"艾利欧特最爱，无需加工直接卖或送礼。" },
+                { id:"dino_egg", name:"恐龙蛋", type:"animal_product", source:"鸡舍（恐龙，首个必孵化）", sourceLink:"鸡舍", basePrice:350, goldPrice:525,
+                  processing:[{method:"孵化器", product:"孵化→恐龙", price:0, days:12, note:"第一个绝对不能做蛋黄酱"},{method:"蛋黄酱机", product:"恐龙蛋黄酱", price:800, days:0.5}],
                   sacrifices:[], gifts:{loves:[], likes:[], dislikes:[]},
-                  note:"第一个必孵化！孵出恐龙后才会下更多蛋。" },
-                { id:"void_egg", name:"虚空蛋", type:"animal_product", source:"鸡舍（虚空鸡，女巫事件后获得）", basePrice:65, goldPrice:97,
-                  processing:[{method:"蛋黄酱机", product:"虚空蛋黄酱", price:275, days:0.5, priority:1}],
+                  note:"第一个坚决孵化！恐龙长大后每天下蛋。" },
+                { id:"void_egg", name:"虚空蛋", type:"animal_product", source:"鸡舍（虚空鸡，女巫事件后获得）", sourceLink:"鸡舍", basePrice:65, goldPrice:97,
+                  processing:[{method:"蛋黄酱机", product:"虚空蛋黄酱", price:275, days:0.5}],
                   sacrifices:[], gifts:{loves:["塞巴斯蒂安","科罗布斯"], likes:[], dislikes:[]},
-                  note:"虚空蛋黄酱是哥布林守卫任务的关键道具，送礼佳品。" },
-                { id:"ostrich_egg", name:"鸵鸟蛋", type:"animal_product", source:"畜棚（鸵鸟，1.5版本姜岛获得）", basePrice:600, goldPrice:900,
-                  processing:[{method:"蛋黄酱机", product:"蛋黄酱×10", price:1900, days:0.5, priority:1}],
-                  sacrifices:[], gifts:{loves:[], likes:[], dislikes:[]},
-                  note:"1个鸵鸟蛋放进机器直接产出10个同等品质蛋黄酱，收益爆炸。" },
-                { id:"golden_egg", name:"金蛋", type:"animal_product", source:"鸡舍（金鸡，完美通关后获得）", basePrice:500, goldPrice:750,
-                  processing:[{method:"蛋黄酱机", product:"金星蛋黄酱×3", price:855, days:0.5, priority:1}],
+                  note:"虚空蛋黄酱是哥布林守卫任务的通关道具。" },
+                { id:"golden_egg", name:"金蛋", type:"animal_product", source:"鸡舍（金鸡，完美通关后获得）", sourceLink:"鸡舍", basePrice:500, goldPrice:750,
+                  processing:[{method:"蛋黄酱机", product:"金星蛋黄酱×3", price:855, days:0.5}],
                   sacrifices:[], gifts:{loves:["所有人（除海莉）"], likes:[], dislikes:["海莉"]},
-                  note:"完美通关奖励，放进蛋黄酱机产出3个金星蛋黄酱。" },
+                  note:"完美通关奖励，1个金蛋出3个金星蛋黄酱。" },
+                { id:"rabbit_foot", name:"兔子的脚", type:"animal_product", source:"鸡舍（兔子，有几率掉落）", sourceLink:"鸡舍", basePrice:565, goldPrice:847,
+                  processing:[{method:"直接出售", product:"—", price:565, days:0}],
+                  sacrifices:[], gifts:{loves:["所有人（除潘妮）"], likes:[], dislikes:["潘妮"]},
+                  note:"普遍最爱礼物，无需加工直接送或卖。" },
 
-                // === 奶类 ===
-                { id:"milk", name:"牛奶", type:"animal_product", source:"畜棚（奶牛）", basePrice:125, goldPrice:187,
-                  processing:[{method:"奶酪机", product:"奶酪", price:230, days:1.5, priority:1}],
+                // === 畜棚产品 ===
+                { id:"milk", name:"牛奶", type:"animal_product", source:"畜棚（奶牛）", sourceLink:"畜棚", basePrice:125, goldPrice:187,
+                  processing:[{method:"奶酪机", product:"奶酪", price:230, days:1.5}],
                   sacrifices:[], gifts:{loves:[], likes:["大多数村民"], dislikes:[]},
-                  note:"普通牛奶不能献祭，动物收集包需要的是大壶牛奶。" },
-                { id:"large_milk", name:"大壶牛奶", type:"animal_product", source:"畜棚（奶牛，高好感度）", basePrice:190, goldPrice:285,
-                  processing:[{method:"奶酪机", product:"金星奶酪", price:345, days:1.5, priority:1}],
+                  note:"普通牛奶不献祭，动物收集包需要大壶牛奶。" },
+                { id:"large_milk", name:"大壶牛奶", type:"animal_product", source:"畜棚（奶牛，高好感度）", sourceLink:"畜棚", basePrice:190, goldPrice:285,
+                  processing:[{method:"奶酪机", product:"金星奶酪", price:345, days:1.5}],
                   sacrifices:[{room:"茶水间", bundle:"动物收集包", need:1, quality:"大瓶牛奶"}], gifts:{loves:[], likes:["大多数村民"], dislikes:[]},
-                  note:"动物收集包必需品，直接产出金星奶酪，下矿回血神器。" },
-                { id:"goat_milk", name:"羊奶", type:"animal_product", source:"畜棚（山羊）", basePrice:225, goldPrice:337,
-                  processing:[{method:"奶酪机", product:"山羊奶酪", price:400, days:1.5, priority:1}],
+                  note:"动物收集包必需品，产出金星奶酪回血下矿。" },
+                { id:"goat_milk", name:"羊奶", type:"animal_product", source:"畜棚（山羊）", sourceLink:"畜棚", basePrice:225, goldPrice:337,
+                  processing:[{method:"奶酪机", product:"山羊奶酪", price:400, days:1.5}],
                   sacrifices:[], gifts:{loves:["罗宾","莉亚"], likes:[], dislikes:[]},
-                  note:"利润高，送礼佳品。" },
-                { id:"large_goat_milk", name:"大瓶羊奶", type:"animal_product", source:"畜棚（山羊，高好感度）", basePrice:345, goldPrice:517,
-                  processing:[{method:"奶酪机", product:"金星山羊奶酪", price:600, days:1.5, priority:1}],
+                  note:"高利润乳制品，送礼佳品。" },
+                { id:"large_goat_milk", name:"大瓶羊奶", type:"animal_product", source:"畜棚（山羊，高好感度）", sourceLink:"畜棚", basePrice:345, goldPrice:517,
+                  processing:[{method:"奶酪机", product:"金星山羊奶酪", price:600, days:1.5}],
                   sacrifices:[], gifts:{loves:["罗宾","莉亚"], likes:[], dislikes:[]},
-                  note:"高好感产出，金星品质山羊奶酪价值极高。" },
-
-                // === 毛类 ===
-                { id:"wool", name:"羊毛", type:"animal_product", source:"畜棚（绵羊/兔子）", basePrice:340, goldPrice:510,
-                  processing:[{method:"织布机", product:"布料", price:470, days:2, priority:1}],
+                  note:"金星品质价值极高。" },
+                { id:"wool", name:"羊毛", type:"animal_product", source:"畜棚（绵羊/兔子）", sourceLink:"畜棚", basePrice:340, goldPrice:510,
+                  processing:[{method:"织布机", product:"布料", price:470, days:2}],
                   sacrifices:[], gifts:{loves:[], likes:["艾米丽"], dislikes:[]},
-                  note:"高品质羊毛有几率产出2块布料。" },
-
-                // === 松露 ===
-                { id:"truffle", name:"松露", type:"animal_product", source:"畜棚（猪，放养在室外自己觅食）", basePrice:625, goldPrice:937, iridiumPrice:1250,
-                  processing:[{method:"产油机", product:"松露油", price:1065, days:0.25, priority:1, note:"工匠技能后1491G"}],
+                  note:"高品质羊毛有几率出2块布料。" },
+                { id:"truffle", name:"松露", type:"animal_product", source:"畜棚（猪，放养户外觅食）", sourceLink:"畜棚", basePrice:625, goldPrice:937, iridiumPrice:1250,
+                  processing:[{method:"产油机", product:"松露油", price:1065, days:0.25, note:"工匠技能后1491G"}],
                   sacrifices:[], gifts:{loves:[], likes:["莉亚"], dislikes:[]},
-                  note:"无工匠技能时，铱星松露(1250G)比普通松露油(1065G)贵，直接卖。有工匠则榨油(1491G)。" },
+                  note:"无工匠则铱星直接卖(1250G)更赚。" },
+                { id:"ostrich_egg", name:"鸵鸟蛋", type:"animal_product", source:"畜棚（鸵鸟，1.5版本姜岛）", sourceLink:"畜棚", basePrice:600, goldPrice:900,
+                  processing:[{method:"蛋黄酱机", product:"蛋黄酱×10", price:1900, days:0.5}],
+                  sacrifices:[], gifts:{loves:[], likes:[], dislikes:[]},
+                  note:"1蛋产出10个同等品质蛋黄酱，收益爆炸。" },
             ];
 
-            const npcs = [
-                { id:"maru", name:"玛鲁", birthday:"夏季10日", address:"山路24号（罗宾木匠铺）", schedule:"周二/周四在诊所。",
-                  loves:["电池组","花椰菜","钻石","金锭","铱锭","草莓"], likes:["铜锭","铁锭","石英"], dislikes:["蜂蜜","枫糖浆"] },
-                { id:"abigail", name:"阿比盖尔", birthday:"秋季13日", address:"皮埃尔杂货店二楼", schedule:"白天在杂货店或图书馆。",
-                  loves:["紫水晶","南瓜","巧克力蛋糕"], likes:["石英"], dislikes:[] },
-                { id:"harvey", name:"哈维", birthday:"冬季14日", address:"哈维诊所", schedule:"周二/周四在诊所，周六去博物馆。",
-                  loves:["咖啡","腌菜","松露油","果酒"], likes:["普通蘑菇","鸭蛋","羊奶"], dislikes:["奶酪"] },
-                { id:"elliott", name:"艾利欧特", birthday:"秋季5日", address:"沙滩小屋", schedule:"白天在家或沙滩。",
-                  loves:["蟹黄糕","鸭毛","龙虾","石榴","鱿鱼墨汁"], likes:["章鱼","鱿鱼"], dislikes:[] },
-                { id:"leah", name:"莉亚", birthday:"冬季23日", address:"煤矿森林小屋", schedule:"白天在家或湖边画画。",
-                  loves:["山羊奶酪","沙拉","松露","果酒"], likes:["所有水果"], dislikes:[] },
-                { id:"emily", name:"艾米丽", birthday:"春季27日", address:"柳巷2号", schedule:"下午3:30去酒吧工作。",
-                  loves:["紫水晶","海蓝宝石","布料","绿宝石","翡翠","红宝石"], likes:["黄水仙","羊毛"], dislikes:[] },
+            const npcs = [ /* 与之前相同，略作保留 */
+                { id:"maru", name:"玛鲁", birthday:"夏季10日", address:"山路24号", schedule:"周二/周四诊所。", loves:["电池组","花椰菜","钻石","金锭","草莓"], likes:["铜锭","石英"], dislikes:["蜂蜜"] },
+                { id:"abigail", name:"阿比盖尔", birthday:"秋季13日", address:"皮埃尔杂货店二楼", schedule:"白天杂货店或图书馆。", loves:["紫水晶","南瓜","巧克力蛋糕"], likes:["石英"], dislikes:[] },
+                { id:"harvey", name:"哈维", birthday:"冬季14日", address:"哈维诊所", schedule:"周二/周四诊所，周六博物馆。", loves:["咖啡","腌菜","松露油","果酒"], likes:["普通蘑菇","鸭蛋","羊奶"], dislikes:["奶酪"] },
+                { id:"elliott", name:"艾利欧特", birthday:"秋季5日", address:"沙滩小屋", schedule:"白天在家或沙滩。", loves:["蟹黄糕","鸭毛","龙虾","石榴","鱿鱼墨汁"], likes:["章鱼","鱿鱼"], dislikes:[] },
+                { id:"leah", name:"莉亚", birthday:"冬季23日", address:"煤矿森林小屋", schedule:"白天在家或湖边。", loves:["山羊奶酪","沙拉","松露","果酒"], likes:["所有水果"], dislikes:[] },
+                { id:"emily", name:"艾米丽", birthday:"春季27日", address:"柳巷2号", schedule:"下午3:30酒吧工作。", loves:["紫水晶","海蓝宝石","布料","绿宝石","翡翠","红宝石"], likes:["黄水仙","羊毛"], dislikes:[] },
             ];
 
             const categoryMap = {
@@ -199,16 +199,13 @@
             let historyStack = [];
 
             function updatePath(text) { currentPath.textContent = text; }
-            function pushState(cat, query) {
-                historyStack.push({ cat: currentCat, query: searchQuery });
-                currentCat = cat; searchQuery = query;
-            }
+            function pushState(cat, query) { historyStack.push({cat:currentCat, query:searchQuery}); currentCat=cat; searchQuery=query; }
             function goBack() {
-                if (historyStack.length === 0) { currentCat = 'all'; searchQuery = ''; searchInput.value = ''; updatePath('主页'); renderCurrent(); return; }
+                if (!historyStack.length) { currentCat='all'; searchQuery=''; searchInput.value=''; updatePath('主页'); renderCurrent(); return; }
                 const prev = historyStack.pop();
-                currentCat = prev.cat; searchQuery = prev.query;
-                searchInput.value = searchQuery;
-                updatePath(searchQuery ? `搜索: ${searchQuery}` : currentCat==='all'?'主页':currentCat);
+                currentCat=prev.cat; searchQuery=prev.query;
+                searchInput.value=searchQuery;
+                updatePath(searchQuery?`搜索: ${searchQuery}`:currentCat==='all'?'主页':currentCat);
                 renderCurrent();
             }
             backBtn.addEventListener('click', goBack);
@@ -223,15 +220,25 @@
                 return '<div class="topic-grid">'+ts.map(t=>`<div class="topic-card" data-category="${t.c}"><span class="topic-icon">${t.i}</span>${t.n}</div>`).join('')+'</div>';
             }
 
+            function renderAnimalCol(animalType) {
+                const list = items.filter(i=>i.type==='animal_product' && (animalType==='coop' ? i.sourceLink==='鸡舍' : i.sourceLink==='畜棚'));
+                return list.map(i=>`<span class="item-link" data-search="${i.name}">${i.name}${i.note?.includes('爆炸')?'<span class="hot-tag">🔥</span>':''}</span>`).join(' ');
+            }
+
             function renderCatList(cat) {
+                if(cat==='animal') {
+                    return `<div class="animal-grid">
+                        <div class="animal-col"><h3>🐔 鸡舍产品</h3><div class="animal-list">${renderAnimalCol('coop')}</div></div>
+                        <div class="animal-col"><h3>🐄 畜棚产品</h3><div class="animal-list">${renderAnimalCol('barn')}</div></div>
+                    </div>`;
+                }
                 if(cat==='bundles') return '<h2>🎁 献祭收集包</h2><p>（后续批次补齐全部收集包）</p>';
                 if(cat==='npcs') return `<h2>💬 居民速查</h2><div class="info-grid">${npcs.map(n=>`<div class="info-card" style="cursor:pointer;" data-search="${n.name}"><h4>${n.name} <small>${n.birthday}</small></h4><p>🏠 ${n.address}</p><p>❤️ ${n.loves.slice(0,3).join('、')}等</p></div>`).join('')}</div>`;
                 if(cat==='all') return renderTopics();
                 const types = categoryMap[cat]||[];
                 const filtered = items.filter(i=>types.includes(i.type));
                 if(!filtered.length) return '<p>暂无数据，后续批次补充。</p>';
-                return `<h2>📋 ${cat==='animal'?'畜牧产品':'物品'}列表</h2><table><tr><th>名称</th><th>来源</th><th>售价</th><th>加工</th></tr>
-                    ${filtered.map(i=>`<tr><td><span class="link-like" data-search="${i.name}">${i.name}</span></td><td>${i.source||'—'}</td><td>${i.basePrice}G</td><td>${i.processing?.[0]?.product||'—'}</td></tr>`).join('')}</table>`;
+                return `<h2>📋 列表</h2><div class="animal-list">${filtered.map(i=>`<span class="item-link" data-search="${i.name}">${i.name}</span>`).join(' ')}</div>`;
             }
 
             function buildFlow(item) {
@@ -292,11 +299,9 @@
                     let html = '';
                     itemRes.forEach(item => {
                         html += `<div class="search-result-item">
-                            <div class="item-header"><span class="item-name">${item.name}</span><span class="item-type-badge">${item.type}</span>${item.basePrice?`<span style="color:#b8860b;font-weight:700;">卖${item.basePrice}G</span>`:''}${item.goldPrice?`<span style="color:#b8860b;font-weight:700;font-size:0.9rem;">⭐${item.goldPrice}G</span>`:''}</div>
+                            <div class="item-header"><span class="item-name">${item.name}</span><span class="item-type-badge">${item.type}</span></div>
+                            <div class="flow-line" style="font-size:0.9rem;margin-bottom:0.5rem;">📦 <span class="link-like" data-search="${item.sourceLink}">${item.source}</span></div>
                             ${buildFlow(item)}
-                            <div class="info-grid">
-                                <div class="info-card"><h4>📦 来源</h4><p>${item.source||'—'}</p></div>
-                            </div>
                         </div>`;
                     });
                     npcRes.forEach(npc => { html += renderNPC(npc); });
