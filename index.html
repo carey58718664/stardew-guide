@@ -35,12 +35,12 @@
         .category-btn { background: white; border: 2px solid var(--border); padding: 0.5rem 1.1rem; border-radius: 40px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; color: var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.04); font-family: var(--font); display: flex; align-items: center; gap: 4px; }
         .category-btn:hover, .category-btn.active { background: var(--accent); color: white; border-color: var(--accent); transform: translateY(-2px); }
         .content-area { background: var(--card); border-radius: var(--radius); padding: 1rem 1rem; box-shadow: var(--shadow); min-height: 400px; border: 1px solid #e8d8be; }
-        .fish-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-        .fish-block { background: #fff; border-radius: 12px; padding: 1rem; border: 1px solid #e0cfad; }
-        .fish-block h3 { font-size: 1rem; margin-bottom: 0.4rem; color: var(--accent); }
-        .fish-list { display: flex; flex-wrap: wrap; gap: 0.3rem; }
-        .item-link { background: #f5ede0; padding: 0.2rem 0.7rem; border-radius: 12px; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: 0.1s; border: 1px solid transparent; }
-        .item-link:hover { background: var(--accent); color: white; border-color: var(--accent); }
+        .animal-grid, .fish-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+        .animal-col, .fish-block { background: #fff; border-radius: 12px; padding: 1rem; border: 1px solid #e0cfad; }
+        .animal-col h3, .fish-block h3 { font-size: 1rem; margin-bottom: 0.4rem; color: var(--accent); }
+        .crop-list, .animal-list, .fish-list { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+        .crop-link, .item-link { background: #f5ede0; padding: 0.2rem 0.7rem; border-radius: 12px; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: 0.1s; border: 1px solid transparent; }
+        .crop-link:hover, .item-link:hover { background: var(--accent); color: white; border-color: var(--accent); }
         .hot-tag { font-size: 0.65rem; background: #e0553d; color: white; padding: 0 4px; border-radius: 6px; margin-left: 2px; }
         .search-result-item { background: white; border-radius: 14px; padding: 1.2rem; margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(0,0,0,0.05); border-left: 5px solid var(--gold); }
         .item-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
@@ -66,7 +66,7 @@
     <header><h1>🌾 星露谷物语 · 全能攻略</h1><p>搜鱼名，先看献祭，再看加工，后看来源</p></header>
     <div class="container">
         <div class="nav-bar" id="navBar"><button class="back-btn" id="backBtn">← 返回</button><span class="current-path" id="currentPath">主页</span></div>
-        <div class="search-wrapper"><input type="text" id="searchInput" placeholder="搜 太阳鱼 / 鲟鱼 / 传说之鱼..." autocomplete="off"><span class="search-icon">🔍</span></div>
+        <div class="search-wrapper"><input type="text" id="searchInput" placeholder="搜 太阳鱼 / 鸡蛋 / 鲟鱼..." autocomplete="off"><span class="search-icon">🔍</span></div>
         <div class="categories" id="categoryNav">
             <button class="category-btn active" data-category="all">🏠 全部</button><button class="category-btn" data-category="crops">🌽 作物</button><button class="category-btn" data-category="animal">🐄 畜牧</button><button class="category-btn" data-category="fish">🎣 钓鱼</button><button class="category-btn" data-category="mining">⛏ 矿场</button><button class="category-btn" data-category="artisan">🍷 工匠</button><button class="category-btn" data-category="foraging">🍄 觅食</button><button class="category-btn" data-category="bundles">🎁 献祭</button><button class="category-btn" data-category="npcs">💬 NPC</button>
         </div>
@@ -75,121 +75,80 @@
     <footer>🐔 星露谷攻略手册 · 基于1.6版本 · 数据持续更新</footer>
     <script>
         (function() {
-            // 统一添加了献祭、礼物字段，并细化了处理优先级
             const items = [
-                // ===== 传说鱼类 (都仅限一条，建议收藏或直接出售) =====
-                { id:"legend", name:"传说之鱼", type:"fish", location:"深山湖泊", time:"春季·雨天·全天", basePrice:5000,
-                  processing:[], sacrifices:[], note:"仅此一条，建议收藏或直接出售。春季雨天深山湖泊深水区，钓鱼10级。" },
-                { id:"crimsonfish", name:"绯红鱼", type:"fish", location:"沙滩", time:"夏季·全天", basePrice:1500,
-                  processing:[], sacrifices:[], note:"仅此一条，建议收藏或直接出售。沙滩东侧码头深水区。" },
-                { id:"angler", name:"琵琶鱼", type:"fish", location:"鹈鹕镇", time:"秋季·全天", basePrice:900,
-                  processing:[], sacrifices:[], note:"仅此一条，建议收藏或直接出售。站在Joja超市北边木桥往北抛竿。" },
-                { id:"glacierfish", name:"冰川鱼", type:"fish", location:"煤矿森林", time:"冬季·全天", basePrice:1000,
-                  processing:[], sacrifices:[], note:"仅此一条，建议收藏或直接出售。煤矿森林箭头形小岛最南端深水区。" },
-                { id:"mutant_carp", name:"突变鲤鱼", type:"fish", location:"下水道", time:"任何季节·全天", basePrice:1000,
-                  processing:[], sacrifices:[], note:"仅此一条，建议收藏或直接出售。下水道任意时间可钓。" },
+                // ===== 畜牧 =====
+                { id:"egg", name:"鸡蛋", type:"animal_product", source:"鸡舍（白鸡/棕鸡）", sourceLink:"鸡舍", basePrice:50, goldPrice:75, processing:[{method:"蛋黄酱机", product:"蛋黄酱", price:190}], sacrifices:[], note:"普通鸡蛋不能献祭。" },
+                { id:"large_egg", name:"大鸡蛋", type:"animal_product", source:"鸡舍（白鸡/棕鸡，高好感度）", sourceLink:"鸡舍", basePrice:95, goldPrice:142, processing:[{method:"蛋黄酱机", product:"金星蛋黄酱", price:285}], sacrifices:[{room:"茶水间", bundle:"动物收集包", need:1, quality:"大鸡蛋"}] },
+                { id:"duck_egg", name:"鸭蛋", type:"animal_product", source:"鸡舍（鸭子）", sourceLink:"鸡舍", basePrice:95, processing:[{method:"蛋黄酱机", product:"鸭蛋黄酱", price:375}], sacrifices:[], gifts:{loves:["艾利欧特"]} },
+                { id:"milk", name:"牛奶", type:"animal_product", source:"畜棚（奶牛）", sourceLink:"畜棚", basePrice:125, goldPrice:187, processing:[{method:"奶酪机", product:"奶酪", price:230}], sacrifices:[], note:"普通牛奶不能献祭。" },
+                { id:"large_milk", name:"大壶牛奶", type:"animal_product", source:"畜棚（奶牛，高好感度）", sourceLink:"畜棚", basePrice:190, goldPrice:285, processing:[{method:"奶酪机", product:"金星奶酪", price:345}], sacrifices:[{room:"茶水间", bundle:"动物收集包", need:1, quality:"大瓶牛奶"}] },
+                { id:"truffle", name:"松露", type:"animal_product", source:"畜棚（猪，放养）", sourceLink:"畜棚", basePrice:625, goldPrice:937, processing:[{method:"产油机", product:"松露油", price:1065}], sacrifices:[], note:"植物学家职业铱星直接卖更赚。" },
 
-                // ===== 河流鱼类 (按标准重新检查了加工建议) =====
-                { id:"smallmouth_bass", name:"小嘴鲈鱼", type:"fish", location:"鹈鹕镇", time:"春/秋季·全天", basePrice:50,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[] },
-                { id:"sunfish", name:"太阳鱼", type:"fish", location:"煤矿森林", time:"春/夏季·晴天·6AM-7PM", basePrice:30,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}] },
-                { id:"catfish", name:"鲶鱼", type:"fish", location:"鹈鹕镇", time:"春/秋季·雨天·6AM-12AM", basePrice:200,
-                  processing:[{method:"熏鱼机", product:"熏鲶鱼", price:400}], sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}], gifts:{loves:["威利"]} },
-                { id:"shad", name:"西鲱", type:"fish", location:"煤矿森林", time:"春/夏/秋季·雨天·9AM-2AM", basePrice:60,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}] },
-                { id:"salmon", name:"鲑鱼", type:"fish", location:"鹈鹕镇", time:"秋季·6AM-7PM", basePrice:75,
-                  processing:[], sacrifices:[] },
-                { id:"rainbow_trout", name:"虹鳟鱼", type:"fish", location:"煤矿森林", time:"夏季·晴天·6AM-7PM", basePrice:65,
-                  processing:[], sacrifices:[] },
-                { id:"dorado", name:"麻哈脂鲤", type:"fish", location:"煤矿森林", time:"夏季·晴天·6AM-7PM", basePrice:100,
-                  processing:[], sacrifices:[] },
-                { id:"lingcod", name:"蛇齿单线鱼", type:"fish", location:"鹈鹕镇", time:"冬季·全天", basePrice:120,
-                  processing:[], sacrifices:[] },
-                { id:"perch", name:"河鲈", type:"fish", location:"煤矿森林", time:"冬季·全天", basePrice:55,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[] },
-
-                // ===== 湖泊鱼类 =====
-                { id:"largemouth_bass", name:"大嘴鲈鱼", type:"fish", location:"深山湖泊", time:"任何季节·6AM-7PM", basePrice:100,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}] },
-                { id:"carp", name:"鲤鱼", type:"fish", location:"深山湖泊", time:"任何季节·全天", basePrice:30,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}] },
-                { id:"sturgeon", name:"鲟鱼", type:"fish", location:"深山湖泊", time:"夏/冬季·6AM-7PM", basePrice:200,
-                  processing:[{method:"鱼塘+罐头瓶", product:"鱼子酱", price:500}], sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}], gifts:{loves:["威利"]}, note:"唯一能做鱼子酱的鱼，优先放鱼塘。" },
-                { id:"bullhead", name:"大头鱼", type:"fish", location:"深山湖泊", time:"任何季节·全天", basePrice:75,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}] },
-                { id:"walleye", name:"大眼鱼", type:"fish", location:"深山湖泊", time:"秋/冬季·雨天·12PM-2AM", basePrice:105,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}] },
-                { id:"midnight_carp", name:"午夜鲤鱼", type:"fish", location:"深山湖泊", time:"秋/冬季·10PM-2AM", basePrice:150,
-                  processing:[], sacrifices:[] },
-
-                // ===== 海洋鱼类 =====
-                { id:"sardine", name:"沙丁鱼", type:"fish", location:"沙滩", time:"春/秋/冬季·6AM-7PM", basePrice:40,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"anchovy", name:"鳀鱼", type:"fish", location:"沙滩", time:"春/秋季·全天", basePrice:30,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[] },
-                { id:"herring", name:"鲱鱼", type:"fish", location:"沙滩", time:"春/冬季·全天", basePrice:30,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[] },
-                { id:"halibut", name:"大比目鱼", type:"fish", location:"沙滩", time:"春/夏/冬季·6AM-11AM,7PM-2AM", basePrice:80, processing:[], sacrifices:[] },
-                { id:"eel", name:"鳗鱼", type:"fish", location:"沙滩", time:"春/秋季·雨天·4PM-2AM", basePrice:85,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}] },
-                { id:"red_snapper", name:"红鲫鱼", type:"fish", location:"沙滩", time:"夏/秋季·雨天·6AM-7PM", basePrice:50,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"tilapia", name:"罗非鱼", type:"fish", location:"沙滩", time:"夏/秋季·6AM-2PM", basePrice:75,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"tuna", name:"金枪鱼", type:"fish", location:"沙滩", time:"夏/冬季·6AM-7PM", basePrice:100,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}] },
-                { id:"pufferfish", name:"河豚", type:"fish", location:"沙滩", time:"夏季·晴天·12PM-4PM", basePrice:200,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}] },
-                { id:"sea_cucumber", name:"海参", type:"fish", location:"沙滩", time:"秋/冬季·6AM-7PM", basePrice:75,
-                  processing:[], sacrifices:[], gifts:{loves:["威利"]} },
-                { id:"squid", name:"鱿鱼", type:"fish", location:"沙滩", time:"冬季·6PM-2AM", basePrice:80,
-                  processing:[], sacrifices:[], gifts:{loves:["艾利欧特"]} },
-                { id:"octopus", name:"章鱼", type:"fish", location:"沙滩", time:"夏季·6AM-1PM", basePrice:150,
-                  processing:[], sacrifices:[], gifts:{loves:["威利","艾利欧特"]} },
-                { id:"super_cucumber", name:"大海参", type:"fish", location:"沙滩", time:"夏/秋季·6PM-2AM", basePrice:250,
-                  processing:[], sacrifices:[], gifts:{loves:["威利"]} },
-
-                // ===== 矿井鱼类 =====
-                { id:"stonefish", name:"石鱼", type:"fish", location:"矿井20层", time:"任何季节·全天", basePrice:300, processing:[], sacrifices:[] },
-                { id:"ice_pip", name:"冰柱鱼", type:"fish", location:"矿井60层", time:"任何季节·全天", basePrice:500, processing:[], sacrifices:[] },
-                { id:"lava_eel", name:"岩浆鳗鱼", type:"fish", location:"矿井100层", time:"任何季节·全天", basePrice:700,
-                  processing:[{method:"熏鱼机", product:"熏岩浆鳗鱼", price:1400}], sacrifices:[] },
-                { id:"ghostfish", name:"鬼鱼", type:"fish", location:"矿井20/60/100层", time:"任何季节·全天", basePrice:45,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}] },
-                { id:"woodskip", name:"木跃鱼", type:"fish", location:"秘密森林", time:"任何季节·全天", basePrice:75,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}] },
-                { id:"sandfish", name:"沙鱼", type:"fish", location:"沙漠", time:"任何季节·全天", basePrice:75,
-                  processing:[], sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}] },
-                { id:"scorpion_carp", name:"蝎鲤鱼", type:"fish", location:"沙漠", time:"任何季节·全天", basePrice:150, processing:[], sacrifices:[] },
-
-                // ===== 蟹笼 =====
-                { id:"lobster", name:"龙虾", type:"fish", location:"蟹笼（海洋）", time:"放置蟹笼即可", basePrice:120, processing:[], sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], gifts:{loves:["艾利欧特"]} },
-                { id:"crab", name:"螃蟹", type:"fish", location:"蟹笼（海洋）", time:"放置蟹笼即可", basePrice:100, processing:[], sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"shrimp", name:"虾", type:"fish", location:"蟹笼（海洋）", time:"放置蟹笼即可", basePrice:60, processing:[], sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"crayfish", name:"小龙虾", type:"fish", location:"蟹笼（淡水）", time:"放置蟹笼即可", basePrice:75, processing:[], sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"snail", name:"蜗牛", type:"fish", location:"蟹笼（淡水）", time:"放置蟹笼即可", basePrice:65,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"periwinkle", name:"玉黍螺", type:"fish", location:"蟹笼（淡水）", time:"放置蟹笼即可", basePrice:20,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"clam", name:"蛤", type:"fish", location:"蟹笼（海洋）", time:"放置蟹笼即可", basePrice:50, processing:[], sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"cockle", name:"鸟蛤", type:"fish", location:"蟹笼（海洋）", time:"放置蟹笼即可", basePrice:50, processing:[], sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"mussel", name:"蚌", type:"fish", location:"蟹笼（海洋）", time:"放置蟹笼即可", basePrice:30,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-                { id:"oyster", name:"牡蛎", type:"fish", location:"蟹笼（海洋）", time:"放置蟹笼即可", basePrice:40,
-                  processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
-
-                // ===== 夜市/姜岛 =====
-                { id:"midnight_squid", name:"午夜鱿鱼", type:"fish", location:"夜市潜水艇", time:"冬季15-17日·5PM-2AM", basePrice:100, processing:[], sacrifices:[] },
-                { id:"spook_fish", name:"灵鱼", type:"fish", location:"夜市潜水艇", time:"冬季15-17日·5PM-2AM", basePrice:220, processing:[], sacrifices:[] },
-                { id:"blobfish", name:"水滴鱼", type:"fish", location:"夜市潜水艇", time:"冬季15-17日·5PM-2AM", basePrice:500, processing:[], sacrifices:[] },
-                { id:"blue_discus", name:"蓝铁饼鱼", type:"fish", location:"姜岛淡水", time:"任何季节·全天", basePrice:120, processing:[], sacrifices:[] },
-                { id:"lionfish", name:"罗罗鱼", type:"fish", location:"姜岛淡水", time:"任何季节·6PM-2AM", basePrice:100, processing:[], sacrifices:[] },
-                { id:"stingray", name:"黄貂鱼", type:"fish", location:"姜岛海盗湾", time:"任何季节·全天", basePrice:180, processing:[], sacrifices:[] },
-                { id:"flounder", name:"比目鱼", type:"fish", location:"姜岛海洋", time:"任何季节·6AM-8PM", basePrice:100, processing:[], sacrifices:[] },
+                // ===== 水产 =====
+                { id:"sunfish", name:"太阳鱼", type:"fish", location:"煤矿森林", time:"春/夏季·晴天·6AM-7PM", basePrice:30, processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}] },
+                { id:"carp", name:"鲤鱼", type:"fish", location:"深山湖泊", time:"任何季节·全天", basePrice:30, processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}] },
+                { id:"sturgeon", name:"鲟鱼", type:"fish", location:"深山湖泊", time:"夏/冬季·6AM-7PM", basePrice:200, processing:[{method:"鱼塘+罐头瓶", product:"鱼子酱", price:500}], sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}], gifts:{loves:["威利"]}, note:"唯一能做鱼子酱的鱼。" },
+                { id:"mussel", name:"蚌", type:"fish", location:"蟹笼（海洋）", time:"放置蟹笼即可", basePrice:30, processing:[{method:"厨房烹饪", product:"生鱼片", price:75}], sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}] },
             ];
 
-            // ... (其余分类映射、渲染逻辑、事件监听器等代码保持不变，此处省略以符合格式要求) ...
-        </script>
-    </body>
-    </html>
+            const categoryMap = { crops: ['crop','flower'], animal: ['animal_product'], fish: ['fish'], mining: ['mineral','tool'], artisan: ['artisan','artisan_good'], foraging: ['foraging'] };
+
+            const contentArea = document.getElementById('contentArea');
+            const searchInput = document.getElementById('searchInput');
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const backBtn = document.getElementById('backBtn');
+            const currentPath = document.getElementById('currentPath');
+            let currentCat = 'all', searchQuery = '';
+            let historyStack = [];
+
+            function updatePath(t) { currentPath.textContent = t; }
+            function pushState(c, q) { historyStack.push({cat:currentCat, query:searchQuery}); currentCat=c; searchQuery=q; }
+            function goBack() {
+                if (!historyStack.length) { currentCat='all'; searchQuery=''; searchInput.value=''; updatePath('主页'); renderCurrent(); return; }
+                const p = historyStack.pop(); currentCat=p.cat; searchQuery=p.query; searchInput.value=searchQuery;
+                updatePath(searchQuery?`搜索: ${searchQuery}`:currentCat==='all'?'主页':currentCat); renderCurrent();
+            }
+            backBtn.addEventListener('click', goBack);
+
+            function renderCatList(cat) {
+                if(cat==='animal') {
+                    const coop = items.filter(i=>i.sourceLink==='鸡舍');
+                    const barn = items.filter(i=>i.sourceLink==='畜棚');
+                    return `<div class="animal-grid"><div class="animal-col"><h3>🐔 鸡舍产品</h3><div class="animal-list">${coop.map(i=>`<span class="item-link" data-search="${i.name}">${i.name}</span>`).join(' ')}</div></div><div class="animal-col"><h3>🐄 畜棚产品</h3><div class="animal-list">${barn.map(i=>`<span class="item-link" data-search="${i.name}">${i.name}</span>`).join(' ')}</div></div></div>`;
+                }
+                if(cat==='fish') {
+                    const groups = [
+                        {title:"🏞️ 河流", locs:["煤矿森林","鹈鹕镇"]}, {title:"🏔️ 湖泊", locs:["深山湖泊"]}, {title:"🌊 海洋", locs:["沙滩"]}, {title:"🦀 蟹笼", locs:["蟹笼（海洋）","蟹笼（淡水）"]},
+                    ];
+                    return '<div class="fish-grid">'+groups.map(g=>{ const list=items.filter(i=>i.type==='fish'&&g.locs.includes(i.location)); return `<div class="fish-block"><h3>${g.title}</h3><div class="fish-list">${list.map(i=>`<span class="item-link" data-search="${i.name}">${i.name}</span>`).join(' ')}</div></div>`; }).join('')+'</div>';
+                }
+                return '<p>暂无内容。</p>';
+            }
+
+            function buildFlow(item) {
+                let html = '<div class="decision-flow">';
+                if(item.sacrifices?.length){ html+='<div class="flow-step"><div class="flow-title">🎯 献祭</div><div class="flow-branch">'; item.sacrifices.forEach(s=>{ html+=`<div class="flow-line"><span class="arrow">→</span> ${s.room} · ${s.bundle}：留 ${s.need} 个</div>`; }); html+='</div></div>'; }
+                if(item.source){ html+=`<div class="flow-step"><div class="flow-title">📦 来源</div><div class="flow-branch"><div class="flow-line"><span class="arrow">→</span> <span class="link-like" data-search="${item.sourceLink}">${item.source}</span></div></div></div>`; }
+                if(item.location){ html+=`<div class="flow-step"><div class="flow-title">🎣 垂钓</div><div class="flow-branch"><div class="flow-line"><span class="arrow">→</span> ${item.location} · ${item.time}</div></div></div>`; }
+                if(item.processing?.length){ html+='<div class="flow-step"><div class="flow-title">⚡ 加工</div><div class="flow-branch">'; item.processing.forEach(p=>{ html+=`<div class="flow-line"><span class="arrow">→</span> <span class="link-like" data-search="${p.method}">${p.method}</span> → <strong>${p.product}</strong> <span class="price-note">(${p.price}G)</span></div>`; }); html+='</div></div>'; }
+                html+='</div>';
+                return html;
+            }
+
+            function renderCurrent() {
+                if(searchQuery.trim()) {
+                    const kw=searchQuery.toLowerCase().trim();
+                    const res=items.filter(i=>i.name.toLowerCase().includes(kw));
+                    if(!res.length){ contentArea.innerHTML='<p>😕 未找到</p>'; return; }
+                    contentArea.innerHTML=res.map(item=>`<div class="search-result-item"><div class="item-header"><span class="item-name">${item.name}</span><span class="item-type-badge">${item.type}</span></div>${buildFlow(item)}</div>`).join('');
+                } else { contentArea.innerHTML = renderCatList(currentCat); }
+            }
+
+            categoryBtns.forEach(b=>b.addEventListener('click',function(){ categoryBtns.forEach(x=>x.classList.remove('active')); this.classList.add('active'); pushState(this.dataset.category, ''); searchInput.value=''; updatePath(currentCat); renderCurrent(); }));
+            searchInput.addEventListener('input',function(){ searchQuery=this.value; if(searchQuery.trim()){ pushState('all', searchQuery); updatePath(`搜索: ${searchQuery}`); } renderCurrent(); });
+            contentArea.addEventListener('click',function(e){ const link=e.target.closest('[data-search]'); if(link){ pushState(currentCat, searchQuery); searchInput.value=link.dataset.search; searchQuery=link.dataset.search; updatePath(`搜索: ${searchQuery}`); renderCurrent(); window.scrollTo({top:0,behavior:'smooth'}); } });
+            renderCurrent(); updatePath('主页');
+        })();
+    </script>
+</body>
+</html>
