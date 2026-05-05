@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>星露谷物语 · 全能攻略手册</title>
     <style>
         :root {
@@ -58,10 +57,10 @@
     </style>
 </head>
 <body>
-    <header><h1>🌾 星露谷物语 · 全能攻略手册</h1><p>1.6适配 · 献祭/加工/送礼/建筑 · 搜索或点击均可全网跳转</p></header>
+    <header><h1>🌾 星露谷物语 · 全能攻略手册</h1><p>1.6适配 · 献祭/加工/送礼/建筑 · 全网跳转</p></header>
     <div class="back-button-wrapper"><button class="back-button" id="backButton" onclick="goBack()">← 返回</button></div>
     <div class="container">
-        <div class="search-wrapper"><input type="text" id="searchInput" placeholder="搜 上古种子 / 小桶 / 太阳鱼 / 鸡舍 / 阿比盖尔 ..." autocomplete="off"></div>
+        <div class="search-wrapper"><input type="text" id="searchInput" placeholder="搜 上古种子 / 小桶 / 杨桃 / 鸡舍 / 阿比盖尔 ..." autocomplete="off"></div>
         <div class="categories" id="categoryNav">
             <button class="category-btn active" data-category="all">🏠 全部</button>
             <button class="category-btn" data-category="crops">🌽 作物</button>
@@ -81,13 +80,13 @@
     <script>
         // ==================== 设备数据库 ====================
         const equipmentDB = {
-            "keg": { id:"keg", name:"小桶", source:"耕种8级解锁打造配方", recipe:"木材×30 + 铜锭×1 + 铁锭×1 + 橡树树脂×1", desc:"水果→酒(3x)，蔬菜→汁(2.25x)，咖啡豆→咖啡。" },
-            "jar": { id:"jar", name:"罐头瓶", source:"耕种4级解锁打造配方", recipe:"木材×50 + 石头×40 + 煤炭×8", desc:"蔬菜→泡菜，水果→果酱，鱼籽→腌鱼籽/鱼子酱。耗时2-3天，收益2x+50G。" },
+            "keg": { id:"keg", name:"小桶", source:"耕种8级解锁打造配方", recipe:"木材×30 + 铜锭×1 + 铁锭×1 + 橡树树脂×1", desc:"水果→酒(3x)，蔬菜→汁(2.25x)。例：杨桃→杨桃酒(2250G)。" },
+            "jar": { id:"jar", name:"罐头瓶", source:"耕种4级解锁打造配方", recipe:"木材×50 + 石头×40 + 煤炭×8", desc:"蔬菜→泡菜，水果→果酱，鱼籽→腌鱼籽。收益2x+50G。" },
             "smoker": { id:"smoker", name:"熏鱼机", source:"1.6：完成鱼缸后威利处10,000G购买配方", recipe:"硬木×10 + 海洋凝胶×1 + 洞穴凝胶×1 + 史莱姆×20", desc:"鱼+煤→熏鱼，价格翻倍且保留星级。" },
             "mayo": { id:"mayo", name:"蛋黄酱机", source:"耕种2级解锁", recipe:"木材×15 + 石头×15 + 地晶×1 + 铜锭×1", desc:"蛋→蛋黄酱。大鸡蛋产出金星品质。" },
-            "cheese": { id:"cheese", name:"奶酪机", source:"耕种6级解锁", recipe:"木材×45 + 石头×45 + 硬木×10 + 铜锭×1", desc:"牛奶→奶酪，大壶奶出金星奶酪。高回复食物。" },
+            "cheese": { id:"cheese", name:"奶酪机", source:"耕种6级解锁", recipe:"木材×45 + 石头×45 + 硬木×10 + 铜锭×1", desc:"牛奶→奶酪，大壶奶出金星奶酪。" },
             "loom": { id:"loom", name:"织布机", source:"耕种7级解锁", recipe:"木材×60 + 纤维×30 + 松焦油×1", desc:"羊毛→布料，高品质羊毛可能产出2个。" },
-            "oil": { id:"oil", name:"产油机", source:"耕种8级解锁", recipe:"史莱姆×50 + 硬木×20 + 金锭×1", desc:"松露/向日葵/玉米→油。松露油价值极高。" },
+            "oil": { id:"oil", name:"产油机", source:"耕种8级解锁", recipe:"史莱姆×50 + 硬木×20 + 金锭×1", desc:"松露/向日葵/玉米→油。松露油(1065G)。" },
             "dehydrator": { id:"dehydrator", name:"烘干机", source:"1.6：完成工艺室后皮埃尔处10,000G购买配方", recipe:"木材×30 + 粘土×2 + 火水晶×1", desc:"5个水果/蘑菇→干果/干蘑菇，1天完成。" },
             "cask": { id:"cask", name:"陈酿桶", source:"房屋3次升级后地窖自动可用", recipe:"木材×20 + 硬木×1", desc:"酒和奶酪陈酿提升品质(普通→银→金→铱)。" },
             "seedmaker": { id:"seedmaker", name:"种子生产器", source:"耕种9级解锁/染料收集包奖励", recipe:"木材×25 + 煤炭×10 + 金锭×1", desc:"作物→1-3种子，1.5%古代种子。" }
@@ -157,184 +156,45 @@
             return hotIds.includes(itemId);
         }
 
-        // ==================== 物品数据库 ====================
+        // ==================== 完整的鱼类数据库 (已补全处理及价格) ====================
         const DB = {
             fish: [
-    {
-        id:"sunfish", name:"太阳鱼", type:"鱼", season:"春/夏",
-        location:"煤矿森林河流/鹈鹕镇", time:"晴天6AM-7PM", basePrice:30,
-        sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}],
-        processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏太阳鱼", p:60, eq:"smoker"}]
-    },
-    {
-        id:"catfish", name:"鲶鱼", type:"鱼", season:"春/秋",
-        location:"煤矿森林河流/鹈鹕镇", time:"雨天6AM-12AM", basePrice:200,
-        sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}],
-        processing:[{m:"熏鱼机→熏鲶鱼", p:400, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:440, eq:"jar"}],
-        gifts:["willy"]
-    },
-    {
-        id:"shad", name:"西鲱", type:"鱼", season:"春/夏/秋",
-        location:"煤矿森林河流/鹈鹕镇", time:"雨天9AM-2AM", basePrice:60,
-        sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}],
-        processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏西鲱", p:120, eq:"smoker"}]
-    },
-    {
-        id:"largemouth_bass", name:"大嘴鲈鱼", type:"鱼", season:"任何",
-        location:"深山湖泊", time:"6AM-7PM", basePrice:100,
-        sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}],
-        processing:[{m:"熏鱼机→熏大嘴鲈鱼", p:200, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:240, eq:"jar"}]
-    },
-    {
-        id:"carp", name:"鲤鱼", type:"鱼", season:"任何",
-        location:"深山湖泊/煤矿森林/沙滩", time:"全天", basePrice:30,
-        sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}],
-        processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏鲤鱼", p:60, eq:"smoker"}]
-    },
-    {
-        id:"sturgeon", name:"鲟鱼", type:"鱼", season:"夏/冬",
-        location:"深山湖泊", time:"6AM-7PM", basePrice:200,
-        sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}],
-        processing:[{m:"鱼塘+罐头瓶→鱼子酱", p:500, eq:"jar"}, {m:"熏鱼机→熏鲟鱼", p:400, eq:"smoker"}],
-        gifts:["willy"],
-        note:"唯一能做鱼子酱的鱼！"
-    },
-    {
-        id:"bullhead", name:"大头鱼", type:"鱼", season:"任何",
-        location:"深山湖泊", time:"全天", basePrice:75,
-        sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}],
-        processing:[{m:"熏鱼机→熏大头鱼", p:150, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:210, eq:"jar"}]
-    },
-    {
-        id:"walleye", name:"大眼鱼", type:"鱼", season:"秋/冬",
-        location:"深山湖泊/鹈鹕镇", time:"雨天12AM-2AM", basePrice:105,
-        sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}],
-        processing:[{m:"熏鱼机→熏大眼鱼", p:210, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:290, eq:"jar"}]
-    },
-    {
-        id:"sardine", name:"沙丁鱼", type:"鱼", season:"春/秋/冬",
-        location:"沙滩", time:"6AM-7PM", basePrice:40,
-        sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}],
-        processing:[{m:"熏鱼机→熏沙丁鱼", p:80, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}]
-    },
-    {
-        id:"tuna", name:"金枪鱼", type:"鱼", season:"夏/冬",
-        location:"沙滩", time:"6AM-7PM", basePrice:100,
-        sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}],
-        processing:[{m:"熏鱼机→熏金枪鱼", p:200, eq:"smoker"}]
-    },
-    {
-        id:"red_snapper", name:"红鲫鱼", type:"鱼", season:"夏/秋",
-        location:"沙滩", time:"雨天6AM-7PM", basePrice:50,
-        sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}],
-        processing:[{m:"熏鱼机→熏红鲫鱼", p:100, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}]
-    },
-    {
-        id:"tilapia", name:"罗非鱼", type:"鱼", season:"夏/秋",
-        location:"沙滩", time:"6AM-2PM", basePrice:75,
-        sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}],
-        processing:[{m:"熏鱼机→熏罗非鱼", p:150, eq:"smoker"}]
-    },
-    {
-        id:"pufferfish", name:"河豚", type:"鱼", season:"夏季",
-        location:"沙滩", time:"晴天12PM-4PM", basePrice:200,
-        sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}],
-        processing:[{m:"熏鱼机→熏河豚", p:400, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:440, eq:"jar"}],
-        note:"熏制价值可观；鱼塘可产鱼籽。"
-    },
-    {
-        id:"eel", name:"鳗鱼", type:"鱼", season:"春/秋",
-        location:"沙滩", time:"雨天4PM-2AM", basePrice:85,
-        sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}],
-        processing:[{m:"熏鱼机→熏鳗鱼", p:170, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:220, eq:"jar"}]
-    },
-    {
-        id:"lobster", name:"龙虾", type:"鱼",
-        location:"蟹笼(海洋)", basePrice:120,
-        sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-        processing:[{m:"熏鱼机→熏龙虾", p:240, eq:"smoker"}, {m:"鱼塘→养满找威利得珍珠"}, {m:"烹饪→龙虾浓汤"}],
-        note:"鱼塘养满找威利可获珍珠(仅一次)。"
-    },
-    {
-        id:"crab", name:"螃蟹", type:"鱼",
-        location:"蟹笼(海洋)", basePrice:100,
-        sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-        processing:[{m:"熏鱼机→熏螃蟹", p:200, eq:"smoker"}, {m:"烹饪→蟹黄糕"}]
-    },
-    {
-        id:"shrimp", name:"虾", type:"鱼",
-        location:"蟹笼(海洋)", basePrice:60,
-        sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-        processing:[{m:"熏鱼机→熏虾", p:120, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}]
-    },
-    {
-        id:"clam", name:"蛤", type:"鱼",
-        location:"蟹笼(海洋)", basePrice:50,
-        sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-        processing:[{m:"熏鱼机→熏蛤", p:100, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}]
-    },
-    {
-        id:"mussel", name:"蚌", type:"鱼",
-        location:"蟹笼(海洋)", basePrice:30,
-        sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-        processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏蚌", p:60, eq:"smoker"}]
-    },
-    {
-        id:"oyster", name:"牡蛎", type:"鱼",
-        location:"蟹笼(海洋)", basePrice:40,
-        sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-        processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏牡蛎", p:80, eq:"smoker"}]
-    },
-    {
-        id:"periwinkle", name:"玉黍螺", type:"鱼",
-        location:"蟹笼(淡水)", basePrice:20,
-        sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-        processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏玉黍螺", p:40, eq:"smoker"}]
-    },
-    {
-        id:"snail", name:"蜗牛", type:"鱼",
-        location:"蟹笼(淡水)", basePrice:65,
-        sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}],
-        processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏蜗牛", p:130, eq:"smoker"}]
-    },
-    {
-        id:"ghostfish", name:"鬼鱼", type:"鱼",
-        location:"矿井20/60/100层", basePrice:45,
-        sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}],
-        processing:[{m:"鱼塘→产财宝箱/鱼籽(稀有)", p:0}, {m:"熏鱼机→熏鬼鱼", p:90, eq:"smoker"}],
-        note:"鱼塘9条以上有概率产出财宝箱(5000G)！"
-    },
-    {
-        id:"woodskip", name:"木跃鱼", type:"鱼",
-        location:"秘密森林池塘", basePrice:75,
-        sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}],
-        processing:[{m:"鱼塘→产木材/硬木+鱼籽", p:0}, {m:"熏鱼机→熏木跃鱼", p:150, eq:"smoker"}],
-        note:"鱼塘可稳定产出木材和硬木，前期十分实用。"
-    },
-    {
-        id:"sandfish", name:"沙鱼", type:"鱼",
-        location:"沙漠池塘", basePrice:75,
-        sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}],
-        processing:[{m:"熏鱼机→熏沙鱼", p:150, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:210, eq:"jar"}]
-    },
-    {
-        id:"lava_eel", name:"岩浆鳗鱼", type:"鱼",
-        location:"矿井100层", basePrice:700,
-        processing:[{m:"熏鱼机→熏岩浆鳗鱼", p:1400, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:760, eq:"jar"}],
-        note:"熏制/腌制价值极高，中后期最赚钱的鱼之一。"
-    },
-    {
-        id:"ice_pip", name:"冰柱鱼", type:"鱼",
-        location:"矿井60层", basePrice:500,
-        processing:[{m:"熏鱼机→熏冰柱鱼", p:1000, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:560, eq:"jar"}]
-    },
-    {
-        id:"blobfish", name:"水滴鱼", type:"鱼",
-        location:"夜市潜水艇(冬季15-17日)", time:"5PM-2AM", basePrice:500,
-        processing:[{m:"熏鱼机→熏水滴鱼", p:1000, eq:"smoker"}, {m:"鱼塘→产珍珠/传送图腾+鱼籽", p:0}, {m:"鱼塘→鱼籽腌制", p:560, eq:"jar"}],
-        note:"熏制日收益可观；鱼塘9条以上有概率产出珍珠(2500G)。"
-    }
-],
+                { id:"sunfish", name:"太阳鱼", type:"鱼", season:"春/夏", location:"煤矿森林河流/鹈鹕镇", time:"晴天6AM-7PM", basePrice:30, sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏太阳鱼", p:60, eq:"smoker"}] },
+                { id:"catfish", name:"鲶鱼", type:"鱼", season:"春/秋", location:"煤矿森林河流/鹈鹕镇", time:"雨天6AM-12AM", basePrice:200, sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}], processing:[{m:"熏鱼机→熏鲶鱼", p:400, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:430, eq:"jar"}], gifts:["willy"] },
+                { id:"shad", name:"西鲱", type:"鱼", season:"春/夏/秋", location:"煤矿森林河流/鹈鹕镇", time:"雨天9AM-2AM", basePrice:60, sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏西鲱", p:120, eq:"smoker"}] },
+                { id:"tiger_trout", name:"虎纹鳟鱼", type:"鱼", season:"秋/冬", location:"煤矿森林河流/鹈鹕镇", time:"6AM-7PM", basePrice:150, sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}], processing:[{m:"熏鱼机→熏虎纹鳟鱼", p:300, eq:"smoker"}] },
+                { id:"largemouth_bass", name:"大嘴鲈鱼", type:"鱼", season:"任何", location:"深山湖泊", time:"6AM-7PM", basePrice:100, sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}], processing:[{m:"熏鱼机→熏大嘴鲈鱼", p:200, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:230, eq:"jar"}] },
+                { id:"carp", name:"鲤鱼", type:"鱼", season:"任何", location:"深山湖泊/煤矿森林/沙滩", time:"全天", basePrice:30, sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏鲤鱼", p:60, eq:"smoker"}] },
+                { id:"sturgeon", name:"鲟鱼", type:"鱼", season:"夏/冬", location:"深山湖泊", time:"6AM-7PM", basePrice:200, sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}], processing:[{m:"鱼塘+罐头瓶→鱼子酱", p:500, eq:"jar"}, {m:"熏鱼机→熏鲟鱼", p:400, eq:"smoker"}], gifts:["willy"], note:"唯一能做鱼子酱的鱼！" },
+                { id:"bullhead", name:"大头鱼", type:"鱼", season:"任何", location:"深山湖泊", time:"全天", basePrice:75, sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}], processing:[{m:"熏鱼机→熏大头鱼", p:150, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:180, eq:"jar"}] },
+                { id:"walleye", name:"大眼鱼", type:"鱼", season:"秋/冬", location:"深山湖泊/鹈鹕镇", time:"雨天12AM-2AM", basePrice:105, sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}], processing:[{m:"熏鱼机→熏大眼鱼", p:210, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:240, eq:"jar"}] },
+                { id:"sardine", name:"沙丁鱼", type:"鱼", season:"春/秋/冬", location:"沙滩", time:"6AM-7PM", basePrice:40, sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}], processing:[{m:"熏鱼机→熏沙丁鱼", p:80, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}] },
+                { id:"tuna", name:"金枪鱼", type:"鱼", season:"夏/冬", location:"沙滩", time:"6AM-7PM", basePrice:100, sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}], processing:[{m:"熏鱼机→熏金枪鱼", p:200, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:230, eq:"jar"}] },
+                { id:"red_snapper", name:"红鲫鱼", type:"鱼", season:"夏/秋", location:"沙滩", time:"雨天6AM-7PM", basePrice:50, sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}], processing:[{m:"熏鱼机→熏红鲫鱼", p:100, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}] },
+                { id:"tilapia", name:"罗非鱼", type:"鱼", season:"夏/秋", location:"沙滩", time:"6AM-2PM", basePrice:75, sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}], processing:[{m:"熏鱼机→熏罗非鱼", p:150, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:180, eq:"jar"}] },
+                { id:"flounder", name:"比目鱼", type:"鱼", season:"春/夏", location:"沙滩", time:"6AM-8PM", basePrice:100, processing:[{m:"熏鱼机→熏比目鱼", p:200, eq:"smoker"}] },
+                { id:"pufferfish", name:"河豚", type:"鱼", season:"夏季", location:"沙滩", time:"晴天12PM-4PM", basePrice:200, sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}], processing:[{m:"熏鱼机→熏河豚", p:400, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:430, eq:"jar"}] },
+                { id:"eel", name:"鳗鱼", type:"鱼", season:"春/秋", location:"沙滩", time:"雨天4PM-2AM", basePrice:85, sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}], processing:[{m:"熏鱼机→熏鳗鱼", p:170, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:200, eq:"jar"}] },
+                { id:"scorpion_carp", name:"蝎鲤鱼", type:"鱼", season:"任何", location:"沙漠池塘", time:"6AM-8PM", basePrice:150, processing:[{m:"熏鱼机→熏蝎鲤鱼", p:300, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:330, eq:"jar"}], note:"1.6新增，鱼塘优秀选择。" },
+                { id:"lobster", name:"龙虾", type:"鱼", location:"蟹笼(海洋)", basePrice:120, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"熏鱼机→熏龙虾", p:240, eq:"smoker"}, {m:"鱼塘→养满找威利得珍珠"}, {m:"烹饪→龙虾浓汤", p:225}] },
+                { id:"crab", name:"螃蟹", type:"鱼", location:"蟹笼(海洋)", basePrice:100, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"熏鱼机→熏螃蟹", p:200, eq:"smoker"}, {m:"烹饪→蟹黄糕", p:275}] },
+                { id:"shrimp", name:"虾", type:"鱼", location:"蟹笼(海洋)", basePrice:60, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"熏鱼机→熏虾", p:120, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}] },
+                { id:"clam", name:"蛤", type:"鱼", location:"蟹笼(海洋)", basePrice:50, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"熏鱼机→熏蛤", p:100, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}] },
+                { id:"mussel", name:"蚌", type:"鱼", location:"蟹笼(海洋)", basePrice:30, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏蚌", p:60, eq:"smoker"}] },
+                { id:"oyster", name:"牡蛎", type:"鱼", location:"蟹笼(海洋)", basePrice:40, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏牡蛎", p:80, eq:"smoker"}] },
+                { id:"periwinkle", name:"玉黍螺", type:"鱼", location:"蟹笼(淡水)", basePrice:20, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏玉黍螺", p:40, eq:"smoker"}] },
+                { id:"snail", name:"蜗牛", type:"鱼", location:"蟹笼(淡水)", basePrice:65, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏蜗牛", p:130, eq:"smoker"}] },
+                { id:"ghostfish", name:"鬼鱼", type:"鱼", location:"矿井20/60/100层", basePrice:45, sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}], processing:[{m:"鱼塘→产财宝箱/鱼籽", p:5000}, {m:"熏鱼机→熏鬼鱼", p:90, eq:"smoker"}], note:"鱼塘9条以上有概率产出财宝箱(5000G)！" },
+                { id:"woodskip", name:"木跃鱼", type:"鱼", location:"秘密森林池塘", basePrice:75, sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}], processing:[{m:"鱼塘→产木材/硬木+鱼籽", p:0}, {m:"熏鱼机→熏木跃鱼", p:150, eq:"smoker"}], note:"鱼塘稳定产出木材和硬木。" },
+                { id:"sandfish", name:"沙鱼", type:"鱼", location:"沙漠池塘", basePrice:75, sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}], processing:[{m:"熏鱼机→熏沙鱼", p:150, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:180, eq:"jar"}] },
+                { id:"lava_eel", name:"岩浆鳗鱼", type:"鱼", location:"矿井100层", basePrice:700, processing:[{m:"熏鱼机→熏岩浆鳗鱼", p:1400, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:1060, eq:"jar"}], note:"熏制/腌制价值极高。" },
+                { id:"ice_pip", name:"冰柱鱼", type:"鱼", location:"矿井60层", basePrice:500, processing:[{m:"熏鱼机→熏冰柱鱼", p:1000, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:760, eq:"jar"}] },
+                { id:"blobfish", name:"水滴鱼", type:"鱼", location:"夜市潜水艇(冬季15-17日)", time:"5PM-2AM", basePrice:500, processing:[{m:"熏鱼机→熏水滴鱼", p:1000, eq:"smoker"}, {m:"鱼塘→产珍珠/传送图腾+鱼籽", p:2500}, {m:"鱼塘→鱼籽腌制", p:760, eq:"jar"}], note:"鱼塘9条以上概率产出珍珠(2500G)。" },
+                { id:"midnight_squid", name:"午夜鱿鱼", type:"鱼", location:"夜市潜水艇(冬季15-17日)", time:"5PM-2AM", basePrice:220, processing:[{m:"熏鱼机→熏午夜鱿鱼", p:440, eq:"smoker"}, {m:"鱼塘→产墨汁+鱼籽", p:0}], note:"1.6新增，鱼塘可产墨汁。" },
+                { id:"stingray", name:"黄貂鱼", type:"鱼", location:"姜岛海洋", time:"全天", basePrice:180, processing:[{m:"熏鱼机→熏黄貂鱼", p:360, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:390, eq:"jar"}] },
+                { id:"lionfish", name:"狮子鱼", type:"鱼", location:"姜岛海洋", time:"全天", basePrice:100, processing:[{m:"熏鱼机→熏狮子鱼", p:200, eq:"smoker"}] },
+                { id:"blue_discus", name:"蓝色铁饼鱼", type:"鱼", location:"姜岛河流", time:"全天", basePrice:120, processing:[{m:"熏鱼机→熏蓝色铁饼鱼", p:240, eq:"smoker"}] }
+            ],
             crops_all: [
                 { id:"rhubarb", name:"大黄", type:"作物", season:"春", basePrice:220, processing:[{m:"小桶→大黄酒", p:660, eq:"keg"},{m:"罐头瓶→大黄果酱", p:490, eq:"jar"}] },
                 { id:"strawberry", name:"草莓", type:"作物", season:"春", basePrice:120, processing:[{m:"罐头瓶→草莓酱(产量大)", p:290, eq:"jar"},{m:"小桶→草莓酒", p:360, eq:"keg"}] },
@@ -509,16 +369,31 @@
                         <div class="meta">⭐ <strong>巨无霸餐</strong>: 菠萝+芒果+芋头 → +2采矿+2防御 | 来源:姜岛火山商店(1,000G)</div>
                     </div>
                     <div class="item-card">
-                        <h3>📺 村民赠送食谱速查</h3>
-                        <div class="tree">
-        <span class='link-inline' onclick="jumpTo('npcs','caroline')">卡洛琳</span>: 防风草汤(3❤️)、蔬菜杂烩(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','clint')">克林特</span>: 海藻汤(3❤️)、豆类火锅(7❤️)
-        <span class='link-inline' onclick="jumpTo('npcs','demetrius')">德米特里厄斯</span>: 炒蘑菇(3❤️)、秋日恩赐(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','emily')">艾米丽</span>: 沙拉(3❤️)、红色拼盘(7❤️)
-        <span class='link-inline' onclick="jumpTo('npcs','evelyn')">艾芙琳</span>: 饼干(4❤️)、大米布丁(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','george')">乔治</span>: 炒鳗鱼(3❤️)、香辣鳗鱼(7❤️) <span class="badge hot">HOT</span>
-        <span class='link-inline' onclick="jumpTo('npcs','gus')">格斯</span>: 鲑鱼晚餐(3❤️)、海鲜杂烩汤(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','jodi')">乔迪</span>: 炸鱿鱼(3❤️)、帕尔玛奶酪(7❤️)
-        <span class='link-inline' onclick="jumpTo('npcs','kent')">肯特</span>: 香酥鲈鱼(3❤️)、巨无霸(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','leah')">莉亚</span>: 蔬菜什锦盖饭(3❤️)、虞美人籽松糕(7❤️)
-        <span class='link-inline' onclick="jumpTo('npcs','linus')">莱纳斯</span>: 生鱼片(3❤️)、生鱼寿司(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','pam')">潘姆</span>: 乳酪花椰菜(3❤️)、墨西哥薄饼(7❤️)
-        <span class='link-inline' onclick="jumpTo('npcs','robin')">罗宾</span>: 南瓜汤(3❤️)、鱼肉卷(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','shane')">谢恩</span>: 爆炒青椒(3❤️)、奇怪的小面包(7❤️)
-        <span class='link-inline' onclick="jumpTo('npcs','willy')">威利</span>: 法式田螺(3❤️)、海泡布丁(7❤️)  |  <span class='link-inline' onclick="jumpTo('npcs','marnie')">玛妮</span>: 烤鱼(3❤️)、南瓜派(7❤️)
+                        <h3>📺 村民赠送食谱速查（1.6完整版）</h3>
+                        <div style="font-size:0.88rem; line-height:1.7;">
+                            <div class="meta"><strong>🏘️ 鹈鹕镇居民</strong></div>
+                            <div class="sacrifice-item"><span class="prefix">👩‍🌾</span><span class="link-inline" onclick="jumpTo('npcs','caroline')">卡洛琳</span> — 3❤️ 防风草汤 | 7❤️ 蔬菜杂烩</div>
+                            <div class="sacrifice-item"><span class="prefix">🔨</span><span class="link-inline" onclick="jumpTo('npcs','clint')">克林特</span> — 3❤️ 海藻汤 | 7❤️ 豆类火锅</div>
+                            <div class="sacrifice-item"><span class="prefix">🔬</span><span class="link-inline" onclick="jumpTo('npcs','demetrius')">德米特里厄斯</span> — 3❤️ 炒蘑菇 | 7❤️ 秋日恩赐</div>
+                            <div class="sacrifice-item"><span class="prefix">💃</span><span class="link-inline" onclick="jumpTo('npcs','emily')">艾米丽</span> — 3❤️ 沙拉 | 7❤️ 红色拼盘</div>
+                            <div class="sacrifice-item"><span class="prefix">👵</span><span class="link-inline" onclick="jumpTo('npcs','evelyn')">艾芙琳</span> — 4❤️ 饼干 | 7❤️ 大米布丁</div>
+                            <div class="sacrifice-item"><span class="prefix">👴</span><span class="link-inline" onclick="jumpTo('npcs','george')">乔治</span> — 3❤️ 炒鳗鱼 | 7❤️ 香辣鳗鱼 <span class="badge hot">HOT</span></div>
+                            <div class="sacrifice-item"><span class="prefix">🍺</span><span class="link-inline" onclick="jumpTo('npcs','gus')">格斯</span> — 3❤️ 鲑鱼晚餐 | 7❤️ 海鲜杂烩汤</div>
+                            <div class="sacrifice-item"><span class="prefix">🏡</span><span class="link-inline" onclick="jumpTo('npcs','jodi')">乔迪</span> — 3❤️ 炸鱿鱼 | 7❤️ 帕尔玛奶酪</div>
+                            <div class="sacrifice-item"><span class="prefix">🎖️</span><span class="link-inline" onclick="jumpTo('npcs','kent')">肯特</span> — 3❤️ 香酥鲈鱼 | 7❤️ 巨无霸</div>
+                            <div class="sacrifice-item"><span class="prefix">🎨</span><span class="link-inline" onclick="jumpTo('npcs','leah')">莉亚</span> — 3❤️ 蔬菜什锦盖饭 | 7❤️ 虞美人籽松糕</div>
+                            <div class="sacrifice-item"><span class="prefix">🏕️</span><span class="link-inline" onclick="jumpTo('npcs','linus')">莱纳斯</span> — 3❤️ 生鱼片 | 7❤️ 生鱼寿司</div>
+                            <div class="sacrifice-item"><span class="prefix">🚌</span><span class="link-inline" onclick="jumpTo('npcs','pam')">潘姆</span> — 3❤️ 乳酪花椰菜 | 7❤️ 墨西哥薄饼</div>
+                            <div class="sacrifice-item"><span class="prefix">🪓</span><span class="link-inline" onclick="jumpTo('npcs','robin')">罗宾</span> — 3❤️ 南瓜汤 | 7❤️ 鱼肉卷</div>
+                            <div class="sacrifice-item"><span class="prefix">🤘</span><span class="link-inline" onclick="jumpTo('npcs','shane')">谢恩</span> — 3❤️ 爆炒青椒 | 7❤️ 奇怪的小面包</div>
+                            <div class="sacrifice-item"><span class="prefix">🎣</span><span class="link-inline" onclick="jumpTo('npcs','willy')">威利</span> — 3❤️ 法式田螺 | 7❤️ 海泡布丁 <span class="badge hot">HOT</span></div>
+                            <div class="sacrifice-item"><span class="prefix">🐄</span><span class="link-inline" onclick="jumpTo('npcs','marnie')">玛妮</span> — 3❤️ 烤鱼 | 7❤️ 南瓜派</div>
+                            <div style="margin-top:0.5rem;" class="meta"><strong>🎩 其他区域居民</strong></div>
+                            <div class="sacrifice-item"><span class="prefix">🏜️</span><span class="link-inline" onclick="jumpTo('npcs','sandy')">桑迪</span> — 3❤️ 西式焗豆 | 7❤️ 芒果糯米饭 <span class="badge">1.5</span></div>
+                            <div class="sacrifice-item"><span class="prefix">🧙</span><span class="link-inline" onclick="jumpTo('npcs','wizard')">法师</span> — 3❤️ 虚空沙拉 | 7❤️ 魔法糖果 <span class="badge hot">HOT</span></div>
+                            <div class="sacrifice-item"><span class="prefix">👹</span><span class="link-inline" onclick="jumpTo('npcs','krobus')">科罗布斯</span> — 3❤️ 黑暗料理 | 7❤️ 怪物千层面</div>
+                            <div class="sacrifice-item"><span class="prefix">⚒️</span>矮人 — 3❤️ 洞穴萝卜汤 | 7❤️ 矿工特供 <span class="badge hot">HOT</span></div>
+                            <div class="sacrifice-item"><span class="prefix">🦜</span><span class="link-inline" onclick="jumpTo('npcs','leo')">雷欧</span> — 3❤️ 热带咖喱 | 7❤️ 香蕉布丁 <span class="badge">1.5</span></div>
                         </div>
                     </div>
                 </div>
@@ -531,28 +406,27 @@
                 <div class="card-grid">
                     <div class="item-card">
                         <h3>📋 矿井 (1-120层)</h3>
-                        <div class="meta">1-39层(主题: 泥土/铜): 地晶、晶球、铜矿较多。怪物: <strong>史莱姆</strong>(掉落:史莱姆泥)、<strong>臭虫</strong>(虫肉)、<strong>苍蝇</strong>(虫肉)。</div>
-                        <div class="meta">40-79层(主题: 冰/铁): 铁矿出现，泪晶、冰封晶球。怪物: <strong>冰霜蝙蝠</strong>(蝙蝠翅膀)、<strong>灰尘精灵</strong>(煤炭)——击杀500只得<span class='link-inline' onclick="jumpTo('artisan','mayo')">[窃贼戒指]</span>。</div>
-                        <div class="meta">80-119层(主题: 岩浆/金): 金矿出现，火水晶、绿宝石。怪物: <strong>暗影萨满</strong>(虚空精华)、<strong>暗影狂徒</strong>(虚空精华)、<strong>乌贼娃</strong>(太阳精华)。</div>
-                        <div class="meta">120层: 头骨钥匙，解锁<span class='link-inline' onclick="searchAndShow('骷髅洞穴')">骷髅洞穴</span>。</div>
-                        <div class="meta">特殊层: 20层(<strong>石鱼</strong>)、60层(<strong>冰柱鱼</strong>)、100层(<strong>岩浆鳗鱼</strong>)。</div>
+                        <div class="meta">1-39层(泥土/铜): 地晶、晶球、铜矿较多。怪物: 史莱姆、臭虫、苍蝇。</div>
+                        <div class="meta">40-79层(冰/铁): 铁矿出现，泪晶、冰封晶球。怪物: 冰霜蝙蝠、灰尘精灵(煤炭)。</div>
+                        <div class="meta">80-119层(岩浆/金): 金矿出现，火水晶、绿宝石。怪物: 暗影萨满、暗影狂徒、乌贼娃。</div>
+                        <div class="meta">120层: 头骨钥匙，解锁骷髅洞穴。</div>
+                        <div class="meta">特殊层: 20层(石鱼)、60层(冰柱鱼)、100层(岩浆鳗鱼)。</div>
                     </div>
                     <div class="item-card">
                         <h3>💀 骷髅洞穴 (沙漠·无限层)</h3>
                         <div class="meta"><strong>进入条件:</strong> 完成金库献祭(42,500G)解锁沙漠巴士 → 获取矿井120层骷髅钥匙。</div>
-                        <div class="meta"><strong>核心目的:</strong> 刷<span class='link-inline' onclick="jumpTo('construction','pickaxe')">铱矿</span>、五彩碎片、宝箱。铱矿密度随层数增加。</div>
-                        <div class="meta"><strong>必备物品:</strong> 🗡️ 银河剑/无限之刃 | 💣 超级炸弹(100+) | 🪜 楼梯(翡翠周日沙漠商人兑换/99石合成) | 🍖 <span class='link-inline' onclick="searchAndShow('奶酪')">金星奶酪</span> ×50 | ☕ <span class='link-inline' onclick="searchAndShow('浓缩咖啡')">浓缩咖啡</span> ×10 | 🌵 沙漠传送图腾</div>
-                        <div class="meta"><strong>怪物:</strong> <strong>飞龙</strong>(高伤，长手武器反击)、<strong>骷髅</strong>(掉落骨头碎片)、<strong>史莱姆</strong>(大史莱姆有多只)、<strong>木乃伊</strong>(打倒后炸死才掉太阳精华)。</div>
-                        <div class="meta"><strong>冲层技巧:</strong> 看电视占卜→紫星天最佳 → 早6点传送沙漠 → 看到坑洞优先跳(一次3-15层) → 怪物层/烂运层直接放楼梯 → 不纠结单块矿石只管下层。</div>
-                        <div class="note">💡 第100层齐先生任务: 完成获25永久生命值(首次)。100层后铱矿大量出现。</div>
+                        <div class="meta"><strong>核心目的:</strong> 刷铱矿、五彩碎片、宝箱。铱矿密度随层数增加。</div>
+                        <div class="meta"><strong>必备物品:</strong> 🗡️ 银河剑/无限之刃 | 💣 超级炸弹(100+) | 🪜 楼梯 | 🍖 金星奶酪 ×50 | ☕ 浓缩咖啡 ×10 | 🌵 沙漠传送图腾</div>
+                        <div class="meta"><strong>冲层技巧:</strong> 看电视占卜→紫星天最佳 → 早6点传送沙漠 → 看到坑洞优先跳 → 怪物层/烂运层直接放楼梯。</div>
+                        <div class="note">💡 第100层齐先生任务: 完成获25永久生命值。100层后铱矿大量出现。</div>
                     </div>
                     <div class="item-card">
                         <h3>🌋 火山地牢 (姜岛·10层固定)</h3>
                         <div class="meta"><strong>进入条件:</strong> 完成社区中心 → 修船到姜岛 → 爬到火山顶。</div>
                         <div class="meta"><strong>特点:</strong> 每层固定，离开后重置。第10层为锻造台，可融合武器+戒指。</div>
-                        <div class="meta"><strong>怪物:</strong> <strong>熔岩精灵</strong>(快速穿墙，火水晶/龙牙)、<strong>熔岩潜伏怪</strong>(掉龙牙)、<strong>火焰史莱姆</strong>、<strong>熔岩蝙蝠</strong>。</div>
-                        <div class="meta"><strong>核心掉落:</strong> <strong>龙牙</strong>(造姜岛图腾柱)、<strong>火山晶石</strong>(商店货币)、<strong>鸵鸟蛋</strong>(稀有宝箱)。</div>
-                        <div class="meta"><strong>推荐装备:</strong> 银河剑 + 史莱姆克星戒指 + <span class='link-inline' onclick="searchAndShow('螃蟹')">蟹黄糕</span>BUFF(速度+防御)。</div>
+                        <div class="meta"><strong>怪物:</strong> 熔岩精灵、熔岩潜伏怪(龙牙)、火焰史莱姆、熔岩蝙蝠。</div>
+                        <div class="meta"><strong>核心掉落:</strong> 龙牙(造姜岛图腾柱)、火山晶石、鸵鸟蛋(稀有宝箱)。</div>
+                        <div class="meta"><strong>推荐装备:</strong> 银河剑 + 史莱姆克星戒指 + 蟹黄糕BUFF(速度+防御)。</div>
                     </div>
                 </div>
             </div>
