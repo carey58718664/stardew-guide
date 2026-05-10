@@ -1,730 +1,1136 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>星露谷物语 · 全能攻略手册</title>
-    <style>
-        :root {
-            --bg: #fdf8ed; --card: #fffcf5; --accent: #7a5c3a; --gold: #c99c2b;
-            --green: #5b8c5a; --red: #e0553d; --blue: #4a7b9c; --border: #d4b896;
-            --shadow: 0 4px 12px rgba(0,0,0,0.06); --text: #3e3a35; --radius: 14px;
-            --font: system-ui, -apple-system, sans-serif;
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            background: var(--bg); color: var(--text); font-family: var(--font);
-            line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column;
-            background-image: radial-gradient(circle at 20% 30%, #f3e7cb 1px, transparent 1px),
-            radial-gradient(circle at 80% 60%, #eddbb5 1px, transparent 1px);
-            background-size: 50px 50px;
-        }
-        header { background: linear-gradient(135deg, #5e3e1c, #8b5d34); color: #f7e9c3; padding: 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-bottom: 3px solid #c99c2b; }
-        header h1 { font-size: 2rem; font-weight: 800; }
-        header p { font-size: 0.85rem; opacity: 0.9; margin-top: 0.2rem; }
-        .container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0.5rem 1rem; flex: 1; }
-        .search-wrapper { position: relative; max-width: 680px; margin: 0.8rem auto; }
-        .search-wrapper input { width: 100%; padding: 0.8rem 1.4rem; font-size: 1.1rem; border: 3px solid var(--border); border-radius: 50px; background: white; box-shadow: var(--shadow); outline: none; font-family: var(--font); }
-        .search-wrapper input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(122,92,58,0.2); }
-        .back-button-wrapper { display: flex; justify-content: flex-start; max-width: 1400px; margin: 0 auto 0.5rem auto; padding: 0 1rem; }
-        .back-button { background: var(--accent); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 0.9rem; font-family: var(--font); box-shadow: 0 2px 6px rgba(0,0,0,0.1); display: none; align-items: center; gap: 4px; }
-        .back-button.show { display: inline-flex; }
-        .categories { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-bottom: 1rem; }
-        .category-btn { background: white; border: 2px solid var(--border); padding: 0.4rem 1rem; border-radius: 30px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; color: var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.04); font-family: var(--font); display: flex; align-items: center; gap: 4px; }
-        .category-btn:hover, .category-btn.active { background: var(--accent); color: white; border-color: var(--accent); transform: translateY(-2px); }
-        .content-area { background: var(--card); border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow); min-height: 400px; border: 1px solid #e8d8be; }
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
-        .item-card { background: white; border-radius: 12px; padding: 1rem; border: 1px solid #e0cfad; transition: 0.2s; }
-        .item-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
-        .item-card h3 { font-size: 1.1rem; color: var(--accent); margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
-        .badge { font-size: 0.65rem; background: var(--accent); color: white; padding: 0.1rem 0.6rem; border-radius: 12px; font-weight: 600; }
-        .badge.season { background: #6b8c42; }
-        .badge.hot { background: var(--red); animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.7;} }
-        .meta { font-size: 0.85rem; color: #5f5545; margin: 0.2rem 0; }
-        .section-title { font-weight: 700; color: var(--accent); margin-top: 0.8rem; border-bottom: 1px dashed var(--border); padding-bottom: 0.2rem; display: block; }
-        .sacrifice-item, .gift-item, .priority-item { font-size: 0.88rem; padding: 0.15rem 0; display: flex; align-items: baseline; }
-        .prefix { display: inline-block; width: 2.2em; text-align: left; flex-shrink: 0; }
-        .prio { font-weight: 700; }
-        .note { font-size: 0.8rem; color: #8a7a62; margin-top: 0.3rem; font-style: italic; }
-        .link-inline { color: var(--blue); cursor: pointer; text-decoration: underline; margin: 0 0.2rem; font-weight: 500; transition: 0.2s; }
-        .link-inline:visited { color: #5b4a7a; }
-        .link-inline:hover { color: #2d5a7a; }
-        .static-page { padding: 1rem; line-height: 1.7; }
-        .tree { font-family: monospace; font-size: 0.85rem; line-height: 1.6; white-space: pre-wrap; margin: 0.5rem 0; }
-        .step-list { padding-left: 1.2rem; margin: 0.5rem 0; }
-        .step-list li { margin-bottom: 0.4rem; }
-        footer { text-align: center; padding: 1rem; color: #7b6e5a; font-size: 0.8rem; margin-top: 1rem; }
-        @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星露谷 · 田间手册</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+
+:root {
+–ink: #1c1a16;
+–ink-light: #4a453c;
+–ink-faint: #8a8070;
+–paper: #f5f0e8;
+–paper-warm: #ede5d0;
+–paper-aged: #e0d5bc;
+–accent: #8b4513;
+–accent-soft: #c4813a;
+–green: #4a7c59;
+–green-soft: #7aaa8a;
+–red: #b94040;
+–blue: #3d6b8c;
+–gold: #c49a2a;
+–divider: rgba(139,69,19,0.15);
+–shadow: 0 2px 12px rgba(28,26,22,0.08);
+–shadow-lg: 0 8px 32px rgba(28,26,22,0.12);
+–radius: 4px;
+–radius-lg: 8px;
+}
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–paper);
+color: var(–ink);
+font-family: ‘Noto Sans SC’, sans-serif;
+font-weight: 300;
+min-height: 100vh;
+background-image:
+url(“data:image/svg+xml,%3Csvg width=‘60’ height=‘60’ viewBox=‘0 0 60 60’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cg fill=‘none’ fill-rule=‘evenodd’%3E%3Cg fill=’%23c4813a’ fill-opacity=‘0.03’%3E%3Cpath d=‘M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z’/%3E%3C/g%3E%3C/g%3E%3C/svg%3E”);
+}
+
+/* ===== HEADER ===== */
+header {
+background: var(–ink);
+color: var(–paper);
+padding: 1.5rem 2rem 1.2rem;
+position: relative;
+overflow: hidden;
+}
+header::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: repeating-linear-gradient(
+45deg,
+transparent,
+transparent 10px,
+rgba(196,129,58,0.04) 10px,
+rgba(196,129,58,0.04) 20px
+);
+}
+.header-inner {
+max-width: 900px;
+margin: 0 auto;
+position: relative;
+}
+.header-eyebrow {
+font-size: 0.7rem;
+letter-spacing: 0.2em;
+color: var(–accent-soft);
+text-transform: uppercase;
+margin-bottom: 0.3rem;
+}
+header h1 {
+font-family: ‘Noto Serif SC’, serif;
+font-size: 1.6rem;
+font-weight: 700;
+letter-spacing: 0.05em;
+line-height: 1.2;
+}
+header p {
+font-size: 0.78rem;
+color: rgba(245,240,232,0.5);
+margin-top: 0.4rem;
+letter-spacing: 0.03em;
+}
+
+/* ===== MAIN LAYOUT ===== */
+.main {
+max-width: 900px;
+margin: 0 auto;
+padding: 1.5rem 1.5rem 4rem;
+}
+
+/* ===== SEARCH ===== */
+.search-area {
+margin-bottom: 2rem;
+}
+.search-box {
+position: relative;
+}
+.search-box input {
+width: 100%;
+padding: 0.9rem 1rem 0.9rem 2.8rem;
+font-size: 1rem;
+font-family: ‘Noto Sans SC’, sans-serif;
+font-weight: 300;
+background: white;
+border: 1.5px solid var(–paper-aged);
+border-radius: var(–radius);
+color: var(–ink);
+outline: none;
+transition: border-color 0.2s, box-shadow 0.2s;
+box-shadow: var(–shadow);
+}
+.search-box input:focus {
+border-color: var(–accent);
+box-shadow: 0 0 0 3px rgba(139,69,19,0.1), var(–shadow);
+}
+.search-box input::placeholder { color: var(–ink-faint); }
+.search-icon {
+position: absolute;
+left: 0.9rem;
+top: 50%;
+transform: translateY(-50%);
+color: var(–ink-faint);
+font-size: 1rem;
+pointer-events: none;
+}
+.search-hint {
+font-size: 0.72rem;
+color: var(–ink-faint);
+margin-top: 0.5rem;
+padding-left: 0.2rem;
+}
+.search-hint span {
+display: inline-block;
+background: var(–paper-warm);
+border: 1px solid var(–paper-aged);
+border-radius: 3px;
+padding: 0.05rem 0.4rem;
+margin: 0 0.15rem;
+cursor: pointer;
+transition: background 0.15s;
+font-size: 0.7rem;
+}
+.search-hint span:hover { background: var(–paper-aged); }
+
+/* ===== FOUR ENTRIES ===== */
+.entries {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 0.8rem;
+margin-bottom: 2rem;
+}
+.entry-card {
+background: white;
+border: 1.5px solid var(–paper-aged);
+border-radius: var(–radius-lg);
+padding: 1.1rem 1.2rem;
+cursor: pointer;
+transition: all 0.2s;
+box-shadow: var(–shadow);
+position: relative;
+overflow: hidden;
+}
+.entry-card::before {
+content: ‘’;
+position: absolute;
+left: 0; top: 0; bottom: 0;
+width: 3px;
+background: var(–card-accent, var(–accent));
+transform: scaleY(0);
+transition: transform 0.2s;
+transform-origin: bottom;
+}
+.entry-card:hover { border-color: var(–card-accent, var(–accent)); transform: translateY(-2px); box-shadow: var(–shadow-lg); }
+.entry-card:hover::before { transform: scaleY(1); }
+.entry-card.active { border-color: var(–card-accent, var(–accent)); background: var(–paper-warm); }
+.entry-card.active::before { transform: scaleY(1); }
+.entry-icon { font-size: 1.4rem; margin-bottom: 0.4rem; display: block; }
+.entry-title { font-size: 0.95rem; font-weight: 500; color: var(–ink); margin-bottom: 0.2rem; }
+.entry-sub { font-size: 0.72rem; color: var(–ink-faint); line-height: 1.4; }
+.entry-card[data-entry=“location”] { –card-accent: var(–green); }
+.entry-card[data-entry=“item”] { –card-accent: var(–accent); }
+.entry-card[data-entry=“bundle”] { –card-accent: var(–gold); }
+.entry-card[data-entry=“npc”] { –card-accent: var(–blue); }
+
+/* ===== PANEL ===== */
+.panel {
+background: white;
+border: 1.5px solid var(–paper-aged);
+border-radius: var(–radius-lg);
+box-shadow: var(–shadow);
+overflow: hidden;
+display: none;
+}
+.panel.visible { display: block; }
+.panel-header {
+padding: 1rem 1.2rem 0.8rem;
+border-bottom: 1px solid var(–divider);
+display: flex;
+align-items: center;
+justify-content: space-between;
+background: var(–paper-warm);
+}
+.panel-title {
+font-family: ‘Noto Serif SC’, serif;
+font-size: 1rem;
+font-weight: 600;
+color: var(–ink);
+}
+.panel-close {
+width: 28px; height: 28px;
+border: none;
+background: transparent;
+cursor: pointer;
+color: var(–ink-faint);
+font-size: 1.1rem;
+border-radius: 4px;
+transition: background 0.15s, color 0.15s;
+display: flex; align-items: center; justify-content: center;
+}
+.panel-close:hover { background: var(–paper-aged); color: var(–ink); }
+
+/* ===== LOCATION PANEL ===== */
+.filter-row {
+display: flex;
+gap: 0.6rem;
+padding: 0.9rem 1.2rem;
+border-bottom: 1px solid var(–divider);
+flex-wrap: wrap;
+background: var(–paper);
+}
+.filter-group { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; min-width: 120px; }
+.filter-label { font-size: 0.65rem; color: var(–ink-faint); letter-spacing: 0.08em; text-transform: uppercase; }
+.filter-select {
+padding: 0.45rem 0.7rem;
+font-size: 0.82rem;
+font-family: ‘Noto Sans SC’, sans-serif;
+border: 1.5px solid var(–paper-aged);
+border-radius: var(–radius);
+background: white;
+color: var(–ink);
+cursor: pointer;
+outline: none;
+transition: border-color 0.15s;
+}
+.filter-select:focus { border-color: var(–green); }
+
+/* ===== RESULT LIST ===== */
+.result-list { padding: 0.5rem 0; }
+.result-item {
+padding: 0.8rem 1.2rem;
+border-bottom: 1px solid var(–divider);
+display: grid;
+grid-template-columns: auto 1fr auto;
+gap: 0.8rem;
+align-items: start;
+transition: background 0.15s;
+cursor: pointer;
+}
+.result-item:last-child { border-bottom: none; }
+.result-item:hover { background: var(–paper); }
+.result-item.expanded { background: var(–paper); }
+.result-emoji { font-size: 1.1rem; line-height: 1; padding-top: 0.1rem; }
+.result-main { flex: 1; }
+.result-name { font-size: 0.9rem; font-weight: 500; color: var(–ink); margin-bottom: 0.15rem; }
+.result-meta { font-size: 0.75rem; color: var(–ink-faint); line-height: 1.5; }
+.result-price {
+font-size: 0.8rem;
+font-weight: 500;
+color: var(–gold);
+white-space: nowrap;
+text-align: right;
+}
+.result-detail {
+grid-column: 1 / -1;
+padding: 0.7rem 0.8rem;
+background: var(–paper-warm);
+border-radius: var(–radius);
+font-size: 0.78rem;
+color: var(–ink-light);
+line-height: 1.7;
+display: none;
+margin-top: 0.3rem;
+}
+.result-item.expanded .result-detail { display: block; }
+.detail-row { display: flex; gap: 0.5rem; margin-bottom: 0.25rem; }
+.detail-row:last-child { margin-bottom: 0; }
+.detail-label { color: var(–ink-faint); min-width: 3.5em; flex-shrink: 0; }
+.detail-val { color: var(–ink); }
+.tag {
+display: inline-block;
+font-size: 0.65rem;
+padding: 0.1rem 0.45rem;
+border-radius: 2px;
+font-weight: 500;
+letter-spacing: 0.03em;
+}
+.tag-season { background: rgba(74,124,89,0.12); color: var(–green); }
+.tag-hot { background: rgba(185,64,64,0.12); color: var(–red); }
+.tag-new { background: rgba(196,154,42,0.15); color: var(–gold); }
+
+/* ===== ITEM PANEL ===== */
+.item-search-area {
+padding: 0.9rem 1.2rem;
+border-bottom: 1px solid var(–divider);
+background: var(–paper);
+}
+.item-search-area input {
+width: 100%;
+padding: 0.5rem 0.8rem;
+font-size: 0.88rem;
+font-family: ‘Noto Sans SC’, sans-serif;
+border: 1.5px solid var(–paper-aged);
+border-radius: var(–radius);
+background: white;
+outline: none;
+transition: border-color 0.15s;
+}
+.item-search-area input:focus { border-color: var(–accent); }
+
+/* ===== PROCESSING RESULT ===== */
+.process-card {
+padding: 1rem 1.2rem;
+border-bottom: 1px solid var(–divider);
+}
+.process-card:last-child { border-bottom: none; }
+.process-name {
+font-size: 0.95rem;
+font-weight: 500;
+margin-bottom: 0.6rem;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+.process-verdict {
+display: inline-block;
+font-size: 0.65rem;
+padding: 0.15rem 0.5rem;
+border-radius: 2px;
+font-weight: 500;
+}
+.verdict-sell { background: rgba(74,124,89,0.12); color: var(–green); }
+.verdict-process { background: rgba(196,129,58,0.12); color: var(–accent-soft); }
+.process-options { display: flex; flex-direction: column; gap: 0.4rem; }
+.process-option {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0.5rem 0.7rem;
+background: var(–paper);
+border-radius: var(–radius);
+font-size: 0.78rem;
+}
+.process-option-left { color: var(–ink-light); }
+.process-option-right { font-weight: 500; color: var(–ink); }
+.process-option.best { background: rgba(74,124,89,0.08); }
+.process-option.best .process-option-right { color: var(–green); }
+.process-bar {
+height: 3px;
+background: var(–paper-aged);
+border-radius: 2px;
+margin: 0.3rem 0;
+overflow: hidden;
+}
+.process-bar-fill {
+height: 100%;
+background: var(–green);
+border-radius: 2px;
+transition: width 0.4s ease;
+}
+
+/* ===== BUNDLE PANEL ===== */
+.bundle-rooms {
+padding: 0;
+}
+.bundle-room {
+border-bottom: 1px solid var(–divider);
+}
+.bundle-room:last-child { border-bottom: none; }
+.bundle-room-header {
+padding: 0.9rem 1.2rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+cursor: pointer;
+transition: background 0.15s;
+}
+.bundle-room-header:hover { background: var(–paper); }
+.bundle-room-title { font-size: 0.9rem; font-weight: 500; }
+.bundle-room-reward { font-size: 0.72rem; color: var(–ink-faint); }
+.bundle-room-toggle { color: var(–ink-faint); transition: transform 0.2s; font-size: 0.8rem; }
+.bundle-room.open .bundle-room-toggle { transform: rotate(90deg); }
+.bundle-list { display: none; padding: 0 1.2rem 0.8rem; }
+.bundle-room.open .bundle-list { display: block; }
+.bundle-item {
+display: flex;
+align-items: flex-start;
+gap: 0.6rem;
+padding: 0.5rem 0;
+border-bottom: 1px dashed var(–divider);
+font-size: 0.8rem;
+}
+.bundle-item:last-child { border-bottom: none; }
+.bundle-check {
+width: 16px; height: 16px;
+border: 1.5px solid var(–paper-aged);
+border-radius: 3px;
+cursor: pointer;
+flex-shrink: 0;
+margin-top: 0.1rem;
+transition: all 0.15s;
+display: flex; align-items: center; justify-content: center;
+font-size: 0.65rem;
+}
+.bundle-check.done { background: var(–green); border-color: var(–green); color: white; }
+.bundle-item-name { flex: 1; color: var(–ink); }
+.bundle-item-need { color: var(–ink-faint); white-space: nowrap; }
+
+/* ===== NPC PANEL ===== */
+.npc-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 0;
+}
+.npc-card {
+padding: 0.9rem 1.1rem;
+border-bottom: 1px solid var(–divider);
+cursor: pointer;
+transition: background 0.15s;
+position: relative;
+}
+.npc-card:nth-child(odd) { border-right: 1px solid var(–divider); }
+.npc-card:hover { background: var(–paper); }
+.npc-card.expanded { background: var(–paper); }
+.npc-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.15rem; }
+.npc-birthday { font-size: 0.7rem; color: var(–gold); }
+.npc-detail {
+display: none;
+grid-column: 1 / -1;
+padding: 0.8rem 1.1rem;
+background: var(–paper-warm);
+border-top: 1px solid var(–divider);
+font-size: 0.78rem;
+line-height: 1.7;
+color: var(–ink-light);
+}
+.npc-detail.visible { display: block; }
+.npc-loves { color: var(–red); margin-bottom: 0.3rem; }
+
+/* ===== SEARCH RESULTS ===== */
+.search-results { padding: 0.5rem 0; }
+.search-section-title {
+padding: 0.6rem 1.2rem 0.3rem;
+font-size: 0.65rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–ink-faint);
+border-bottom: 1px solid var(–divider);
+}
+.empty-state {
+padding: 3rem 1.2rem;
+text-align: center;
+color: var(–ink-faint);
+font-size: 0.85rem;
+}
+.empty-state .big { font-size: 2rem; margin-bottom: 0.5rem; }
+
+/* ===== FISHING GEAR PANEL ===== */
+.gear-tabs {
+display: flex;
+padding: 0.7rem 1.2rem;
+gap: 0.5rem;
+border-bottom: 1px solid var(–divider);
+background: var(–paper);
+}
+.gear-tab {
+padding: 0.3rem 0.8rem;
+font-size: 0.78rem;
+border: 1.5px solid var(–paper-aged);
+border-radius: 20px;
+cursor: pointer;
+background: white;
+color: var(–ink-light);
+transition: all 0.15s;
+}
+.gear-tab.active { background: var(–blue); border-color: var(–blue); color: white; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(–paper-aged); border-radius: 3px; }
+
+/* ===== FOOTER ===== */
+footer {
+text-align: center;
+padding: 2rem;
+color: var(–ink-faint);
+font-size: 0.7rem;
+letter-spacing: 0.05em;
+}
+footer::before {
+content: ‘’;
+display: block;
+width: 40px;
+height: 1px;
+background: var(–divider);
+margin: 0 auto 1rem;
+}
+
+@media (max-width: 600px) {
+header { padding: 1.2rem 1rem; }
+.main { padding: 1rem 1rem 3rem; }
+.entries { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.entry-card { padding: 0.8rem; }
+.npc-grid { grid-template-columns: 1fr; }
+.npc-card:nth-child(odd) { border-right: none; }
+}
+</style>
+
 </head>
 <body>
-    <header><h1>🌾 星露谷物语 · 全能攻略手册</h1><p>1.6适配 · 献祭/加工/送礼/建筑/姜岛 · 全网跳转</p></header>
-    <div class="back-button-wrapper"><button class="back-button" id="backButton" onclick="goBack()">← 返回</button></div>
-    <div class="container">
-        <div class="search-wrapper"><input type="text" id="searchInput" placeholder="搜 上古种子 / 小桶 / 杨桃 / 姜岛 / 金核桃 ..." autocomplete="off"></div>
-        <div class="categories" id="categoryNav">
-            <button class="category-btn active" data-category="all">🏠 全部</button>
-            <button class="category-btn" data-category="crops">🌽 作物</button>
-            <button class="category-btn" data-category="animal">🐄 畜牧</button>
-            <button class="category-btn" data-category="fish">🎣 钓鱼</button>
-            <button class="category-btn" data-category="foraging">🍄 觅食</button>
-            <button class="category-btn" data-category="mining">⛏ 矿场</button>
-            <button class="category-btn" data-category="ginger_island">🏝️ 姜岛</button>
-            <button class="category-btn" data-category="artisan">🍷 工匠设备</button>
-            <button class="category-btn" data-category="construction">🏗 建筑/工具</button>
-            <button class="category-btn" data-category="bundles">🎁 献祭</button>
-            <button class="category-btn" data-category="cooking">🍲 食谱</button>
-            <button class="category-btn" data-category="npcs">💬 NPC</button>
-        </div>
-        <div class="content-area" id="contentArea"></div>
+
+<header>
+  <div class="header-inner">
+    <div class="header-eyebrow">Stardew Valley · 1.6</div>
+    <h1>🌾 田间手册</h1>
+    <p>带着问题来，找到答案，回到游戏</p>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- 搜索 -->
+
+  <div class="search-area">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="globalSearch" placeholder="搜索任何东西：鳗鱼、远古果实、阿比盖尔、火水晶…" autocomplete="off">
     </div>
-    <footer>🐔 星露谷攻略手册 · 基于1.6版本 · 全网状超链接</footer>
-    <script>
-        // ==================== 设备数据库 ====================
-        const equipmentDB = {
-            "keg": { id:"keg", name:"小桶", source:"耕种8级解锁打造配方", recipe:"木材×30 + 铜锭×1 + 铁锭×1 + 橡树树脂×1", desc:"水果→酒(3x)，蔬菜→汁(2.25x)。例：杨桃→杨桃酒(2250G)。" },
-            "jar": { id:"jar", name:"罐头瓶", source:"耕种4级解锁打造配方", recipe:"木材×50 + 石头×40 + 煤炭×8", desc:"蔬菜→泡菜，水果→果酱，鱼籽→腌鱼籽。收益2x+50G。" },
-            "smoker": { id:"smoker", name:"熏鱼机", source:"1.6：完成鱼缸后威利处10,000G购买配方", recipe:"硬木×10 + 海洋凝胶×1 + 洞穴凝胶×1 + 史莱姆×20", desc:"鱼+煤→熏鱼，价格翻倍且保留星级。" },
-            "mayo": { id:"mayo", name:"蛋黄酱机", source:"耕种2级解锁", recipe:"木材×15 + 石头×15 + 地晶×1 + 铜锭×1", desc:"蛋→蛋黄酱。大鸡蛋产出金星品质。" },
-            "cheese": { id:"cheese", name:"奶酪机", source:"耕种6级解锁", recipe:"木材×45 + 石头×45 + 硬木×10 + 铜锭×1", desc:"牛奶→奶酪，大壶奶出金星奶酪。" },
-            "loom": { id:"loom", name:"织布机", source:"耕种7级解锁", recipe:"木材×60 + 纤维×30 + 松焦油×1", desc:"羊毛→布料，高品质羊毛可能产出2个。" },
-            "oil": { id:"oil", name:"产油机", source:"耕种8级解锁", recipe:"史莱姆×50 + 硬木×20 + 金锭×1", desc:"松露/向日葵/玉米→油。松露油(1065G)。" },
-            "dehydrator": { id:"dehydrator", name:"烘干机", source:"1.6：完成工艺室后皮埃尔处10,000G购买配方", recipe:"木材×30 + 粘土×2 + 火水晶×1", desc:"5个水果/蘑菇→干果/干蘑菇，1天完成。" },
-            "cask": { id:"cask", name:"陈酿桶", source:"房屋3次升级后地窖自动可用", recipe:"木材×20 + 硬木×1", desc:"酒和奶酪陈酿提升品质(普通→银→金→铱)。" },
-            "seedmaker": { id:"seedmaker", name:"种子生产器", source:"耕种9级解锁/染料收集包奖励", recipe:"木材×25 + 煤炭×10 + 金锭×1", desc:"作物→1-3种子，1.5%古代种子。" },
-            "forge": { id:"forge", name:"锻造台", source:"姜岛火山地牢顶层", recipe:"无需打造，直接使用", desc:"强化武器/工具，合并戒指，附魔属性。需要火山晶石。" }
-        };
-
-        // ==================== 建筑与工具 ====================
-const buildingDB = [
-    { id:"coop", name:"鸡舍", type:"建筑", source:"罗宾木匠商店", cost:"4,000G + 木材×300 + 石头×100", desc:"🏠 容量：4只鸡。每天产蛋，稳定收入。" },
-    { id:"big_coop", name:"大鸡舍", type:"建筑", source:"升级", cost:"10,000G + 木材×400 + 石头×150", desc:"🏠 容量：8只，可孵化。养鸭子下鸭蛋。" },
-    { id:"deluxe_coop", name:"高级鸡舍", type:"建筑", source:"升级", cost:"20,000G + 木材×500 + 石头×200", desc:"🏠 容量：12只，自动喂食。养兔子（产毛/兔脚）和恐龙。" },
-    { id:"barn", name:"畜棚", type:"建筑", source:"罗宾木匠商店", cost:"6,000G + 木材×350 + 石头×150", desc:"🐄 容量：4头。养奶牛产奶。" },
-    { id:"big_barn", name:"大畜棚", type:"建筑", source:"升级", cost:"12,000G + 木材×450 + 石头×200", desc:"🐄 容量：8头，可生育。养山羊（羊奶）、绵羊（羊毛）。" },
-    { id:"deluxe_barn", name:"高级畜棚", type:"建筑", source:"升级", cost:"25,000G + 木材×550 + 石头×300", desc:"🐄 容量：12头，自动喂食。养猪（挖松露）和鸵鸟。" },
-    { id:"silo", name:"筒仓", type:"建筑", source:"罗宾木匠商店", cost:"100G + 石头×100 + 粘土×10 + 铜锭×5", desc:"🌿 储存240个干草。镰刀割草自动存入，冬天必备。" },
-    { id:"stable", name:"马厩", type:"建筑", source:"罗宾木匠商店", cost:"10,000G + 硬木×100 + 铁锭×5", desc:"🐴 获得马匹，移动速度+30%。" },
-    { id:"fish_pond", name:"鱼塘", type:"建筑", source:"罗宾木匠商店", cost:"5,000G + 石材×200 + 海草×5 + 绿藻×5", desc:"🐟 养鱼产鱼籽。鲟鱼→鱼子酱(500G)。" },
-    { id:"mill", name:"磨坊", type:"建筑", source:"罗宾木匠商店", cost:"2,500G + 石材×50 + 木材×150 + 布料×4", desc:"🌾 小麦→面粉，甜菜→糖。" },
-    { id:"well", name:"水井", type:"建筑", source:"罗宾木匠商店", cost:"1,000G + 石头×75", desc:"💧 提供水源，附近有池塘则不需要。" },
-    { id:"house1", name:"房屋升级1", type:"建筑", source:"罗宾木匠商店", cost:"10,000G + 木材×450", desc:"🏡 增加厨房，解锁烹饪。" },
-    { id:"house2", name:"房屋升级2", type:"建筑", source:"罗宾木匠商店", cost:"50,000G + 硬木×150", desc:"🏡 增加儿童房，可结婚生子。" },
-    { id:"house3", name:"房屋升级3", type:"建筑", source:"罗宾木匠商店", cost:"100,000G", desc:"🏡 增加地窖，可用陈酿桶。" },
-    { id:"house_dining", name:"房屋装修：餐厅", type:"☕ 1.6", source:"罗宾木匠商店", cost:"免费", desc:"改建右侧房间为餐厅（需2次升级后）。" },
-    { id:"house_attic", name:"房屋装修：阁楼", type:"☕ 1.6", source:"罗宾木匠商店", cost:"免费", desc:"改建右上角为阁楼（需2次升级后）。" },
-    { id:"house_corner", name:"房屋装修：扩展角房", type:"☕ 1.6", source:"罗宾木匠商店", cost:"免费", desc:"改建左侧为角落房间（需2次升级后）。" },
-    { id:"house_cubby", name:"房屋装修：储藏室", type:"☕ 1.6", source:"罗宾木匠商店", cost:"免费", desc:"增添储物空间（需2次升级后）。" },
-    { id:"pet_bowl", name:"宠物碗", type:"🐾 1.6", source:"罗宾木匠商店", cost:"5,000G + 硬木×25", desc:"每只宠物需一个碗，否则好感隔天-10。" },
-    { id:"island_farmhouse", name:"姜岛农舍", type:"🏝️ 姜岛", source:"鹦鹉（金色核桃）", cost:"20金色核桃", desc:"可在姜岛过夜恢复体力。" },
-    { id:"island_trader", name:"姜岛商人", type:"🏝️ 姜岛", source:"鹦鹉（金色核桃）", cost:"10金色核桃", desc:"以物易物，换热带电视等。" },
-    { id:"island_resort", name:"姜岛度假村", type:"🏝️ 姜岛", source:"鹦鹉（金色核桃）", cost:"20金色核桃", desc:"村民会来度假，有互动彩蛋。" },
-    { id:"island_farm", name:"姜岛农场", type:"🏝️ 姜岛", source:"鹦鹉（需先有农舍）", cost:"-", desc:"西部大片土地，无季节限制，无乌鸦。" },
-    { id:"island_parrot", name:"鹦鹉特快", type:"🏝️ 姜岛", source:"鹦鹉（金色核桃）", cost:"10金色核桃", desc:"姜岛内部快速传送系统。" },
-    { id:"island_obelisk", name:"姜岛图腾柱", type:"🏝️ 姜岛", source:"法师塔", cost:"1,000,000G + 铱锭×10 + 龙牙×10 + 香蕉×10", desc:"放在农场：一键传送到姜岛。" }
-];
-
-// ==================== 工具数据库 ====================
-const toolDB = [
-    { id:"hoe", name:"锄头", type:"工具", source:"初始赠送", cost:"-", desc:"范围1格。翻地。" },
-    { id:"copper_hoe", name:"铜锄头", type:"工具", source:"铁匠铺升级", cost:"2,000G+铜锭×5", desc:"范围前方直线3格。" },
-    { id:"steel_hoe", name:"钢锄头", type:"工具", source:"铁匠铺升级", cost:"5,000G+铁锭×5", desc:"范围前方直线5格。" },
-    { id:"gold_hoe", name:"金锄头", type:"工具", source:"铁匠铺升级", cost:"10,000G+金锭×5", desc:"范围3x3格。" },
-    { id:"iridium_hoe", name:"铱锄头", type:"工具", source:"铁匠铺升级", cost:"25,000G+铱锭×5", desc:"范围6x3格。" },
-    { id:"pickaxe", name:"十字镐", type:"工具", source:"初始赠送", cost:"-", desc:"破石采矿。" },
-    { id:"copper_pick", name:"铜十字镐", type:"工具", source:"铁匠铺升级", cost:"2,000G+铜锭×5", desc:"可砸开大石块，减少挖掘次数。" },
-    { id:"steel_pick", name:"钢十字镐", type:"工具", source:"铁匠铺升级", cost:"5,000G+铁锭×5", desc:"可砸开农场大石头，解锁与矮人对话。" },
-    { id:"gold_pick", name:"金十字镐", type:"工具", source:"铁匠铺升级", cost:"10,000G+金锭×5", desc:"可砸开陨石，采矿速度更快。" },
-    { id:"iridium_pick", name:"铱十字镐", type:"工具", source:"铁匠铺升级", cost:"25,000G+铱锭×5", desc:"最高效率采矿。" },
-    { id:"axe", name:"斧头", type:"工具", source:"初始赠送", cost:"-", desc:"砍树伐木。" },
-    { id:"copper_axe", name:"铜斧头", type:"工具", source:"铁匠铺升级", cost:"2,000G+铜锭×5", desc:"可砍伐大树桩，获得少量硬木。" },
-    { id:"steel_axe", name:"钢斧头", type:"工具", source:"铁匠铺升级", cost:"5,000G+铁锭×5", desc:"可砍开秘密森林入口圆木（每日硬木来源）。" },
-    { id:"gold_axe", name:"金斧头", type:"工具", source:"铁匠铺升级", cost:"10,000G+金锭×5", desc:"伐木速度极大提升。" },
-    { id:"iridium_axe", name:"铱斧头", type:"工具", source:"铁匠铺升级", cost:"25,000G+铱锭×5", desc:"伐木如切菜。" },
-    { id:"watering_can", name:"喷壶", type:"工具", source:"初始赠送", cost:"-", desc:"浇灌前方1格。" },
-    { id:"copper_water", name:"铜喷壶", type:"工具", source:"铁匠铺升级", cost:"2,000G+铜锭×5", desc:"浇灌前方直线3格。" },
-    { id:"steel_water", name:"钢喷壶", type:"工具", source:"铁匠铺升级", cost:"5,000G+铁锭×5", desc:"浇灌前方直线5格。" },
-    { id:"gold_water", name:"金喷壶", type:"工具", source:"铁匠铺升级", cost:"10,000G+金锭×5", desc:"浇灌3x3格。" },
-    { id:"iridium_water", name:"铱喷壶", type:"工具", source:"铁匠铺升级", cost:"25,000G+铱锭×5", desc:"浇灌6x3格。" },
-    { id:"trash_can", name:"垃圾桶", type:"工具", source:"初始赠送", cost:"-", desc:"丢弃物品无回收。" },
-    { id:"copper_can", name:"铜垃圾桶", type:"工具", source:"铁匠铺升级", cost:"1,000G+铜锭×5", desc:"丢弃后回收15%价值。" },
-    { id:"steel_can", name:"钢垃圾桶", type:"工具", source:"铁匠铺升级", cost:"2,500G+铁锭×5", desc:"丢弃后回收30%价值。" },
-    { id:"gold_can", name:"金垃圾桶", type:"工具", source:"铁匠铺升级", cost:"5,000G+金锭×5", desc:"丢弃后回收45%价值。" },
-    { id:"iridium_can", name:"铱垃圾桶", type:"工具", source:"铁匠铺升级", cost:"12,500G+铱锭×5", desc:"丢弃后回收60%价值，清包神器。" },
-    { id:"scythe", name:"镰刀", type:"工具", source:"初始赠送", cost:"-", desc:"收割干草和杂草。" },
-    { id:"golden_scythe", name:"黄金镰刀", type:"工具", source:"采石场矿井宝箱", cost:"-", desc:"范围更大，割草效率高。" },
-    { id:"iridium_scythe", name:"铱镰刀", type:"☕ 1.6", source:"精通耕种后解锁", cost:"-", desc:"全能收割机，范围巨大，可收作物，攻击+20。" },
-    { id:"auto_petter", name:"自动抚摸机", type:"☕ 1.6", source:"骷髅洞穴宝箱/Joja购买", cost:"Joja: 50,000G", desc:"自动抚摸动物，不掉好感。" }
-];
-       // ==================== 鱼饵与渔具数据库 ====================
-const fishingGearDB = [
-    // --- 鱼饵 Bait ---
-    { id:"bait", name:"鱼饵", type:"鱼饵", source:"鱼店购买 / 钓鱼2级打造", cost:"5G / 虫肉×1", desc:"减少50%上钩等待时间，降低钓到垃圾的概率。" },
-    { id:"magnet", name:"磁铁", type:"鱼饵", source:"鱼店购买 / 钓鱼9级打造", cost:"1,000G / 铁锭×1", desc:"宝箱出现概率15%→30%。同样减少50%等待时间。" },
-    { id:"wild_bait", name:"万能鱼饵", type:"鱼饵", source:"莱纳斯4❤事件配方", cost:"纤维×10 + 史莱姆×5 + 虫肉×5 (产5个)", desc:"减少62.5%等待时间，有概率一次钓到两条鱼（传说鱼类无效）。" },
-    { id:"deluxe_bait", name:"高级鱼饵", type:"☕ 1.6", source:"齐先生核桃房配方 (20齐钻)", cost:"鱼饵×5 + 苔藓×2 (产5个)", desc:"减少67%等待时间，钓鱼条增大12像素。" },
-    { id:"challenge_bait", name:"挑战鱼饵", type:"☕ 1.6", source:"钓鱼精通后解锁配方", cost:"骨头碎片×5 + 苔藓×2 (产5个)", desc:"完美钓鱼时获得3条鱼，但鱼每次逃离钓鱼条产量-1。" },
-    { id:"magic_bait", name:"魔法鱼饵", type:"☕ 1.6", source:"齐先生核桃房购买 (5齐钻/20个)", cost:"5齐钻 / 20个", desc:"无视季节、时间、天气限制，可钓出对应水域的任何鱼。" },
-    { id:"targeted_bait", name:"针对性鱼饵", type:"☕ 1.6", source:"鱼饵制造机 / 威利鱼店每日8-12个", cost:"任意鱼→产5-10个该鱼鱼饵", desc:"钓特定鱼概率+66%。需在该鱼可能出现的条件下使用。鱼店版价格=鱼基础价×40%。" },
-
-    // --- 渔具 Tackle ---
-    { id:"trap_bobber", name:"陷阱浮标", type:"渔具", source:"鱼店购买 / 钓鱼6级打造", cost:"500G / 铜锭×1 + 树液×10", desc:"鱼逃离时右侧进度条下降速度减慢33%，新手稳钓神器。" },
-    { id:"cork_bobber", name:"软木塞浮标", type:"渔具", source:"鱼店购买 / 钓鱼7级打造", cost:"750G / 木材×10 + 硬木×5 + 史莱姆×10", desc:"钓鱼条增大13%-25%，直接降低操作难度。" },
-    { id:"treasure_hunter", name:"寻宝者", type:"渔具", source:"鱼店购买 / 钓鱼7级打造", cost:"750G / 金锭×2", desc:"宝箱概率15%→20%，收集宝藏时鱼不会逃跑。" },
-    { id:"dressed_spinner", name:"精装旋式鱼饵", type:"渔具", source:"鱼店购买 / 钓鱼8级打造", cost:"1,000G / 铁锭×2 + 布料×1", desc:"减少7.5秒上钩等待时间。" },
-    { id:"barbed_hook", name:"倒刺钩", type:"渔具", source:"鱼店购买 / 钓鱼8级打造", cost:"1,000G / 铜锭×1 + 铁锭×1 + 金锭×1", desc:"钓鱼条自动吸附在鱼上，适合钓移动缓慢的鱼。" },
-    { id:"spinner", name:"旋式鱼饵", type:"渔具", source:"鱼店购买 / 钓鱼6级打造", cost:"500G / 铁锭×2", desc:"减少3.75秒上钩等待时间。" },
-    { id:"lead_bobber", name:"铅制浮标", type:"渔具", source:"鱼店购买 (钓鱼6级解锁)", cost:"200G (不可打造)", desc:"防止钓鱼条触底反弹，可通过操作避免。" },
-    { id:"quality_bobber", name:"优质浮标", type:"渔具", source:"鱼店购买 (钓鱼4级解锁)", cost:"500G (不可打造)", desc:"提升钓到的鱼的品质（提高星级概率）。" },
-    { id:"sonar_bobber", name:"声纳浮标", type:"渔具", source:"鱼店购买 (钓鱼5级解锁)", cost:"500G (不可打造)", desc:"上钩前显示鱼的类型，方便判断是否收杆。" },
-    { id:"curiosity_lure", name:"好奇诱钩", type:"☕ 1.6", source:"采石场矿井/骷髅洞穴/火山地牢箱子掉落", cost:"不可购买或打造", desc:"增加钓到稀有鱼类的几率。" },
-    { id:"deluxe_tackle", name:"高级渔具", type:"☕ 1.6", source:"钓鱼精通后解锁配方", cost:"材料待定", desc:"降低渔具耐久消耗，延长使用寿命。" },
-    { id:"training_tackle", name:"训练用渔具", type:"☕ 1.6", source:"鱼店免费 / 威利任务奖励", cost:"免费", desc:"新手专用，略微增大钓鱼条，耐久较低。" }
-];
-        
-        // ==================== NPC数据库 ====================
-        const npcDB = {
-            "abigail": { id:"abigail", name:"阿比盖尔", loves:"紫水晶、黑莓脆皮饼、巧克力蛋糕、河豚、南瓜、香辣鳗鱼", schedule:"春季卧室，周三图书馆，周五餐吧打游戏，周日法师塔。" },
-            "alex": { id:"alex", name:"亚历克斯", loves:"完美早餐、鲑鱼晚餐", schedule:"夏季白天沙滩/温泉，冬季温泉。周三下午诊所。" },
-            "caroline": { id:"caroline", name:"卡洛琳", loves:"鱼肉卷、夏季亮片、绿茶、热带咖喱", schedule:"杂货店走廊或厨房，周二下午和乔迪锻炼。" },
-            "clint": { id:"clint", name:"克林特", loves:"紫水晶、海蓝宝石、绿宝石、金锭、铱锭、翡翠、红宝石、黄水晶、意式蕨菜炖饭", schedule:"铁匠铺9:00-16:00(周五休息)，晚上餐吧。" },
-            "demetrius": { id:"demetrius", name:"德米特里厄斯", loves:"豆类火锅、冰淇淋、大米布丁、草莓", schedule:"实验室或家，周二杂货店，周五餐吧。" },
-            "elliott": { id:"elliott", name:"艾利欧特", loves:"蟹黄糕、鸭毛、龙虾、石榴、椰汁汤、鱿鱼墨汁", schedule:"春季12点去沙滩南边，3点在桥上。周四杂货店，周五/日餐吧。" },
-            "emily": { id:"emily", name:"艾米丽", loves:"紫水晶、海蓝宝石、布料、绿宝石、翡翠、红宝石、救生汉堡、黄水晶、动物毛", schedule:"春季下午餐吧工作到凌晨。" },
-            "evelyn": { id:"evelyn", name:"艾芙琳", loves:"甜菜、巧克力蛋糕、钻石、玫瑰仙子、蜜料面包、郁金香", schedule:"家中厨房或广场花坛，周四社区中心工艺室。" },
-            "george": { id:"george", name:"乔治", loves:"炒蘑菇、韭葱", schedule:"家中餐桌或客厅，周日去杂货店看雕像。" },
-            "gus": { id:"gus", name:"格斯", loves:"钻石、法式田螺、鱼肉卷、橙子、热带咖喱", schedule:"餐吧吧台12:00-0:00。" },
-            "haley": { id:"haley", name:"海莉", loves:"椰子、水果沙拉、粉红蛋糕、向日葵", schedule:"春季卧室，12点家附近，15:30餐吧工作到凌晨。" },
-            "harvey": { id:"harvey", name:"哈维", loves:"咖啡、腌菜、巨无霸餐、松露油、果酒", schedule:"诊所8:30-12:00和13:30-16:30。周二/四/六下午博物馆。" },
-            "jas": { id:"jas", name:"贾斯", loves:"玫瑰仙子、粉红蛋糕、葡萄干布丁", schedule:"牧场家或大树下，周二/三博物馆上学。" },
-            "jodi": { id:"jodi", name:"乔迪", loves:"香酥鲈鱼、钻石、帕尔玛奶酪、炒鳗鱼、薄煎饼、大黄派、蔬菜杂烩", schedule:"家厨房或客厅，周二杂货店锻炼。" },
-            "kent": { id:"kent", name:"肯特", loves:"榛子、烤榛子", schedule:"第二年春归，在家或树下，周日在教堂。" },
-            "krobus": { id:"krobus", name:"科罗布斯", loves:"钻石、铱锭、南瓜、虚空蛋、虚空蛋黄酱、野山葵", schedule:"下水道，一直待在那里。" },
-            "leah": { id:"leah", name:"莉亚", loves:"山羊奶酪、虞美人籽松糕、沙拉、蔬菜杂烩、松露、果酒", schedule:"上午雕塑，12点去湖边，下午画画。周一杂货店，周五/六餐吧。" },
-            "leo": { id:"leo", name:"雷欧", loves:"鸭毛、芒果、鸵鸟蛋、夏威夷芋泥", schedule:"姜岛树屋或火山口附近(初期)；6心后搬到星露谷，常在博物馆或山顶湖。" },
-            "lewis": { id:"lewis", name:"刘易斯", loves:"秋日恩赐、琉璃山药、陈酿、蔬菜杂烩、绿茶", schedule:"庄园8:30起床，周二杂货店，周三牧场，周五餐吧。" },
-            "linus": { id:"linus", name:"莱纳斯", loves:"蓝莓千层酥、酱汁蔬菜、椰子、仙人掌果子、山药", schedule:"帐篷附近，早晚篝火旁，白天深山湖泊或镇上。" },
-            "marnie": { id:"marnie", name:"玛妮", loves:"钻石、农夫午餐、粉红蛋糕、南瓜派", schedule:"牧场柜台9:00-16:00，晚上餐吧，周二杂货店。" },
-            "maru": { id:"maru", name:"玛鲁", loves:"电池组、花椰菜、乳酪花椰菜、钻石、金锭、铱锭、矿工特供、爆炒青椒、大黄派、草莓", schedule:"实验室或诊所，周二/四在医院。" },
-            "pam": { id:"pam", name:"潘姆", loves:"啤酒、仙人掌果子、琉璃山药、蜜蜂酒、淡啤酒、防风草、防风草汤", schedule:"上午沙发，12点Joja超市，16点餐吧。" },
-            "penny": { id:"penny", name:"潘妮", loves:"钻石、绿宝石、罂粟、虞美人籽松糕、红之盛宴、块茎拼盘、沙鱼、椰汁汤", schedule:"周二/三/四博物馆教书。" },
-            "pierre": { id:"pierre", name:"皮埃尔", loves:"炸鱿鱼", schedule:"杂货店柜台9:00-17:00(周三休息)。" },
-            "robin": { id:"robin", name:"罗宾", loves:"山羊奶酪、桃子、意大利面", schedule:"木匠商店9:00-17:00(周二休息)。" },
-            "sam": { id:"sam", name:"山姆", loves:"仙人掌果子、枫糖棒、披萨、虎眼石", schedule:"卧室，周一/三Joja超市，周五打台球，周六河边。" },
-            "sandy": { id:"sandy", name:"桑迪", loves:"番红花、黄水仙、甜豌豆、芒果糯米饭", schedule:"沙漠绿洲商店内，几乎不出门。" },
-            "sebastian": { id:"sebastian", name:"塞巴斯泰安", loves:"泪晶、黑曜石、南瓜汤、生鱼片、虚空蛋", schedule:"地下室房间，傍晚湖边抽烟，周五打台球，周四火车站。" },
-            "shane": { id:"shane", name:"谢恩", loves:"啤酒、爆炒青椒、披萨", schedule:"玛妮牧场，下午Joja超市，晚上餐吧。" },
-            "vincent": { id:"vincent", name:"文森特", loves:"蔓越莓糖果、番茄、粉红蛋糕、蜗牛", schedule:"家中或小镇闲逛，周二/三/四博物馆上课。" },
-            "willy": { id:"willy", name:"威利", loves:"南瓜、蜂蜜酒、钻石、铱锭、鲶鱼、鲟鱼、章鱼、海参", schedule:"鱼店9:00-17:00(周六休息)，晚上餐吧。" },
-            "wizard": { id:"wizard", name:"法师", loves:"紫蘑菇、太阳精华、大海参、虚空精华", schedule:"法师塔内，基本不离开。" }
-        };
-
-        // ==================== HOT 标签判定 ====================
-        function isHotItem(itemId) {
-            const hotIds = [
-                "starfruit","ancient_fruit","hops","blueberry","cranberries","sturgeon",
-                "lava_eel","ice_pip","blobfish","truffle","dinosaur_egg","ostrich_egg",
-                "void_egg","pumpkin","red_cabbage"
-            ];
-            return hotIds.includes(itemId);
-        }
-
-        // ==================== 完整的物品数据库 ====================
-        const DB = {
-            fish: [
-                { id:"sunfish", name:"太阳鱼", type:"鱼", season:"春/夏", location:"煤矿森林河流/鹈鹕镇", time:"晴天6AM-7PM", basePrice:30, sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏太阳鱼", p:60, eq:"smoker"}] },
-                { id:"catfish", name:"鲶鱼", type:"鱼", season:"春/秋", location:"煤矿森林河流/鹈鹕镇", time:"雨天6AM-12AM", basePrice:200, sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}], processing:[{m:"熏鱼机→熏鲶鱼", p:400, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:430, eq:"jar"}], gifts:["willy"] },
-                { id:"shad", name:"西鲱", type:"鱼", season:"春/夏/秋", location:"煤矿森林河流/鹈鹕镇", time:"雨天9AM-2AM", basePrice:60, sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏西鲱", p:120, eq:"smoker"}] },
-                { id:"tiger_trout", name:"虎纹鳟鱼", type:"鱼", season:"秋/冬", location:"煤矿森林河流/鹈鹕镇", time:"6AM-7PM", basePrice:150, sacrifices:[{room:"鱼缸", bundle:"河鱼收集包", need:1}], processing:[{m:"熏鱼机→熏虎纹鳟鱼", p:300, eq:"smoker"}] },
-                { id:"largemouth_bass", name:"大嘴鲈鱼", type:"鱼", season:"任何", location:"深山湖泊", time:"6AM-7PM", basePrice:100, sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}], processing:[{m:"熏鱼机→熏大嘴鲈鱼", p:200, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:230, eq:"jar"}] },
-                { id:"carp", name:"鲤鱼", type:"鱼", season:"任何", location:"深山湖泊/煤矿森林/沙滩", time:"全天", basePrice:30, sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏鲤鱼", p:60, eq:"smoker"}] },
-                { id:"sturgeon", name:"鲟鱼", type:"鱼", season:"夏/冬", location:"深山湖泊", time:"6AM-7PM", basePrice:200, sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}], processing:[{m:"鱼塘+罐头瓶→鱼子酱", p:500, eq:"jar"}, {m:"熏鱼机→熏鲟鱼", p:400, eq:"smoker"}], gifts:["willy"], note:"唯一能做鱼子酱的鱼！" },
-                { id:"bullhead", name:"大头鱼", type:"鱼", season:"任何", location:"深山湖泊", time:"全天", basePrice:75, sacrifices:[{room:"鱼缸", bundle:"湖鱼收集包", need:1}], processing:[{m:"熏鱼机→熏大头鱼", p:150, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:180, eq:"jar"}] },
-                { id:"walleye", name:"大眼鱼", type:"鱼", season:"秋/冬", location:"深山湖泊/鹈鹕镇", time:"雨天12AM-2AM", basePrice:105, sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}], processing:[{m:"熏鱼机→熏大眼鱼", p:210, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:240, eq:"jar"}] },
-                { id:"sardine", name:"沙丁鱼", type:"鱼", season:"春/秋/冬", location:"沙滩", time:"6AM-7PM", basePrice:40, sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}], processing:[{m:"熏鱼机→熏沙丁鱼", p:80, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}] },
-                { id:"tuna", name:"金枪鱼", type:"鱼", season:"夏/冬", location:"沙滩", time:"6AM-7PM", basePrice:100, sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}], processing:[{m:"熏鱼机→熏金枪鱼", p:200, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:230, eq:"jar"}] },
-                { id:"red_snapper", name:"红鲫鱼", type:"鱼", season:"夏/秋", location:"沙滩", time:"雨天6AM-7PM", basePrice:50, sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}], processing:[{m:"熏鱼机→熏红鲫鱼", p:100, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}] },
-                { id:"tilapia", name:"罗非鱼", type:"鱼", season:"夏/秋", location:"沙滩", time:"6AM-2PM", basePrice:75, sacrifices:[{room:"鱼缸", bundle:"海鱼收集包", need:1}], processing:[{m:"熏鱼机→熏罗非鱼", p:150, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:180, eq:"jar"}] },
-                { id:"flounder", name:"比目鱼", type:"鱼", season:"春/夏", location:"沙滩", time:"6AM-8PM", basePrice:100, processing:[{m:"熏鱼机→熏比目鱼", p:200, eq:"smoker"}] },
-                { id:"pufferfish", name:"河豚", type:"鱼", season:"夏季", location:"沙滩", time:"晴天12PM-4PM", basePrice:200, sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}], processing:[{m:"熏鱼机→熏河豚", p:400, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:430, eq:"jar"}] },
-                { id:"eel", name:"鳗鱼", type:"鱼", season:"春/秋", location:"沙滩", time:"雨天4PM-2AM", basePrice:85, sacrifices:[{room:"鱼缸", bundle:"夜间垂钓收集包", need:1}], processing:[{m:"熏鱼机→熏鳗鱼", p:170, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:200, eq:"jar"}] },
-                { id:"scorpion_carp", name:"蝎鲤鱼", type:"鱼", season:"任何", location:"沙漠池塘", time:"6AM-8PM", basePrice:150, processing:[{m:"熏鱼机→熏蝎鲤鱼", p:300, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:330, eq:"jar"}], note:"1.6新增，鱼塘优秀选择。" },
-                { id:"stingray", name:"黄貂鱼", type:"鱼", season:"任何", location:"🌴姜岛海洋", time:"全天", basePrice:180, processing:[{m:"熏鱼机→熏黄貂鱼", p:360, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:390, eq:"jar"}] },
-                { id:"lionfish", name:"狮子鱼", type:"鱼", season:"任何", location:"🌴姜岛海洋", time:"全天", basePrice:100, processing:[{m:"熏鱼机→熏狮子鱼", p:200, eq:"smoker"}] },
-                { id:"blue_discus", name:"蓝色铁饼鱼", type:"鱼", season:"任何", location:"🌴姜岛河流", time:"全天", basePrice:120, processing:[{m:"熏鱼机→熏蓝色铁饼鱼", p:240, eq:"smoker"}] },
-                { id:"lobster", name:"龙虾", type:"鱼", location:"蟹笼(海洋)", basePrice:120, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"熏鱼机→熏龙虾", p:240, eq:"smoker"}, {m:"鱼塘→养满找威利得珍珠"}, {m:"烹饪→龙虾浓汤", p:225}] },
-                { id:"crab", name:"螃蟹", type:"鱼", location:"蟹笼(海洋)", basePrice:100, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"熏鱼机→熏螃蟹", p:200, eq:"smoker"}, {m:"烹饪→蟹黄糕", p:275}] },
-                { id:"shrimp", name:"虾", type:"鱼", location:"蟹笼(海洋)", basePrice:60, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"熏鱼机→熏虾", p:120, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}] },
-                { id:"clam", name:"蛤", type:"鱼", location:"蟹笼(海洋)", basePrice:50, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"熏鱼机→熏蛤", p:100, eq:"smoker"}, {m:"厨房烹饪→生鱼片", p:75}] },
-                { id:"mussel", name:"蚌", type:"鱼", location:"蟹笼(海洋)", basePrice:30, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏蚌", p:60, eq:"smoker"}] },
-                { id:"oyster", name:"牡蛎", type:"鱼", location:"蟹笼(海洋)", basePrice:40, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏牡蛎", p:80, eq:"smoker"}] },
-                { id:"periwinkle", name:"玉黍螺", type:"鱼", location:"蟹笼(淡水)", basePrice:20, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏玉黍螺", p:40, eq:"smoker"}] },
-                { id:"snail", name:"蜗牛", type:"鱼", location:"蟹笼(淡水)", basePrice:65, sacrifices:[{room:"鱼缸", bundle:"蟹笼收集包", need:1}], processing:[{m:"厨房烹饪→生鱼片", p:75}, {m:"熏鱼机→熏蜗牛", p:130, eq:"smoker"}] },
-                { id:"ghostfish", name:"鬼鱼", type:"鱼", location:"矿井20/60/100层", basePrice:45, sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}], processing:[{m:"鱼塘→产财宝箱/鱼籽", p:5000}, {m:"熏鱼机→熏鬼鱼", p:90, eq:"smoker"}], note:"鱼塘9条以上有概率产出财宝箱(5000G)！" },
-                { id:"woodskip", name:"木跃鱼", type:"鱼", location:"秘密森林池塘", basePrice:75, sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}], processing:[{m:"鱼塘→产木材/硬木+鱼籽", p:0}, {m:"熏鱼机→熏木跃鱼", p:150, eq:"smoker"}], note:"鱼塘稳定产出木材和硬木。" },
-                { id:"sandfish", name:"沙鱼", type:"鱼", location:"沙漠池塘", basePrice:75, sacrifices:[{room:"鱼缸", bundle:"特色鱼类收集包", need:1}], processing:[{m:"熏鱼机→熏沙鱼", p:150, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:180, eq:"jar"}] },
-                { id:"lava_eel", name:"岩浆鳗鱼", type:"鱼", location:"矿井100层", basePrice:700, processing:[{m:"熏鱼机→熏岩浆鳗鱼", p:1400, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:1060, eq:"jar"}], note:"熏制/腌制价值极高。" },
-                { id:"ice_pip", name:"冰柱鱼", type:"鱼", location:"矿井60层", basePrice:500, processing:[{m:"熏鱼机→熏冰柱鱼", p:1000, eq:"smoker"}, {m:"鱼塘→鱼籽腌制", p:760, eq:"jar"}] },
-                { id:"blobfish", name:"水滴鱼", type:"鱼", location:"夜市潜水艇(冬季15-17日)", time:"5PM-2AM", basePrice:500, processing:[{m:"熏鱼机→熏水滴鱼", p:1000, eq:"smoker"}, {m:"鱼塘→产珍珠/传送图腾+鱼籽", p:2500}, {m:"鱼塘→鱼籽腌制", p:760, eq:"jar"}], note:"鱼塘9条以上概率产出珍珠(2500G)。" },
-                { id:"midnight_squid", name:"午夜鱿鱼", type:"鱼", location:"夜市潜水艇(冬季15-17日)", time:"5PM-2AM", basePrice:220, processing:[{m:"熏鱼机→熏午夜鱿鱼", p:440, eq:"smoker"}, {m:"鱼塘→产墨汁+鱼籽", p:0}], note:"1.6新增，鱼塘可产墨汁。" }
-            ],
-            crops_all: [
-                { id:"rhubarb", name:"大黄", type:"作物", season:"春", basePrice:220, processing:[{m:"小桶→大黄酒", p:660, eq:"keg"},{m:"罐头瓶→大黄果酱", p:490, eq:"jar"}] },
-                { id:"strawberry", name:"草莓", type:"作物", season:"春", basePrice:120, processing:[{m:"罐头瓶→草莓酱(产量大)", p:290, eq:"jar"},{m:"小桶→草莓酒", p:360, eq:"keg"}] },
-                { id:"cauliflower", name:"花椰菜", type:"作物", season:"春", basePrice:175, sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}], processing:[{m:"罐头瓶→腌花椰菜", p:400, eq:"jar"}] },
-                { id:"potato", name:"土豆", type:"作物", season:"春", basePrice:80, sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}], processing:[{m:"罐头瓶→腌土豆", p:210, eq:"jar"}] },
-                { id:"green_bean", name:"青豆", type:"作物", season:"春", basePrice:40, sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}], processing:[{m:"罐头瓶→腌青豆", p:130, eq:"jar"}] },
-                { id:"parsnip", name:"防风草", type:"作物", season:"春", basePrice:35, sacrifices:[{room:"茶水间", bundle:"春季作物收集包", need:1}], processing:[{m:"直接出售"}] },
-                { id:"starfruit", name:"杨桃", type:"作物", season:"夏", basePrice:750, hot:true, processing:[{m:"小桶→杨桃酒", p:2250, eq:"keg"},{m:"陈酿→铱星杨桃酒", p:4500, eq:"cask"}], note:"单体价值之王！姜岛农场最佳经济作物之一。" },
-                { id:"hops", name:"啤酒花", type:"作物", season:"夏", basePrice:25, hot:true, processing:[{m:"小桶→淡啤酒(1.5天)", p:300, eq:"keg"}], note:"日收益之王！" },
-                { id:"melon", name:"甜瓜", type:"作物", season:"夏", basePrice:250, sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1},{room:"茶水间", bundle:"优质作物收集包(金星×5)", need:5, quality:"金星"}], processing:[{m:"小桶→甜瓜酒", p:750, eq:"keg"}] },
-                { id:"blueberry", name:"蓝莓", type:"作物", season:"夏", basePrice:50, sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}], processing:[{m:"罐头瓶→蓝莓酱(产量大)", p:150, eq:"jar"}] },
-                { id:"red_cabbage", name:"红卷心菜", type:"作物", season:"夏", basePrice:260, sacrifices:[{room:"茶水间", bundle:"夏季作物收集包", need:1}], processing:[{m:"罐头瓶→腌红卷心菜", p:570, eq:"jar"},{m:"小桶→红卷心菜汁", p:585, eq:"keg"}], note:"腌制和榨汁收益都很高" },
-                { id:"wheat", name:"小麦", type:"作物", season:"夏/秋", basePrice:25, processing:[{m:"小桶→啤酒", p:200, eq:"keg"}] },
-                { id:"corn", name:"玉米", type:"作物", season:"夏/秋", basePrice:50, sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1},{room:"茶水间", bundle:"优质作物收集包(金星×5)", need:5, quality:"金星"}], processing:[{m:"罐头瓶→腌玉米", p:150, eq:"jar"}] },
-                { id:"pumpkin", name:"南瓜", type:"作物", season:"秋", basePrice:320, sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1},{room:"茶水间", bundle:"优质作物收集包(金星×5)", need:5, quality:"金星"}], processing:[{m:"罐头瓶→腌南瓜", p:690, eq:"jar"},{m:"小桶→南瓜汁", p:720, eq:"keg"}], note:"南瓜汁是利润最高的果汁之一" },
-                { id:"cranberries", name:"蔓越莓", type:"作物", season:"秋", basePrice:75, sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}], processing:[{m:"罐头瓶→蔓越莓酱(产量极大)", p:200, eq:"jar"}] },
-                { id:"grape", name:"葡萄", type:"作物", season:"秋", basePrice:80, processing:[{m:"小桶→葡萄酒", p:240, eq:"keg"},{m:"罐头瓶→葡萄酱", p:210, eq:"jar"}] },
-                { id:"eggplant", name:"茄子", type:"作物", season:"秋", basePrice:60, sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}], processing:[{m:"直接出售"}] },
-                { id:"yam", name:"山药", type:"作物", season:"秋", basePrice:160, sacrifices:[{room:"茶水间", bundle:"秋季作物收集包", need:1}], processing:[{m:"罐头瓶→腌山药", p:370, eq:"jar"}] },
-                { id:"ancient_fruit", name:"远古果实", type:"作物", season:"春/夏/秋(温室)", basePrice:550, hot:true, processing:[{m:"小桶→远古果酒", p:1650, eq:"keg"},{m:"陈酿→铱星远古果酒", p:3300, eq:"cask"}], note:"全能印钞机，姜岛农场大规模种植首选。" },
-                { id:"pineapple", name:"菠萝", type:"作物", season:"姜岛", basePrice:300, processing:[{m:"小桶→菠萝酒", p:900, eq:"keg"}] },
-                { id:"taro_root", name:"芋头", type:"作物", season:"姜岛", basePrice:100, processing:[{m:"罐头瓶→腌芋头", p:250, eq:"jar"}] }
-            ],
-            animal: [
-                { id:"egg", name:"鸡蛋", type:"畜牧", basePrice:50, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"coop\")'>[鸡舍]</span>", processing:[{m:"蛋黄酱机→蛋黄酱", p:190, eq:"mayo"}] },
-                { id:"large_egg", name:"大鸡蛋", type:"畜牧", basePrice:95, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"coop\")'>[鸡舍]</span>", processing:[{m:"蛋黄酱机→金星蛋黄酱", p:285, eq:"mayo"}] },
-                { id:"duck_egg", name:"鸭蛋", type:"畜牧", basePrice:95, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"big_coop\")'>[大鸡舍]</span>", processing:[{m:"蛋黄酱机→鸭蛋黄酱", p:375, eq:"mayo"}] },
-                { id:"dinosaur_egg", name:"恐龙蛋", type:"畜牧", basePrice:350, processing:[{m:"孵化器→恐龙(第一个必须孵化！)"},{m:"蛋黄酱机→恐龙蛋黄酱", p:800, eq:"mayo"}], note:"恐龙蛋黄酱价值极高，但第一个恐龙蛋建议孵化" },
-                { id:"ostrich_egg", name:"鸵鸟蛋", type:"畜牧", basePrice:600, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"deluxe_barn\")'>[高级畜棚]</span>", processing:[{m:"蛋黄酱机→10个蛋黄酱", p:1900, eq:"mayo"}], note:"一个蛋产出10个蛋黄酱，总价值极高" },
-                { id:"void_egg", name:"虚空蛋", type:"畜牧", basePrice:65, processing:[{m:"蛋黄酱机→虚空蛋黄酱", p:275, eq:"mayo"}], note:"加工利润高达323%" },
-                { id:"milk", name:"牛奶", type:"畜牧", basePrice:125, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"barn\")'>[畜棚]</span>", processing:[{m:"奶酪机→奶酪", p:230, eq:"cheese"}] },
-                { id:"large_milk", name:"大壶牛奶", type:"畜牧", basePrice:190, processing:[{m:"奶酪机→金星奶酪", p:345, eq:"cheese"}] },
-                { id:"goat_milk", name:"羊奶", type:"畜牧", basePrice:225, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"big_barn\")'>[大畜棚]</span>", processing:[{m:"奶酪机→山羊奶酪", p:400, eq:"cheese"}] },
-                { id:"wool", name:"羊毛", type:"畜牧", basePrice:340, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"big_barn\")'>[大畜棚]</span>", processing:[{m:"织布机→布料", p:470, eq:"loom"}] },
-                { id:"truffle", name:"松露", type:"畜牧", basePrice:625, source:"<span class='link-inline' onclick='jumpTo(\"construction\",\"deluxe_barn\")'>[高级畜棚]</span>", processing:[{m:"产油机→松露油", p:1065, eq:"oil"}], note:"松露油是游戏中最赚钱的动物制品之一" }
-            ],
-            foraging: [
-                { id:"salmonberry", name:"美洲大树莓", type:"觅食", season:"春15-18", basePrice:5, processing:[{m:"罐头瓶→树莓酱", p:60, eq:"jar"}] },
-                { id:"blackberry", name:"黑莓", type:"觅食", season:"秋8-11", basePrice:20, sacrifices:[{room:"工艺室", bundle:"秋季采集收集包", need:1}], processing:[{m:"罐头瓶→黑莓酱", p:90, eq:"jar"}] },
-                { id:"wild_plum", name:"野李子", type:"觅食", season:"秋", basePrice:80, sacrifices:[{room:"工艺室", bundle:"秋季采集收集包", need:1}], processing:[{m:"小桶→野李酒", p:240, eq:"keg"}] },
-                { id:"hazelnut", name:"榛子", type:"觅食", season:"秋", basePrice:90, sacrifices:[{room:"工艺室", bundle:"秋季采集收集包", need:1}], processing:[{m:"厨房→烤榛子", p:180},{m:"烘干机→干榛子", p:180, eq:"dehydrator"}] },
-                { id:"morel", name:"普通蘑菇", type:"觅食", season:"春/秘森", basePrice:40, sacrifices:[{room:"工艺室", bundle:"异国情调采集收集包(或秋季采集包)", need:1}], processing:[{m:"烘干机→干蘑菇", p:80, eq:"dehydrator"}] },
-                { id:"chanterelle", name:"鸡油菇", type:"觅食", season:"秋/秘森", basePrice:160, processing:[{m:"烘干机→干鸡油菇", p:320, eq:"dehydrator"}] },
-                { id:"purple_mushroom", name:"紫蘑菇", type:"觅食", season:"矿井/秋", basePrice:250, sacrifices:[{room:"工艺室", bundle:"异国情调采集收集包", need:1}], processing:[{m:"烘干机→干紫蘑菇", p:500, eq:"dehydrator"}] },
-                { id:"coconut", name:"椰子", type:"觅食", season:"沙漠/姜岛", basePrice:100, sacrifices:[{room:"工艺室", bundle:"异国情调采集收集包", need:1}], processing:[{m:"小桶→椰子酒", p:300, eq:"keg"}] },
-                { id:"cactus_fruit", name:"仙人掌果子", type:"觅食", season:"沙漠", basePrice:75, sacrifices:[{room:"工艺室", bundle:"异国情调采集收集包", need:1}], processing:[{m:"小桶→仙人掌酒", p:225, eq:"keg"}] },
-                { id:"wild_horseradish", name:"野山葵", type:"觅食", season:"春", basePrice:50, sacrifices:[{room:"工艺室", bundle:"春季采集收集包", need:1}] },
-                { id:"daffodil", name:"黄水仙", type:"觅食", season:"春", basePrice:30, sacrifices:[{room:"工艺室", bundle:"春季采集收集包", need:1}] },
-                { id:"leek", name:"韭葱", type:"觅食", season:"春", basePrice:60, sacrifices:[{room:"工艺室", bundle:"春季采集收集包", need:1}] },
-                { id:"dandelion", name:"蒲公英", type:"觅食", season:"春", basePrice:40, sacrifices:[{room:"工艺室", bundle:"春季采集收集包", need:1}] }
-            ]
-        };
-        // ==================== 合并所有物品 ====================
-        const allItems = [...DB.fish, ...DB.crops_all, ...DB.animal, ...DB.foraging];
-        // ==================== 历史记录管理 ====================
-        const historyStack = [];
-        const MAX_HISTORY = 30;
-        function pushHistory(cat, term) {
-            historyStack.push({ category: cat, term: term || '' });
-            if (historyStack.length > MAX_HISTORY) historyStack.shift();
-        }
-        function popHistory() {
-            if (historyStack.length > 1) {
-                historyStack.pop();
-                return historyStack[historyStack.length - 1];
-            }
-            return null;
-        }
-
-        // ==================== 全局跳转函数 ====================
-        window.goBack = function() {
-            const prev = popHistory();
-            if (prev) {
-                _applyState(prev.category, prev.term, true);
-            } else {
-                _applyState('all', '', true);
-            }
-        };
-
-        window.jumpTo = function(cat, id) {
-            _applyState(cat, '', false);
-            if (id) {
-                setTimeout(() => {
-                    const el = document.getElementById('card-' + id);
-                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 150);
-            }
-        };
-
-        window.searchAndShow = function(term) {
-            _applyState('all', term, false);
-        };
-
-        function _applyState(cat, term, silent) {
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            const btn = document.querySelector(`[data-category="${cat}"]`);
-            if (btn) btn.classList.add('active');
-            else document.querySelector('[data-category="all"]').classList.add('active');
-            currentCategory = cat;
-            searchInput.value = term || '';
-            updateUI();
-            if (!silent) pushHistory(cat, term);
-        }
-
-        // ==================== 静态页面内容 ====================
-        const bundlesGuide = `
-            <div class="static-page">
-                <h2>🎁 社区中心献祭 · 完整思维导图</h2>
-                <div class="tree">
-┌─ 🏠 <strong>工艺室</strong> (初始开放) 奖励: 修复采石场桥梁
-│  ├─ <span class='link-inline' onclick="searchAndShow('野山葵')">春季采集收集包</span> (4选4): 野山葵 黄水仙 韭葱 蒲公英 → 奖励: 春季种子×30
-│  ├─ <span class='link-inline' onclick="searchAndShow('葡萄')">夏季采集收集包</span> (3选3): 葡萄 香味浆果 甜豌豆 → 奖励: 夏季种子×30
-│  ├─ <span class='link-inline' onclick="searchAndShow('普通蘑菇')">秋季采集收集包</span> (4选4): 普通蘑菇 野李子 榛子 黑莓 → 奖励: 秋季种子×30
-│  ├─ 冬季采集收集包 (4选4): 冬根 水晶果 雪山药 番红花 → 奖励: 冬季种子×30
-│  ├─ 建筑收集包 (4选4): 木材×99 木材×99 石头×99 硬木×10 → 奖励: 煤炭窑
-│  └─ <span class='link-inline' onclick="searchAndShow('椰子')">异国情调采集收集包</span> (9选5): 椰子 仙人掌果子 山洞萝卜 红蘑菇 紫蘑菇 龙葵 枫糖浆 松焦油 橡树树脂
-│
-├─ 🍴 <strong>茶水间</strong> (完成任意工艺室包后解锁) 奖励: <strong>温室</strong>
-│  ├─ <span class='link-inline' onclick="searchAndShow('防风草')">春季作物收集包</span> (4选4): 防风草 青豆 花椰菜 土豆
-│  ├─ <span class='link-inline' onclick="searchAndShow('番茄')">夏季作物收集包</span> (4选4): 番茄 辣椒 蓝莓 甜瓜
-│  ├─ <span class='link-inline' onclick="searchAndShow('玉米')">秋季作物收集包</span> (4选4): 玉米 茄子 南瓜 山药
-│  ├─ 优质作物收集包 (4选3): 金星防风草×5 金星甜瓜×5 金星南瓜×5 金星玉米×5
-│  ├─ 动物收集包 (6选5): 大壶牛奶 大鸡蛋(白) 大鸡蛋(棕) 大瓶羊奶 羊毛 鸭蛋
-│  └─ 工匠收集包 (12选6): 松露油 布料 山羊奶酪 奶酪 蜂蜜 果酱 苹果 杏子 橙子 桃子 石榴 樱桃
-│
-├─ 🐟 <strong>鱼缸</strong> (完成任意工艺室包后解锁) 奖励: 移除巨大闪石
-│  ├─ <span class='link-inline' onclick="searchAndShow('太阳鱼')">河鱼收集包</span> (4选4): 太阳鱼 鲶鱼 西鲱 虎纹鳟鱼
-│  ├─ <span class='link-inline' onclick="searchAndShow('大嘴鲈鱼')">湖鱼收集包</span> (4选4): 大嘴鲈鱼 鲤鱼 大头鱼 鲟鱼
-│  ├─ <span class='link-inline' onclick="searchAndShow('沙丁鱼')">海鱼收集包</span> (4选4): 沙丁鱼 金枪鱼 红鲫鱼 罗非鱼
-│  ├─ 夜间垂钓收集包 (3选3): 大眼鱼 鲷鱼 鳗鱼
-│  ├─ 蟹笼收集包 (10选5): 龙虾 小龙虾 螃蟹 鸟蛤 蚌 虾 蜗牛 玉黍螺 牡蛎 蛤
-│  └─ 特色鱼类收集包 (4选4): 河豚 鬼鱼 沙鱼 木跃鱼
-│
-├─ ⚡ <strong>锅炉房</strong> (完成任意茶水间包后解锁) 奖励: 修复矿车
-│  ├─ 铁匠收集包 (3选3): 铜锭 铁锭 金锭
-│  ├─ 地理学家收集包 (4选4): 石英 泪晶 地晶 火水晶
-│  └─ 冒险家收集包 (4选4): 史莱姆×99 蝙蝠翅膀×10 太阳精华 虚空精华
-│
-├─ 📋 <strong>布告栏</strong> (完成任意鱼缸包后解锁) 奖励: 友谊+2❤️全体村民
-│  ├─ 厨师收集包 (6选6): 枫糖浆 蕨菜 松露 罂粟 鲭鱼 蜗牛 → 需烹饪产出
-│  ├─ 染料收集包 (6选6): 红蘑菇 海胆 向日葵 羽毛 蓝莓 葡萄
-│  ├─ 土地研究收集包 (4选4): 紫蘑菇 鹦鹉螺化石 山洞萝卜 石英
-│  ├─ 饲料收集包 (3选3): 小麦×10 干草×10 苹果×3
-│  └─ 魔法师收集包 (4选4): 橡树树脂 葡萄酒 兔子脚 石榴
-│
-└─ 💰 <strong>金库</strong> (完成任意鱼缸包后解锁) 奖励: <strong>修复巴士→沙漠</strong>
-   ├─ 2,500G 收集包 (1选1): 缴纳 2,500 金币
-   ├─ 5,000G 收集包 (1选1): 缴纳 5,000 金币
-   ├─ 10,000G 收集包 (1选1): 缴纳 10,000 金币
-   └─ 25,000G 收集包 (1选1): 缴纳 25,000 金币 → 总计: 42,500G
-                </div>
-                <p><strong>解锁流程提示：</strong>完成任意工艺室包→解锁茶水间+鱼缸 → 完成茶水间包→解锁锅炉房 → 完成鱼缸包→解锁布告栏+金库。建议优先做春季作物和蟹笼包，早期快速推进。</p>
-            </div>
-        `;
-
-        const cookingGuide = `
-    <div class="static-page">
-        <h2>🍲 全食谱速查 (1.6版本 全部81个)</h2>
-        <div class="card-grid">
-            <div class="item-card" id="recipe-fried_egg"><h3>煎鸡蛋 <span class="badge">食谱</span></h3><div class="meta">📜 来源：自带（初始拥有）</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('animal','egg')">鸡蛋</span>×1</div><div class="meta">💰 售价：50G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量18生命8</div></div>
-            <div class="item-card" id="recipe-omelet"><h3>煎蛋卷 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年春28日) / 酒吧购买 (100G)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('animal','egg')">鸡蛋</span>×1，<span class="link-inline" onclick="jumpTo('animal','milk')">牛奶</span>×1</div><div class="meta">💰 售价：125G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量40生命18</div></div>
-            <div class="item-card" id="recipe-salad"><h3>沙拉 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','emily')">艾米丽</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('韭葱')">韭葱</span>×1，<span class="link-inline" onclick="searchAndShow('蒲公英')">蒲公英</span>×1，醋×1(商店)</div><div class="meta">💰 售价：110G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量45生命20</div></div>
-            <div class="item-card" id="recipe-cheese_cauliflower"><h3>乳酪花椰菜 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','pam')">潘姆</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','cauliflower')">花椰菜</span>×1，<span class="link-inline" onclick="jumpTo('artisan','cheese')">奶酪</span>×1</div><div class="meta">💰 售价：300G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量60生命27</div></div>
-            <div class="item-card" id="recipe-baked_fish"><h3>烤鱼 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年夏7日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('太阳鱼')">太阳鱼</span>×1，<span class="link-inline" onclick="searchAndShow('鲷鱼')">鲷鱼</span>×1，小麦粉×1(商店)</div><div class="meta">💰 售价：100G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量60生命27</div></div>
-            <div class="item-card" id="recipe-parsnip_soup"><h3>防风草汤 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','caroline')">卡洛琳</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','parsnip')">防风草</span>×1，<span class="link-inline" onclick="searchAndShow('牛奶')">牛奶</span>×1，醋×1(商店)</div><div class="meta">💰 售价：120G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量30生命13</div></div>
-            <div class="item-card" id="recipe-vegetable_medley"><h3>蔬菜杂烩 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','caroline')">卡洛琳</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('番茄')">番茄</span>×1，<span class="link-inline" onclick="searchAndShow('甜菜')">甜菜</span>×1</div><div class="meta">💰 售价：120G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量45生命20</div></div>
-            <div class="item-card" id="recipe-complete_breakfast"><h3>完美早餐 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年春21日)</div><div class="meta">🥄 材料：煎鸡蛋×1，<span class="link-inline" onclick="searchAndShow('牛奶')">牛奶</span>×1，薯饼×1，薄煎饼×1</div><div class="meta">💰 售价：350G</div><div class="meta">⚡ 增益：耕种2 | 能量72生命32 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-fried_calamari"><h3>炸鱿鱼 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','jodi')">乔迪</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('鱿鱼')">鱿鱼</span>×1，小麦粉×1(商店)，油×1(商店)</div><div class="meta">💰 售价：150G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量45生命20</div></div>
-            <div class="item-card" id="recipe-strange_bun"><h3>奇怪的小面包 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','shane')">谢恩</span> (7❤️)</div><div class="meta">🥄 材料：小麦粉×1(商店)，<span class="link-inline" onclick="jumpTo('animal','void_egg')">虚空蛋黄酱</span>×1，<span class="link-inline" onclick="searchAndShow('红叶卷心菜')">红叶卷心菜</span>×1</div><div class="meta">💰 售价：225G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量40生命18</div></div>
-            <div class="item-card" id="recipe-lucky_lunch"><h3>幸运午餐 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年春28日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('海参')">海参</span>×1，墨西哥薄饼×1，<span class="link-inline" onclick="searchAndShow('蓝爵')">蓝爵</span>×1</div><div class="meta">💰 售价：250G</div><div class="meta">⚡ 增益：运气3 | 能量40生命18 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-fried_mushroom"><h3>炒蘑菇 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','demetrius')">德米特里厄斯</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('普通蘑菇')">普通蘑菇</span>×1，<span class="link-inline" onclick="searchAndShow('羊肚菌')">羊肚菌</span>×1，<span class="link-inline" onclick="searchAndShow('红蘑菇')">红蘑菇</span>×1</div><div class="meta">💰 售价：200G</div><div class="meta">⚡ 增益：攻击2 | 能量60生命27 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-pizza"><h3>披萨 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年春7日) / 酒吧购买 (300G)</div><div class="meta">🥄 材料：小麦粉×1(商店)，<span class="link-inline" onclick="searchAndShow('番茄')">番茄</span>×1，<span class="link-inline" onclick="jumpTo('artisan','cheese')">奶酪</span>×1</div><div class="meta">💰 售价：300G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量60生命27</div></div>
-            <div class="item-card" id="recipe-bean_hotpot"><h3>豆类火锅 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','clint')">克林特</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','green_bean')">青豆</span>×2</div><div class="meta">💰 售价：100G</div><div class="meta">⚡ 增益：钓鱼2 | 能量30生命13 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-glazed_yams"><h3>琉璃山药 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年秋21日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','yam')">山药</span>×1，糖×1(商店)</div><div class="meta">💰 售价：200G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量80生命36</div></div>
-            <div class="item-card" id="recipe-carp_surprise"><h3>惊喜鲤鱼 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年夏7日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('fish','carp')">鲤鱼</span>×4</div><div class="meta">💰 售价：150G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量40生命18</div></div>
-            <div class="item-card" id="recipe-hashbrowns"><h3>薯饼 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年春14日) / 酒吧购买 (120G)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','potato')">土豆</span>×1，油×1(商店)</div><div class="meta">💰 售价：120G</div><div class="meta">⚡ 增益：耕种1 | 能量40生命18 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-pancakes"><h3>薄煎饼 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年夏14日) / 酒吧购买 (80G)</div><div class="meta">🥄 材料：小麦粉×1(商店)，<span class="link-inline" onclick="jumpTo('animal','egg')">鸡蛋</span>×1</div><div class="meta">💰 售价：80G</div><div class="meta">⚡ 增益：觅食2 | 能量34生命15 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-fruit_salad"><h3>水果沙拉 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年秋7日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('蓝莓')">蓝莓</span>×1，<span class="link-inline" onclick="searchAndShow('甜瓜')">甜瓜</span>×1，<span class="link-inline" onclick="searchAndShow('杏子')">杏子</span>×1</div><div class="meta">💰 售价：450G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量118生命53</div></div>
-            <div class="item-card" id="recipe-red_plate"><h3>红之盛宴 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','emily')">艾米丽</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','red_cabbage')">红卷心菜</span>×1，<span class="link-inline" onclick="searchAndShow('萝卜')">萝卜</span>×1</div><div class="meta">💰 售价：400G</div><div class="meta">⚡ 增益：体力2 | 能量90生命40 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-bread"><h3>面包 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年夏28日) / 酒吧购买 (60G)</div><div class="meta">🥄 材料：小麦粉×1(商店)</div><div class="meta">💰 售价：60G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量25生命11</div></div>
-            <div class="item-card" id="recipe-maki_roll"><h3>生鱼寿司 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年夏21日) / 酒吧购买 (220G)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('鱼')">任意鱼</span>×1，<span class="link-inline" onclick="searchAndShow('海草')">海草</span>×1，大米×1(商店)</div><div class="meta">💰 售价：220G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量40生命18</div></div>
-            <div class="item-card" id="recipe-tortilla"><h3>墨西哥薄饼 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年秋7日) / 酒吧购买 (50G)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','corn')">玉米</span>×1</div><div class="meta">💰 售价：50G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量20生命9</div></div>
-            <div class="item-card" id="recipe-tom_kha_soup"><h3>椰汁汤 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','sandy')">桑迪</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('椰子')">椰子</span>×1，<span class="link-inline" onclick="searchAndShow('虾')">虾</span>×1，<span class="link-inline" onclick="searchAndShow('普通蘑菇')">普通蘑菇</span>×1</div><div class="meta">💰 售价：250G</div><div class="meta">⚡ 增益：觅食2 | 能量72生命32 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-trout_soup"><h3>鳟鱼汤 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年秋14日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('虹鳟鱼')">虹鳟鱼</span>×1，醋×1(商店)</div><div class="meta">💰 售价：100G</div><div class="meta">⚡ 增益：钓鱼1 | 能量40生命18 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-chocolate_cake"><h3>巧克力蛋糕 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年冬14日)</div><div class="meta">🥄 材料：小麦粉×1(商店)，糖×1(商店)，<span class="link-inline" onclick="jumpTo('animal','egg')">鸡蛋</span>×1</div><div class="meta">💰 售价：200G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量60生命27</div></div>
-            <div class="item-card" id="recipe-pink_cake"><h3>粉红蛋糕 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年夏21日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('甜瓜')">甜瓜</span>×1，小麦粉×1(商店)，糖×1(商店)，<span class="link-inline" onclick="jumpTo('animal','egg')">鸡蛋</span>×1</div><div class="meta">💰 售价：480G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量100生命45</div></div>
-            <div class="item-card" id="recipe-rhubarb_pie"><h3>大黄派 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','marnie')">玛妮</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','rhubarb')">大黄</span>×1，小麦粉×1(商店)，糖×1(商店)</div><div class="meta">💰 售价：400G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量80生命36</div></div>
-            <div class="item-card" id="recipe-autumns_bounty"><h3>秋日恩赐 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','demetrius')">德米特里厄斯</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','yam')">山药</span>×1，<span class="link-inline" onclick="jumpTo('crops','pumpkin')">南瓜</span>×1</div><div class="meta">💰 售价：350G</div><div class="meta">⚡ 增益：觅食2防御2 | 能量99生命44 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-pumpkin_soup"><h3>南瓜汤 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','robin')">罗宾</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','pumpkin')">南瓜</span>×1，<span class="link-inline" onclick="searchAndShow('牛奶')">牛奶</span>×1</div><div class="meta">💰 售价：300G</div><div class="meta">⚡ 增益：防御2运气2 | 能量80生命36 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-survival_burger"><h3>救生汉堡 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','emily')">艾米丽</span> (5❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('茄子')">茄子</span>×1，<span class="link-inline" onclick="searchAndShow('普通蘑菇')">普通蘑菇</span>×1，<span class="link-inline" onclick="jumpTo('crops','eggplant')">茄子</span>×1</div><div class="meta">💰 售价：160G</div><div class="meta">⚡ 增益：觅食3 | 能量65生命29 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-dish_o_the_sea"><h3>海之菜肴 <span class="badge">食谱</span></h3><div class="meta">📜 来源：钓鱼3级解锁</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('沙丁鱼')">沙丁鱼</span>×2，薯饼×1</div><div class="meta">💰 售价：220G</div><div class="meta">⚡ 增益：钓鱼3 | 能量60生命27 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-miners_treat"><h3>矿工特供 <span class="badge hot">HOT</span></h3><div class="meta">📜 来源：采矿3级解锁</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('山洞萝卜')">山洞萝卜</span>×2，糖×1(商店)，<span class="link-inline" onclick="searchAndShow('牛奶')">牛奶</span>×1</div><div class="meta">💰 售价：200G</div><div class="meta">⚡ 增益：采矿3磁性32 | 能量55生命24 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-roots_platter"><h3>块茎拼盘 <span class="badge">食谱</span></h3><div class="meta">📜 来源：战斗3级解锁</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('山洞萝卜')">山洞萝卜</span>×1，<span class="link-inline" onclick="searchAndShow('冬根')">冬根</span>×1</div><div class="meta">💰 售价：100G</div><div class="meta">⚡ 增益：攻击3 | 能量55生命24 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-spicy_eel"><h3>香辣鳗鱼 <span class="badge hot">HOT</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','george')">乔治</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('fish','eel')">鳗鱼</span>×1，<span class="link-inline" onclick="searchAndShow('辣椒')">辣椒</span>×1</div><div class="meta">💰 售价：175G</div><div class="meta">⚡ 增益：速度1运气1 | 能量51生命22 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-pumpkin_pie"><h3>南瓜派 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年冬21日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','pumpkin')">南瓜</span>×1，小麦粉×1(商店)，<span class="link-inline" onclick="searchAndShow('牛奶')">牛奶</span>×1，糖×1(商店)</div><div class="meta">💰 售价：385G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量80生命36</div></div>
-            <div class="item-card" id="recipe-cranberry_candy"><h3>蔓越莓糖果 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年冬28日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','cranberries')">蔓越莓</span>×1，糖×1(商店)，<span class="link-inline" onclick="searchAndShow('苹果')">苹果</span>×1</div><div class="meta">💰 售价：175G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量55生命24</div></div>
-            <div class="item-card" id="recipe-super_meal"><h3>巨无霸餐 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','kent')">肯特</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('菠萝')">菠萝</span>×1，<span class="link-inline" onclick="searchAndShow('芒果')">芒果</span>×1，<span class="link-inline" onclick="jumpTo('crops','taro_root')">芋头</span>×1</div><div class="meta">💰 售价：350G</div><div class="meta">⚡ 增益：采矿2防御2 | 能量90生命40 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-cranberry_sauce"><h3>红莓酱 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','gus')">格斯</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','cranberries')">蔓越莓</span>×1，糖×1(商店)</div><div class="meta">💰 售价：120G</div><div class="meta">⚡ 增益：钓鱼2 | 能量50生命22 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-stuffing"><h3>塞料面包 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','pam')">潘姆</span> (7❤️)</div><div class="meta">🥄 材料：面包×1，<span class="link-inline" onclick="jumpTo('crops','cranberries')">蔓越莓</span>×1，<span class="link-inline" onclick="searchAndShow('榛子')">榛子</span>×1</div><div class="meta">💰 售价：165G</div><div class="meta">⚡ 增益：防御2 | 能量68生命30 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-fish_taco"><h3>鱼肉卷 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','linus')">莱纳斯</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('金枪鱼')">金枪鱼</span>×1，墨西哥薄饼×1，<span class="link-inline" onclick="jumpTo('crops','red_cabbage')">红卷心菜</span>×1，<span class="link-inline" onclick="searchAndShow('蛋黄酱')">蛋黄酱</span>×1</div><div class="meta">💰 售价：500G</div><div class="meta">⚡ 增益：钓鱼2 | 能量74生命33 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-farmers_lunch"><h3>农夫午餐 <span class="badge">食谱</span></h3><div class="meta">📜 来源：耕种3级解锁</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('煎蛋卷')">煎蛋卷</span>×1，<span class="link-inline" onclick="jumpTo('crops','parsnip')">防风草</span>×1</div><div class="meta">💰 售价：150G</div><div class="meta">⚡ 增益：耕种3 | 能量80生命36 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-blackberry_cobbler"><h3>黑莓脆皮饼 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年秋14日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('foraging','blackberry')">黑莓</span>×2，糖×1(商店)，小麦粉×1(商店)</div><div class="meta">💰 售价：260G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量75生命33</div></div>
-            <div class="item-card" id="recipe-crab_cakes"><h3>蟹黄糕 <span class="badge hot">HOT</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年秋21日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('fish','crab')">螃蟹</span>×1，小麦粉×1(商店)，<span class="link-inline" onclick="jumpTo('animal','egg')">鸡蛋</span>×1，油×1(商店)</div><div class="meta">💰 售价：275G</div><div class="meta">⚡ 增益：速度1防御1 | 能量101生命45 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-maple_bar"><h3>枫糖棒 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年夏14日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('枫糖浆')">枫糖浆</span>×1，糖×1(商店)，小麦粉×1(商店)</div><div class="meta">💰 售价：300G</div><div class="meta">⚡ 增益：耕种1觅食1采矿1 | 能量90生命40 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-shrimp_cocktail"><h3>虾鸡尾酒 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年冬28日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('fish','shrimp')">虾</span>×1，<span class="link-inline" onclick="searchAndShow('野生辣根')">野生辣根</span>×1，<span class="link-inline" onclick="searchAndShow('番茄')">番茄</span>×1</div><div class="meta">💰 售价：160G</div><div class="meta">⚡ 增益：钓鱼2 | 能量70生命31 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-triple_shot_espresso"><h3>三倍浓缩咖啡 <span class="badge hot">HOT</span></h3><div class="meta">📜 来源：酒吧购买 (5000G)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('咖啡豆')">咖啡豆</span>×3</div><div class="meta">💰 售价：450G</div><div class="meta">⚡ 增益：速度1 (7分钟) | 能量3生命1 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-seafoam_pudding"><h3>海泡布丁 <span class="badge hot">HOT</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','willy')">威利</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('比目鱼')">比目鱼</span>×1，<span class="link-inline" onclick="searchAndShow('午夜鱿鱼')">午夜鱿鱼</span>×1，<span class="link-inline" onclick="searchAndShow('大米')">大米</span>×1</div><div class="meta">💰 售价：375G</div><div class="meta">⚡ 增益：钓鱼4 (3分30秒) | 能量95生命42 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-algae_soup"><h3>海藻汤 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','clint')">克林特</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('绿藻')">绿藻</span>×4</div><div class="meta">💰 售价：100G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量33生命14</div></div>
-            <div class="item-card" id="recipe-pale_broth"><h3>清汤 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','marnie')">玛妮</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('白藻')">白藻</span>×2</div><div class="meta">💰 售价：150G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量50生命22</div></div>
-            <div class="item-card" id="recipe-chowder"><h3>海鲜杂烩汤 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','gus')">格斯</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('fish','clam')">蛤</span>×1，<span class="link-inline" onclick="searchAndShow('牛奶')">牛奶</span>×1</div><div class="meta">💰 售价：135G</div><div class="meta">⚡ 增益：钓鱼1 | 能量60生命27 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-lobster_bisque"><h3>龙虾浓汤 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年冬14日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('fish','lobster')">龙虾</span>×1，<span class="link-inline" onclick="searchAndShow('牛奶')">牛奶</span>×1</div><div class="meta">💰 售价：205G</div><div class="meta">⚡ 增益：钓鱼3 (16分47秒) | 能量100生命45 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-sashimi"><h3>生鱼片 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','linus')">莱纳斯</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('鱼')">任意鱼</span>×1</div><div class="meta">💰 售价：75G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量13生命5</div></div>
-            <div class="item-card" id="recipe-artichoke_dip"><h3>水煮洋蓟 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年秋28日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('洋蓟')">洋蓟</span>×1，<span class="link-inline" onclick="searchAndShow('牛奶')">牛奶</span>×1</div><div class="meta">💰 售价：210G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量50生命22</div></div>
-            <div class="item-card" id="recipe-fiddlehead_risotto"><h3>意式蕨菜炖饭 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年秋28日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('蕨菜')">蕨菜</span>×1，油×1(商店)，<span class="link-inline" onclick="searchAndShow('大蒜')">大蒜</span>×1</div><div class="meta">💰 售价：350G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量100生命45</div></div>
-            <div class="item-card" id="recipe-coleslaw"><h3>卷心菜沙拉 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年春14日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','red_cabbage')">红卷心菜</span>×1，醋×1(商店)，<span class="link-inline" onclick="searchAndShow('蛋黄酱')">蛋黄酱</span>×1</div><div class="meta">💰 售价：345G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量85生命38</div></div>
-            <div class="item-card" id="recipe-radish_salad"><h3>萝卜沙拉 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年春21日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('萝卜')">萝卜</span>×1，醋×1(商店)，油×1(商店)</div><div class="meta">💰 售价：300G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量80生命36</div></div>
-            <div class="item-card" id="recipe-blueberry_tart"><h3>蓝莓千层酥 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','pierre')">皮埃尔</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('蓝莓')">蓝莓</span>×1，小麦粉×1(商店)，糖×1(商店)，<span class="link-inline" onclick="jumpTo('animal','egg')">鸡蛋</span>×1</div><div class="meta">💰 售价：180G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量50生命22</div></div>
-            <div class="item-card" id="recipe-salmon_dinner"><h3>鲑鱼晚餐 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','gus')">格斯</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('鲑鱼')">鲑鱼</span>×1，<span class="link-inline" onclick="searchAndShow('苋菜')">苋菜</span>×1，<span class="link-inline" onclick="searchAndShow('甘蓝')">甘蓝</span>×1</div><div class="meta">💰 售价：300G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量70生命31</div></div>
-            <div class="item-card" id="recipe-crispy_bass"><h3>香酥鲈鱼 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','kent')">肯特</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('fish','largemouth_bass')">大嘴鲈鱼</span>×1，小麦粉×1(商店)，油×1(商店)</div><div class="meta">💰 售价：150G</div><div class="meta">⚡ 增益：钓鱼2 | 能量35生命15 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-fish_stew"><h3>烩鱼汤 <span class="badge">食谱</span></h3><div class="meta">📜 来源：钓鱼7级解锁</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('小龙虾')">小龙虾</span>×1，<span class="link-inline" onclick="searchAndShow('蚌')">蚌</span>×1，<span class="link-inline" onclick="searchAndShow('玉黍螺')">玉黍螺</span>×1，<span class="link-inline" onclick="searchAndShow('番茄')">番茄</span>×1</div><div class="meta">💰 售价：175G</div><div class="meta">⚡ 增益：钓鱼3 (16分47秒) | 能量72生命32 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-plum_pudding"><h3>葡萄干布丁 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (奇数年冬7日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('野李子')">野李子</span>×2，小麦粉×1(商店)，糖×1(商店)</div><div class="meta">💰 售价：260G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量75生命33</div></div>
-            <div class="item-card" id="recipe-pepper_poppers"><h3>爆炒青椒 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','shane')">谢恩</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('辣椒')">辣椒</span>×1，<span class="link-inline" onclick="jumpTo('artisan','cheese')">奶酪</span>×1</div><div class="meta">💰 售价：200G</div><div class="meta">⚡ 增益：速度2 | 能量65生命29 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-ginger_ale"><h3>姜汁汽水 <span class="badge">食谱</span></h3><div class="meta">📜 来源：姜岛火山商店 (1000G)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('生姜')">生姜</span>×3，糖×1(商店)</div><div class="meta">💰 售价：200G</div><div class="meta">⚡ 增益：运气1 | 能量20生命9 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-mango_sticky_rice"><h3>芒果糯米饭 <span class="badge">食谱</span></h3><div class="meta">📜 来源：姜岛商人 (30骨头碎片)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('芒果')">芒果</span>×1，<span class="link-inline" onclick="searchAndShow('椰子')">椰子</span>×1，<span class="link-inline" onclick="searchAndShow('大米')">大米</span>×1</div><div class="meta">💰 售价：250G</div><div class="meta">⚡ 增益：防御1 | 能量60生命27 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-tropical_curry"><h3>热带咖喱 <span class="badge">食谱</span></h3><div class="meta">📜 来源：姜岛度假村格斯 (2000G)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('椰子')">椰子</span>×1，<span class="link-inline" onclick="searchAndShow('菠萝')">菠萝</span>×1，<span class="link-inline" onclick="searchAndShow('辣椒')">辣椒</span>×1</div><div class="meta">💰 售价：500G</div><div class="meta">⚡ 增益：觅食4 | 能量120生命54 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-roasted_hazelnuts"><h3>烤榛子 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年夏28日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('foraging','hazelnut')">榛子</span>×3</div><div class="meta">💰 售价：270G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量70生命31</div></div>
-            <div class="item-card" id="recipe-poppyseed_muffin"><h3>虞美人籽松糕 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年冬7日)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('虞美人')">虞美人</span>×1，小麦粉×1(商店)，糖×1(商店)</div><div class="meta">💰 售价：250G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量60生命27</div></div>
-            <div class="item-card" id="recipe-bruschetta"><h3>意式烤面包 <span class="badge">食谱</span></h3><div class="meta">📜 来源：电视酱料女皇 (偶数年冬21日)</div><div class="meta">🥄 材料：面包×1，<span class="link-inline" onclick="searchAndShow('番茄')">番茄</span>×1，油×1(商店)</div><div class="meta">💰 售价：210G</div><div class="meta">⚡ 增益：觅食2 | 能量40生命18 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-eggplant_parmesan"><h3>帕尔玛奶酪茄子 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','lewis')">刘易斯</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','eggplant')">茄子</span>×1，<span class="link-inline" onclick="searchAndShow('番茄')">番茄</span>×1，<span class="link-inline" onclick="jumpTo('artisan','cheese')">奶酪</span>×1</div><div class="meta">💰 售价：200G</div><div class="meta">⚡ 增益：采矿1防御3 | 能量65生命29 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-rice_pudding"><h3>大米布丁 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','evelyn')">艾芙琳</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('大米')">大米</span>×1，<span class="link-inline" onclick="searchAndShow('牛奶')">牛奶</span>×1，糖×1(商店)</div><div class="meta">💰 售价：260G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量70生命31</div></div>
-            <div class="item-card" id="recipe-fried_eel"><h3>炒鳗鱼 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','george')">乔治</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('fish','eel')">鳗鱼</span>×1，油×1(商店)</div><div class="meta">💰 售价：120G</div><div class="meta">⚡ 增益：运气2 | 能量75生命33 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-cookie"><h3>饼干 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','evelyn')">艾芙琳</span> (4❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','wheat')">小麦</span>×1，糖×1(商店)，<span class="link-inline" onclick="jumpTo('animal','egg')">鸡蛋</span>×1</div><div class="meta">💰 售价：140G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量40生命18</div></div>
-            <div class="item-card" id="recipe-spaghetti"><h3>意大利面 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','lewis')">刘易斯</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('crops','wheat')">小麦</span>×1，<span class="link-inline" onclick="searchAndShow('番茄')">番茄</span>×1</div><div class="meta">💰 售价：120G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量40生命18</div></div>
-            <div class="item-card" id="recipe-fish_o_the_sea"><h3>海鲜杂烩 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','willy')">威利</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('fish','clam')">蛤</span>×1，<span class="link-inline" onclick="jumpTo('fish','shrimp')">虾</span>×1，<span class="link-inline" onclick="jumpTo('fish','mussel')">蚌</span>×1，<span class="link-inline" onclick="searchAndShow('番茄')">番茄</span>×1</div><div class="meta">💰 售价：175G</div><div class="meta">⚡ 增益：钓鱼3 (16分47秒) | 能量72生命32 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-banana_pudding"><h3>香蕉布丁 <span class="badge">食谱</span></h3><div class="meta">📜 来源：姜岛商人 (30骨头碎片)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('香蕉')">香蕉</span>×1，<span class="link-inline" onclick="searchAndShow('牛奶')">牛奶</span>×1，糖×1(商店)</div><div class="meta">💰 售价：260G</div><div class="meta">⚡ 增益：采矿1运气1防御1 | 能量70生命31 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-mossy_soup"><h3>苔藓汤 <span class="badge">食谱</span></h3><div class="meta">📜 来源：矮人 (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('苔藓')">苔藓</span>×20</div><div class="meta">💰 售价：80G <span class="note">👍推荐售卖</span></div><div class="meta">⚡ 增益：无 | 能量31生命13</div></div>
-            <div class="item-card" id="recipe-cave_radish_soup"><h3>山洞萝卜汤 <span class="badge">食谱</span></h3><div class="meta">📜 来源：矮人 (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('山洞萝卜')">山洞萝卜</span>×3，<span class="link-inline" onclick="searchAndShow('牛奶')">牛奶</span>×1</div><div class="meta">💰 售价：125G</div><div class="meta">⚡ 增益：采矿3 | 能量80生命36 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-monster_lasagna"><h3>怪物千层面 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','krobus')">科罗布斯</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('史莱姆')">史莱姆</span>×1，<span class="link-inline" onclick="searchAndShow('蝙蝠翅膀')">蝙蝠翅膀</span>×1，<span class="link-inline" onclick="searchAndShow('洞穴萝卜')">洞穴萝卜</span>×1</div><div class="meta">💰 售价：100G</div><div class="meta">⚡ 增益：防御3 | 能量90生命40 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-void_salad"><h3>虚空沙拉 <span class="badge">食谱</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','wizard')">法师</span> (3❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="jumpTo('animal','void_egg')">虚空蛋黄酱</span>×1，<span class="link-inline" onclick="searchAndShow('红叶卷心菜')">红叶卷心菜</span>×1</div><div class="meta">💰 售价：350G</div><div class="meta">⚡ 增益：运气3 | 能量75生命33 <span class="note">👍推荐吃掉</span></div></div>
-            <div class="item-card" id="recipe-magic_candy"><h3>魔法糖果 <span class="badge hot">HOT</span></h3><div class="meta">📜 来源：<span class="link-inline" onclick="jumpTo('npcs','wizard')">法师</span> (7❤️)</div><div class="meta">🥄 材料：<span class="link-inline" onclick="searchAndShow('太阳精华')">太阳精华</span>×1，<span class="link-inline" onclick="searchAndShow('虚空精华')">虚空精华</span>×1，<span class="link-inline" onclick="searchAndShow('星空果')">星空果</span>×1</div><div class="meta">💰 售价：500G</div><div class="meta">⚡ 增益：全属性5 (8分23秒) | 能量255生命114 <span class="note">👍推荐吃掉</span></div></div>
-        </div>
+    <div class="search-hint">
+      试试：<span onclick="doSearch('鲟鱼')">鲟鱼</span>
+      <span onclick="doSearch('杨桃')">杨桃</span>
+      <span onclick="doSearch('松露')">松露</span>
+      <span onclick="doSearch('蓝莓')">蓝莓</span>
+      <span onclick="doSearch('红宝石')">红宝石</span>
     </div>
-`;
+  </div>
 
-        const miningGuide = `
-            <div class="static-page">
-                <h2>⛏ 矿场深度全攻略</h2>
-                <div class="card-grid">
-                    <div class="item-card">
-                        <h3>📋 矿井 (1-120层)</h3>
-                        <div class="meta">1-39层(泥土/铜): 地晶、晶球、铜矿较多。怪物: 史莱姆、臭虫、苍蝇。</div>
-                        <div class="meta">40-79层(冰/铁): 铁矿出现，泪晶、冰封晶球。怪物: 冰霜蝙蝠、灰尘精灵(煤炭)。</div>
-                        <div class="meta">80-119层(岩浆/金): 金矿出现，火水晶、绿宝石。怪物: 暗影萨满、暗影狂徒、乌贼娃。</div>
-                        <div class="meta">120层: 头骨钥匙，解锁骷髅洞穴。</div>
-                        <div class="meta">特殊层: 20层(石鱼)、60层(冰柱鱼)、100层(岩浆鳗鱼)。</div>
-                    </div>
-                    <div class="item-card">
-                        <h3>💀 骷髅洞穴 (沙漠·无限层)</h3>
-                        <div class="meta"><strong>进入条件:</strong> 完成金库献祭(42,500G)解锁沙漠巴士 → 获取矿井120层骷髅钥匙。</div>
-                        <div class="meta"><strong>核心目的:</strong> 刷铱矿、五彩碎片、宝箱。铱矿密度随层数增加。</div>
-                        <div class="meta"><strong>必备物品:</strong> 🗡️ 银河剑/无限之刃 | 💣 超级炸弹(100+) | 🪜 楼梯 | 🍖 金星奶酪 ×50 | ☕ 浓缩咖啡 ×10 | 🌵 沙漠传送图腾</div>
-                        <div class="meta"><strong>冲层技巧:</strong> 看电视占卜→紫星天最佳 → 早6点传送沙漠 → 看到坑洞优先跳 → 怪物层/烂运层直接放楼梯。</div>
-                        <div class="note">💡 第100层齐先生任务: 完成获25永久生命值。100层后铱矿大量出现。</div>
-                    </div>
-                    <div class="item-card">
-                        <h3>🌋 火山地牢 (姜岛·10层固定)</h3>
-                        <div class="meta"><strong>进入条件:</strong> 完成社区中心 → 修船到姜岛 → 爬到火山顶。</div>
-                        <div class="meta"><strong>特点:</strong> 每层固定，离开后重置。第10层为<span class='link-inline' onclick="jumpTo('artisan','forge')">[锻造台]</span>，可融合武器+戒指。</div>
-                        <div class="meta"><strong>怪物:</strong> 熔岩精灵、熔岩潜伏怪(龙牙)、火焰史莱姆、熔岩蝙蝠。</div>
-                        <div class="meta"><strong>核心掉落:</strong> 龙牙(造姜岛图腾柱)、火山晶石、鸵鸟蛋(稀有宝箱)。</div>
-                        <div class="meta"><strong>推荐装备:</strong> 银河剑 + 史莱姆克星戒指 + 蟹黄糕BUFF(速度+防御)。</div>
-                    </div>
-                </div>
-            </div>
-        `;
+  <!-- 四个入口 -->
 
-        const gingerIslandGuide = `
-            <div class="static-page">
-                <h2>🏝️ 姜岛完全攻略 · 以金核桃为驱动轴</h2>
-                <p>姜岛是后期核心区域，<strong>金核桃</strong>是解锁一切的钥匙。全岛共130个，下文只列<strong>优先解锁顺序和关键节点</strong>，具体位置留给你探索的乐趣。</p>
+  <div class="entries" id="entryCards">
+    <div class="entry-card" data-entry="location" onclick="togglePanel('location')">
+      <span class="entry-icon">📍</span>
+      <div class="entry-title">我在哪能钓/找到什么</div>
+      <div class="entry-sub">按地点 × 季节 × 天气筛选</div>
+    </div>
+    <div class="entry-card" data-entry="item" onclick="togglePanel('item')">
+      <span class="entry-icon">⚙️</span>
+      <div class="entry-title">这东西怎么加工最赚</div>
+      <div class="entry-sub">输入物品，看加工收益对比</div>
+    </div>
+    <div class="entry-card" data-entry="bundle" onclick="togglePanel('bundle')">
+      <span class="entry-icon">🎁</span>
+      <div class="entry-title">我还差哪些献祭物品</div>
+      <div class="entry-sub">勾选已完成，剩余一目了然</div>
+    </div>
+    <div class="entry-card" data-entry="npc" onclick="togglePanel('npc')">
+      <span class="entry-icon">💬</span>
+      <div class="entry-title">NPC生日和礼物</div>
+      <div class="entry-sub">生日送礼效果×8，别错过</div>
+    </div>
+  </div>
 
-                <div class="card-grid">
-                    <div class="item-card">
-                        <h3>🚢 如何抵达姜岛</h3>
-                        <ul class="step-list">
-                            <li><strong>前提：</strong>完成社区中心全部献祭(或Joja全部项目)。</li>
-                            <li><strong>触发：</strong>次日收到威利的信，去鱼店后屋找他。</li>
-                            <li><strong>修船材料：</strong>硬木×200、电池组×5、铱锭×5。</li>
-                            <li><strong>船票：</strong>修好后每次花费1,000G前往。</li>
-                        </ul>
-                    </div>
+  <!-- 搜索结果面板 -->
 
-                    <div class="item-card">
-                        <h3>🥇 第一阶段：站稳脚跟 (优先目标)</h3>
-                        <div class="meta"><strong>核心节点：</strong>岛屿农舍 → 岛屿农场 → 岛屿商人</div>
-                        <div class="meta">🏠 <strong>岛屿农舍 (20核桃)</strong> —— 解锁后可在姜岛过夜。</div>
-                        <div class="meta">🌱 <strong>姜岛农场</strong> —— 岛屿西部大片土地，<strong>不受季节影响</strong>，相当于巨型温室。</div>
-                        <div class="meta">🛒 <strong>岛屿商人 (10核桃)</strong> —— 以物易物，可换金椰子、热带电视等稀有物品。</div>
-                        <div class="note">💡 优先解锁农场，立刻大规模种植远古果实或杨桃，经济起飞。</div>
-                    </div>
+  <div class="panel" id="panel-search">
+    <div class="panel-header">
+      <span class="panel-title" id="searchPanelTitle">搜索结果</span>
+      <button class="panel-close" onclick="closePanel('search')">✕</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
 
-                    <div class="item-card">
-                        <h3>🥈 第二阶段：深入探索</h3>
-                        <div class="meta"><strong>核心节点：</strong>火山地牢 → 锻造台 → 岛屿办事处</div>
-                        <div class="meta">🌋 <strong>火山地牢</strong> —— 在岛屿北部，共10层。通关后可使用<span class='link-inline' onclick="jumpTo('artisan','forge')">[锻造台]</span>强化武器、合并戒指。详见<span class='link-inline' onclick="jumpTo('mining','')">[⛏ 矿场攻略]</span>。</div>
-                        <div class="meta">🦴 <strong>岛屿办事处 (10核桃)</strong> —— 救出蜗牛教授后开启，上交化石完成收集。</div>
-                    </div>
+  <!-- 地点筛选面板 -->
 
-                    <div class="item-card">
-                        <h3>🥉 第三阶段：终局挑战</h3>
-                        <div class="meta"><strong>核心节点：</strong>Qi先生的核桃房 (100核桃)</div>
-                        <div class="meta">🧩 位于岛屿西部，支付100核桃进入。<strong>Qi先生会发布高难度特别任务</strong>，完成后获得<span class="badge">齐币</span>，用于兑换：</div>
-                        <ul class="step-list">
-                            <li>加压喷头（自动浇水升级版）</li>
-                            <li>加料器（自动施肥）</li>
-                            <li>魔法鱼饵（钓任何鱼）</li>
-                            <li>马笛、钥匙等便利道具</li>
-                        </ul>
-                    </div>
+  <div class="panel" id="panel-location">
+    <div class="panel-header">
+      <span class="panel-title">📍 地点 × 条件筛选</span>
+      <button class="panel-close" onclick="closePanel('location')">✕</button>
+    </div>
+    <div class="filter-row">
+      <div class="filter-group">
+        <span class="filter-label">地点</span>
+        <select class="filter-select" id="f-location" onchange="renderLocation()">
+          <option value="">全部地点</option>
+          <option value="河流">🏞️ 河流</option>
+          <option value="湖泊">🏔️ 深山湖泊</option>
+          <option value="沙滩">🏖️ 沙滩/海洋</option>
+          <option value="矿井">⛏️ 矿井</option>
+          <option value="沙漠">🏜️ 沙漠</option>
+          <option value="姜岛">🌴 姜岛</option>
+          <option value="蟹笼">🦀 蟹笼</option>
+          <option value="秘密森林">🌲 秘密森林</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">季节</span>
+        <select class="filter-select" id="f-season" onchange="renderLocation()">
+          <option value="">不限季节</option>
+          <option value="春">🌸 春</option>
+          <option value="夏">☀️ 夏</option>
+          <option value="秋">🍂 秋</option>
+          <option value="冬">❄️ 冬</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">天气</span>
+        <select class="filter-select" id="f-weather" onchange="renderLocation()">
+          <option value="">不限天气</option>
+          <option value="晴天">☀️ 晴天</option>
+          <option value="雨天">🌧️ 雨天</option>
+        </select>
+      </div>
+    </div>
+    <div class="result-list" id="locationResults"></div>
+  </div>
 
-                    <div class="item-card">
-                        <h3>🏖️ 附属设施 (有余力再解锁)</h3>
-                        <div class="meta">🍹 <strong>度假村 (20核桃)</strong> —— 鹈鹕镇村民会来度假，互动彩蛋。</div>
-                        <div class="meta">🦜 <strong>鹦鹉特快 (10核桃)</strong> —— 姜岛内部快速传送系统。</div>
-                        <div class="meta">⛩️ <strong>姜岛图腾柱</strong> —— 农场直接传送姜岛(需龙牙×10 + 香蕉×10 + 金核桃×20)。</div>
-                    </div>
+  <!-- 加工收益面板 -->
 
-                    <div class="item-card">
-                        <h3>📈 姜岛农场策略</h3>
-                        <div class="meta">• <strong>特性：</strong>无季节限制，无乌鸦(不需要稻草人)。</div>
-                        <div class="meta">• <strong>推荐作物：</strong>
-                            <span class="link-inline" onclick="searchAndShow('远古果实')">远古果实</span>（酿酒印钞机）或
-                            <span class="link-inline" onclick="searchAndShow('杨桃')">杨桃</span>（单体价值最高）。
-                        </div>
-                        <div class="meta">• <strong>小技巧：</strong>姜岛农场面积非常大，建议优先铺满远古种子。</div>
-                    </div>
-                </div>
-            </div>
-        `;
+  <div class="panel" id="panel-item">
+    <div class="panel-header">
+      <span class="panel-title">⚙️ 加工收益对比</span>
+      <button class="panel-close" onclick="closePanel('item')">✕</button>
+    </div>
+    <div class="item-search-area">
+      <input type="text" id="itemSearch" placeholder="输入物品名称，例如：杨桃、鲟鱼、牛奶…" oninput="renderItem()">
+    </div>
+    <div id="itemResults">
+      <div class="empty-state"><div class="big">⚙️</div>输入物品名称<br>查看最优加工路径</div>
+    </div>
+  </div>
 
-        // ==================== 核心渲染 ====================
-        let currentCategory = 'all';
-        const contentArea = document.getElementById('contentArea');
-        const searchInput = document.getElementById('searchInput');
-        const categoryNav = document.getElementById('categoryNav');
-        const backButton = document.getElementById('backButton');
+  <!-- 献祭面板 -->
 
-        function getItemsByCategory(cat) {
-            switch(cat) {
-                case 'all': return allItems;
-                case 'fish': return DB.fish;
-                case 'crops': return DB.crops_all;
-                case 'animal': return DB.animal;
-                case 'foraging': return DB.foraging;
-                default: return [];
-            }
-        }
+  <div class="panel" id="panel-bundle">
+    <div class="panel-header">
+      <span class="panel-title">🎁 社区中心献祭清单</span>
+      <button class="panel-close" onclick="closePanel('bundle')">✕</button>
+    </div>
+    <div class="bundle-rooms" id="bundleRooms"></div>
+  </div>
 
-        function renderCard(item) {
-            let s = '';
-            if (item.sacrifices) {
-                s += '<span class="section-title">🎁 献祭需求</span>';
-                item.sacrifices.forEach(sc => s += `<div class="sacrifice-item"><span class="prefix">📦</span>${sc.room} → <span class="link-inline" onclick='jumpTo("bundles","#")'>${sc.bundle}</span>${sc.need ? ` ×${sc.need}` : ''}${sc.quality ? ` (${sc.quality})` : ''}</div>`);
-            }
-            if (item.processing) {
-                s += '<span class="section-title">⚙️ 加工建议（优先级从高到低）</span>';
-                item.processing.forEach((p,i) => {
-                    const eqLink = p.eq ? `<span class="link-inline" onclick='jumpTo("artisan","${p.eq}")'>[${equipmentDB[p.eq]?.name||'设备'}]</span>` : '';
-                    s += `<div class="priority-item"><span class="prefix"><span class="prio">P${i+1}</span></span> ${p.m}${p.p ? ` (${p.p}G)` : ''} ${eqLink}</div>`;
-                });
-            }
-            if (item.gifts) {
-                s += '<span class="section-title">❤️ 送礼推荐</span>';
-                item.gifts.forEach(g => s += `<div class="gift-item"><span class="prefix">🛍️</span><span class="link-inline" onclick='jumpTo("npcs","${g}")'>${npcDB[g]?.name||g}</span></div>`);
-            }
-            if (item.source) s += `<div class="meta">🏠 来源：${item.source}</div>`;
-            if (item.note) s += `<div class="note">💡 ${item.note}</div>`;
-            return s;
-        }
+  <!-- NPC面板 -->
 
-        function renderContent(cat, term) {
-            backButton.classList.toggle('show', cat !== 'all');
-            if (cat === 'bundles') { contentArea.innerHTML = bundlesGuide; return; }
-            if (cat === 'cooking') { contentArea.innerHTML = cookingGuide; return; }
-            if (cat === 'mining') { contentArea.innerHTML = miningGuide; return; }
-            if (cat === 'ginger_island') { contentArea.innerHTML = gingerIslandGuide; return; }
-            if (cat === 'artisan') {
-    let h = '<div class="card-grid">';
-    for (let e of Object.values(equipmentDB)) {
-        h += `<div class="item-card" id="card-${e.id}">
-            <h3>${e.name} <span class="badge">工匠设备</span></h3>
-            <div class="meta">📜 来源：${e.source}</div>
-            <div class="meta">🥄 材料：${e.recipe}</div>
-            <div class="meta">💰 收益：${e.desc}</div>
-        </div>`;
-    }
-    contentArea.innerHTML = h + '</div>';
+  <div class="panel" id="panel-npc">
+    <div class="panel-header">
+      <span class="panel-title">💬 NPC生日 & 礼物</span>
+      <button class="panel-close" onclick="closePanel('npc')">✕</button>
+    </div>
+    <div class="npc-grid" id="npcGrid"></div>
+  </div>
+
+</div>
+
+<footer>🌾 田间手册 · 基于1.6版本 · 查完就关，回到游戏</footer>
+
+<script>
+// ===================== 数据层 =====================
+
+const FISH = [
+  { name:"太阳鱼", emoji:"🐟", location:"河流", season:"春,夏", weather:"晴天", time:"6AM-7PM", price:30, proc:[{m:"熏鱼机→熏太阳鱼",p:60},{m:"直接出售",p:30}] },
+  { name:"鲶鱼", emoji:"🐠", location:"河流", season:"春,秋", weather:"雨天", time:"6AM-12AM", price:200, proc:[{m:"熏鱼机→熏鲶鱼",p:400},{m:"直接出售",p:200}] },
+  { name:"西鲱", emoji:"🐟", location:"河流", season:"春,夏,秋", weather:"雨天", time:"9AM-2AM", price:60, proc:[{m:"熏鱼机→熏西鲱",p:120},{m:"直接出售",p:60}] },
+  { name:"虎纹鳟鱼", emoji:"🐠", location:"河流", season:"秋,冬", weather:"", time:"6AM-7PM", price:150, proc:[{m:"熏鱼机→熏虎纹鳟鱼",p:300},{m:"直接出售",p:150}] },
+  { name:"鳗鱼", emoji:"🐍", location:"沙滩", season:"春,秋", weather:"雨天", time:"4PM-2AM", price:85, proc:[{m:"熏鱼机→熏鳗鱼",p:170},{m:"鱼塘→鱼籽腌制",p:200}] },
+  { name:"河豚", emoji:"🐡", location:"沙滩", season:"夏", weather:"晴天", time:"12PM-4PM", price:200, proc:[{m:"熏鱼机→熏河豚",p:400},{m:"直接出售",p:200}] },
+  { name:"沙丁鱼", emoji:"🐟", location:"沙滩", season:"春,秋,冬", weather:"", time:"6AM-7PM", price:40, proc:[{m:"熏鱼机→熏沙丁鱼",p:80},{m:"直接出售",p:40}] },
+  { name:"金枪鱼", emoji:"🐟", location:"沙滩", season:"夏,冬", weather:"", time:"6AM-7PM", price:100, proc:[{m:"熏鱼机→熏金枪鱼",p:200},{m:"直接出售",p:100}] },
+  { name:"红鲫鱼", emoji:"🐠", location:"沙滩", season:"夏,秋", weather:"雨天", time:"6AM-7PM", price:50, proc:[{m:"熏鱼机→熏红鲫鱼",p:100},{m:"直接出售",p:50}] },
+  { name:"大嘴鲈鱼", emoji:"🐟", location:"湖泊", season:"任何", weather:"", time:"6AM-7PM", price:100, proc:[{m:"熏鱼机→熏大嘴鲈鱼",p:200},{m:"直接出售",p:100}] },
+  { name:"鲤鱼", emoji:"🐟", location:"湖泊", season:"任何", weather:"", time:"全天", price:30, proc:[{m:"熏鱼机→熏鲤鱼",p:60},{m:"直接出售",p:30}] },
+  { name:"鲟鱼", emoji:"🐟", location:"湖泊", season:"夏,冬", weather:"", time:"6AM-7PM", price:200, proc:[{m:"鱼塘→鱼子酱(500G)",p:500},{m:"熏鱼机→熏鲟鱼",p:400},{m:"直接出售",p:200}], note:"唯一能做鱼子酱的鱼" },
+  { name:"大眼鱼", emoji:"🐟", location:"湖泊,河流", season:"秋,冬", weather:"雨天", time:"12AM-2AM", price:105, proc:[{m:"熏鱼机→熏大眼鱼",p:210},{m:"直接出售",p:105}] },
+  { name:"岩浆鳗鱼", emoji:"🌋", location:"矿井", season:"任何", weather:"", time:"矿井100层", price:700, proc:[{m:"熏鱼机→熏岩浆鳗鱼",p:1400},{m:"鱼塘→鱼籽腌制",p:1060},{m:"直接出售",p:700}] },
+  { name:"冰柱鱼", emoji:"❄️", location:"矿井", season:"任何", weather:"", time:"矿井60层", price:500, proc:[{m:"熏鱼机→熏冰柱鱼",p:1000},{m:"直接出售",p:500}] },
+  { name:"鬼鱼", emoji:"👻", location:"矿井", season:"任何", weather:"", time:"矿井20/60/100层", price:45, proc:[{m:"鱼塘(9条+)→产财宝箱",p:5000},{m:"熏鱼机→熏鬼鱼",p:90}], note:"鱼塘9条以上概率产财宝箱" },
+  { name:"沙鱼", emoji:"🏜️", location:"沙漠", season:"任何", weather:"", time:"6AM-8PM", price:75, proc:[{m:"熏鱼机→熏沙鱼",p:150},{m:"直接出售",p:75}] },
+  { name:"蝎鲤鱼", emoji:"🦂", location:"沙漠", season:"任何", weather:"", time:"6AM-8PM", price:150, proc:[{m:"熏鱼机→熏蝎鲤鱼",p:300},{m:"直接出售",p:150}], isNew:true },
+  { name:"黄貂鱼", emoji:"🌊", location:"姜岛", season:"任何", weather:"", time:"全天", price:180, proc:[{m:"熏鱼机→熏黄貂鱼",p:360},{m:"直接出售",p:180}] },
+  { name:"狮子鱼", emoji:"🦁", location:"姜岛", season:"任何", weather:"", time:"全天", price:100, proc:[{m:"熏鱼机→熏狮子鱼",p:200},{m:"直接出售",p:100}] },
+  { name:"蓝色铁饼鱼", emoji:"💙", location:"姜岛", season:"任何", weather:"", time:"全天(河流)", price:120, proc:[{m:"熏鱼机→熏蓝色铁饼鱼",p:240},{m:"直接出售",p:120}] },
+  { name:"龙虾", emoji:"🦞", location:"蟹笼", season:"任何", weather:"", time:"蟹笼(海洋)", price:120, proc:[{m:"熏鱼机→熏龙虾",p:240},{m:"烹饪→龙虾浓汤",p:225}] },
+  { name:"螃蟹", emoji:"🦀", location:"蟹笼", season:"任何", weather:"", time:"蟹笼(海洋)", price:100, proc:[{m:"熏鱼机→熏螃蟹",p:200},{m:"烹饪→蟹黄糕",p:275}] },
+  { name:"虾", emoji:"🦐", location:"蟹笼", season:"任何", weather:"", time:"蟹笼(海洋)", price:60, proc:[{m:"熏鱼机→熏虾",p:120},{m:"直接出售",p:60}] },
+  { name:"木跃鱼", emoji:"🌲", location:"秘密森林", season:"任何", weather:"", time:"全天", price:75, proc:[{m:"鱼塘→产木材/硬木",p:0},{m:"熏鱼机",p:150}], note:"鱼塘稳定产出木材" },
+  { name:"水滴鱼", emoji:"😢", location:"沙滩", season:"冬", weather:"", time:"夜市潜水艇 5PM-2AM", price:500, proc:[{m:"鱼塘(9条+)→珍珠(2500G)",p:2500},{m:"熏鱼机→熏水滴鱼",p:1000}], note:"冬15-17日夜市" },
+];
+
+const CROPS = [
+  { name:"杨桃", emoji:"⭐", season:"夏,姜岛", price:750, isHot:true, proc:[{m:"小桶→杨桃酒",p:2250},{m:"陈酿→铱星杨桃酒",p:4500},{m:"直接出售",p:750}], note:"单体价值之王" },
+  { name:"远古果实", emoji:"🌸", season:"温室,姜岛", price:550, isHot:true, proc:[{m:"小桶→远古果酒",p:1650},{m:"陈酿→铱星远古果酒",p:3300},{m:"直接出售",p:550}], note:"全能印钞机" },
+  { name:"啤酒花", emoji:"🌿", season:"夏", price:25, isHot:true, proc:[{m:"小桶→淡啤酒(1.5天)",p:300},{m:"直接出售",p:25}], note:"日收益之王" },
+  { name:"甜瓜", emoji:"🍈", season:"夏", price:250, proc:[{m:"小桶→甜瓜酒",p:750},{m:"直接出售",p:250}] },
+  { name:"蓝莓", emoji:"🫐", season:"夏", price:50, proc:[{m:"罐头瓶→蓝莓酱",p:150},{m:"小桶→蓝莓酒",p:150}] },
+  { name:"草莓", emoji:"🍓", season:"春", price:120, proc:[{m:"罐头瓶→草莓酱",p:290},{m:"小桶→草莓酒",p:360}] },
+  { name:"大黄", emoji:"🌱", season:"春", price:220, proc:[{m:"小桶→大黄酒",p:660},{m:"罐头瓶→大黄果酱",p:490}] },
+  { name:"南瓜", emoji:"🎃", season:"秋", price:320, proc:[{m:"小桶→南瓜汁",p:720},{m:"罐头瓶→腌南瓜",p:690},{m:"直接出售",p:320}] },
+  { name:"蔓越莓", emoji:"🍒", season:"秋", price:75, proc:[{m:"罐头瓶→蔓越莓酱(产量大)",p:200},{m:"直接出售",p:75}] },
+  { name:"红卷心菜", emoji:"🥬", season:"夏", price:260, proc:[{m:"小桶→红卷心菜汁",p:585},{m:"罐头瓶→腌红卷心菜",p:570}] },
+  { name:"葡萄", emoji:"🍇", season:"秋", price:80, proc:[{m:"小桶→葡萄酒",p:240},{m:"罐头瓶→葡萄酱",p:210}] },
+  { name:"菠萝", emoji:"🍍", season:"姜岛", price:300, proc:[{m:"小桶→菠萝酒",p:900},{m:"直接出售",p:300}] },
+  { name:"花椰菜", emoji:"🥦", season:"春", price:175, proc:[{m:"罐头瓶→腌花椰菜",p:400},{m:"直接出售",p:175}] },
+  { name:"玉米", emoji:"🌽", season:"夏,秋", price:50, proc:[{m:"罐头瓶→腌玉米",p:150},{m:"产油机→油",p:100}] },
+  { name:"小麦", emoji:"🌾", season:"夏,秋", price:25, proc:[{m:"小桶→啤酒",p:200},{m:"磨坊→面粉",p:50}] },
+];
+
+const ANIMALS = [
+  { name:"鸡蛋", emoji:"🥚", source:"鸡舍", price:50, proc:[{m:"蛋黄酱机→蛋黄酱",p:190},{m:"直接出售",p:50}] },
+  { name:"大鸡蛋", emoji:"🥚", source:"鸡舍(高好感)", price:95, proc:[{m:"蛋黄酱机→金星蛋黄酱",p:285},{m:"直接出售",p:95}] },
+  { name:"鸭蛋", emoji:"🥚", source:"大鸡舍", price:95, proc:[{m:"蛋黄酱机→鸭蛋黄酱",p:375},{m:"直接出售",p:95}] },
+  { name:"恐龙蛋", emoji:"🦕", source:"高级鸡舍", price:350, proc:[{m:"蛋黄酱机→恐龙蛋黄酱",p:800},{m:"孵化器→恐龙(第一个建议孵化)"}], note:"第一个建议孵化" },
+  { name:"鸵鸟蛋", emoji:"🥚", source:"高级畜棚(鸵鸟)", price:600, proc:[{m:"蛋黄酱机→×10蛋黄酱",p:1900},{m:"直接出售",p:600}], isNew:true },
+  { name:"虚空蛋", emoji:"🖤", source:"巫师送/鸡突变", price:65, proc:[{m:"蛋黄酱机→虚空蛋黄酱",p:275},{m:"直接出售",p:65}] },
+  { name:"牛奶", emoji:"🥛", source:"畜棚", price:125, proc:[{m:"奶酪机→奶酪",p:230},{m:"直接出售",p:125}] },
+  { name:"大壶牛奶", emoji:"🥛", source:"畜棚(高好感)", price:190, proc:[{m:"奶酪机→金星奶酪",p:345},{m:"直接出售",p:190}] },
+  { name:"山羊奶", emoji:"🥛", source:"大畜棚(山羊)", price:225, proc:[{m:"奶酪机→山羊奶酪",p:400},{m:"直接出售",p:225}] },
+  { name:"羊毛", emoji:"🧶", source:"大畜棚(绵羊)", price:340, proc:[{m:"织布机→布料",p:470},{m:"直接出售",p:340}] },
+  { name:"松露", emoji:"🍄", source:"高级畜棚(猪)", price:625, proc:[{m:"产油机→松露油",p:1065},{m:"直接出售",p:625}], note:"松露油是动物制品中利润最高的" },
+];
+
+const FORAGING = [
+  { name:"紫蘑菇", emoji:"🍄", location:"矿井/秋季森林", season:"秋,任何", price:250, proc:[{m:"烘干机→干紫蘑菇",p:500},{m:"直接出售",p:250}] },
+  { name:"鸡油菇", emoji:"🍄", location:"秘密森林/秋季", season:"秋", price:160, proc:[{m:"烘干机→干鸡油菇",p:320},{m:"直接出售",p:160}] },
+  { name:"榛子", emoji:"🌰", location:"秋季", season:"秋", price:90, proc:[{m:"烹饪→烤榛子",p:180},{m:"烘干机→干榛子",p:180}] },
+  { name:"椰子", emoji:"🥥", location:"沙漠/姜岛", season:"任何", price:100, proc:[{m:"小桶→椰子酒",p:300},{m:"直接出售",p:100}] },
+  { name:"黑莓", emoji:"🍇", location:"秋季觅食", season:"秋8-11日", price:20, proc:[{m:"罐头瓶→黑莓酱",p:90},{m:"直接出售",p:20}] },
+  { name:"野李子", emoji:"🫐", location:"秋季觅食", season:"秋", price:80, proc:[{m:"小桶→野李酒",p:240},{m:"直接出售",p:80}] },
+];
+
+const ALL_ITEMS = [
+  ...FISH.map(i=>({...i, category:"鱼"})),
+  ...CROPS.map(i=>({...i, category:"作物"})),
+  ...ANIMALS.map(i=>({...i, category:"畜牧"})),
+  ...FORAGING.map(i=>({...i, category:"觅食"})),
+];
+
+const BUNDLES = [
+  { room:"工艺室", reward:"修复采石场桥梁", items:[
+    { bundle:"春季采集包", need:"野山葵×1、黄水仙×1、韭葱×1、蒲公英×1" },
+    { bundle:"夏季采集包", need:"葡萄×1、香味浆果×1、甜豌豆×1" },
+    { bundle:"秋季采集包", need:"普通蘑菇×1、野李子×1、榛子×1、黑莓×1" },
+    { bundle:"冬季采集包", need:"冬根×1、水晶果×1、雪山药×1、番红花×1" },
+    { bundle:"建筑包", need:"木材×99 ×2、石头×99、硬木×10" },
+    { bundle:"异国情调包", need:"椰子、仙人掌果子、山洞萝卜、红蘑菇、紫蘑菇、龙葵、枫糖浆、松焦油、橡树树脂 (任5)" },
+  ]},
+  { room:"茶水间", reward:"🌟 温室", items:[
+    { bundle:"春季作物包", need:"防风草×1、青豆×1、花椰菜×1、土豆×1" },
+    { bundle:"夏季作物包", need:"番茄×1、辣椒×1、蓝莓×1、甜瓜×1" },
+    { bundle:"秋季作物包", need:"玉米×1、茄子×1、南瓜×1、山药×1" },
+    { bundle:"优质作物包", need:"金星防风草×5 或 甜瓜×5 或 南瓜×5 或 玉米×5 (任3)" },
+    { bundle:"动物包", need:"大壶牛奶、大鸡蛋(白)、大鸡蛋(棕)、大瓶羊奶、羊毛、鸭蛋 (任5)" },
+    { bundle:"工匠包", need:"松露油、布料、山羊奶酪、奶酪、蜂蜜、果酱、苹果、杏子、橙子、桃子、石榴、樱桃 (任6)" },
+  ]},
+  { room:"鱼缸", reward:"移除巨大闪石", items:[
+    { bundle:"河鱼包", need:"太阳鱼×1、鲶鱼×1、西鲱×1、虎纹鳟鱼×1" },
+    { bundle:"湖鱼包", need:"大嘴鲈鱼×1、鲤鱼×1、大头鱼×1、鲟鱼×1" },
+    { bundle:"海鱼包", need:"沙丁鱼×1、金枪鱼×1、红鲫鱼×1、罗非鱼×1" },
+    { bundle:"夜间垂钓包", need:"大眼鱼×1、鲷鱼×1、鳗鱼×1" },
+    { bundle:"蟹笼包", need:"龙虾、小龙虾、螃蟹、鸟蛤、蚌、虾、蜗牛、玉黍螺、牡蛎、蛤 (任5)" },
+    { bundle:"特色鱼类包", need:"河豚×1、鬼鱼×1、沙鱼×1、木跃鱼×1" },
+  ]},
+  { room:"锅炉房", reward:"修复矿车", items:[
+    { bundle:"铁匠包", need:"铜锭×1、铁锭×1、金锭×1" },
+    { bundle:"地理学家包", need:"石英×1、泪晶×1、地晶×1、火水晶×1" },
+    { bundle:"冒险家包", need:"史莱姆×99、蝙蝠翅膀×10、太阳精华×1、虚空精华×1" },
+  ]},
+  { room:"布告栏", reward:"友谊+2❤全体村民", items:[
+    { bundle:"厨师包", need:"枫糖浆、蕨菜、松露、罂粟、鲭鱼、蜗牛 (各1)" },
+    { bundle:"染料包", need:"红蘑菇、海胆、向日葵、羽毛、蓝莓、葡萄 (各1)" },
+    { bundle:"土地研究包", need:"紫蘑菇、鹦鹉螺化石、山洞萝卜、石英 (各1)" },
+    { bundle:"饲料包", need:"小麦×10、干草×10、苹果×3" },
+    { bundle:"魔法师包", need:"橡树树脂、葡萄酒、兔子脚、石榴 (各1)" },
+  ]},
+  { room:"金库", reward:"🚌 解锁沙漠巴士", items:[
+    { bundle:"2500G包", need:"缴纳 2,500 金币" },
+    { bundle:"5000G包", need:"缴纳 5,000 金币" },
+    { bundle:"10000G包", need:"缴纳 10,000 金币" },
+    { bundle:"25000G包", need:"缴纳 25,000 金币" },
+  ]},
+];
+
+const NPCS = [
+  { name:"阿比盖尔", birthday:"秋13", season:"秋", loves:"紫水晶、黑莓脆皮饼、巧克力蛋糕、河豚、南瓜、香辣鳗鱼", tip:"彩虹贝是礼物之王（巫师塔染色盆获得）" },
+  { name:"亚历克斯", birthday:"夏13", season:"夏", loves:"完美早餐、鲑鱼晚餐", tip:"送完美早餐最实惠" },
+  { name:"艾米丽", birthday:"春27", season:"春", loves:"紫水晶、布料、动物毛、救生汉堡", tip:"布料由织布机产出" },
+  { name:"谢恩", birthday:"春20", season:"春", loves:"啤酒、爆炒青椒、披萨", tip:"啤酒在萨利马酒吧购买" },
+  { name:"哈维", birthday:"冬14", season:"冬", loves:"咖啡、腌菜、巨无霸餐、松露油、果酒", tip:"咖啡可在咖啡屋购买" },
+  { name:"潘妮", birthday:"夏2", season:"夏", loves:"钻石、绿宝石、罂粟、虞美人籽松糕", tip:"周二三四在博物馆上课可见" },
+  { name:"莱亚", birthday:"冬23", season:"冬", loves:"山羊奶酪、虞美人籽松糕、松露、果酒", tip:"松露由猪挖出后用产油机加工更赚" },
+  { name:"塞巴斯泰安", birthday:"冬10", season:"冬", loves:"泪晶、黑曜石、南瓜汤、生鱼片、虚空蛋", tip:"泪晶在矿井40层附近产出" },
+  { name:"山姆", birthday:"夏17", season:"夏", loves:"仙人掌果子、枫糖棒、披萨、虎眼石", tip:"仙人掌在沙漠觅食" },
+  { name:"玛鲁", birthday:"夏10", season:"夏", loves:"电池组、钻石、金锭、铱锭、矿工特供、草莓", tip:"电池组由避雷针/电池箱获得" },
+  { name:"艾利欧特", birthday:"秋5", season:"秋", loves:"蟹黄糕、鸭毛、龙虾、石榴、椰汁汤", tip:"龙虾用蟹笼(海洋)捕获" },
+  { name:"克林特", birthday:"冬26", season:"冬", loves:"紫水晶、海蓝宝石、绿宝石、意式蕨菜炖饭", tip:"铁匠铺每天早开" },
+  { name:"德米特里厄斯", birthday:"夏19", season:"夏", loves:"豆类火锅、冰淇淋、草莓", tip:"草莓只在春蛋节购买" },
+  { name:"艾芙琳", birthday:"冬20", season:"冬", loves:"甜菜、巧克力蛋糕、钻石、玫瑰仙子", tip:"生日送钻石效率最高" },
+  { name:"格斯", birthday:"夏8", season:"夏", loves:"钻石、法式田螺、鱼肉卷、橙子", tip:"萨利马酒吧老板" },
+  { name:"海莉", birthday:"春14", season:"春", loves:"椰子、水果沙拉、粉红蛋糕、向日葵", tip:"向日葵夏秋种植或商店购买" },
+  { name:"乔迪", birthday:"秋11", season:"秋", loves:"香酥鲈鱼、钻石、帕尔玛奶酪", tip:"大嘴鲈鱼制作香酥鲈鱼" },
+  { name:"肯特", birthday:"春4", season:"春", loves:"烤榛子、榛子", tip:"第二年春天回村" },
+  { name:"科罗布斯", birthday:"冬1", season:"冬", loves:"钻石、铱锭、南瓜、虚空蛋", tip:"下水道居住，需要修水管" },
+  { name:"刘易斯", birthday:"春7", season:"春", loves:"秋日恩赐、琉璃山药、蔬菜杂烩", tip:"蔬菜杂烩由番茄+甜菜烹饪" },
+  { name:"莱纳斯", birthday:"冬3", season:"冬", loves:"蓝莓千层酥、椰子、山药", tip:"给他送野外食材最合适" },
+  { name:"玛妮", birthday:"秋18", season:"秋", loves:"钻石、农夫午餐、南瓜派", tip:"牧场出售动物，周二逛超市" },
+  { name:"潘姆", birthday:"夏18", season:"夏", loves:"啤酒、琉璃山药、防风草汤", tip:"公交车司机" },
+  { name:"皮埃尔", birthday:"春26", season:"春", loves:"炸鱿鱼", tip:"杂货店老板，周三休息" },
+  { name:"罗宾", birthday:"秋21", season:"秋", loves:"山羊奶酪、桃子、意大利面", tip:"木匠商店，周二休息" },
+  { name:"桑迪", birthday:"秋15", season:"秋", loves:"番红花、甜豌豆、芒果糯米饭", tip:"沙漠绿洲商店" },
+  { name:"法师", birthday:"冬17", season:"冬", loves:"紫蘑菇、太阳精华、虚空精华", tip:"法师塔，好感够可染色/变型" },
+  { name:"威利", birthday:"夏24", season:"夏", loves:"钻石、鲟鱼、章鱼、海参", tip:"鱼店，完成鱼缸献祭后送熏鱼机" },
+  { name:"文森特", birthday:"春10", season:"春", loves:"蔓越莓糖果、番茄、粉红蛋糕", tip:"与贾斯一起上学" },
+  { name:"贾斯", birthday:"夏4", season:"夏", loves:"玫瑰仙子、粉红蛋糕、葡萄干布丁", tip:"住在玛妮牧场" },
+];
+
+// ===================== 状态 =====================
+let activePanel = null;
+let bundleChecked = JSON.parse(localStorage.getItem('sdv_bundles') || '{}');
+
+// ===================== 面板控制 =====================
+function togglePanel(name) {
+  const searchPanel = document.getElementById('panel-search');
+  searchPanel.classList.remove('visible');
+
+  if (activePanel === name) {
+    closePanel(name);
     return;
-            }
-            if (cat === 'construction') {
-    let h = '<div class="card-grid">';
-    // 建筑部分
-    for (let b of buildingDB) {
-        h += `<div class="item-card" id="card-${b.id}"><h3>${b.name} <span class="badge">${b.type}</span></h3><div class="meta">📍 来源: ${b.source}</div><div class="meta">💰 价格: ${b.cost}</div><p>${b.desc}</p></div>`;
-    }
-    // 工具部分
-    for (let t of toolDB) {
-        h += `<div class="item-card" id="card-${t.id}"><h3>${t.name} <span class="badge">${t.type}</span></h3><div class="meta">📍 来源: ${t.source}</div><div class="meta">💰 花费: ${t.cost}</div><p>${t.desc}</p></div>`;
-    }
-    contentArea.innerHTML = h + '</div>'; return;
+  }
+  // 关闭其他
+  ['location','item','bundle','npc'].forEach(p => {
+    document.getElementById('panel-'+p).classList.remove('visible');
+    document.querySelector(`[data-entry="${p}"]`)?.classList.remove('active');
+  });
+  activePanel = name;
+  document.querySelector(`[data-entry="${name}"]`).classList.add('active');
+  const panel = document.getElementById('panel-'+name);
+  panel.classList.add('visible');
+
+  // 初始化各面板
+  if (name === 'location') renderLocation();
+  if (name === 'bundle') renderBundle();
+  if (name === 'npc') renderNPC();
+  if (name === 'item') document.getElementById('itemSearch').focus();
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
-            if (cat === 'npcs') {
-                let h = '<div class="card-grid">';
-                for (let n of Object.values(npcDB)) {
-                    h += `<div class="item-card" id="card-${n.id}"><h3>${n.name}</h3><div class="meta">❤️ 最爱礼物: ${n.loves}</div><p>📍 日程位置: ${n.schedule}</p></div>`;
-                }
-              // 鱼饵和渔具部分 (新增)
-            for (let g of fishingGearDB) {
-                h += `<div class="item-card" id="card-${g.id}"><h3>${g.name} <span class="badge">${g.type}</span></h3><div class="meta">📍 来源: ${g.source}</div><div class="meta">💰 花费: ${g.cost}</div><p>${g.desc}</p></div>`;
-            }              
-                contentArea.innerHTML = h + '</div>'; return;
-            }
 
-            let items = getItemsByCategory(cat);
-            if (term) items = items.filter(i => i.name.includes(term) || (i.location||'').includes(term) || (i.type||'').includes(term));
-            if (!items.length) { contentArea.innerHTML = '<p style="text-align:center;padding:2rem;">无结果</p>'; return; }
-            let h = '<div class="card-grid">';
-            items.forEach(i => {
-                const dynamicHot = i.hot || isHotItem(i.id);
-                const hotTag = dynamicHot ? '<span class="badge hot">HOT</span>' : '';
-                h += `<div class="item-card" id="card-${i.id}"><h3>${i.name} <span class="badge">${i.type}</span>${hotTag}${i.season?`<span class="badge season">${i.season}</span>`:''}</h3>`;
-                if (i.location) h += `<div class="meta">📍 ${i.location} | 🕒 ${i.time||''}</div>`;
-                if (i.basePrice) h += `<div class="meta">💰 基础价: ${i.basePrice}G</div>`;
-                h += renderCard(i);
-                h += '</div>';
-            });
-            contentArea.innerHTML = h + '</div>';
-        }
+function closePanel(name) {
+  document.getElementById('panel-'+name).classList.remove('visible');
+  if (name !== 'search') {
+    document.querySelector(`[data-entry="${name}"]`)?.classList.remove('active');
+    activePanel = null;
+  }
+}
 
-        function updateUI() { renderContent(currentCategory, searchInput.value); }
+// ===================== 全局搜索 =====================
+const globalSearch = document.getElementById('globalSearch');
+globalSearch.addEventListener('input', () => {
+  const q = globalSearch.value.trim();
+  const searchPanel = document.getElementById('panel-search');
+  // 关闭其他面板
+  ['location','item','bundle','npc'].forEach(p => {
+    document.getElementById('panel-'+p).classList.remove('visible');
+    document.querySelector(`[data-entry="${p}"]`)?.classList.remove('active');
+  });
+  activePanel = null;
 
-        // ==================== 事件监听 ====================
-        categoryNav.addEventListener('click', e => {
-            const btn = e.target.closest('.category-btn'); if (!btn) return;
-            const cat = btn.dataset.category;
-            _applyState(cat, '', false);
-        });
+  if (!q) { searchPanel.classList.remove('visible'); return; }
 
-        searchInput.addEventListener('input', () => {
-            pushHistory(currentCategory, searchInput.value);
-            updateUI();
-        });
+  const results = ALL_ITEMS.filter(i =>
+    i.name.includes(q) ||
+    (i.location||'').includes(q) ||
+    (i.season||'').includes(q) ||
+    (i.source||'').includes(q) ||
+    (i.note||'').includes(q)
+  );
 
-        // 初始加载
-        pushHistory('all', '');
-        updateUI();
-    </script>
+  const npcResults = NPCS.filter(n =>
+    n.name.includes(q) || n.loves.includes(q)
+  );
+
+  document.getElementById('searchPanelTitle').textContent = `"${q}" 的搜索结果`;
+
+  const container = document.getElementById('searchResults');
+  if (!results.length && !npcResults.length) {
+    container.innerHTML = `<div class="empty-state"><div class="big">🔍</div>没找到"${q}"<br><span style="font-size:0.75rem">试试其他关键词</span></div>`;
+    searchPanel.classList.add('visible');
+    return;
+  }
+
+  let html = '';
+
+  if (results.length) {
+    html += `<div class="search-section-title">${results.length} 个物品</div>`;
+    results.forEach(item => { html += renderResultItem(item, true); });
+  }
+
+  if (npcResults.length) {
+    html += `<div class="search-section-title">${npcResults.length} 个 NPC</div>`;
+    npcResults.forEach(n => {
+      html += `<div class="result-item" onclick="this.classList.toggle('expanded')">
+        <span class="result-emoji">💬</span>
+        <div class="result-main">
+          <div class="result-name">${n.name}</div>
+          <div class="result-meta">生日：${n.birthday}</div>
+        </div>
+        <div class="result-price"></div>
+        <div class="result-detail">
+          <div class="detail-row"><span class="detail-label">最爱：</span><span class="detail-val" style="color:var(--red)">${n.loves}</span></div>
+          ${n.tip ? `<div class="detail-row"><span class="detail-label">提示：</span><span class="detail-val">${n.tip}</span></div>` : ''}
+        </div>
+      </div>`;
+    });
+  }
+
+  container.innerHTML = html;
+  searchPanel.classList.add('visible');
+  searchPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+
+function doSearch(q) {
+  globalSearch.value = q;
+  globalSearch.dispatchEvent(new Event('input'));
+  globalSearch.focus();
+}
+
+function renderResultItem(item, showCategory) {
+  const tags = [];
+  if (item.isHot) tags.push('<span class="tag tag-hot">高收益</span>');
+  if (item.isNew) tags.push('<span class="tag tag-new">1.6新增</span>');
+  if (item.season) tags.push(`<span class="tag tag-season">${item.season.split(',')[0]}</span>`);
+
+  const bestProc = item.proc ? [...item.proc].filter(p=>p.p).sort((a,b)=>b.p-a.p)[0] : null;
+  const priceDisplay = bestProc ? `最高 ${bestProc.p}G` : (item.price ? `${item.price}G` : '');
+
+  let detailHtml = '';
+  if (item.proc && item.proc.length) {
+    const sorted = [...item.proc].filter(p=>p.p).sort((a,b)=>b.p-a.p);
+    const max = sorted[0]?.p || 1;
+    detailHtml += sorted.map((p,i) => `
+      <div class="detail-row">
+        <span class="detail-label">${i===0?'最优：':'次选：'}</span>
+        <span class="detail-val">${p.m} → <strong>${p.p}G</strong></span>
+      </div>
+      <div class="process-bar"><div class="process-bar-fill" style="width:${Math.round(p.p/max*100)}%;background:${i===0?'var(--green)':'var(--accent-soft)'}"></div></div>
+    `).join('');
+  }
+  if (item.note) detailHtml += `<div class="detail-row"><span class="detail-label">备注：</span><span class="detail-val" style="color:var(--ink-faint);font-style:italic">${item.note}</span></div>`;
+  if (item.location) detailHtml += `<div class="detail-row"><span class="detail-label">位置：</span><span class="detail-val">${item.location}</span></div>`;
+  if (item.time) detailHtml += `<div class="detail-row"><span class="detail-label">时间：</span><span class="detail-val">${item.time}</span></div>`;
+  if (item.source) detailHtml += `<div class="detail-row"><span class="detail-label">来源：</span><span class="detail-val">${item.source}</span></div>`;
+
+  return `<div class="result-item" onclick="this.classList.toggle('expanded')">
+    <span class="result-emoji">${item.emoji||'📦'}</span>
+    <div class="result-main">
+      <div class="result-name">${item.name} ${tags.join(' ')}</div>
+      <div class="result-meta">${showCategory ? item.category : ''} ${item.season ? '· '+item.season : ''} ${item.weather ? '· '+item.weather : ''}</div>
+    </div>
+    <div class="result-price">${priceDisplay}</div>
+    <div class="result-detail">${detailHtml}</div>
+  </div>`;
+}
+
+// ===================== 地点筛选 =====================
+function renderLocation() {
+  const loc = document.getElementById('f-location').value;
+  const season = document.getElementById('f-season').value;
+  const weather = document.getElementById('f-weather').value;
+
+  let items = FISH.filter(f => {
+    const locMatch = !loc || f.location.includes(loc);
+    const seasonMatch = !season || f.season === '任何' || f.season.includes(season);
+    const weatherMatch = !weather || !f.weather || f.weather === weather || f.weather === '';
+    return locMatch && seasonMatch && weatherMatch;
+  });
+
+  const container = document.getElementById('locationResults');
+  if (!items.length) {
+    container.innerHTML = `<div class="empty-state"><div class="big">🎣</div>当前条件下没有鱼</div>`;
+    return;
+  }
+
+  container.innerHTML = items.map(item => renderResultItem(item, false)).join('');
+}
+
+// ===================== 加工收益 =====================
+function renderItem() {
+  const q = document.getElementById('itemSearch').value.trim();
+  const container = document.getElementById('itemResults');
+
+  if (!q) {
+    container.innerHTML = `<div class="empty-state"><div class="big">⚙️</div>输入物品名称<br>查看最优加工路径</div>`;
+    return;
+  }
+
+  const results = ALL_ITEMS.filter(i => i.name.includes(q) && i.proc);
+
+  if (!results.length) {
+    container.innerHTML = `<div class="empty-state"><div class="big">🤔</div>没找到"${q}"<br>试试：杨桃、鲟鱼、牛奶</div>`;
+    return;
+  }
+
+  let html = '';
+  results.forEach(item => {
+    const procs = [...item.proc].filter(p=>p.p).sort((a,b)=>b.p-a.p);
+    const max = procs[0]?.p || 1;
+    const base = item.price || 0;
+    const best = procs[0];
+    const verdict = best && best.p > base * 1.3;
+
+    html += `<div class="process-card">
+      <div class="process-name">
+        ${item.emoji||'📦'} ${item.name}
+        ${base ? `<span style="color:var(--ink-faint);font-size:0.75rem;font-weight:300">原价 ${base}G</span>` : ''}
+        ${verdict ? '<span class="process-verdict verdict-process">建议加工</span>' : '<span class="process-verdict verdict-sell">可直接出售</span>'}
+      </div>
+      <div class="process-options">
+        ${procs.map((p,i) => `
+          <div class="process-option ${i===0?'best':''}">
+            <span class="process-option-left">${p.m}</span>
+            <span class="process-option-right">${p.p}G ${base && i===0 ? `<span style="font-size:0.65rem;color:var(--green)">+${Math.round((p.p/base-1)*100)}%</span>` : ''}</span>
+          </div>
+          <div class="process-bar"><div class="process-bar-fill" style="width:${Math.round(p.p/max*100)}%;background:${i===0?'var(--green)':'var(--accent-soft)'}"></div></div>
+        `).join('')}
+        ${base ? `<div class="process-option">
+          <span class="process-option-left">直接出售</span>
+          <span class="process-option-right">${base}G</span>
+        </div>
+        <div class="process-bar"><div class="process-bar-fill" style="width:${Math.round(base/max*100)}%;background:var(--ink-faint)"></div></div>` : ''}
+      </div>
+      ${item.note ? `<div style="font-size:0.72rem;color:var(--ink-faint);margin-top:0.5rem;font-style:italic">💡 ${item.note}</div>` : ''}
+    </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+// ===================== 献祭面板 =====================
+function renderBundle() {
+  const container = document.getElementById('bundleRooms');
+  container.innerHTML = BUNDLES.map((room, ri) => `
+    <div class="bundle-room" id="broom-${ri}">
+      <div class="bundle-room-header" onclick="toggleBundleRoom(${ri})">
+        <div>
+          <div class="bundle-room-title">${room.room}</div>
+          <div class="bundle-room-reward">奖励：${room.reward}</div>
+        </div>
+        <span class="bundle-room-toggle">▶</span>
+      </div>
+      <div class="bundle-list">
+        ${room.items.map((item, bi) => {
+          const key = `${ri}-${bi}`;
+          const done = bundleChecked[key];
+          return `<div class="bundle-item">
+            <div class="bundle-check ${done?'done':''}" onclick="toggleBundle('${key}', this)">${done?'✓':''}</div>
+            <div class="bundle-item-name" style="${done?'text-decoration:line-through;color:var(--ink-faint)':''}">${item.bundle}</div>
+            <div class="bundle-item-need">${item.need}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleBundleRoom(ri) {
+  const room = document.getElementById('broom-'+ri);
+  room.classList.toggle('open');
+}
+
+function toggleBundle(key, el) {
+  bundleChecked[key] = !bundleChecked[key];
+  localStorage.setItem('sdv_bundles', JSON.stringify(bundleChecked));
+  el.classList.toggle('done', bundleChecked[key]);
+  el.textContent = bundleChecked[key] ? '✓' : '';
+  const nameEl = el.nextElementSibling;
+  if (nameEl) {
+    nameEl.style.textDecoration = bundleChecked[key] ? 'line-through' : '';
+    nameEl.style.color = bundleChecked[key] ? 'var(--ink-faint)' : '';
+  }
+}
+
+// ===================== NPC面板 =====================
+function renderNPC() {
+  const container = document.getElementById('npcGrid');
+  // 按季节/生日月份排序
+  const sorted = [...NPCS].sort((a,b) => {
+    const order = {春:0,夏:4,秋:8,冬:12};
+    const [as, ad] = [a.birthday.replace(/[0-9]/g,''), parseInt(a.birthday.replace(/[^0-9]/g,''))];
+    const [bs, bd] = [b.birthday.replace(/[0-9]/g,''), parseInt(b.birthday.replace(/[^0-9]/g,''))];
+    return (order[as]||0)+ad - ((order[bs]||0)+bd);
+  });
+
+  container.innerHTML = sorted.map((n,i) => `
+    <div class="npc-card" onclick="toggleNPC(${i})">
+      <div class="npc-name">${n.name}</div>
+      <div class="npc-birthday">🎂 ${n.birthday}</div>
+    </div>
+    <div class="npc-detail" id="npc-detail-${i}">
+      <div class="npc-loves">❤️ 最爱礼物：${n.loves}</div>
+      ${n.tip ? `<div>💡 ${n.tip}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+let openNPC = null;
+function toggleNPC(i) {
+  if (openNPC !== null) {
+    document.getElementById('npc-detail-'+openNPC)?.classList.remove('visible');
+    document.querySelectorAll('.npc-card')[openNPC]?.classList.remove('expanded');
+  }
+  if (openNPC === i) { openNPC = null; return; }
+  openNPC = i;
+  document.getElementById('npc-detail-'+i)?.classList.add('visible');
+  document.querySelectorAll('.npc-card')[i]?.classList.add('expanded');
+}
+
+// 初始化地点面板
+renderLocation();
+</script>
+
 </body>
 </html>
