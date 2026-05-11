@@ -171,76 +171,9 @@ button,input{font:inherit}
 .row span{color:var(--muted)}
 .row b{color:var(--ink);font-weight:800;text-align:right}
 .row b.nowrap{white-space:nowrap}
-.row-detail{
-  background:#fff;
-  border:0;
-  border-top:1px dashed var(--line-soft);
-  border-radius:0;
-  padding:0;
-  margin:0;
-}
-.row-detail:first-of-type{border-top:0}
-.row-detail summary{
-  list-style:none;
-  display:grid;
-  grid-template-columns:92px minmax(0,1fr) 16px;
-  align-items:center;
-  column-gap:8px;
-  padding:9px 0;
-  cursor:pointer;
-  font-size:14px;
-}
-.row-detail summary::-webkit-details-marker{display:none}
-.row-detail summary span{
-  color:var(--ink);
-  font-weight:850;
-}
-.row-detail summary b{
-  color:#5e3e1c;
-  font-size:14px;
-  font-weight:800;
-  text-align:right;
-  justify-self:end;
-}
-.row-detail summary::after{
-  content:"▾";
-  color:var(--wood);
-  font-size:11px;
-  font-weight:900;
-  transition:transform .18s ease;
-  text-align:right;
-}
-.row-detail[open] summary::after{transform:rotate(180deg)}
-.mini-grid{
-  display:grid;
-  grid-template-columns:58px 1fr 1.35fr;
-  gap:1px;
-  overflow:hidden;
-  border:1px solid rgba(216,189,130,.58);
-  border-radius:12px;
-  background:rgba(216,189,130,.45);
-  margin:0 0 7px;
-  font-size:12px;
-}
-.mini-grid div{
-  background:#fffdf8;
-  padding:7px 6px;
-  line-height:1.28;
-}
-.mini-grid .head{
-  background:#fff6e2;
-  color:#6f4728;
-  font-weight:900;
-}
-.mini-grid .level{
-  font-weight:900;
-  color:var(--wood);
-}
-.row-note{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.35;
-  margin:0 0 9px;
+.row b.gift-note{
+  max-width:230px;
+  line-height:1.3;
 }
 .profit-wrap{
   overflow:hidden;border:1.5px solid var(--line);border-radius:18px;
@@ -272,6 +205,10 @@ details{
   padding:10px 11px;margin-top:10px;
 }
 summary{cursor:pointer;font-weight:900;color:var(--wood)}
+.price-summary{
+  font-size:15px;
+  line-height:1.25;
+}
 .small-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
 .small-table th,.small-table td{padding:7px 6px;border-top:1px solid var(--line-soft);text-align:left}
 .small-table th{color:#6f4728}
@@ -299,18 +236,8 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
   .primary-source-main{
     align-items:flex-start;
   }
-  .row-detail summary{
-    grid-template-columns:78px minmax(0,1fr) 14px;
-  }
-  .row-detail summary b{
-    font-size:14px;
-  }
-  .mini-grid{
-    grid-template-columns:48px .98fr 1.32fr;
-    font-size:11px;
-  }
-  .mini-grid div{
-    padding:6px 5px;
+  .row b.gift-note{
+    max-width:205px;
   }
   .profit-table th,.profit-table td{font-size:13px;padding:9px 7px}
   .profit-table th:nth-child(1),.profit-table td:nth-child(1){width:37%}
@@ -325,7 +252,7 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
   <div class="header-inner">
     <div class="eyebrow">Stardew Valley · Crop Detail Demo</div>
     <h1>⭐ 杨桃资料卡</h1>
-    <p>按「种子 → 种植 → 处理和收益 → 用途」整理。</p>
+    <p>按「种子 → 种植 → 收益 → 用途」整理。</p>
   </div>
 </header>
 
@@ -418,58 +345,10 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
             </div>
           </div>
         </div>
-
-        <div class="list-card">
-          <div class="list-title">肥料与耕种加成</div>
-
-          <details class="row-detail" data-boost>
-            <summary><span>肥料</span><b>提高作物品质</b></summary>
-            <div class="mini-grid">
-              <div class="head">种类</div><div class="head">何时施加</div><div class="head">效果</div>
-              <div class="level">初级</div><div>种子发芽前</div><div>提高品质概率</div>
-              <div class="level">高级</div><div>种子发芽前</div><div>更高品质概率</div>
-              <div class="level">顶级</div><div>播种前后或生长中</div><div>可出铱星作物</div>
-            </div>
-            <p class="row-note">加工品不吃原作物品质。</p>
-          </details>
-
-          <details class="row-detail" data-boost>
-            <summary><span>生长激素</span><b>缩短成熟天数</b></summary>
-            <div class="mini-grid">
-              <div class="head">种类</div><div class="head">何时施加</div><div class="head">效果</div>
-              <div class="level">初级</div><div>播种前后或生长中</div><div>10% · 13天→11天</div>
-              <div class="level">高级</div><div>播种前后或生长中</div><div>25% · 13天→9天</div>
-              <div class="level">顶级</div><div>播种前后或生长中</div><div>33% · 13天→8天</div>
-            </div>
-            <p class="row-note">越早施加越完整。</p>
-          </details>
-
-          <details class="row-detail" data-boost>
-            <summary><span>保湿土壤</span><b>减少浇水压力</b></summary>
-            <div class="mini-grid">
-              <div class="head">种类</div><div class="head">何时施加</div><div class="head">效果</div>
-              <div class="level">初级</div><div>播种前后或生长中</div><div>33%概率保湿</div>
-              <div class="level">高级</div><div>播种前后或生长中</div><div>66%概率保湿</div>
-              <div class="level">顶级</div><div>播种前后或生长中</div><div>100%保湿</div>
-            </div>
-            <p class="row-note">首次仍要浇水。</p>
-          </details>
-
-          <details class="row-detail" data-boost>
-            <summary><span>耕种职业</span><b>售价 / 速度加成</b></summary>
-            <div class="mini-grid">
-              <div class="head">等级</div><div class="head">选择</div><div class="head">效果</div>
-              <div class="level">5级</div><div>农夫</div><div>作物售价+10%</div>
-              <div class="level">10级</div><div>工匠</div><div>酒/果酱等+40%</div>
-              <div class="level">10级</div><div>农业学家</div><div>作物生长+10%</div>
-            </div>
-            <p class="row-note">农业学家可与生长激素叠加。</p>
-          </details>
-        </div>
       </section>
 
       <section class="block">
-        <h3 class="block-title">💰 处理和收益</h3>
+        <h3 class="block-title">💰 收益</h3>
         <div class="profit-wrap">
           <table class="profit-table">
             <thead>
@@ -516,7 +395,7 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
         </div>
 
         <details>
-          <summary>高级价格</summary>
+          <summary class="price-summary">进阶售价</summary>
           <table class="small-table">
             <thead>
               <tr>
@@ -543,7 +422,7 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
                 <td>4500g</td>
               </tr>
               <tr>
-                <td>工匠职业杨桃酒</td>
+                <td>杨桃酒（工匠）</td>
                 <td>3150g</td>
                 <td>3936g</td>
                 <td>4725g</td>
@@ -557,9 +436,9 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
       <section class="block">
         <h3 class="block-title">📌 用途</h3>
         <div class="list-card">
-          <div class="row"><span>吃掉</span><b>恢复能量 / 生命值</b></div>
+          <div class="row"><span>吃掉</span><b>125能量 | 56生命值</b></div>
           <div class="row"><span>食谱</span><b>无</b></div>
-          <div class="row"><span>送礼</span><b>多数村民中立，阿比盖尔、海莉、贾斯、文森特不喜欢</b></div>
+          <div class="row"><span>送礼</span><b class="gift-note">多数村民中立<br>阿比盖尔、海莉、贾斯、文森特不喜欢</b></div>
           <div class="row"><span>献祭</span><b>重混布告栏 · 染料收集包可选项</b></div>
           <div class="row"><span>任务</span><b>第2年夏15 · 肯特索要1个杨桃</b></div>
           <div class="row"><span>制造 / 建筑</span><b><a class="inline-link" href="#junimo" data-jump="junimo">祝尼魔屋</a> 需要杨桃×9</b></div>
@@ -614,7 +493,7 @@ const resultCount = document.getElementById("resultCount");
 
 function render(){
   const q = search.value.trim().toLowerCase();
-  const starfruitText = "杨桃 starfruit 杨桃种子 绿洲 sandy 旅行货车 骷髅洞穴 博物馆 种子生产器 种植 肥料 生长激素 保湿土壤 耕种 农夫 工匠 农业学家 收益 售价 用途 肯特 染料 精灵裤";
+  const starfruitText = "杨桃 starfruit 杨桃种子 绿洲 sandy 旅行货车 骷髅洞穴 博物馆 种子生产器 种植 收益 售价 用途 肯特 染料 精灵裤";
   const isStarfruit = !q || starfruitText.toLowerCase().includes(q) || q.includes("杨桃") || q.includes("starfruit");
   const deviceMatches = [...devices.children].filter(card => {
     const name = (card.dataset.name || "").toLowerCase();
@@ -647,18 +526,6 @@ function render(){
   devices.style.display = "none";
   deviceTitle.style.display = "none";
 }
-
-document.body.addEventListener("toggle", e => {
-  const current = e.target.closest("details[data-boost]");
-  if(!current || !current.open) return;
-
-  const group = current.closest(".list-card");
-  if(!group) return;
-
-  group.querySelectorAll("details[data-boost]").forEach(item => {
-    if(item !== current) item.open = false;
-  });
-}, true);
 
 document.body.addEventListener("click", e => {
   const chip = e.target.closest("[data-search]");
