@@ -195,6 +195,37 @@ body{
   margin-top:2px;
   line-height:1.25;
 }
+.source-list{
+  background:#fff;
+  border:1px solid var(--line-soft);
+  border-radius:16px;
+  padding:10px 11px;
+  margin:0 0 13px;
+}
+.source-title{
+  color:#97866e;
+  font-size:12px;
+  margin-bottom:6px;
+}
+.source-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:6px 0;
+  border-top:1px dashed var(--line-soft);
+  font-size:14px;
+}
+.source-row:first-of-type{
+  border-top:0;
+}
+.source-row span{
+  color:var(--muted);
+}
+.source-row b{
+  color:var(--ink);
+  font-weight:800;
+  white-space:nowrap;
+}
 .profit-wrap{
   overflow:hidden;
   border:1.5px solid var(--line);
@@ -226,9 +257,9 @@ body{
 .profit-table th:nth-child(2),
 .profit-table td:nth-child(2){width:25%}
 .profit-table th:nth-child(3),
-.profit-table td:nth-child(3){width:17%;text-align:right;white-space:nowrap}
+.profit-table td:nth-child(3){width:17%;text-align:left;white-space:nowrap}
 .profit-table th:nth-child(4),
-.profit-table td:nth-child(4){width:16%;text-align:right;white-space:nowrap}
+.profit-table td:nth-child(4){width:16%;text-align:left;white-space:nowrap}
 .profit-table tbody tr:nth-child(even){
   background:#fffaf2;
 }
@@ -350,15 +381,15 @@ body{
       </div>
 
       <div class="info-grid">
-        <div class="info source-info">
-          <label>来源</label>
+        <div class="info">
+          <label>主要来源</label>
           <b>绿洲商店 · Sandy</b>
-          <small>沙漠 · 9:00AM-11:50PM · 400G/个</small>
+          <small>沙漠 · 9:00AM-11:50PM</small>
         </div>
         <div class="info">
-          <label>其他来源</label>
-          <b>旅行货车</b>
-          <small>600-1000G/个 · 博物馆15件送1个 · 种子生产器</small>
+          <label>种子价格</label>
+          <b>400G / 1个</b>
+          <small>单价 400G</small>
         </div>
         <div class="info">
           <label>收获周期</label>
@@ -367,6 +398,26 @@ body{
         <div class="info">
           <label>种植截止</label>
           <b>夏15</b>
+        </div>
+      </div>
+
+      <div class="source-list">
+        <div class="source-title">其他获得方式</div>
+        <div class="source-row">
+          <span>旅行货车</span>
+          <b>600-1000G / 1个</b>
+        </div>
+        <div class="source-row">
+          <span>博物馆捐赠15件</span>
+          <b>奖励1个</b>
+        </div>
+        <div class="source-row">
+          <span>种子生产器</span>
+          <b>由杨桃生成</b>
+        </div>
+        <div class="source-row">
+          <span>骷髅洞穴宝箱</span>
+          <b>5-20个</b>
         </div>
       </div>
 
