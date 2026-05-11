@@ -86,6 +86,39 @@ button,input{font:inherit}
 .info label{display:block;color:#97866e;font-size:12px;margin-bottom:3px}
 .info b{font-size:18px;line-height:1.22}
 .info small{display:block;color:var(--muted);font-size:11px;margin-top:2px;line-height:1.25}
+.location-info{padding-bottom:9px}
+.place-pills{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.place-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:3px 6px 3px 7px;
+  border:1px solid var(--line-soft);
+  border-radius:999px;
+  background:#fffaf0;
+  color:var(--ink);
+  line-height:1;
+  max-width:100%;
+}
+.place-pill b{
+  font-size:15px;
+  line-height:1;
+  font-weight:900;
+}
+.place-pill em{
+  font-style:normal;
+  color:#8d7b64;
+  background:#f4ead0;
+  border-radius:999px;
+  padding:2px 5px;
+  font-size:10px;
+  font-weight:900;
+}
 .source-box{
   background:#fff;
   border:1px solid var(--line-soft);
@@ -134,34 +167,110 @@ button,input{font:inherit}
 .row span{color:var(--muted)}
 .row b{color:var(--ink);font-weight:800;text-align:right}
 .row b.nowrap{white-space:nowrap}
-.place-line{
+.boost-card{
+  padding:11px;
+}
+.boost-intro{
   display:flex;
+  justify-content:space-between;
+  gap:12px;
   align-items:center;
-  flex-wrap:wrap;
-  gap:3px 5px;
-  font-size:17px;
+  padding:0 0 8px;
+  border-bottom:1px dashed var(--line-soft);
+  margin-bottom:2px;
 }
-.place-name{
-  display:inline-flex;
+.boost-intro strong{
+  font-size:15px;
+  color:var(--ink);
+}
+.boost-intro small{
+  color:var(--muted);
+  font-size:11px;
+  text-align:right;
+  line-height:1.25;
+}
+.boost-detail{
+  background:transparent;
+  border:0;
+  border-radius:0;
+  padding:0;
+  margin:0;
+  border-top:1px dashed var(--line-soft);
+}
+.boost-detail:first-of-type{border-top:0}
+.boost-detail summary{
+  list-style:none;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto 18px;
+  gap:10px;
   align-items:center;
-  gap:3px;
+  padding:9px 0;
+  cursor:pointer;
+  color:inherit;
 }
-.place-sep{
-  color:#bba482;
-  font-weight:700;
+.boost-detail summary::-webkit-details-marker{display:none}
+.boost-title{
+  min-width:0;
 }
-.place-tag{
-  display:inline-flex;
-  align-items:center;
+.boost-title b{
+  display:block;
+  font-size:15px;
+  line-height:1.2;
+  color:var(--ink);
+}
+.boost-title small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.25;
+  margin-top:2px;
+}
+.boost-result{
+  font-size:13px;
+  font-weight:900;
+  color:var(--wood);
+  background:#fff8e7;
   border:1px solid var(--line-soft);
   border-radius:999px;
-  background:#fff8e7;
-  color:#8d7b64;
-  font-size:10px;
-  font-weight:800;
+  padding:4px 8px;
+  white-space:nowrap;
+}
+.boost-detail summary::after{
+  content:"▾";
+  color:var(--wood);
+  font-weight:900;
   line-height:1;
-  padding:2px 5px;
-  transform:translateY(-1px);
+  transition:transform .18s ease;
+}
+.boost-detail[open] summary::after{transform:rotate(180deg)}
+.boost-table-wrap{
+  overflow:auto;
+  padding:0 0 9px;
+}
+.boost-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:520px;
+  font-size:13px;
+}
+.boost-table th{
+  color:#6f4728;
+  font-size:12px;
+  font-weight:900;
+  background:#fff7e6;
+}
+.boost-table th,
+.boost-table td{
+  padding:8px 7px;
+  border-top:1px solid var(--line-soft);
+  text-align:left;
+  vertical-align:top;
+}
+.boost-note{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.35;
+  margin:0 0 9px;
 }
 .profit-wrap{
   overflow:hidden;border:1.5px solid var(--line);border-radius:18px;
@@ -188,62 +297,14 @@ button,input{font:inherit}
   background:#fff8e7;color:var(--blue);border-radius:999px;
   padding:2px 7px;font-size:13px;font-weight:900;text-decoration:none;
 }
-details{
+.price-detail{
   background:#fff;border:1px solid var(--line-soft);border-radius:16px;
   padding:10px 11px;margin-top:10px;
 }
-summary{cursor:pointer;font-weight:900;color:var(--wood)}
+.price-detail summary{cursor:pointer;font-weight:900;color:var(--wood)}
 .small-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
 .small-table th,.small-table td{padding:7px 6px;border-top:1px solid var(--line-soft);text-align:left}
 .small-table th{color:#6f4728}
-.row-detail{
-  background:transparent;
-  border:0;
-  border-top:1px dashed var(--line-soft);
-  border-radius:0;
-  padding:0;
-  margin:0;
-}
-.row-detail summary{
-  list-style:none;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  padding:7px 0;
-  cursor:pointer;
-  font-size:14px;
-  font-weight:400;
-  color:inherit;
-}
-.row-detail summary::-webkit-details-marker{
-  display:none;
-}
-.row-detail summary::after{
-  content:"▾";
-  color:var(--wood);
-  font-weight:900;
-  transition:transform .18s ease;
-}
-.row-detail[open] summary::after{
-  transform:rotate(180deg);
-}
-.row-detail summary span{
-  color:var(--muted);
-}
-.row-detail summary b{
-  color:var(--ink);
-  font-weight:800;
-  text-align:right;
-}
-.row-detail .small-table{
-  margin:2px 0 9px;
-}
-.row-detail .small-table th,
-.row-detail .small-table td{
-  font-size:12px;
-  padding:7px 5px;
-}
 .devices{display:grid;gap:10px}
 .device-card{
   background:#fff;border:1.5px solid rgba(216,189,130,.9);border-radius:19px;
@@ -264,15 +325,18 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
   .app{padding:10px}
   .search-panel{border-radius:0 0 22px 22px;margin:-10px -10px 16px}
   .info-grid{grid-template-columns:repeat(2,1fr)}
+  .location-info{grid-column:1 / -1}
   .result-card{padding:12px}
-  .primary-source-main{
-    align-items:flex-start;
+  .primary-source-main{align-items:flex-start}
+  .boost-intro{align-items:flex-start}
+  .boost-intro small{text-align:left}
+  .boost-detail summary{
+    grid-template-columns:minmax(0,1fr) 18px;
   }
-  .place-line{
-    font-size:16px;
-  }
-  .row-detail summary{
-    align-items:flex-start;
+  .boost-result{
+    grid-column:1 / -1;
+    justify-self:start;
+    margin-top:-5px;
   }
   .profit-table th,.profit-table td{font-size:13px;padding:9px 7px}
   .profit-table th:nth-child(1),.profit-table td:nth-child(1){width:37%}
@@ -371,92 +435,182 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
             <small>收获时获得</small>
           </div>
 
-          <div class="info">
+          <div class="info location-info">
             <label>种植地点</label>
-            <b class="place-line">
-              <span class="place-name">农场<span class="place-tag">夏季</span></span>
-              <span class="place-sep">/</span>
-              <span class="place-name">温室<span class="place-tag">全年</span></span>
-              <span class="place-sep">/</span>
-              <span class="place-name">姜岛<span class="place-tag">全年</span></span>
-            </b>
+            <div class="place-pills">
+              <span class="place-pill"><b>农场</b><em>夏季</em></span>
+              <span class="place-pill"><b>温室</b><em>全年</em></span>
+              <span class="place-pill"><b>姜岛</b><em>全年</em></span>
+            </div>
           </div>
         </div>
 
-        <div class="list-card">
-          <div class="list-title">肥料影响</div>
-
-          <div class="row">
-            <span>高级肥料 / 顶级肥料</span>
-            <b>提高品质，顶级肥料可出铱星</b>
+        <div class="list-card boost-card">
+          <div class="list-title">肥料与耕种加成</div>
+          <div class="boost-intro">
+            <strong>按「品质 / 生长 / 保水 / 职业」收起</strong>
+            <small>点开看施加时间和实际效果</small>
           </div>
 
-          <details class="row-detail">
+          <details class="boost-detail" data-boost>
             <summary>
-              <span>生长激素类</span>
-              <b>缩短生长天数</b>
+              <span class="boost-title">
+                <b>品质肥料</b>
+                <small>基础肥料 / 高级肥料 / 顶级肥料</small>
+              </span>
+              <span class="boost-result">提高品质</span>
             </summary>
-
-            <table class="small-table">
-              <thead>
-                <tr>
-                  <th>种类</th>
-                  <th>何时施加</th>
-                  <th>缩短效果</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>生长激素</td>
-                  <td>播种前后都可，越早越好</td>
-                  <td>13天 → 12天</td>
-                </tr>
-                <tr>
-                  <td>高级生长激素</td>
-                  <td>播种前后都可，越早越好</td>
-                  <td>13天 → 10天</td>
-                </tr>
-                <tr>
-                  <td>顶级生长激素</td>
-                  <td>播种前后都可，越早越好</td>
-                  <td>13天 → 9天</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="boost-table-wrap">
+              <table class="boost-table">
+                <thead>
+                  <tr>
+                    <th>种类</th>
+                    <th>何时施加</th>
+                    <th>效果</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>基础肥料</td>
+                    <td>种子发芽前</td>
+                    <td>提高银星和金星概率</td>
+                  </tr>
+                  <tr>
+                    <td>高级肥料</td>
+                    <td>种子发芽前</td>
+                    <td>进一步提高高品质概率</td>
+                  </tr>
+                  <tr>
+                    <td>顶级肥料</td>
+                    <td>播种前后都可，也可在生长中施加</td>
+                    <td>提高品质，并允许收获铱星作物</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="boost-note">杨桃如果要直接卖，品质肥料有意义。要做酒或果酱时，原作物品质不会影响加工品基础售价。</p>
           </details>
 
-          <details class="row-detail">
+          <details class="boost-detail" data-boost>
             <summary>
-              <span>农业学家职业</span>
-              <b>继续缩短生长时间</b>
+              <span class="boost-title">
+                <b>生长激素</b>
+                <small>生长激素 / 高级生长激素 / 顶级生长激素</small>
+              </span>
+              <span class="boost-result">缩短成熟天数</span>
             </summary>
+            <div class="boost-table-wrap">
+              <table class="boost-table">
+                <thead>
+                  <tr>
+                    <th>种类</th>
+                    <th>何时施加</th>
+                    <th>杨桃效果</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>生长激素</td>
+                    <td>播种前后都可，也可在生长中施加</td>
+                    <td>10%加速，约13天 → 11天</td>
+                  </tr>
+                  <tr>
+                    <td>高级生长激素</td>
+                    <td>播种前后都可，也可在生长中施加</td>
+                    <td>25%加速，约13天 → 9天</td>
+                  </tr>
+                  <tr>
+                    <td>顶级生长激素</td>
+                    <td>播种前后都可，也可在生长中施加</td>
+                    <td>33%加速，约13天 → 8天</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="boost-note">越早施加越完整。晚施加不会补回已经过去的生长阶段。</p>
+          </details>
 
-            <table class="small-table">
-              <thead>
-                <tr>
-                  <th>搭配</th>
-                  <th>总加速</th>
-                  <th>杨桃周期</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>仅农业学家</td>
-                  <td>20%</td>
-                  <td>13天 → 11天</td>
-                </tr>
-                <tr>
-                  <td>农业学家 + 高级生长激素</td>
-                  <td>35%</td>
-                  <td>13天 → 9天</td>
-                </tr>
-                <tr>
-                  <td>农业学家 + 顶级生长激素</td>
-                  <td>43%</td>
-                  <td>13天 → 8天</td>
-                </tr>
-              </tbody>
-            </table>
+          <details class="boost-detail" data-boost>
+            <summary>
+              <span class="boost-title">
+                <b>保水土壤</b>
+                <small>保湿土壤 / 高级保湿土壤 / 顶级保湿土壤</small>
+              </span>
+              <span class="boost-result">减少浇水压力</span>
+            </summary>
+            <div class="boost-table-wrap">
+              <table class="boost-table">
+                <thead>
+                  <tr>
+                    <th>种类</th>
+                    <th>何时施加</th>
+                    <th>效果</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>保湿土壤</td>
+                    <td>播种前后都可，也可在生长中施加</td>
+                    <td>约33%概率隔夜保持湿润</td>
+                  </tr>
+                  <tr>
+                    <td>高级保湿土壤</td>
+                    <td>播种前后都可，也可在生长中施加</td>
+                    <td>约66%概率隔夜保持湿润</td>
+                  </tr>
+                  <tr>
+                    <td>顶级保湿土壤</td>
+                    <td>播种前后都可，也可在生长中施加</td>
+                    <td>100%保持湿润，首次仍要浇一次水</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="boost-note">温室和姜岛有长期种植场景时，顶级保湿土壤更省心。</p>
+          </details>
+
+          <details class="boost-detail" data-boost>
+            <summary>
+              <span class="boost-title">
+                <b>耕种职业</b>
+                <small>5级分支，10级继续分支</small>
+              </span>
+              <span class="boost-result">售价或速度加成</span>
+            </summary>
+            <div class="boost-table-wrap">
+              <table class="boost-table">
+                <thead>
+                  <tr>
+                    <th>路线</th>
+                    <th>职业</th>
+                    <th>效果</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>5级作物路线</td>
+                    <td>农夫</td>
+                    <td>作物售价 +10%，杨桃直接卖可受益</td>
+                  </tr>
+                  <tr>
+                    <td>10级加工路线</td>
+                    <td>工匠</td>
+                    <td>工匠物品售价 +40%，杨桃酒和果酱可受益</td>
+                  </tr>
+                  <tr>
+                    <td>10级种植路线</td>
+                    <td>农业学家</td>
+                    <td>所有作物生长速度 +10%，杨桃约13天 → 11天</td>
+                  </tr>
+                  <tr>
+                    <td>农业学家 + 生长激素</td>
+                    <td>叠加效果</td>
+                    <td>20%约10天，35%约8天，43%约7天</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="boost-note">做杨桃酒通常更看重工匠售价。赶季节或卡收获次数时，再看农业学家和生长激素。</p>
           </details>
         </div>
       </section>
@@ -508,7 +662,7 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
           </table>
         </div>
 
-        <details>
+        <details class="price-detail">
           <summary>高级价格</summary>
           <table class="small-table">
             <thead>
@@ -607,7 +761,7 @@ const resultCount = document.getElementById("resultCount");
 
 function render(){
   const q = search.value.trim().toLowerCase();
-  const starfruitText = "杨桃 starfruit 杨桃种子 绿洲 sandy 旅行货车 骷髅洞穴 博物馆 种子生产器 种植 肥料 生长激素 农业学家 收益 售价 用途 肯特 染料 精灵裤";
+  const starfruitText = "杨桃 starfruit 杨桃种子 绿洲 sandy 旅行货车 骷髅洞穴 博物馆 种子生产器 种植 肥料 生长激素 保湿土壤 耕种 农夫 工匠 农业学家 收益 售价 用途 肯特 染料 精灵裤";
   const isStarfruit = !q || starfruitText.toLowerCase().includes(q) || q.includes("杨桃") || q.includes("starfruit");
   const deviceMatches = [...devices.children].filter(card => {
     const name = (card.dataset.name || "").toLowerCase();
@@ -640,6 +794,18 @@ function render(){
   devices.style.display = "none";
   deviceTitle.style.display = "none";
 }
+
+document.body.addEventListener("toggle", e => {
+  const current = e.target.closest("details[data-boost]");
+  if(!current || !current.open) return;
+
+  const group = current.closest(".boost-card");
+  if(!group) return;
+
+  group.querySelectorAll("details[data-boost]").forEach(item => {
+    if(item !== current) item.open = false;
+  });
+}, true);
 
 document.body.addEventListener("click", e => {
   const chip = e.target.closest("[data-search]");
