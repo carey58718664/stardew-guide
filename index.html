@@ -63,6 +63,15 @@ button,input{font:inherit}
 details{background:#fff;border:1px solid var(--line-soft);border-radius:16px;padding:10px 11px;margin-top:10px}summary{cursor:pointer;font-weight:900;color:var(--wood)}.price-summary{font-size:15px;line-height:1.25}.small-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}.small-table th,.small-table td{padding:7px 6px;border-top:1px solid var(--line-soft);text-align:left}.small-table th{color:#6f4728}.small-table td{white-space:nowrap}
 .note{color:var(--muted);font-size:12px;line-height:1.35;margin-top:8px}.devices{display:grid;gap:10px}.device-card{background:#fff;border:1.5px solid rgba(216,189,130,.9);border-radius:19px;padding:13px;box-shadow:0 5px 14px rgba(81,55,27,.07)}.device-card.flash{animation:flash 1.1s ease}@keyframes flash{0%,100%{box-shadow:0 5px 14px rgba(81,55,27,.07)}30%{box-shadow:0 0 0 5px rgba(66,111,147,.22),0 5px 14px rgba(81,55,27,.07)}}.device-card h3{font-size:21px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.device-card p{color:var(--muted);font-size:15px;margin-top:6px;line-height:1.55}.empty{display:none;background:#fff;border:1px solid var(--line-soft);border-radius:18px;padding:18px;color:var(--muted)}
 .footer-note{margin:18px 2px 0;color:var(--muted);font-size:12px;line-height:1.5}.footer-note a{color:var(--blue);font-weight:800;text-decoration:none}
+
+.seed-mini-grid{display:grid;gap:7px;margin-top:2px}
+.seed-line{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-top:1px dashed var(--line-soft);font-size:14px;align-items:baseline}
+.seed-line:first-child{border-top:0}
+.seed-line span{color:var(--muted);white-space:nowrap}
+.seed-line b{color:var(--ink);font-weight:850;text-align:right;line-height:1.35}
+.empty-value{color:#a59782;font-weight:750}
+.row b.strict-value{color:var(--ink);font-weight:800;text-align:right;line-height:1.4;max-width:76%}
+
 @media(max-width:680px){.app{padding:10px}.search-panel{border-radius:0 0 22px 22px;margin:-10px -10px 16px}.info-grid{grid-template-columns:repeat(2,1fr)}.result-card{padding:12px}.primary-source-main{align-items:flex-start}.profit-table th,.profit-table td{font-size:13px;padding:9px 7px}.profit-table th:nth-child(1),.profit-table td:nth-child(1){width:32%}.profit-table th:nth-child(2),.profit-table td:nth-child(2){width:25%}.profit-table th:nth-child(3),.profit-table td:nth-child(3){width:43%}.row{font-size:13px}.row span{flex-basis:56px}.small-table{font-size:12px}}
 </style>
 </head>
@@ -83,7 +92,7 @@ details{background:#fff;border:1px solid var(--line-soft);border-radius:16px;pad
 <article class="device-card" id="mill" data-name="磨坊"><h3>🌾 磨坊 <span class="badge">建筑</span></h3><p>小麦、甜菜、未碾米可加工成小麦粉、糖和大米。</p></article>
 <article class="device-card" id="junimo" data-name="祝尼魔屋"><h3>🏡 祝尼魔屋 <span class="badge">建筑</span></h3><p>法师处建造。杨桃是建造材料之一，需要9个。</p></article>
 </section>
-<div class="footer-note">资料以 Stardew Valley Wiki 的 1.6 作物页为底稿，并按本页面用途做了中文归纳。建议把肥料、农学家、工匠职业加成做成独立专题页，避免每张作物卡重复。</div>
+<div class="footer-note">资料以 Stardew Valley Wiki 的 1.6 作物页为底稿。当前版本强制统一每张卡的字段：种子4行、种植4格、收益2行、用途6行。肥料、农学家、工匠职业加成建议做成独立专题页。</div>
 </main>
 <script>
 const CROPS = [
@@ -1901,11 +1910,19 @@ function escapeHtml(value){return String(value ?? "").replace(/[&<>"']/g, ch => 
 function seasonBadge(season){if(season.includes("春")) return "green";if(season.includes("夏")) return "red";if(season.includes("秋")) return "gold";if(season.includes("冬")) return "blue";return "gray";}
 function getCycle(crop){return crop.regrowth ? `${crop.growth_days}天；复收 ${crop.regrowth}` : `${crop.growth_days}天（1次）`;}
 function getPlaces(crop){
-  if(crop.special_locations){return crop.special_locations;}
   const places = [];
-  if(crop.farm_seasons && crop.farm_seasons.length){places.push(["农场", crop.farm_seasons.join("/")]);}
-  if(crop.extra_locations){places.push(...crop.extra_locations);} else {places.push(["温室","全年"],["姜岛","全年"]);}
-  return places;
+  const add = (name, tag) => {
+    if(!name || !tag) return;
+    const key = `${name}|${tag}`;
+    if(!places.some(item => `${item[0]}|${item[1]}` === key)) places.push([name, tag]);
+  };
+  if(crop.farm_seasons && crop.farm_seasons.length) add("农场", crop.farm_seasons.join("/"));
+  (crop.special_locations || []).forEach(item => add(item[0], item[1]));
+  (crop.extra_locations || []).forEach(item => add(item[0], item[1]));
+  if(!crop.special_locations && !crop.extra_locations){add("温室", "全年"); add("姜岛", "全年");}
+  const order = {"农场":1,"温室":2,"姜岛":3,"花盆":4,"特殊":5};
+  places.sort((a,b) => (order[a[0]] || 99) - (order[b[0]] || 99));
+  return places.length ? places : [["看条件", "特殊"]];
 }
 function renderPlaces(crop){
   const places = getPlaces(crop);
@@ -1923,21 +1940,27 @@ function linkDevices(text){
   return out;
 }
 function renderSeed(crop){
-  const other = crop.other_sources && crop.other_sources.length ? crop.other_sources.join(" · ") : "其他来源见特殊说明";
-  return `<section class="block"><h3 class="block-title">🌱 种子</h3><div class="source-box"><div class="list-title">主要来源</div><div class="primary-source-main"><b>${escapeHtml(crop.main_source)}</b><b class="primary-price">${escapeHtml(crop.seed_price)}</b></div><small class="source-sub"><strong>${escapeHtml(crop.seed)}</strong>｜${escapeHtml(other)}</small></div></section>`;
+  const other = crop.other_sources && crop.other_sources.length ? crop.other_sources.join(" · ") : "无";
+  return `<section class="block"><h3 class="block-title">🌱 种子</h3><div class="source-box"><div class="seed-mini-grid"><div class="seed-line"><span>种子名称</span><b>${escapeHtml(crop.seed)}</b></div><div class="seed-line"><span>主要来源</span><b>${escapeHtml(crop.main_source)}</b></div><div class="seed-line"><span>代价</span><b>${escapeHtml(crop.seed_price)}</b></div><div class="seed-line"><span>其他来源</span><b>${escapeHtml(other)}</b></div></div></div></section>`;
 }
 function renderPlant(crop){
   return `<section class="block"><h3 class="block-title">🌾 种植</h3><div class="info-grid"><div class="info"><label>收获周期</label><b>${escapeHtml(getCycle(crop))}</b></div><div class="info"><label>种植截止</label><b>${escapeHtml(crop.deadline || "看场景")}</b><small>普通农场不加速</small></div><div class="info"><label>耕种经验</label><b>${escapeHtml(crop.xp)}${Number.isFinite(Number(crop.xp)) ? " XP" : ""}</b><small>收获时获得</small></div><div class="info"><label>种植地点</label>${renderPlaces(crop)}</div></div></section>`;
 }
 function renderProfit(crop){
   const p = crop.prices || {};
-  return `<section class="block"><h3 class="block-title">💰 收益</h3><div class="profit-wrap"><table class="profit-table"><thead><tr><th>处理方式</th><th>产物</th><th>售价 / 参考</th></tr></thead><tbody><tr><td>直接卖掉</td><td>${escapeHtml(crop.name_zh)}</td><td><span class="rate">${escapeHtml(p.normal)}g</span></td></tr><tr><td>推荐加工</td><td>加工参考</td><td>${linkDevices(crop.artisan)}</td></tr><tr><td>建议</td><td>用途倾向</td><td>${linkDevices(crop.recommend)}</td></tr></tbody></table></div><details><summary class="price-summary">进阶售价</summary><table class="small-table"><thead><tr><th>项目</th><th>普通</th><th>银星</th><th>金星</th><th>铱星</th></tr></thead><tbody><tr><td>${escapeHtml(crop.name_zh)}</td><td>${escapeHtml(p.normal)}g</td><td>${escapeHtml(p.silver)}g</td><td>${escapeHtml(p.gold)}g</td><td>${escapeHtml(p.iridium)}g</td></tr></tbody></table></details></section>`;
+  return `<section class="block"><h3 class="block-title">💰 收益</h3><div class="profit-wrap"><table class="profit-table"><thead><tr><th>处理方式</th><th>产物</th><th>售价 / 参考</th></tr></thead><tbody><tr><td>直接卖掉</td><td>${escapeHtml(crop.name_zh)}</td><td><span class="rate">${escapeHtml(p.normal)}g</span></td></tr><tr><td>推荐加工</td><td>加工参考</td><td>${linkDevices(crop.artisan)}</td></tr></tbody></table></div><details><summary class="price-summary">进阶售价</summary><table class="small-table"><thead><tr><th>项目</th><th>普通</th><th>银星</th><th>金星</th><th>铱星</th></tr></thead><tbody><tr><td>${escapeHtml(crop.name_zh)}</td><td>${escapeHtml(p.normal)}g</td><td>${escapeHtml(p.silver)}g</td><td>${escapeHtml(p.gold)}g</td><td>${escapeHtml(p.iridium)}g</td></tr></tbody></table></details></section>`;
 }
-function row(label, value){if(!value || value === "—") return "";return `<div class="row"><span>${escapeHtml(label)}</span><b class="left">${linkDevices(value)}</b></div>`;}
+function row(label, value){
+  const safeValue = (!value || value === "—") ? `<span class="empty-value">无</span>` : linkDevices(value);
+  return `<div class="row"><span>${escapeHtml(label)}</span><b class="strict-value">${safeValue}</b></div>`;
+}
+
 function renderUses(crop){
-  const rows = [row("献祭", crop.bundle), row("食谱", crop.recipes), row("送礼", crop.gifts), row("任务", crop.tasks), row("备注", crop.notes), row("吃掉", crop.energy)].join("");
+  const remark = [crop.notes, crop.recommend ? `建议：${crop.recommend}` : ""].filter(item => item && item !== "—").join("｜") || "—";
+  const rows = [row("献祭", crop.bundle), row("食谱", crop.recipes), row("送礼", crop.gifts), row("任务", crop.tasks), row("备注", remark), row("吃掉", crop.energy)].join("");
   return `<section class="block"><h3 class="block-title">📌 用途</h3><div class="list-card">${rows}</div></section>`;
 }
+
 function renderCard(crop){
   const seasonClass = seasonBadge(crop.season);
   return `<article class="result-card"><div class="item-head"><div class="item-title"><h3>🌾 ${escapeHtml(crop.name_zh)}</h3><span class="en-name">${escapeHtml(crop.name_en)}</span><span class="badge">作物</span><span class="badge ${seasonClass}">${escapeHtml(crop.season)}</span><span class="badge blue">${escapeHtml(crop.regrowth_label)}</span></div></div>${renderSeed(crop)}${renderPlant(crop)}${renderProfit(crop)}${renderUses(crop)}</article>`;
