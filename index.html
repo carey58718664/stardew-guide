@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>星露谷 · 杨桃资料卡</title>
+<title>星露谷 · 全作物资料卡</title>
 <style>
 :root{
   --bg:#fbf3dc;--paper:#fffaf0;--ink:#30271d;--muted:#746858;
@@ -35,8 +35,10 @@ button,input{font:inherit}
 .header p{font-size:14px;color:rgba(255,244,214,.76);margin-top:8px}
 .app{max-width:900px;margin:0 auto;padding:14px}
 .search-panel{
+  position:sticky;top:0;z-index:10;
   background:rgba(255,250,240,.96);border:1px solid rgba(216,189,130,.86);
   border-radius:20px;box-shadow:var(--shadow);padding:13px;margin-bottom:16px;
+  backdrop-filter:blur(10px);
 }
 .search-box{position:relative}
 .search-box span{
@@ -55,9 +57,11 @@ button,input{font:inherit}
   font-weight:700;cursor:pointer;
 }
 .chip.hot{color:var(--red);background:#fff1ed;border-color:#e6aa98}
+.chip.active{background:#6f4728;color:#fff4d6;border-color:#6f4728}
 .section-title{margin:22px 3px 10px}
 .section-title h2{font-size:26px;line-height:1.2}
 .section-title p{color:var(--muted);margin-top:3px;font-size:14px}
+.result-list{display:grid;gap:14px}
 .result-card{
   background:rgba(255,250,240,.98);border:1.5px solid rgba(216,189,130,.92);
   border-radius:24px;box-shadow:0 7px 20px rgba(81,55,27,.10);padding:15px;
@@ -75,6 +79,7 @@ button,input{font:inherit}
 .badge.red{background:rgba(189,75,57,.13);color:var(--red)}
 .badge.green{background:rgba(78,132,90,.14);color:var(--green)}
 .badge.blue{background:rgba(66,111,147,.13);color:var(--blue)}
+.badge.gold{background:rgba(200,149,45,.16);color:#9a651b}
 .block{margin-top:14px}
 .block-title{display:flex;align-items:center;gap:8px;font-size:20px;margin:0 0 9px}
 .block-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line-soft),transparent)}
@@ -93,10 +98,7 @@ button,input{font:inherit}
   padding:10px 11px;
   margin:0 0 10px;
 }
-.primary-source-row{
-  padding-top:0;
-  border-top:0;
-}
+.primary-source-row{padding-top:0;border-top:0}
 .primary-source-main{
   display:flex;
   justify-content:space-between;
@@ -171,10 +173,6 @@ button,input{font:inherit}
 .row span{color:var(--muted)}
 .row b{color:var(--ink);font-weight:800;text-align:right}
 .row b.nowrap{white-space:nowrap}
-.row b.gift-note{
-  max-width:230px;
-  line-height:1.3;
-}
 .profit-wrap{
   overflow:hidden;border:1.5px solid var(--line);border-radius:18px;
   background:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
@@ -188,13 +186,11 @@ button,input{font:inherit}
   padding:10px 8px;font-size:15px;border-top:1px solid var(--line-soft);
   vertical-align:middle;text-align:left;
 }
-.profit-table th:nth-child(1),.profit-table td:nth-child(1){width:40%}
-.profit-table th:nth-child(2),.profit-table td:nth-child(2){width:25%}
-.profit-table th:nth-child(3),.profit-table td:nth-child(3){width:17%;white-space:nowrap}
-.profit-table th:nth-child(4),.profit-table td:nth-child(4){width:18%;white-space:nowrap}
+.profit-table th:nth-child(1),.profit-table td:nth-child(1){width:42%}
+.profit-table th:nth-child(2),.profit-table td:nth-child(2){width:28%}
+.profit-table th:nth-child(3),.profit-table td:nth-child(3){width:30%;white-space:nowrap}
 .profit-table tbody tr:nth-child(even){background:#fffaf2}
 .rate{font-weight:900;color:var(--green)}
-.rate.zero{color:var(--muted)}
 .inline-link{
   display:inline-flex;align-items:center;border:1.5px solid var(--line);
   background:#fff8e7;color:var(--blue);border-radius:999px;
@@ -205,10 +201,7 @@ details{
   padding:10px 11px;margin-top:10px;
 }
 summary{cursor:pointer;font-weight:900;color:var(--wood)}
-.price-summary{
-  font-size:15px;
-  line-height:1.25;
-}
+.price-summary{font-size:15px;line-height:1.25}
 .small-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
 .small-table th,.small-table td{padding:7px 6px;border-top:1px solid var(--line-soft);text-align:left}
 .small-table th{color:#6f4728}
@@ -228,31 +221,31 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
   display:none;background:#fff;border:1px solid var(--line-soft);
   border-radius:18px;padding:18px;color:var(--muted);
 }
+.note{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.35;
+  margin-top:8px;
+}
 @media(max-width:640px){
   .app{padding:10px}
   .search-panel{border-radius:0 0 22px 22px;margin:-10px -10px 16px}
   .info-grid{grid-template-columns:repeat(2,1fr)}
   .result-card{padding:12px}
-  .primary-source-main{
-    align-items:flex-start;
-  }
-  .row b.gift-note{
-    max-width:205px;
-  }
+  .primary-source-main{align-items:flex-start}
   .profit-table th,.profit-table td{font-size:13px;padding:9px 7px}
-  .profit-table th:nth-child(1),.profit-table td:nth-child(1){width:37%}
-  .profit-table th:nth-child(2),.profit-table td:nth-child(2){width:25%}
-  .profit-table th:nth-child(3),.profit-table td:nth-child(3){width:18%}
-  .profit-table th:nth-child(4),.profit-table td:nth-child(4){width:20%}
+  .profit-table th:nth-child(1),.profit-table td:nth-child(1){width:38%}
+  .profit-table th:nth-child(2),.profit-table td:nth-child(2){width:30%}
+  .profit-table th:nth-child(3),.profit-table td:nth-child(3){width:32%}
 }
 </style>
 </head>
 <body>
 <header class="header">
   <div class="header-inner">
-    <div class="eyebrow">Stardew Valley · Crop Detail Demo</div>
-    <h1>⭐ 杨桃资料卡</h1>
-    <p>按「种子 → 种植 → 收益 → 用途」整理。</p>
+    <div class="eyebrow">Stardew Valley · Crop Guide</div>
+    <h1>🌾 全作物资料卡</h1>
+    <p>按「种子 → 种植 → 收益 → 用途」整理。肥料与耕种加成另做独立板块。</p>
   </div>
 </header>
 
@@ -260,195 +253,27 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
   <section class="search-panel">
     <div class="search-box">
       <span>🔍</span>
-      <input id="search" value="杨桃" placeholder="搜杨桃、小桶、陈酿桶、祝尼魔屋…" />
+      <input id="search" placeholder="搜杨桃、夏季、小桶、献祭、工匠…" />
     </div>
-    <div class="chips">
-      <button class="chip hot" data-search="杨桃">杨桃</button>
-      <button class="chip" data-search="小桶">小桶</button>
-      <button class="chip" data-search="陈酿桶">陈酿桶</button>
-      <button class="chip" data-search="祝尼魔屋">祝尼魔屋</button>
+    <div class="chips" id="chips">
+      <button class="chip hot active" data-filter="all">全部</button>
+      <button class="chip" data-filter="春季">春季</button>
+      <button class="chip" data-filter="夏季">夏季</button>
+      <button class="chip" data-filter="秋季">秋季</button>
+      <button class="chip" data-filter="冬季">冬季</button>
+      <button class="chip" data-filter="全年">全年</button>
+      <button class="chip" data-filter="特殊">特殊</button>
     </div>
   </section>
 
-  <section id="resultBlock">
+  <section>
     <div class="section-title">
       <h2>搜索结果</h2>
-      <p id="resultCount">1 个结果</p>
+      <p id="resultCount">0 个结果</p>
     </div>
-
-    <article class="result-card" id="starfruitCard">
-      <div class="item-head">
-        <div class="item-title">
-          <h3>⭐ 杨桃</h3>
-          <span class="badge">作物</span>
-          <span class="badge red">高价值</span>
-          <span class="badge green">夏</span>
-          <span class="badge blue">一次收获</span>
-        </div>
-      </div>
-
-      <section class="block">
-        <h3 class="block-title">🌱 种子</h3>
-
-        <div class="source-box primary-source">
-          <div class="list-title">主要来源</div>
-          <div class="primary-source-row">
-            <div class="primary-source-main">
-              <b>绿洲商店 · Sandy</b>
-              <b class="primary-price">400g / 1个</b>
-            </div>
-            <small>沙漠（需解锁） · 9:00AM-11:50PM</small>
-          </div>
-        </div>
-
-        <div class="list-card">
-          <div class="list-title">其他来源</div>
-          <div class="row"><span>旅行货车（偶尔出现）</span><b class="nowrap">600-1000g / 1个</b></div>
-          <div class="row"><span>博物馆捐赠15件</span><b class="nowrap">奖励1个</b></div>
-          <div class="row"><span><a class="inline-link" href="#seedmaker" data-jump="seedmaker">种子生产器</a></span><b>杨桃 → 杨桃种子</b></div>
-          <div class="row"><span>骷髅洞穴宝箱层</span><b class="nowrap">5-20个（1/702概率）</b></div>
-        </div>
-
-        <div class="list-card">
-          <div class="list-title">其他杨桃获得方式</div>
-          <div class="row"><span>夏威夷宴会</span><b class="nowrap">3000g / 1个杨桃</b></div>
-        </div>
-      </section>
-
-      <section class="block">
-        <h3 class="block-title">🌾 种植</h3>
-        <div class="info-grid">
-          <div class="info">
-            <label>收获周期</label>
-            <b>13天（1次）</b>
-          </div>
-          <div class="info">
-            <label>种植截止</label>
-            <b>夏15</b>
-            <small>普通农场不加速</small>
-          </div>
-          <div class="info">
-            <label>耕种经验</label>
-            <b>43 XP</b>
-            <small>收获时获得</small>
-          </div>
-          <div class="info">
-            <label>种植地点</label>
-            <div class="place-line">
-              <div class="place-row">
-                <span class="place-chip"><strong>农场</strong><em>夏季</em></span>
-              </div>
-              <div class="place-row">
-                <span class="place-chip"><strong>温室</strong><em>全年</em></span>
-                <span class="place-chip"><strong>姜岛</strong><em>全年</em></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="block">
-        <h3 class="block-title">💰 收益</h3>
-        <div class="profit-wrap">
-          <table class="profit-table">
-            <thead>
-              <tr>
-                <th>处理方式</th>
-                <th>产物</th>
-                <th>售价</th>
-                <th>售价增幅</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>直接卖掉</td>
-                <td>杨桃</td>
-                <td>750g</td>
-                <td><span class="rate zero">0%</span></td>
-              </tr>
-              <tr>
-                <td>杨桃 + <a class="inline-link" href="#keg" data-jump="keg">小桶</a></td>
-                <td>杨桃酒</td>
-                <td>2250g</td>
-                <td><span class="rate">+200%</span></td>
-              </tr>
-              <tr>
-                <td>杨桃酒 + <a class="inline-link" href="#cask" data-jump="cask">陈酿桶</a></td>
-                <td>铱星杨桃酒</td>
-                <td>4500g</td>
-                <td><span class="rate">+500%</span></td>
-              </tr>
-              <tr>
-                <td>杨桃 + <a class="inline-link" href="#jar" data-jump="jar">罐头瓶</a></td>
-                <td>杨桃果酱</td>
-                <td>1550g</td>
-                <td><span class="rate">+107%</span></td>
-              </tr>
-              <tr>
-                <td>杨桃×5 + <a class="inline-link" href="#dehydrator" data-jump="dehydrator">烘干机</a></td>
-                <td>杨桃干</td>
-                <td>5650g</td>
-                <td><span class="rate">+51%</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <details>
-          <summary class="price-summary">进阶售价</summary>
-          <table class="small-table">
-            <thead>
-              <tr>
-                <th>项目</th>
-                <th>普通</th>
-                <th>银星</th>
-                <th>金星</th>
-                <th>铱星</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>杨桃</td>
-                <td>750g</td>
-                <td>937g</td>
-                <td>1125g</td>
-                <td>1500g</td>
-              </tr>
-              <tr>
-                <td>杨桃酒</td>
-                <td>2250g</td>
-                <td>2812g</td>
-                <td>3375g</td>
-                <td>4500g</td>
-              </tr>
-              <tr>
-                <td>杨桃酒（工匠）</td>
-                <td>3150g</td>
-                <td>3936g</td>
-                <td>4725g</td>
-                <td>6300g</td>
-              </tr>
-            </tbody>
-          </table>
-        </details>
-      </section>
-
-      <section class="block">
-        <h3 class="block-title">📌 用途</h3>
-        <div class="list-card">
-          <div class="row"><span>吃掉</span><b>125能量 | 56生命值</b></div>
-          <div class="row"><span>食谱</span><b>无</b></div>
-          <div class="row"><span>送礼</span><b class="gift-note">多数村民中立<br>阿比盖尔、海莉、贾斯、文森特不喜欢</b></div>
-          <div class="row"><span>献祭</span><b>重混布告栏 · 染料收集包可选项</b></div>
-          <div class="row"><span>任务</span><b>第2年夏15 · 肯特索要1个杨桃</b></div>
-          <div class="row"><span>制造 / 建筑</span><b><a class="inline-link" href="#junimo" data-jump="junimo">祝尼魔屋</a> 需要杨桃×9</b></div>
-          <div class="row"><span>缝纫 / 染色</span><b>精灵裤；黄色染料</b></div>
-        </div>
-      </section>
-    </article>
+    <div id="resultList" class="result-list"></div>
+    <section id="emptyBlock" class="empty">没有找到结果。</section>
   </section>
-
-  <section id="emptyBlock" class="empty">没有找到结果。</section>
 
   <section class="section-title" id="deviceTitle">
     <h2>相关设备 / 建筑</h2>
@@ -458,11 +283,11 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
   <section class="devices" id="devices">
     <article class="device-card" id="seedmaker" data-name="种子生产器">
       <h3>🌱 种子生产器 <span class="badge">工匠设备</span></h3>
-      <p>将作物放入后生成对应种子。杨桃可以放入种子生产器生成杨桃种子。</p>
+      <p>将作物放入后生成对应种子。部分特殊作物或任务作物不适合按常规收益计算。</p>
     </article>
     <article class="device-card" id="keg" data-name="小桶">
       <h3>🍷 小桶 <span class="badge">工匠设备</span></h3>
-      <p>水果→酒，蔬菜→汁。杨桃、远古果实、啤酒花都常用小桶处理。</p>
+      <p>水果通常酿酒，蔬菜通常榨汁。杨桃、上古水果、啤酒花等都常用小桶处理。</p>
     </article>
     <article class="device-card" id="cask" data-name="陈酿桶">
       <h3>🍾 陈酿桶 <span class="badge">工匠设备</span></h3>
@@ -470,71 +295,253 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
     </article>
     <article class="device-card" id="jar" data-name="罐头瓶">
       <h3>🫙 罐头瓶 <span class="badge">工匠设备</span></h3>
-      <p>水果→果酱，蔬菜→泡菜。杨桃果酱售价 1550g。</p>
+      <p>水果→果酱，蔬菜→腌菜。低价作物用罐头瓶通常更划算。</p>
     </article>
     <article class="device-card" id="dehydrator" data-name="烘干机">
       <h3>🍇 烘干机 <span class="badge">工匠设备</span></h3>
-      <p>5个水果→干果。杨桃干售价 5650g。</p>
+      <p>5个水果→干果。适合批量处理水果，但需要一次放入5个。</p>
+    </article>
+    <article class="device-card" id="mill" data-name="磨坊">
+      <h3>🌾 磨坊 <span class="badge">建筑</span></h3>
+      <p>小麦、甜菜、未碾米等可通过磨坊加工成基础食材。</p>
     </article>
     <article class="device-card" id="junimo" data-name="祝尼魔屋">
       <h3>🏡 祝尼魔屋 <span class="badge">建筑</span></h3>
-      <p>法师处建造。需要 20,000g、石头×200、杨桃×9、纤维×100。</p>
+      <p>法师处建造。杨桃是建造材料之一。</p>
     </article>
   </section>
 </main>
 
 <script>
+const CROPS = [{"season": "春季", "name_zh": "蓝爵士", "name_en": "Blue Jazz", "seed": "Jazz Seeds", "seed_source": "Pierre's 30g / JojaMart 37g", "growth_days": 7, "regrowth": null, "plant_deadline": "春季21", "farming_xp": 10, "base_sell": 50, "sell_prices": {"normal": 50, "silver": 62, "gold": 75, "iridium": 100}, "eat": "45能量 | 20生命值", "artisan_reference": "不推荐加工，主要用于送礼、配方或蜂蜜增值", "uses_note": "食谱：幸运午餐；送礼：花类，少数村民喜欢。", "search_text": "春季 蓝爵士 blue jazz jazz seeds pierre's 30g / jojamart 37g 不推荐加工，主要用于送礼、配方或蜂蜜增值 食谱：幸运午餐；送礼：花类，少数村民喜欢。"}, {"season": "春季", "name_zh": "胡萝卜", "name_en": "Carrot", "seed": "Carrot Seeds", "seed_source": "春季种子点 / 浣熊商店 / 种子生产器", "growth_days": 3, "regrowth": null, "plant_deadline": "春季25", "farming_xp": 8, "base_sell": 35, "sell_prices": {"normal": 35, "silver": 43, "gold": 52, "iridium": 70}, "eat": "75能量 | 33生命值", "artisan_reference": "汁 78g / 腌菜 120g", "uses_note": "献祭：无标准包；用途：早期补能量很舒服。", "search_text": "春季 胡萝卜 carrot carrot seeds 春季种子点 / 浣熊商店 / 种子生产器 汁 78g / 腌菜 120g 献祭：无标准包；用途：早期补能量很舒服。"}, {"season": "春季", "name_zh": "花椰菜", "name_en": "Cauliflower", "seed": "Cauliflower Seeds", "seed_source": "Pierre's 80g / JojaMart 100g", "growth_days": 12, "regrowth": null, "plant_deadline": "春季16", "farming_xp": 23, "base_sell": 175, "sell_prices": {"normal": 175, "silver": 218, "gold": 262, "iridium": 350}, "eat": "75能量 | 33生命值", "artisan_reference": "汁 393g / 腌菜 400g", "uses_note": "献祭：春季作物包，品质作物包；食谱：奶酪花椰菜；送礼：玛鲁最爱；可长成巨大作物。", "search_text": "春季 花椰菜 cauliflower cauliflower seeds pierre's 80g / jojamart 100g 汁 393g / 腌菜 400g 献祭：春季作物包，品质作物包；食谱：奶酪花椰菜；送礼：玛鲁最爱；可长成巨大作物。"}, {"season": "春季/夏季", "name_zh": "咖啡豆", "name_en": "Coffee Bean", "seed": "Coffee Bean", "seed_source": "尘灵掉落 / 旅行货车 / 种子生产器", "growth_days": 10, "regrowth": "2天", "plant_deadline": "看场景", "farming_xp": 4, "base_sell": 15, "sell_prices": {"normal": 15, "silver": 18, "gold": 22, "iridium": 30}, "eat": "不可食用", "artisan_reference": "小桶：咖啡豆×5 → 咖啡 150g", "uses_note": "用途：小桶做咖啡；春夏跨季复收。", "search_text": "春季/夏季 咖啡豆 coffee bean coffee bean 尘灵掉落 / 旅行货车 / 种子生产器 小桶：咖啡豆×5 → 咖啡 150g 用途：小桶做咖啡；春夏跨季复收。"}, {"season": "春季", "name_zh": "大蒜", "name_en": "Garlic", "seed": "Garlic Seeds", "seed_source": "Pierre's 40g（第2年起）", "growth_days": 4, "regrowth": null, "plant_deadline": "春季24", "farming_xp": 12, "base_sell": 60, "sell_prices": {"normal": 60, "silver": 75, "gold": 90, "iridium": 120}, "eat": "20能量 | 9生命值", "artisan_reference": "汁 135g / 腌菜 170g", "uses_note": "食谱：大蒜油；第2年起可稳定购买。", "search_text": "春季 大蒜 garlic garlic seeds pierre's 40g（第2年起） 汁 135g / 腌菜 170g 食谱：大蒜油；第2年起可稳定购买。"}, {"season": "春季", "name_zh": "绿豆", "name_en": "Green Bean", "seed": "Bean Starter", "seed_source": "Pierre's 60g / JojaMart 75g", "growth_days": 10, "regrowth": "3天", "plant_deadline": "春季18", "farming_xp": 9, "base_sell": 40, "sell_prices": {"normal": 40, "silver": 50, "gold": 60, "iridium": 80}, "eat": "25能量 | 11生命值", "artisan_reference": "汁 90g / 腌菜 130g", "uses_note": "献祭：春季作物包；备注：棚架作物，不可穿过。", "search_text": "春季 绿豆 green bean bean starter pierre's 60g / jojamart 75g 汁 90g / 腌菜 130g 献祭：春季作物包；备注：棚架作物，不可穿过。"}, {"season": "春季", "name_zh": "羽衣甘蓝", "name_en": "Kale", "seed": "Kale Seeds", "seed_source": "Pierre's 70g / JojaMart 87g", "growth_days": 6, "regrowth": null, "plant_deadline": "春季22", "farming_xp": 17, "base_sell": 110, "sell_prices": {"normal": 110, "silver": 137, "gold": 165, "iridium": 220}, "eat": "50能量 | 22生命值", "artisan_reference": "汁 247g / 腌菜 270g", "uses_note": "食谱：鲑鱼晚餐等；早春快速作物。", "search_text": "春季 羽衣甘蓝 kale kale seeds pierre's 70g / jojamart 87g 汁 247g / 腌菜 270g 食谱：鲑鱼晚餐等；早春快速作物。"}, {"season": "春季", "name_zh": "防风草", "name_en": "Parsnip", "seed": "Parsnip Seeds", "seed_source": "Pierre's 20g / JojaMart 25g", "growth_days": 4, "regrowth": null, "plant_deadline": "春季24", "farming_xp": 8, "base_sell": 35, "sell_prices": {"normal": 35, "silver": 43, "gold": 52, "iridium": 70}, "eat": "25能量 | 11生命值", "artisan_reference": "汁 78g / 腌菜 120g", "uses_note": "献祭：春季作物包，品质作物包；送礼：帕姆最爱；新手任务需要。", "search_text": "春季 防风草 parsnip parsnip seeds pierre's 20g / jojamart 25g 汁 78g / 腌菜 120g 献祭：春季作物包，品质作物包；送礼：帕姆最爱；新手任务需要。"}, {"season": "春季", "name_zh": "土豆", "name_en": "Potato", "seed": "Potato Seeds", "seed_source": "Pierre's 50g / JojaMart 62g", "growth_days": 6, "regrowth": null, "plant_deadline": "春季22", "farming_xp": 14, "base_sell": 80, "sell_prices": {"normal": 80, "silver": 100, "gold": 120, "iridium": 160}, "eat": "25能量 | 11生命值", "artisan_reference": "汁 180g / 腌菜 210g", "uses_note": "献祭：春季作物包；食谱：薯饼；有约25%概率额外产出。", "search_text": "春季 土豆 potato potato seeds pierre's 50g / jojamart 62g 汁 180g / 腌菜 210g 献祭：春季作物包；食谱：薯饼；有约25%概率额外产出。"}, {"season": "春季", "name_zh": "大黄", "name_en": "Rhubarb", "seed": "Rhubarb Seeds", "seed_source": "绿洲商店 100g", "growth_days": 13, "regrowth": null, "plant_deadline": "春季15", "farming_xp": 26, "base_sell": 220, "sell_prices": {"normal": 220, "silver": 275, "gold": 330, "iridium": 440}, "eat": "不可食用", "artisan_reference": "酒 660g / 果酱 490g / 干果 1675g", "uses_note": "食谱：大黄派；春季高价值水果，适合酿酒。", "search_text": "春季 大黄 rhubarb rhubarb seeds 绿洲商店 100g 酒 660g / 果酱 490g / 干果 1675g 食谱：大黄派；春季高价值水果，适合酿酒。"}, {"season": "春季", "name_zh": "草莓", "name_en": "Strawberry", "seed": "Strawberry Seeds", "seed_source": "复活节商店 100g", "growth_days": 8, "regrowth": "4天", "plant_deadline": "春季20", "farming_xp": 18, "base_sell": 120, "sell_prices": {"normal": 120, "silver": 150, "gold": 180, "iridium": 240}, "eat": "50能量 | 22生命值", "artisan_reference": "酒 360g / 果酱 290g / 干果 925g", "uses_note": "送礼：玛鲁最爱；春季复收，高收益。", "search_text": "春季 草莓 strawberry strawberry seeds 复活节商店 100g 酒 360g / 果酱 290g / 干果 925g 送礼：玛鲁最爱；春季复收，高收益。"}, {"season": "春季", "name_zh": "郁金香", "name_en": "Tulip", "seed": "Tulip Bulb", "seed_source": "Pierre's 20g / JojaMart 25g", "growth_days": 6, "regrowth": null, "plant_deadline": "春季22", "farming_xp": 7, "base_sell": 30, "sell_prices": {"normal": 30, "silver": 37, "gold": 45, "iridium": 60}, "eat": "45能量 | 20生命值", "artisan_reference": "不推荐加工，主要用于送礼、配方或蜂蜜增值", "uses_note": "送礼：伊芙琳最爱；花类作物。", "search_text": "春季 郁金香 tulip tulip bulb pierre's 20g / jojamart 25g 不推荐加工，主要用于送礼、配方或蜂蜜增值 送礼：伊芙琳最爱；花类作物。"}, {"season": "春季", "name_zh": "未碾米", "name_en": "Unmilled Rice", "seed": "Rice Shoot", "seed_source": "Pierre's 40g / 怪物掉落 / 种子生产器", "growth_days": 8, "regrowth": null, "plant_deadline": "春季20", "farming_xp": 7, "base_sell": 30, "sell_prices": {"normal": 30, "silver": 37, "gold": 45, "iridium": 60}, "eat": "不可食用", "artisan_reference": "磨坊：未碾米 → 大米 100g", "uses_note": "靠近水源时约6天成熟；可用磨坊加工为大米。", "search_text": "春季 未碾米 unmilled rice rice shoot pierre's 40g / 怪物掉落 / 种子生产器 磨坊：未碾米 → 大米 100g 靠近水源时约6天成熟；可用磨坊加工为大米。"}, {"season": "夏季", "name_zh": "蓝莓", "name_en": "Blueberry", "seed": "Blueberry Seeds", "seed_source": "Pierre's 80g", "growth_days": 13, "regrowth": "4天", "plant_deadline": "夏季15", "farming_xp": 10, "base_sell": 50, "sell_prices": {"normal": 50, "silver": 62, "gold": 75, "iridium": 100}, "eat": "25能量 | 11生命值", "artisan_reference": "酒 150g / 果酱 150g / 干果 400g", "uses_note": "献祭：夏季作物包；食谱：蓝莓千层酥，水果沙拉；每次至少3个。", "search_text": "夏季 蓝莓 blueberry blueberry seeds pierre's 80g 酒 150g / 果酱 150g / 干果 400g 献祭：夏季作物包；食谱：蓝莓千层酥，水果沙拉；每次至少3个。"}, {"season": "夏季/秋季", "name_zh": "玉米", "name_en": "Corn", "seed": "Corn Seeds", "seed_source": "Pierre's 150g / JojaMart 187g", "growth_days": 14, "regrowth": "4天", "plant_deadline": "看场景", "farming_xp": 10, "base_sell": 50, "sell_prices": {"normal": 50, "silver": 62, "gold": 75, "iridium": 100}, "eat": "25能量 | 11生命值", "artisan_reference": "小桶：汁 112g / 罐头瓶：腌菜 150g / 榨油机：油 100g", "uses_note": "献祭：秋季作物包，品质作物包；食谱：玉米饼；夏秋跨季。", "search_text": "夏季/秋季 玉米 corn corn seeds pierre's 150g / jojamart 187g 小桶：汁 112g / 罐头瓶：腌菜 150g / 榨油机：油 100g 献祭：秋季作物包，品质作物包；食谱：玉米饼；夏秋跨季。"}, {"season": "夏季", "name_zh": "啤酒花", "name_en": "Hops", "seed": "Hops Starter", "seed_source": "Pierre's 60g / JojaMart 75g", "growth_days": 11, "regrowth": "1天", "plant_deadline": "夏季17", "farming_xp": 6, "base_sell": 25, "sell_prices": {"normal": 25, "silver": 31, "gold": 37, "iridium": 50}, "eat": "45能量 | 20生命值", "artisan_reference": "小桶：淡啤酒 300g", "uses_note": "备注：棚架作物；淡啤酒收益很强。", "search_text": "夏季 啤酒花 hops hops starter pierre's 60g / jojamart 75g 小桶：淡啤酒 300g 备注：棚架作物；淡啤酒收益很强。"}, {"season": "夏季", "name_zh": "辣椒", "name_en": "Hot Pepper", "seed": "Pepper Seeds", "seed_source": "Pierre's 40g / JojaMart 50g", "growth_days": 5, "regrowth": "3天", "plant_deadline": "夏季23", "farming_xp": 9, "base_sell": 40, "sell_prices": {"normal": 40, "silver": 50, "gold": 60, "iridium": 80}, "eat": "13能量 | 5生命值", "artisan_reference": "酒 120g / 果酱 130g / 干果 325g", "uses_note": "献祭：夏季作物包；食谱：香辣鳗鱼，爆炒辣椒；送礼：刘易斯、谢恩最爱。", "search_text": "夏季 辣椒 hot pepper pepper seeds pierre's 40g / jojamart 50g 酒 120g / 果酱 130g / 干果 325g 献祭：夏季作物包；食谱：香辣鳗鱼，爆炒辣椒；送礼：刘易斯、谢恩最爱。"}, {"season": "夏季", "name_zh": "甜瓜", "name_en": "Melon", "seed": "Melon Seeds", "seed_source": "Pierre's 80g / JojaMart 100g", "growth_days": 12, "regrowth": null, "plant_deadline": "夏季16", "farming_xp": 27, "base_sell": 250, "sell_prices": {"normal": 250, "silver": 312, "gold": 375, "iridium": 500}, "eat": "113能量 | 50生命值", "artisan_reference": "酒 750g / 果酱 550g / 干果 1900g", "uses_note": "献祭：夏季作物包，品质作物包；食谱：粉红蛋糕，水果沙拉；送礼：潘妮最爱；可长成巨大作物。", "search_text": "夏季 甜瓜 melon melon seeds pierre's 80g / jojamart 100g 酒 750g / 果酱 550g / 干果 1900g 献祭：夏季作物包，品质作物包；食谱：粉红蛋糕，水果沙拉；送礼：潘妮最爱；可长成巨大作物。"}, {"season": "夏季", "name_zh": "罂粟", "name_en": "Poppy", "seed": "Poppy Seeds", "seed_source": "Pierre's 100g / JojaMart 125g", "growth_days": 7, "regrowth": null, "plant_deadline": "夏季21", "farming_xp": 20, "base_sell": 140, "sell_prices": {"normal": 140, "silver": 175, "gold": 210, "iridium": 280}, "eat": "45能量 | 20生命值", "artisan_reference": "不推荐加工，主要用于送礼、配方或蜂蜜增值", "uses_note": "献祭：厨师收集包；食谱：罂粟籽松饼；送礼：潘妮最爱，多数村民不喜欢。", "search_text": "夏季 罂粟 poppy poppy seeds pierre's 100g / jojamart 125g 不推荐加工，主要用于送礼、配方或蜂蜜增值 献祭：厨师收集包；食谱：罂粟籽松饼；送礼：潘妮最爱，多数村民不喜欢。"}, {"season": "夏季", "name_zh": "萝卜", "name_en": "Radish", "seed": "Radish Seeds", "seed_source": "Pierre's 40g / JojaMart 50g", "growth_days": 6, "regrowth": null, "plant_deadline": "夏季22", "farming_xp": 15, "base_sell": 90, "sell_prices": {"normal": 90, "silver": 112, "gold": 135, "iridium": 180}, "eat": "45能量 | 20生命值", "artisan_reference": "汁 202g / 腌菜 230g", "uses_note": "食谱：萝卜沙拉；短周期夏季作物。", "search_text": "夏季 萝卜 radish radish seeds pierre's 40g / jojamart 50g 汁 202g / 腌菜 230g 食谱：萝卜沙拉；短周期夏季作物。"}, {"season": "夏季", "name_zh": "红叶卷心菜", "name_en": "Red Cabbage", "seed": "Red Cabbage Seeds", "seed_source": "Pierre's 100g（第2年起）/ 旅行货车", "growth_days": 9, "regrowth": null, "plant_deadline": "夏季19", "farming_xp": 28, "base_sell": 260, "sell_prices": {"normal": 260, "silver": 325, "gold": 390, "iridium": 520}, "eat": "75能量 | 33生命值", "artisan_reference": "汁 585g / 腌菜 570g", "uses_note": "献祭：染料收集包；食谱：鱼肉卷，红之盛宴；第1年靠旅行货车。", "search_text": "夏季 红叶卷心菜 red cabbage red cabbage seeds pierre's 100g（第2年起）/ 旅行货车 汁 585g / 腌菜 570g 献祭：染料收集包；食谱：鱼肉卷，红之盛宴；第1年靠旅行货车。"}, {"season": "夏季", "name_zh": "杨桃", "name_en": "Starfruit", "seed": "Starfruit Seeds", "seed_source": "绿洲商店 · Sandy 400g", "growth_days": 13, "regrowth": null, "plant_deadline": "夏季15", "farming_xp": 43, "base_sell": 750, "sell_prices": {"normal": 750, "silver": 937, "gold": 1125, "iridium": 1500}, "eat": "125能量 | 56生命值", "artisan_reference": "酒 2250g / 果酱 1550g / 干果 5650g", "uses_note": "献祭：重混染料包可选；任务：第2年夏15肯特；建筑：祝尼魔屋×9；高价值酿酒核心。", "search_text": "夏季 杨桃 starfruit starfruit seeds 绿洲商店 · sandy 400g 酒 2250g / 果酱 1550g / 干果 5650g 献祭：重混染料包可选；任务：第2年夏15肯特；建筑：祝尼魔屋×9；高价值酿酒核心。"}, {"season": "夏季", "name_zh": "夏季亮片", "name_en": "Summer Spangle", "seed": "Spangle Seeds", "seed_source": "Pierre's 50g / JojaMart 62g", "growth_days": 8, "regrowth": null, "plant_deadline": "夏季20", "farming_xp": 15, "base_sell": 90, "sell_prices": {"normal": 90, "silver": 112, "gold": 135, "iridium": 180}, "eat": "45能量 | 20生命值", "artisan_reference": "不推荐加工，主要用于送礼、配方或蜂蜜增值", "uses_note": "花类作物；可用于送礼和蜂蜜增值。", "search_text": "夏季 夏季亮片 summer spangle spangle seeds pierre's 50g / jojamart 62g 不推荐加工，主要用于送礼、配方或蜂蜜增值 花类作物；可用于送礼和蜂蜜增值。"}, {"season": "夏季", "name_zh": "夏南瓜", "name_en": "Summer Squash", "seed": "Summer Squash Seeds", "seed_source": "夏季种子点 / 浣熊商店 / 种子生产器", "growth_days": 6, "regrowth": "3天", "plant_deadline": "夏季22", "farming_xp": 9, "base_sell": 45, "sell_prices": {"normal": 45, "silver": 56, "gold": 67, "iridium": 90}, "eat": "63能量 | 28生命值", "artisan_reference": "汁 101g / 腌菜 140g", "uses_note": "1.6新增；夏季短周期复收作物。", "search_text": "夏季 夏南瓜 summer squash summer squash seeds 夏季种子点 / 浣熊商店 / 种子生产器 汁 101g / 腌菜 140g 1.6新增；夏季短周期复收作物。"}, {"season": "夏季/秋季", "name_zh": "向日葵", "name_en": "Sunflower", "seed": "Sunflower Seeds", "seed_source": "Pierre's 200g / JojaMart 125g", "growth_days": 8, "regrowth": null, "plant_deadline": "看场景", "farming_xp": 14, "base_sell": 80, "sell_prices": {"normal": 80, "silver": 100, "gold": 120, "iridium": 160}, "eat": "45能量 | 20生命值", "artisan_reference": "榨油机：油 100g；收获时可返还种子", "uses_note": "献祭：染料相关；送礼：海莉最爱；夏秋两季。", "search_text": "夏季/秋季 向日葵 sunflower sunflower seeds pierre's 200g / jojamart 125g 榨油机：油 100g；收获时可返还种子 献祭：染料相关；送礼：海莉最爱；夏秋两季。"}, {"season": "夏季", "name_zh": "番茄", "name_en": "Tomato", "seed": "Tomato Seeds", "seed_source": "Pierre's 50g / JojaMart 62g", "growth_days": 11, "regrowth": "4天", "plant_deadline": "夏季17", "farming_xp": 12, "base_sell": 60, "sell_prices": {"normal": 60, "silver": 75, "gold": 90, "iridium": 120}, "eat": "20能量 | 9生命值", "artisan_reference": "汁 135g / 腌菜 170g", "uses_note": "献祭：夏季作物包；食谱很多；复收作物。", "search_text": "夏季 番茄 tomato tomato seeds pierre's 50g / jojamart 62g 汁 135g / 腌菜 170g 献祭：夏季作物包；食谱很多；复收作物。"}, {"season": "夏季/秋季", "name_zh": "小麦", "name_en": "Wheat", "seed": "Wheat Seeds", "seed_source": "Pierre's 10g / JojaMart 12g", "growth_days": 4, "regrowth": null, "plant_deadline": "看场景", "farming_xp": 6, "base_sell": 25, "sell_prices": {"normal": 25, "silver": 31, "gold": 37, "iridium": 50}, "eat": "不可食用", "artisan_reference": "小桶：啤酒 200g / 磨坊：小麦粉 50g", "uses_note": "献祭：饲料收集包；夏末种可保留耕地到秋季。", "search_text": "夏季/秋季 小麦 wheat wheat seeds pierre's 10g / jojamart 12g 小桶：啤酒 200g / 磨坊：小麦粉 50g 献祭：饲料收集包；夏末种可保留耕地到秋季。"}, {"season": "秋季", "name_zh": "苋菜", "name_en": "Amaranth", "seed": "Amaranth Seeds", "seed_source": "Pierre's 70g / JojaMart 87g", "growth_days": 7, "regrowth": null, "plant_deadline": "秋季21", "farming_xp": 21, "base_sell": 150, "sell_prices": {"normal": 150, "silver": 187, "gold": 225, "iridium": 300}, "eat": "50能量 | 22生命值", "artisan_reference": "汁 337g / 腌菜 350g", "uses_note": "食谱：鲑鱼晚餐；任务：玛妮“奶牛的喜悦”。", "search_text": "秋季 苋菜 amaranth amaranth seeds pierre's 70g / jojamart 87g 汁 337g / 腌菜 350g 食谱：鲑鱼晚餐；任务：玛妮“奶牛的喜悦”。"}, {"season": "秋季", "name_zh": "洋蓟", "name_en": "Artichoke", "seed": "Artichoke Seeds", "seed_source": "Pierre's 30g（第2年起）", "growth_days": 8, "regrowth": null, "plant_deadline": "秋季20", "farming_xp": 22, "base_sell": 160, "sell_prices": {"normal": 160, "silver": 200, "gold": 240, "iridium": 320}, "eat": "30能量 | 13生命值", "artisan_reference": "汁 360g / 腌菜 370g", "uses_note": "食谱：洋蓟蘸酱，超级餐；第2年起可购买。", "search_text": "秋季 洋蓟 artichoke artichoke seeds pierre's 30g（第2年起） 汁 360g / 腌菜 370g 食谱：洋蓟蘸酱，超级餐；第2年起可购买。"}, {"season": "秋季", "name_zh": "甜菜", "name_en": "Beet", "seed": "Beet Seeds", "seed_source": "绿洲商店 20g", "growth_days": 6, "regrowth": null, "plant_deadline": "秋季22", "farming_xp": 16, "base_sell": 100, "sell_prices": {"normal": 100, "silver": 125, "gold": 150, "iridium": 200}, "eat": "30能量 | 13生命值", "artisan_reference": "磨坊：甜菜 → 糖×3（合计150g）", "uses_note": "任务：齐先生系列需要甜菜；可磨糖。", "search_text": "秋季 甜菜 beet beet seeds 绿洲商店 20g 磨坊：甜菜 → 糖×3（合计150g） 任务：齐先生系列需要甜菜；可磨糖。"}, {"season": "秋季", "name_zh": "小白菜", "name_en": "Bok Choy", "seed": "Bok Choy Seeds", "seed_source": "Pierre's 50g / JojaMart 62g", "growth_days": 4, "regrowth": null, "plant_deadline": "秋季24", "farming_xp": 14, "base_sell": 80, "sell_prices": {"normal": 80, "silver": 100, "gold": 120, "iridium": 160}, "eat": "25能量 | 11生命值", "artisan_reference": "汁 180g / 腌菜 210g", "uses_note": "食谱：超级餐；秋季短周期作物。", "search_text": "秋季 小白菜 bok choy bok choy seeds pierre's 50g / jojamart 62g 汁 180g / 腌菜 210g 食谱：超级餐；秋季短周期作物。"}, {"season": "秋季", "name_zh": "西兰花", "name_en": "Broccoli", "seed": "Broccoli Seeds", "seed_source": "秋季种子点 / 浣熊商店 / 种子生产器", "growth_days": 8, "regrowth": "4天", "plant_deadline": "秋季20", "farming_xp": 13, "base_sell": 70, "sell_prices": {"normal": 70, "silver": 87, "gold": 105, "iridium": 140}, "eat": "63能量 | 28生命值", "artisan_reference": "汁 157g / 腌菜 190g", "uses_note": "1.6新增；秋季复收作物。", "search_text": "秋季 西兰花 broccoli broccoli seeds 秋季种子点 / 浣熊商店 / 种子生产器 汁 157g / 腌菜 190g 1.6新增；秋季复收作物。"}, {"season": "秋季", "name_zh": "蔓越莓", "name_en": "Cranberries", "seed": "Cranberry Seeds", "seed_source": "Pierre's 240g / JojaMart 300g", "growth_days": 7, "regrowth": "5天", "plant_deadline": "秋季21", "farming_xp": 14, "base_sell": 75, "sell_prices": {"normal": 75, "silver": 93, "gold": 112, "iridium": 150}, "eat": "38能量 | 17生命值", "artisan_reference": "酒 225g / 果酱 200g / 干果 587g", "uses_note": "食谱：蔓越莓酱，蔓越莓糖果，馅料；每次至少2个。", "search_text": "秋季 蔓越莓 cranberries cranberry seeds pierre's 240g / jojamart 300g 酒 225g / 果酱 200g / 干果 587g 食谱：蔓越莓酱，蔓越莓糖果，馅料；每次至少2个。"}, {"season": "秋季", "name_zh": "茄子", "name_en": "Eggplant", "seed": "Eggplant Seeds", "seed_source": "Pierre's 20g / JojaMart 25g", "growth_days": 5, "regrowth": "5天", "plant_deadline": "秋季23", "farming_xp": 12, "base_sell": 60, "sell_prices": {"normal": 60, "silver": 75, "gold": 90, "iridium": 120}, "eat": "20能量 | 9生命值", "artisan_reference": "汁 135g / 腌菜 170g", "uses_note": "献祭：秋季作物包；食谱：茄子帕尔玛。", "search_text": "秋季 茄子 eggplant eggplant seeds pierre's 20g / jojamart 25g 汁 135g / 腌菜 170g 献祭：秋季作物包；食谱：茄子帕尔玛。"}, {"season": "秋季", "name_zh": "玫瑰仙子", "name_en": "Fairy Rose", "seed": "Fairy Seeds", "seed_source": "Pierre's 200g / JojaMart 250g", "growth_days": 12, "regrowth": null, "plant_deadline": "秋季16", "farming_xp": 29, "base_sell": 290, "sell_prices": {"normal": 290, "silver": 362, "gold": 435, "iridium": 580}, "eat": "45能量 | 20生命值", "artisan_reference": "不推荐加工，主要用于送礼、配方或蜂蜜增值", "uses_note": "食谱/制造：仙尘；送礼：伊芙琳、贾斯最爱；高价值花蜜。", "search_text": "秋季 玫瑰仙子 fairy rose fairy seeds pierre's 200g / jojamart 250g 不推荐加工，主要用于送礼、配方或蜂蜜增值 食谱/制造：仙尘；送礼：伊芙琳、贾斯最爱；高价值花蜜。"}, {"season": "秋季", "name_zh": "葡萄", "name_en": "Grape", "seed": "Grape Starter", "seed_source": "Pierre's 60g / JojaMart 75g", "growth_days": 10, "regrowth": "3天", "plant_deadline": "秋季18", "farming_xp": 14, "base_sell": 80, "sell_prices": {"normal": 80, "silver": 100, "gold": 120, "iridium": 160}, "eat": "38能量 | 17生命值", "artisan_reference": "酒 240g / 果酱 210g / 干果 625g", "uses_note": "献祭：夏季采集包（采集葡萄）；送礼：文森特最爱；备注：棚架作物。", "search_text": "秋季 葡萄 grape grape starter pierre's 60g / jojamart 75g 酒 240g / 果酱 210g / 干果 625g 献祭：夏季采集包（采集葡萄）；送礼：文森特最爱；备注：棚架作物。"}, {"season": "秋季", "name_zh": "南瓜", "name_en": "Pumpkin", "seed": "Pumpkin Seeds", "seed_source": "Pierre's 100g / JojaMart 125g", "growth_days": 13, "regrowth": null, "plant_deadline": "秋季15", "farming_xp": 31, "base_sell": 320, "sell_prices": {"normal": 320, "silver": 400, "gold": 480, "iridium": 640}, "eat": "不可食用", "artisan_reference": "汁 720g / 腌菜 690g", "uses_note": "献祭：秋季作物包，品质作物包；食谱：南瓜派，南瓜汤；任务：雕刻南瓜；送礼：阿比盖尔、科罗布斯、威利最爱；可长成巨大作物。", "search_text": "秋季 南瓜 pumpkin pumpkin seeds pierre's 100g / jojamart 125g 汁 720g / 腌菜 690g 献祭：秋季作物包，品质作物包；食谱：南瓜派，南瓜汤；任务：雕刻南瓜；送礼：阿比盖尔、科罗布斯、威利最爱；可长成巨大作物。"}, {"season": "秋季", "name_zh": "山药", "name_en": "Yam", "seed": "Yam Seeds", "seed_source": "Pierre's 60g / JojaMart 75g", "growth_days": 10, "regrowth": null, "plant_deadline": "秋季18", "farming_xp": 22, "base_sell": 160, "sell_prices": {"normal": 160, "silver": 200, "gold": 240, "iridium": 320}, "eat": "45能量 | 20生命值", "artisan_reference": "汁 360g / 腌菜 370g", "uses_note": "献祭：秋季作物包；食谱：秋日恩赐，糖渍山药；送礼：莱纳斯最爱。", "search_text": "秋季 山药 yam yam seeds pierre's 60g / jojamart 75g 汁 360g / 腌菜 370g 献祭：秋季作物包；食谱：秋日恩赐，糖渍山药；送礼：莱纳斯最爱。"}, {"season": "冬季", "name_zh": "粉瓜", "name_en": "Powdermelon", "seed": "Powdermelon Seeds", "seed_source": "冬季种子点 / 浣熊商店 / 种子生产器", "growth_days": 7, "regrowth": null, "plant_deadline": "冬季21", "farming_xp": 12, "base_sell": 60, "sell_prices": {"normal": 60, "silver": 75, "gold": 90, "iridium": 120}, "eat": "63能量 | 28生命值", "artisan_reference": "酒 180g / 果酱 170g / 干果 475g", "uses_note": "1.6新增；冬季作物；可长成巨大作物。", "search_text": "冬季 粉瓜 powdermelon powdermelon seeds 冬季种子点 / 浣熊商店 / 种子生产器 酒 180g / 果酱 170g / 干果 475g 1.6新增；冬季作物；可长成巨大作物。"}, {"season": "春季/夏季/秋季", "name_zh": "上古水果", "name_en": "Ancient Fruit", "seed": "Ancient Seeds", "seed_source": "古代种子文物捐博物馆后解锁配方 / 种子生产器", "growth_days": 28, "regrowth": "7天", "plant_deadline": "看场景", "farming_xp": 38, "base_sell": 550, "sell_prices": {"normal": 550, "silver": 687, "gold": 825, "iridium": 1100}, "eat": "不可食用", "artisan_reference": "酒 1650g / 果酱 1150g / 干果 4150g", "uses_note": "长期收益核心；温室和姜岛非常适合；通常酿酒。", "search_text": "春季/夏季/秋季 上古水果 ancient fruit ancient seeds 古代种子文物捐博物馆后解锁配方 / 种子生产器 酒 1650g / 果酱 1150g / 干果 4150g 长期收益核心；温室和姜岛非常适合；通常酿酒。"}, {"season": "特殊", "name_zh": "仙人掌果子", "name_en": "Cactus Fruit", "seed": "Cactus Seeds", "seed_source": "绿洲商店 / 骷髅洞穴 / 姜岛", "growth_days": 12, "regrowth": "3天", "plant_deadline": "看场景", "farming_xp": 14, "base_sell": 75, "sell_prices": {"normal": 75, "silver": 93, "gold": 112, "iridium": 150}, "eat": "75能量 | 33生命值", "artisan_reference": "酒 225g / 果酱 200g / 干果 587g", "uses_note": "可室内花盆/温室/姜岛种植；送礼：山姆最爱；适合前期补能量。", "search_text": "特殊 仙人掌果子 cactus fruit cactus seeds 绿洲商店 / 骷髅洞穴 / 姜岛 酒 225g / 果酱 200g / 干果 587g 可室内花盆/温室/姜岛种植；送礼：山姆最爱；适合前期补能量。"}, {"season": "夏季/姜岛全年", "name_zh": "菠萝", "name_en": "Pineapple", "seed": "Pineapple Seeds", "seed_source": "姜岛商人：岩浆帽×1 / 火山掉落", "growth_days": 14, "regrowth": "7天", "plant_deadline": "看场景", "farming_xp": 30, "base_sell": 300, "sell_prices": {"normal": 300, "silver": 375, "gold": 450, "iridium": 600}, "eat": "138能量 | 62生命值", "artisan_reference": "酒 900g / 果酱 650g / 干果 2275g", "uses_note": "姜岛长期种植好用；适合酿酒。", "search_text": "夏季/姜岛全年 菠萝 pineapple pineapple seeds 姜岛商人：岩浆帽×1 / 火山掉落 酒 900g / 果酱 650g / 干果 2275g 姜岛长期种植好用；适合酿酒。"}, {"season": "任务限定", "name_zh": "齐瓜", "name_en": "Qi Fruit", "seed": "Qi Bean", "seed_source": "齐先生任务期间获得齐豆", "growth_days": 4, "regrowth": null, "plant_deadline": "任务限定24", "farming_xp": "任务", "base_sell": 1, "sell_prices": {"normal": 1, "silver": 1, "gold": 1, "iridium": 2}, "eat": "极低", "artisan_reference": "酒 3g / 果酱 52g / 干果 32g", "uses_note": "任务作物；任务结束后会消失；常规收益不考虑。", "search_text": "任务限定 齐瓜 qi fruit qi bean 齐先生任务期间获得齐豆 酒 3g / 果酱 52g / 干果 32g 任务作物；任务结束后会消失；常规收益不考虑。"}, {"season": "秋季", "name_zh": "宝石甜莓", "name_en": "Sweet Gem Berry", "seed": "Rare Seed", "seed_source": "旅行货车 600-1000g，常见1000g", "growth_days": 24, "regrowth": null, "plant_deadline": "秋季4", "farming_xp": 64, "base_sell": 3000, "sell_prices": {"normal": 3000, "silver": 3750, "gold": 4500, "iridium": 6000}, "eat": "不可食用", "artisan_reference": "—", "uses_note": "老坎诺利雕像换星之果实；不能加工；秋季高价值单收作物。", "search_text": "秋季 宝石甜莓 sweet gem berry rare seed 旅行货车 600-1000g，常见1000g — 老坎诺利雕像换星之果实；不能加工；秋季高价值单收作物。"}, {"season": "夏季/姜岛全年", "name_zh": "芋头", "name_en": "Taro Root", "seed": "Taro Tuber", "seed_source": "姜岛商人：骨头碎片×2 / 火山掉落 / 种子生产器", "growth_days": 10, "regrowth": null, "plant_deadline": "看场景", "farming_xp": 16, "base_sell": 100, "sell_prices": {"normal": 100, "silver": 125, "gold": 150, "iridium": 200}, "eat": "100能量 | 45生命值", "artisan_reference": "汁 225g / 腌菜 250g", "uses_note": "靠近水源时约7天成熟；食谱：芋泥。", "search_text": "夏季/姜岛全年 芋头 taro root taro tuber 姜岛商人：骨头碎片×2 / 火山掉落 / 种子生产器 汁 225g / 腌菜 250g 靠近水源时约7天成熟；食谱：芋泥。"}, {"season": "全年", "name_zh": "茶叶", "name_en": "Tea Leaves", "seed": "Tea Sapling", "seed_source": "卡洛琳2心后配方 / 旅行货车", "growth_days": 20, "regrowth": "每季最后7天每日收", "plant_deadline": "看场景", "farming_xp": 10, "base_sell": 50, "sell_prices": {"normal": 50, "silver": 62, "gold": 75, "iridium": 100}, "eat": "不可食用", "artisan_reference": "小桶：绿茶 100g", "uses_note": "茶树不需浇水；室内冬季也可收；做绿茶。", "search_text": "全年 茶叶 tea leaves tea sapling 卡洛琳2心后配方 / 旅行货车 小桶：绿茶 100g 茶树不需浇水；室内冬季也可收；做绿茶。"}];
+
 const search = document.getElementById("search");
-const resultBlock = document.getElementById("resultBlock");
+const resultList = document.getElementById("resultList");
 const emptyBlock = document.getElementById("emptyBlock");
-const devices = document.getElementById("devices");
-const deviceTitle = document.getElementById("deviceTitle");
 const resultCount = document.getElementById("resultCount");
+const chips = document.getElementById("chips");
+let activeFilter = "all";
+
+function escapeHtml(value){
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[ch]));
+}
+
+function seasonBadge(season){
+  if(season.includes("春")) return "green";
+  if(season.includes("夏")) return "red";
+  if(season.includes("秋")) return "gold";
+  if(season.includes("冬")) return "blue";
+  return "";
+}
+
+function getCycle(crop){
+  const base = crop.regrowth ? `${crop.growth_days}天；复收 ${crop.regrowth}` : `${crop.growth_days}天（1次）`;
+  return base;
+}
+
+function getDeadline(crop){
+  return crop.plant_deadline || "看场景";
+}
+
+function getPlace(crop){
+  const season = crop.season;
+  if(season.includes("冬季")){
+    return `
+      <div class="place-line">
+        <div class="place-row"><span class="place-chip"><strong>农场</strong><em>冬季</em></span></div>
+        <div class="place-row"><span class="place-chip"><strong>温室</strong><em>全年</em></span><span class="place-chip"><strong>姜岛</strong><em>全年</em></span></div>
+      </div>`;
+  }
+  if(season.includes("特殊") || season.includes("任务")){
+    return `
+      <div class="place-line">
+        <div class="place-row"><span class="place-chip"><strong>特殊</strong><em>看条件</em></span></div>
+        <div class="place-row"><span class="place-chip"><strong>温室</strong><em>可用</em></span><span class="place-chip"><strong>姜岛</strong><em>可用</em></span></div>
+      </div>`;
+  }
+  if(season.includes("全年")){
+    return `
+      <div class="place-line">
+        <div class="place-row"><span class="place-chip"><strong>农场</strong><em>全年</em></span></div>
+        <div class="place-row"><span class="place-chip"><strong>温室</strong><em>全年</em></span><span class="place-chip"><strong>姜岛</strong><em>全年</em></span></div>
+      </div>`;
+  }
+  const first = season.split("/")[0];
+  return `
+    <div class="place-line">
+      <div class="place-row"><span class="place-chip"><strong>农场</strong><em>${escapeHtml(first)}</em></span></div>
+      <div class="place-row"><span class="place-chip"><strong>温室</strong><em>全年</em></span><span class="place-chip"><strong>姜岛</strong><em>全年</em></span></div>
+    </div>`;
+}
+
+function splitSource(source){
+  const parts = String(source).split(/\s*；\s*|\s*\/\s*/).filter(Boolean);
+  return parts;
+}
+
+function renderSeed(crop){
+  const parts = splitSource(crop.seed_source);
+  const main = parts[0] || crop.seed_source;
+  const other = parts.slice(1);
+  return `
+    <section class="block">
+      <h3 class="block-title">🌱 种子</h3>
+      <div class="source-box primary-source">
+        <div class="list-title">主要来源</div>
+        <div class="primary-source-row">
+          <div class="primary-source-main">
+            <b>${escapeHtml(main)}</b>
+            <b class="primary-price">${escapeHtml(crop.seed)}</b>
+          </div>
+          <small>${other.length ? escapeHtml(other.join(" · ")) : "其他来源见用途或特殊说明"}</small>
+        </div>
+      </div>
+    </section>`;
+}
+
+function renderPlant(crop){
+  return `
+    <section class="block">
+      <h3 class="block-title">🌾 种植</h3>
+      <div class="info-grid">
+        <div class="info">
+          <label>收获周期</label>
+          <b>${escapeHtml(getCycle(crop))}</b>
+        </div>
+        <div class="info">
+          <label>种植截止</label>
+          <b>${escapeHtml(getDeadline(crop))}</b>
+          <small>普通农场不加速</small>
+        </div>
+        <div class="info">
+          <label>耕种经验</label>
+          <b>${escapeHtml(crop.farming_xp)} XP</b>
+          <small>收获时获得</small>
+        </div>
+        <div class="info">
+          <label>种植地点</label>
+          ${getPlace(crop)}
+        </div>
+      </div>
+    </section>`;
+}
+
+function renderProfit(crop){
+  const p = crop.sell_prices || {};
+  return `
+    <section class="block">
+      <h3 class="block-title">💰 收益</h3>
+      <div class="profit-wrap">
+        <table class="profit-table">
+          <thead>
+            <tr>
+              <th>处理方式</th>
+              <th>产物</th>
+              <th>售价 / 参考</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>直接卖掉</td>
+              <td>${escapeHtml(crop.name_zh)}</td>
+              <td>${escapeHtml(p.normal)}g</td>
+            </tr>
+            <tr>
+              <td>推荐加工</td>
+              <td>加工参考</td>
+              <td>${escapeHtml(crop.artisan_reference)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <details>
+        <summary class="price-summary">进阶售价</summary>
+        <table class="small-table">
+          <thead>
+            <tr>
+              <th>项目</th>
+              <th>普通</th>
+              <th>银星</th>
+              <th>金星</th>
+              <th>铱星</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${escapeHtml(crop.name_zh)}</td>
+              <td>${escapeHtml(p.normal)}g</td>
+              <td>${escapeHtml(p.silver)}g</td>
+              <td>${escapeHtml(p.gold)}g</td>
+              <td>${escapeHtml(p.iridium)}g</td>
+            </tr>
+          </tbody>
+        </table>
+      </details>
+    </section>`;
+}
+
+function renderUses(crop){
+  return `
+    <section class="block">
+      <h3 class="block-title">📌 用途</h3>
+      <div class="list-card">
+        <div class="row"><span>吃掉</span><b>${escapeHtml(crop.eat)}</b></div>
+        <div class="row"><span>用途说明</span><b>${escapeHtml(crop.uses_note)}</b></div>
+      </div>
+    </section>`;
+}
+
+function renderCard(crop){
+  const seasonClass = seasonBadge(crop.season);
+  const regrowBadge = crop.regrowth ? "复收" : "一次收获";
+  return `
+    <article class="result-card">
+      <div class="item-head">
+        <div class="item-title">
+          <h3>🌾 ${escapeHtml(crop.name_zh)}</h3>
+          <span class="badge">作物</span>
+          <span class="badge ${seasonClass}">${escapeHtml(crop.season)}</span>
+          <span class="badge blue">${escapeHtml(regrowBadge)}</span>
+        </div>
+      </div>
+      ${renderSeed(crop)}
+      ${renderPlant(crop)}
+      ${renderProfit(crop)}
+      ${renderUses(crop)}
+    </article>`;
+}
+
+function matchesFilter(crop){
+  if(activeFilter === "all") return true;
+  if(activeFilter === "特殊") return crop.season.includes("特殊") || crop.season.includes("任务");
+  return crop.season.includes(activeFilter);
+}
 
 function render(){
   const q = search.value.trim().toLowerCase();
-  const starfruitText = "杨桃 starfruit 杨桃种子 绿洲 sandy 旅行货车 骷髅洞穴 博物馆 种子生产器 种植 收益 售价 用途 肯特 染料 精灵裤";
-  const isStarfruit = !q || starfruitText.toLowerCase().includes(q) || q.includes("杨桃") || q.includes("starfruit");
-  const deviceMatches = [...devices.children].filter(card => {
-    const name = (card.dataset.name || "").toLowerCase();
-    return q && (name.includes(q) || q.includes(name));
+  const filtered = CROPS.filter(crop => {
+    const searchText = crop.search_text || "";
+    const hit = !q || searchText.includes(q);
+    return hit && matchesFilter(crop);
   });
 
-  if(isStarfruit){
-    resultBlock.style.display = "";
-    emptyBlock.style.display = "none";
-    resultCount.textContent = "1 个结果";
-    devices.style.display = "";
-    deviceTitle.style.display = "";
-    [...devices.children].forEach(card => card.style.display = "");
-    return;
-  }
-
-  if(deviceMatches.length){
-    resultBlock.style.display = "none";
-    emptyBlock.style.display = "none";
-    devices.style.display = "";
-    deviceTitle.style.display = "";
-    [...devices.children].forEach(card => {
-      card.style.display = deviceMatches.includes(card) ? "" : "none";
-    });
-    return;
-  }
-
-  resultBlock.style.display = "none";
-  emptyBlock.style.display = "block";
-  devices.style.display = "none";
-  deviceTitle.style.display = "none";
+  resultCount.textContent = `${filtered.length} 个结果`;
+  emptyBlock.style.display = filtered.length ? "none" : "block";
+  resultList.innerHTML = filtered.map(renderCard).join("");
 }
 
-document.body.addEventListener("click", e => {
-  const chip = e.target.closest("[data-search]");
-  if(chip){
-    search.value = chip.dataset.search;
-    render();
-    return;
-  }
+chips.addEventListener("click", e => {
+  const chip = e.target.closest("[data-filter]");
+  if(!chip) return;
+  activeFilter = chip.dataset.filter;
+  chips.querySelectorAll(".chip").forEach(item => item.classList.toggle("active", item === chip));
+  render();
+});
 
+document.body.addEventListener("click", e => {
   const jump = e.target.closest("[data-jump]");
   if(jump){
     const el = document.getElementById(jump.dataset.jump);
