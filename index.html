@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>星露谷 · 全作物资料卡</title>
+<title>星露谷 · 杨桃资料卡</title>
 <style>
 :root{
   --bg:#fbf3dc;--paper:#fffaf0;--ink:#30271d;--muted:#746858;
@@ -29,1953 +29,534 @@ button,input{font:inherit}
   color:#fff4d6;border-bottom:4px solid var(--gold);
   box-shadow:0 4px 22px rgba(0,0,0,.18);
 }
-.header-inner{max-width:960px;margin:0 auto;padding:18px 16px 16px}
+.header-inner{max-width:900px;margin:0 auto;padding:18px 16px 16px}
 .eyebrow{font-size:12px;letter-spacing:.14em;color:#e7bd68;text-transform:uppercase;margin-bottom:6px}
 .header h1{font-size:clamp(25px,7vw,42px);line-height:1.05}
-.header p{font-size:14px;color:rgba(255,244,214,.76);margin-top:8px;line-height:1.45}
-.app{max-width:960px;margin:0 auto;padding:14px}
+.header p{font-size:14px;color:rgba(255,244,214,.76);margin-top:8px}
+.app{max-width:900px;margin:0 auto;padding:14px}
 .search-panel{
-  position:sticky;top:0;z-index:10;
   background:rgba(255,250,240,.96);border:1px solid rgba(216,189,130,.86);
   border-radius:20px;box-shadow:var(--shadow);padding:13px;margin-bottom:16px;
-  backdrop-filter:blur(10px);
 }
 .search-box{position:relative}
-.search-box span{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#9b8a70;font-size:22px}
-.search-box input{width:100%;border:2px solid var(--line);border-radius:999px;background:#fff;padding:13px 14px 13px 48px;font-size:18px;outline:0;color:var(--ink)}
+.search-box span{
+  position:absolute;left:15px;top:50%;transform:translateY(-50%);
+  color:#9b8a70;font-size:22px;
+}
+.search-box input{
+  width:100%;border:2px solid var(--line);border-radius:999px;background:#fff;
+  padding:13px 14px 13px 48px;font-size:18px;outline:0;color:var(--ink);
+}
 .search-box input:focus{border-color:var(--wood);box-shadow:0 0 0 4px rgba(111,71,40,.14)}
 .chips{display:flex;gap:8px;overflow:auto;padding-top:12px}
-.chip{border:1.5px solid var(--line);background:#fff8e7;color:var(--wood);border-radius:999px;padding:8px 13px;white-space:nowrap;font-size:14px;font-weight:800;cursor:pointer}
-.chip.hot{color:var(--red);background:#fff1ed;border-color:#e6aa98}.chip.active{background:#6f4728;color:#fff4d6;border-color:#6f4728}
-.section-title{margin:22px 3px 10px}.section-title h2{font-size:26px;line-height:1.2}.section-title p{color:var(--muted);margin-top:3px;font-size:14px}
-.result-list{display:grid;gap:14px}.result-card{background:rgba(255,250,240,.98);border:1.5px solid rgba(216,189,130,.92);border-radius:24px;box-shadow:0 7px 20px rgba(81,55,27,.10);padding:15px}
-.item-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--line-soft)}
-.item-title{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.item-title h3{font-size:25px}.en-name{font-size:13px;color:var(--muted);font-weight:800;margin-left:1px}
-.badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:900;background:#eee1c4;color:var(--wood)}
-.badge.red{background:rgba(189,75,57,.13);color:var(--red)}.badge.green{background:rgba(78,132,90,.14);color:var(--green)}.badge.blue{background:rgba(66,111,147,.13);color:var(--blue)}.badge.gold{background:rgba(200,149,45,.16);color:#9a651b}.badge.gray{background:#eee8dc;color:#7d6b55}
-.block{margin-top:14px}.block-title{display:flex;align-items:center;gap:8px;font-size:20px;margin:0 0 9px}.block-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line-soft),transparent)}
-.info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 10px}.info{background:#fff;border:1px solid var(--line-soft);border-radius:15px;padding:10px;min-height:62px}.info label{display:block;color:#97866e;font-size:12px;margin-bottom:3px}.info b{font-size:17px;line-height:1.22}.info small{display:block;color:var(--muted);font-size:11px;margin-top:2px;line-height:1.25}
-.source-box,.list-card{background:#fff;border:1px solid var(--line-soft);border-radius:16px;padding:10px 11px;margin:0 0 10px}.list-title{color:#97866e;font-size:12px;margin-bottom:6px}.primary-source-main{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.primary-source-main b{display:block;font-size:18px;line-height:1.22;color:var(--ink);font-weight:800}.primary-price{text-align:right;white-space:nowrap;flex:0 0 auto;color:var(--wood)!important}.source-sub{display:block;color:var(--muted);font-size:11px;margin-top:3px;line-height:1.35}.source-sub strong{color:#6f4728}
-.place-line{display:flex;flex-direction:column;align-items:flex-start;gap:5px}.place-row{display:flex;align-items:center;flex-wrap:wrap;gap:5px}.place-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 7px;border:1px solid rgba(216,189,130,.7);border-radius:999px;background:#fff9ec;line-height:1}.place-chip strong{font-size:14px;font-weight:850;color:var(--ink)}.place-chip em{font-style:normal;font-size:9px;line-height:1;color:#8b775e;background:#f3e5c5;border-radius:999px;padding:2px 4px}
-.row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px dashed var(--line-soft);font-size:14px}.row:first-of-type{border-top:0}.row span{color:var(--muted);flex:0 0 68px}.row b{color:var(--ink);font-weight:800;text-align:right;line-height:1.45}.row .soft{color:var(--muted);font-weight:700}.row b.left{text-align:left;flex:1}
-.profit-wrap{overflow:hidden;border:1.5px solid var(--line);border-radius:18px;background:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}.profit-table{width:100%;border-collapse:collapse;table-layout:fixed}.profit-table th{background:linear-gradient(180deg,#f3e4bd,#ead5a5);color:#5e3e1c;font-size:13px;font-weight:900;padding:9px 8px;text-align:left}.profit-table td{padding:10px 8px;font-size:15px;border-top:1px solid var(--line-soft);vertical-align:middle;text-align:left}.profit-table th:nth-child(1),.profit-table td:nth-child(1){width:34%}.profit-table th:nth-child(2),.profit-table td:nth-child(2){width:26%}.profit-table th:nth-child(3),.profit-table td:nth-child(3){width:40%}.profit-table tbody tr:nth-child(even){background:#fffaf2}.rate{font-weight:900;color:var(--green)}
-.inline-link{display:inline-flex;align-items:center;border:1.5px solid var(--line);background:#fff8e7;color:var(--blue);border-radius:999px;padding:2px 7px;margin:1px 2px;font-size:13px;font-weight:900;text-decoration:none;cursor:pointer;white-space:nowrap}.inline-link:hover{background:#edf6ff;border-color:#9fbfd7}
-details{background:#fff;border:1px solid var(--line-soft);border-radius:16px;padding:10px 11px;margin-top:10px}summary{cursor:pointer;font-weight:900;color:var(--wood)}.price-summary{font-size:15px;line-height:1.25}.small-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}.small-table th,.small-table td{padding:7px 6px;border-top:1px solid var(--line-soft);text-align:left}.small-table th{color:#6f4728}.small-table td{white-space:nowrap}
-.note{color:var(--muted);font-size:12px;line-height:1.35;margin-top:8px}.devices{display:grid;gap:10px}.device-card{background:#fff;border:1.5px solid rgba(216,189,130,.9);border-radius:19px;padding:13px;box-shadow:0 5px 14px rgba(81,55,27,.07)}.device-card.flash{animation:flash 1.1s ease}@keyframes flash{0%,100%{box-shadow:0 5px 14px rgba(81,55,27,.07)}30%{box-shadow:0 0 0 5px rgba(66,111,147,.22),0 5px 14px rgba(81,55,27,.07)}}.device-card h3{font-size:21px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.device-card p{color:var(--muted);font-size:15px;margin-top:6px;line-height:1.55}.empty{display:none;background:#fff;border:1px solid var(--line-soft);border-radius:18px;padding:18px;color:var(--muted)}
-.footer-note{margin:18px 2px 0;color:var(--muted);font-size:12px;line-height:1.5}.footer-note a{color:var(--blue);font-weight:800;text-decoration:none}
-
-.seed-mini-grid{display:grid;gap:7px;margin-top:2px}
-.seed-line{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-top:1px dashed var(--line-soft);font-size:14px;align-items:baseline}
-.seed-line:first-child{border-top:0}
-.seed-line span{color:var(--muted);white-space:nowrap}
-.seed-line b{color:var(--ink);font-weight:850;text-align:right;line-height:1.35}
-.empty-value{color:#a59782;font-weight:750}
-.row b.strict-value{color:var(--ink);font-weight:800;text-align:right;line-height:1.4;max-width:76%}
-
-@media(max-width:680px){.app{padding:10px}.search-panel{border-radius:0 0 22px 22px;margin:-10px -10px 16px}.info-grid{grid-template-columns:repeat(2,1fr)}.result-card{padding:12px}.primary-source-main{align-items:flex-start}.profit-table th,.profit-table td{font-size:13px;padding:9px 7px}.profit-table th:nth-child(1),.profit-table td:nth-child(1){width:32%}.profit-table th:nth-child(2),.profit-table td:nth-child(2){width:25%}.profit-table th:nth-child(3),.profit-table td:nth-child(3){width:43%}.row{font-size:13px}.row span{flex-basis:56px}.small-table{font-size:12px}}
+.chip{
+  border:1.5px solid var(--line);background:#fff8e7;color:var(--wood);
+  border-radius:999px;padding:8px 13px;white-space:nowrap;font-size:14px;
+  font-weight:700;cursor:pointer;
+}
+.chip.hot{color:var(--red);background:#fff1ed;border-color:#e6aa98}
+.section-title{margin:22px 3px 10px}
+.section-title h2{font-size:26px;line-height:1.2}
+.section-title p{color:var(--muted);margin-top:3px;font-size:14px}
+.result-card{
+  background:rgba(255,250,240,.98);border:1.5px solid rgba(216,189,130,.92);
+  border-radius:24px;box-shadow:0 7px 20px rgba(81,55,27,.10);padding:15px;
+}
+.item-head{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
+  padding-bottom:11px;border-bottom:1px solid var(--line-soft);
+}
+.item-title{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.item-title h3{font-size:25px}
+.badge{
+  display:inline-flex;align-items:center;justify-content:center;border-radius:999px;
+  padding:3px 9px;font-size:12px;font-weight:900;background:#eee1c4;color:var(--wood);
+}
+.badge.red{background:rgba(189,75,57,.13);color:var(--red)}
+.badge.green{background:rgba(78,132,90,.14);color:var(--green)}
+.badge.blue{background:rgba(66,111,147,.13);color:var(--blue)}
+.block{margin-top:14px}
+.block-title{display:flex;align-items:center;gap:8px;font-size:20px;margin:0 0 9px}
+.block-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line-soft),transparent)}
+.info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 10px}
+.info{
+  background:#fff;border:1px solid var(--line-soft);border-radius:15px;
+  padding:10px;min-height:62px;
+}
+.info label{display:block;color:#97866e;font-size:12px;margin-bottom:3px}
+.info b{font-size:18px;line-height:1.22}
+.info small{display:block;color:var(--muted);font-size:11px;margin-top:2px;line-height:1.25}
+.source-box{
+  background:#fff;
+  border:1px solid var(--line-soft);
+  border-radius:16px;
+  padding:10px 11px;
+  margin:0 0 10px;
+}
+.primary-source-row{
+  padding-top:0;
+  border-top:0;
+}
+.primary-source-main{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:baseline;
+}
+.primary-source-main b{
+  display:block;
+  font-size:18px;
+  line-height:1.22;
+  color:var(--ink);
+  font-weight:700;
+}
+.primary-source-main .primary-price{
+  text-align:right;
+  white-space:nowrap;
+  flex:0 0 auto;
+}
+.primary-source-row small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+  line-height:1.25;
+}
+.place-line{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:5px;
+}
+.place-row{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:5px;
+}
+.place-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:3px 7px;
+  border:1px solid rgba(216,189,130,.7);
+  border-radius:999px;
+  background:#fff9ec;
+  line-height:1;
+}
+.place-chip strong{
+  font-size:14px;
+  font-weight:850;
+  color:var(--ink);
+}
+.place-chip em{
+  font-style:normal;
+  font-size:9px;
+  line-height:1;
+  color:#8b775e;
+  background:#f3e5c5;
+  border-radius:999px;
+  padding:2px 4px;
+}
+.list-card{
+  background:#fff;border:1px solid var(--line-soft);border-radius:16px;
+  padding:10px 11px;margin:0 0 10px;
+}
+.list-title{color:#97866e;font-size:12px;margin-bottom:6px}
+.row{
+  display:flex;justify-content:space-between;gap:12px;padding:7px 0;
+  border-top:1px dashed var(--line-soft);font-size:14px;
+}
+.row:first-of-type{border-top:0}
+.row span{color:var(--muted)}
+.row b{color:var(--ink);font-weight:800;text-align:right}
+.row b.nowrap{white-space:nowrap}
+.row b.gift-note{
+  max-width:none;
+  line-height:1.3;
+  font-size:13px;
+  text-align:right;
+}
+.gift-line{
+  display:block;
+  white-space:nowrap;
+}
+.profit-wrap{
+  overflow:hidden;border:1.5px solid var(--line);border-radius:18px;
+  background:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+}
+.profit-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.profit-table th{
+  background:linear-gradient(180deg,#f3e4bd,#ead5a5);
+  color:#5e3e1c;font-size:13px;font-weight:900;padding:9px 8px;text-align:left;
+}
+.profit-table td{
+  padding:10px 8px;font-size:15px;border-top:1px solid var(--line-soft);
+  vertical-align:middle;text-align:left;
+}
+.profit-table th:nth-child(1),.profit-table td:nth-child(1){width:40%}
+.profit-table th:nth-child(2),.profit-table td:nth-child(2){width:25%}
+.profit-table th:nth-child(3),.profit-table td:nth-child(3){width:17%;white-space:nowrap}
+.profit-table th:nth-child(4),.profit-table td:nth-child(4){width:18%;white-space:nowrap}
+.profit-table tbody tr:nth-child(even){background:#fffaf2}
+.rate{font-weight:900;color:var(--green)}
+.rate.zero{color:var(--muted)}
+.inline-link{
+  display:inline-flex;align-items:center;border:1.5px solid var(--line);
+  background:#fff8e7;color:var(--blue);border-radius:999px;
+  padding:2px 7px;font-size:13px;font-weight:900;text-decoration:none;
+}
+details{
+  background:#fff;border:1px solid var(--line-soft);border-radius:16px;
+  padding:10px 11px;margin-top:10px;
+}
+summary{cursor:pointer;font-weight:900;color:var(--wood)}
+.price-summary{
+  font-size:15px;
+  line-height:1.25;
+}
+.small-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+.small-table th,.small-table td{padding:7px 6px;border-top:1px solid var(--line-soft);text-align:left}
+.small-table th{color:#6f4728}
+.devices{display:grid;gap:10px}
+.device-card{
+  background:#fff;border:1.5px solid rgba(216,189,130,.9);border-radius:19px;
+  padding:13px;box-shadow:0 5px 14px rgba(81,55,27,.07);
+}
+.device-card.flash{animation:flash 1.1s ease}
+@keyframes flash{
+  0%,100%{box-shadow:0 5px 14px rgba(81,55,27,.07)}
+  30%{box-shadow:0 0 0 5px rgba(66,111,147,.22),0 5px 14px rgba(81,55,27,.07)}
+}
+.device-card h3{font-size:21px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.device-card p{color:var(--muted);font-size:15px;margin-top:6px;line-height:1.55}
+.empty{
+  display:none;background:#fff;border:1px solid var(--line-soft);
+  border-radius:18px;padding:18px;color:var(--muted);
+}
+@media(max-width:640px){
+  .app{padding:10px}
+  .search-panel{border-radius:0 0 22px 22px;margin:-10px -10px 16px}
+  .info-grid{grid-template-columns:repeat(2,1fr)}
+  .result-card{padding:12px}
+  .primary-source-main{
+    align-items:flex-start;
+  }
+  .row b.gift-note{
+    max-width:none;
+    font-size:12px;
+  }
+  .profit-table th,.profit-table td{font-size:13px;padding:9px 7px}
+  .profit-table th:nth-child(1),.profit-table td:nth-child(1){width:37%}
+  .profit-table th:nth-child(2),.profit-table td:nth-child(2){width:25%}
+  .profit-table th:nth-child(3),.profit-table td:nth-child(3){width:18%}
+  .profit-table th:nth-child(4),.profit-table td:nth-child(4){width:20%}
+}
 </style>
 </head>
 <body>
-<header class="header"><div class="header-inner"><div class="eyebrow">Stardew Valley · Crop Guide</div><h1>🌾 全作物资料卡</h1><p>按「种子 → 种植 → 收益 → 用途」整理。肥料与耕种加成另做独立板块，这里只保留作物本体信息。</p></div></header>
+<header class="header">
+  <div class="header-inner">
+    <div class="eyebrow">Stardew Valley · Crop Detail Demo</div>
+    <h1>⭐ 杨桃资料卡</h1>
+    <p>按「种子 → 种植 → 收益 → 用途」整理。</p>
+  </div>
+</header>
+
 <main class="app">
-<section class="search-panel"><div class="search-box"><span>🔍</span><input id="search" placeholder="搜杨桃、夏季、小桶、献祭、工匠、潘妮…" /></div><div class="chips" id="chips"><button class="chip hot active" data-filter="all">全部</button><button class="chip" data-filter="春季">春季</button><button class="chip" data-filter="夏季">夏季</button><button class="chip" data-filter="秋季">秋季</button><button class="chip" data-filter="冬季">冬季</button><button class="chip" data-filter="全年">全年</button><button class="chip" data-filter="特殊">特殊</button></div></section>
-<section><div class="section-title"><h2>搜索结果</h2><p id="resultCount">0 个结果</p></div><div id="resultList" class="result-list"></div><section id="emptyBlock" class="empty">没有找到结果。</section></section>
-<section class="section-title" id="deviceTitle"><h2>相关设备 / 建筑</h2><p>收益和用途里的名称可以跳到这里。</p></section>
-<section class="devices" id="devices">
-<article class="device-card" id="seedmaker" data-name="种子生产器"><h3>🌱 种子生产器 <span class="badge">工匠设备</span></h3><p>将多数作物放入后生成对应种子。高品质作物不会让新种子更容易长出高品质作物。</p></article>
-<article class="device-card" id="keg" data-name="小桶"><h3>🍷 小桶 <span class="badge">工匠设备</span></h3><p>水果通常酿酒，蔬菜通常榨汁。啤酒花、小麦、咖啡豆、茶叶会产出特殊饮品。</p></article>
-<article class="device-card" id="cask" data-name="陈酿桶"><h3>🍾 陈酿桶 <span class="badge">工匠设备</span></h3><p>酒类可以在地窖陈酿提升品质。更适合高单价酒，比如杨桃酒和上古水果酒。</p></article>
-<article class="device-card" id="jar" data-name="罐头瓶"><h3>🫙 罐头瓶 <span class="badge">工匠设备</span></h3><p>水果做果酱，蔬菜做腌菜。低价作物用罐头瓶通常更容易回本。</p></article>
-<article class="device-card" id="dehydrator" data-name="烘干机"><h3>🍇 烘干机 <span class="badge">工匠设备</span></h3><p>5个同种水果变成干果。适合蓝莓、蔓越莓等大量水果的批处理。</p></article>
-<article class="device-card" id="oil" data-name="榨油机"><h3>🛢️ 榨油机 <span class="badge">工匠设备</span></h3><p>玉米和向日葵可以制成油。向日葵种子也能进榨油机。</p></article>
-<article class="device-card" id="bee" data-name="蜂房"><h3>🍯 蜂房 <span class="badge">设备</span></h3><p>开花作物在蜂房范围内会提升蜂蜜售价。玫瑰仙子蜂蜜价值最高。</p></article>
-<article class="device-card" id="mill" data-name="磨坊"><h3>🌾 磨坊 <span class="badge">建筑</span></h3><p>小麦、甜菜、未碾米可加工成小麦粉、糖和大米。</p></article>
-<article class="device-card" id="junimo" data-name="祝尼魔屋"><h3>🏡 祝尼魔屋 <span class="badge">建筑</span></h3><p>法师处建造。杨桃是建造材料之一，需要9个。</p></article>
-</section>
-<div class="footer-note">资料以 Stardew Valley Wiki 的 1.6 作物页为底稿。当前版本强制统一每张卡的字段：种子4行、种植4格、收益2行、用途6行。肥料、农学家、工匠职业加成建议做成独立专题页。</div>
+  <section class="search-panel">
+    <div class="search-box">
+      <span>🔍</span>
+      <input id="search" value="杨桃" placeholder="搜杨桃、小桶、陈酿桶、祝尼魔屋…" />
+    </div>
+    <div class="chips">
+      <button class="chip hot" data-search="杨桃">杨桃</button>
+      <button class="chip" data-search="小桶">小桶</button>
+      <button class="chip" data-search="陈酿桶">陈酿桶</button>
+      <button class="chip" data-search="祝尼魔屋">祝尼魔屋</button>
+    </div>
+  </section>
+
+  <section id="resultBlock">
+    <div class="section-title">
+      <h2>搜索结果</h2>
+      <p id="resultCount">1 个结果</p>
+    </div>
+
+    <article class="result-card" id="starfruitCard">
+      <div class="item-head">
+        <div class="item-title">
+          <h3>⭐ 杨桃</h3>
+          <span class="badge">作物</span>
+          <span class="badge red">高价值</span>
+          <span class="badge green">夏</span>
+          <span class="badge blue">一次收获</span>
+        </div>
+      </div>
+
+      <section class="block">
+        <h3 class="block-title">🌱 种子</h3>
+
+        <div class="source-box primary-source">
+          <div class="list-title">主要来源</div>
+          <div class="primary-source-row">
+            <div class="primary-source-main">
+              <b>绿洲商店 · Sandy</b>
+              <b class="primary-price">400g / 1个</b>
+            </div>
+            <small>沙漠（需解锁） · 9:00AM-11:50PM</small>
+          </div>
+        </div>
+
+        <div class="list-card">
+          <div class="list-title">其他来源</div>
+          <div class="row"><span>旅行货车（偶尔出现）</span><b class="nowrap">600-1000g / 1个</b></div>
+          <div class="row"><span>博物馆捐赠15件</span><b class="nowrap">奖励1个</b></div>
+          <div class="row"><span><a class="inline-link" href="#seedmaker" data-jump="seedmaker">种子生产器</a></span><b>杨桃 → 杨桃种子</b></div>
+          <div class="row"><span>骷髅洞穴宝箱层</span><b class="nowrap">5-20个（1/702概率）</b></div>
+        </div>
+
+        <div class="list-card">
+          <div class="list-title">其他杨桃获得方式</div>
+          <div class="row"><span>夏威夷宴会</span><b class="nowrap">3000g / 1个杨桃</b></div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3 class="block-title">🌾 种植</h3>
+        <div class="info-grid">
+          <div class="info">
+            <label>收获周期</label>
+            <b>13天（1次）</b>
+          </div>
+          <div class="info">
+            <label>种植截止</label>
+            <b>夏15</b>
+            <small>普通农场不加速</small>
+          </div>
+          <div class="info">
+            <label>耕种经验</label>
+            <b>43 XP</b>
+            <small>收获时获得</small>
+          </div>
+          <div class="info">
+            <label>种植地点</label>
+            <div class="place-line">
+              <div class="place-row">
+                <span class="place-chip"><strong>农场</strong><em>夏季</em></span>
+              </div>
+              <div class="place-row">
+                <span class="place-chip"><strong>温室</strong><em>全年</em></span>
+                <span class="place-chip"><strong>姜岛</strong><em>全年</em></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3 class="block-title">💰 收益</h3>
+        <div class="profit-wrap">
+          <table class="profit-table">
+            <thead>
+              <tr>
+                <th>处理方式</th>
+                <th>产物</th>
+                <th>售价</th>
+                <th>售价增幅</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>直接卖掉</td>
+                <td>杨桃</td>
+                <td>750g</td>
+                <td><span class="rate zero">0%</span></td>
+              </tr>
+              <tr>
+                <td>杨桃 + <a class="inline-link" href="#keg" data-jump="keg">小桶</a></td>
+                <td>杨桃酒</td>
+                <td>2250g</td>
+                <td><span class="rate">+200%</span></td>
+              </tr>
+              <tr>
+                <td>杨桃酒 + <a class="inline-link" href="#cask" data-jump="cask">陈酿桶</a></td>
+                <td>铱星杨桃酒</td>
+                <td>4500g</td>
+                <td><span class="rate">+500%</span></td>
+              </tr>
+              <tr>
+                <td>杨桃 + <a class="inline-link" href="#jar" data-jump="jar">罐头瓶</a></td>
+                <td>杨桃果酱</td>
+                <td>1550g</td>
+                <td><span class="rate">+107%</span></td>
+              </tr>
+              <tr>
+                <td>杨桃×5 + <a class="inline-link" href="#dehydrator" data-jump="dehydrator">烘干机</a></td>
+                <td>杨桃干</td>
+                <td>5650g</td>
+                <td><span class="rate">+51%</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <details>
+          <summary class="price-summary">进阶售价</summary>
+          <table class="small-table">
+            <thead>
+              <tr>
+                <th>项目</th>
+                <th>普通</th>
+                <th>银星</th>
+                <th>金星</th>
+                <th>铱星</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>杨桃</td>
+                <td>750g</td>
+                <td>937g</td>
+                <td>1125g</td>
+                <td>1500g</td>
+              </tr>
+              <tr>
+                <td>杨桃酒</td>
+                <td>2250g</td>
+                <td>2812g</td>
+                <td>3375g</td>
+                <td>4500g</td>
+              </tr>
+              <tr>
+                <td>杨桃酒（工匠）</td>
+                <td>3150g</td>
+                <td>3936g</td>
+                <td>4725g</td>
+                <td>6300g</td>
+              </tr>
+            </tbody>
+          </table>
+        </details>
+      </section>
+
+      <section class="block">
+        <h3 class="block-title">📌 用途</h3>
+        <div class="list-card">
+          <div class="row"><span>献祭</span><b>重混布告栏 · 染料收集包可选项</b></div>
+          <div class="row"><span>吃掉</span><b>125能量 | 56生命值</b></div>
+          <div class="row"><span>食谱</span><b>无</b></div>
+          <div class="row"><span>送礼</span><b class="gift-note"><span class="gift-line">多数村民中立</span><span class="gift-line">阿比盖尔、海莉、贾斯、文森特不喜欢</span></b></div>
+          <div class="row"><span>任务</span><b>第2年夏15 · 肯特索要1个杨桃</b></div>
+          <div class="row"><span>制造 / 建筑</span><b><a class="inline-link" href="#junimo" data-jump="junimo">祝尼魔屋</a> 需要杨桃×9</b></div>
+          <div class="row"><span>缝纫 / 染色</span><b>精灵裤；黄色染料</b></div>
+        </div>
+      </section>
+    </article>
+  </section>
+
+  <section id="emptyBlock" class="empty">没有找到结果。</section>
+
+  <section class="section-title" id="deviceTitle">
+    <h2>相关设备 / 建筑</h2>
+    <p>收益和用途里的名称可以跳到这里。</p>
+  </section>
+
+  <section class="devices" id="devices">
+    <article class="device-card" id="seedmaker" data-name="种子生产器">
+      <h3>🌱 种子生产器 <span class="badge">工匠设备</span></h3>
+      <p>将作物放入后生成对应种子。杨桃可以放入种子生产器生成杨桃种子。</p>
+    </article>
+    <article class="device-card" id="keg" data-name="小桶">
+      <h3>🍷 小桶 <span class="badge">工匠设备</span></h3>
+      <p>水果→酒，蔬菜→汁。杨桃、远古果实、啤酒花都常用小桶处理。</p>
+    </article>
+    <article class="device-card" id="cask" data-name="陈酿桶">
+      <h3>🍾 陈酿桶 <span class="badge">工匠设备</span></h3>
+      <p>酒和奶酪可以陈酿提升品质。需要房屋升级到地窖后使用。</p>
+    </article>
+    <article class="device-card" id="jar" data-name="罐头瓶">
+      <h3>🫙 罐头瓶 <span class="badge">工匠设备</span></h3>
+      <p>水果→果酱，蔬菜→泡菜。杨桃果酱售价 1550g。</p>
+    </article>
+    <article class="device-card" id="dehydrator" data-name="烘干机">
+      <h3>🍇 烘干机 <span class="badge">工匠设备</span></h3>
+      <p>5个水果→干果。杨桃干售价 5650g。</p>
+    </article>
+    <article class="device-card" id="junimo" data-name="祝尼魔屋">
+      <h3>🏡 祝尼魔屋 <span class="badge">建筑</span></h3>
+      <p>法师处建造。需要 20,000g、石头×200、杨桃×9、纤维×100。</p>
+    </article>
+  </section>
 </main>
+
 <script>
-const CROPS = [
-  {
-    "season": "春季",
-    "name_zh": "蓝爵士",
-    "name_en": "Blue Jazz",
-    "seed": "Jazz Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "30g",
-    "other_sources": [
-      "Joja超市 37g",
-      "旅行货车",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 7,
-    "regrowth": null,
-    "deadline": "春季21",
-    "xp": 10,
-    "base": 50,
-    "energy": "45能量 | 20生命值",
-    "category": "flower",
-    "artisan": "不推荐加工｜蜂房：蓝爵士蜂蜜 200g",
-    "recommend": "花蜜增值、送礼、幸运午餐",
-    "bundle": "—",
-    "recipes": "幸运午餐",
-    "gifts": "多数村民喜欢；桑迪最爱蓝爵士蜂蜜",
-    "tasks": "—",
-    "notes": "花类作物，放在蜂房附近更有价值。",
-    "prices": {
-      "normal": 50,
-      "silver": 62,
-      "gold": 75,
-      "iridium": 100
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "春季 蓝爵士 blue jazz jazz seeds 皮埃尔杂货店 30g 不推荐加工｜蜂房：蓝爵士蜂蜜 200g 花蜜增值、送礼、幸运午餐 — 幸运午餐 多数村民喜欢；桑迪最爱蓝爵士蜂蜜 — 花类作物，放在蜂房附近更有价值。 45能量 | 20生命值 joja超市 37g 旅行货车 种子生产器"
-  },
-  {
-    "season": "春季",
-    "name_zh": "胡萝卜",
-    "name_en": "Carrot",
-    "seed": "Carrot Seeds",
-    "main_source": "春季种子点",
-    "seed_price": "看条件",
-    "other_sources": [
-      "浣熊商店",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 3,
-    "regrowth": null,
-    "deadline": "春季25",
-    "xp": 8,
-    "base": 35,
-    "energy": "75能量 | 33生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 78g｜罐头瓶：腌菜 120g",
-    "recommend": "前期补能量比加工更实用",
-    "bundle": "—",
-    "recipes": "—",
-    "gifts": "蔬菜类，多数村民喜欢；可喂马当天速度 +0.4",
-    "tasks": "—",
-    "notes": "1.6新增。成熟快，早期很舒服。",
-    "prices": {
-      "normal": 35,
-      "silver": 43,
-      "gold": 52,
-      "iridium": 70
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "春季 胡萝卜 carrot carrot seeds 春季种子点 看条件 小桶：汁 78g｜罐头瓶：腌菜 120g 前期补能量比加工更实用 — — 蔬菜类，多数村民喜欢；可喂马当天速度 +0.4 — 1.6新增。成熟快，早期很舒服。 75能量 | 33生命值 浣熊商店 种子生产器"
-  },
-  {
-    "season": "春季",
-    "name_zh": "花椰菜",
-    "name_en": "Cauliflower",
-    "seed": "Cauliflower Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "80g",
-    "other_sources": [
-      "Joja超市 100g",
-      "夜市魔法商船 春16",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 12,
-    "regrowth": null,
-    "deadline": "春季16",
-    "xp": 23,
-    "base": 175,
-    "energy": "75能量 | 33生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 393g｜罐头瓶：腌菜 400g",
-    "recommend": "罐头瓶略优，金星留品质作物包",
-    "bundle": "春季作物包；品质作物包 需金星×5",
-    "recipes": "奶酪花椰菜",
-    "gifts": "玛鲁最爱；蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "可长成巨大作物。",
-    "prices": {
-      "normal": 175,
-      "silver": 218,
-      "gold": 262,
-      "iridium": 350
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "春季 花椰菜 cauliflower cauliflower seeds 皮埃尔杂货店 80g 小桶：汁 393g｜罐头瓶：腌菜 400g 罐头瓶略优，金星留品质作物包 春季作物包；品质作物包 需金星×5 奶酪花椰菜 玛鲁最爱；蔬菜类多数村民喜欢 — 可长成巨大作物。 75能量 | 33生命值 joja超市 100g 夜市魔法商船 春16 种子生产器"
-  },
-  {
-    "season": "春季/夏季",
-    "name_zh": "咖啡豆",
-    "name_en": "Coffee Bean",
-    "seed": "Coffee Bean",
-    "main_source": "尘灵掉落",
-    "seed_price": "掉落",
-    "other_sources": [
-      "旅行货车 100-2500g",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季",
-      "夏季"
-    ],
-    "growth_days": 10,
-    "regrowth": "2天",
-    "deadline": "春/夏18",
-    "xp": 4,
-    "base": 15,
-    "energy": "不可食用",
-    "category": "special",
-    "artisan": "小桶：咖啡豆×5 → 咖啡 150g",
-    "recommend": "春季尽早种，跨到夏季复收",
-    "bundle": "—",
-    "recipes": "咖啡；三倍浓缩咖啡",
-    "gifts": "哈维最爱咖啡；咖啡豆本身不适合送礼",
-    "tasks": "—",
-    "notes": "每次收获通常获得4个咖啡豆。",
-    "prices": {
-      "normal": 15,
-      "silver": 18,
-      "gold": 22,
-      "iridium": 30
-    },
-    "regrowth_label": "复收",
-    "search_text": "春季/夏季 咖啡豆 coffee bean coffee bean 尘灵掉落 掉落 小桶：咖啡豆×5 → 咖啡 150g 春季尽早种，跨到夏季复收 — 咖啡；三倍浓缩咖啡 哈维最爱咖啡；咖啡豆本身不适合送礼 — 每次收获通常获得4个咖啡豆。 不可食用 旅行货车 100-2500g 种子生产器"
-  },
-  {
-    "season": "春季",
-    "name_zh": "大蒜",
-    "name_en": "Garlic",
-    "seed": "Garlic Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "40g",
-    "other_sources": [
-      "第2年起",
-      "夜市魔法商船 春15",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 4,
-    "regrowth": null,
-    "deadline": "春季24",
-    "xp": 12,
-    "base": 60,
-    "energy": "20能量 | 9生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 135g｜罐头瓶：腌菜 170g",
-    "recommend": "短周期补货，罐头瓶更高",
-    "bundle": "—",
-    "recipes": "大蒜油、蒜香蜗牛等",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "第2年起稳定购买。",
-    "prices": {
-      "normal": 60,
-      "silver": 75,
-      "gold": 90,
-      "iridium": 120
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "春季 大蒜 garlic garlic seeds 皮埃尔杂货店 40g 小桶：汁 135g｜罐头瓶：腌菜 170g 短周期补货，罐头瓶更高 — 大蒜油、蒜香蜗牛等 蔬菜类多数村民喜欢 — 第2年起稳定购买。 20能量 | 9生命值 第2年起 夜市魔法商船 春15 种子生产器"
-  },
-  {
-    "season": "春季",
-    "name_zh": "绿豆",
-    "name_en": "Green Bean",
-    "seed": "Bean Starter",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "60g",
-    "other_sources": [
-      "Joja超市 75g",
-      "夜市魔法商船 春15",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 10,
-    "regrowth": "3天",
-    "deadline": "春季18",
-    "xp": 9,
-    "base": 40,
-    "energy": "25能量 | 11生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 90g｜罐头瓶：腌菜 130g",
-    "recommend": "献祭留1个，其余随意",
-    "bundle": "春季作物包",
-    "recipes": "绿豆锅",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "棚架作物，不可穿过。",
-    "prices": {
-      "normal": 40,
-      "silver": 50,
-      "gold": 60,
-      "iridium": 80
-    },
-    "regrowth_label": "复收",
-    "search_text": "春季 绿豆 green bean bean starter 皮埃尔杂货店 60g 小桶：汁 90g｜罐头瓶：腌菜 130g 献祭留1个，其余随意 春季作物包 绿豆锅 蔬菜类多数村民喜欢 — 棚架作物，不可穿过。 25能量 | 11生命值 joja超市 75g 夜市魔法商船 春15 种子生产器"
-  },
-  {
-    "season": "春季",
-    "name_zh": "羽衣甘蓝",
-    "name_en": "Kale",
-    "seed": "Kale Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "70g",
-    "other_sources": [
-      "Joja超市 87g",
-      "夜市魔法商船 春16",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 6,
-    "regrowth": null,
-    "deadline": "春季22",
-    "xp": 17,
-    "base": 110,
-    "energy": "50能量 | 22生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 247g｜罐头瓶：腌菜 270g",
-    "recommend": "春季刷经验不错，罐头瓶更高",
-    "bundle": "—",
-    "recipes": "鲑鱼晚餐、炒菜等",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "短周期，经验收益舒服。",
-    "prices": {
-      "normal": 110,
-      "silver": 137,
-      "gold": 165,
-      "iridium": 220
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "春季 羽衣甘蓝 kale kale seeds 皮埃尔杂货店 70g 小桶：汁 247g｜罐头瓶：腌菜 270g 春季刷经验不错，罐头瓶更高 — 鲑鱼晚餐、炒菜等 蔬菜类多数村民喜欢 — 短周期，经验收益舒服。 50能量 | 22生命值 joja超市 87g 夜市魔法商船 春16 种子生产器"
-  },
-  {
-    "season": "春季",
-    "name_zh": "防风草",
-    "name_en": "Parsnip",
-    "seed": "Parsnip Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "20g",
-    "other_sources": [
-      "Joja超市 25g",
-      "开局赠送15粒",
-      "夜市魔法商船 春15",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 4,
-    "regrowth": null,
-    "deadline": "春季24",
-    "xp": 8,
-    "base": 35,
-    "energy": "25能量 | 11生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 78g｜罐头瓶：腌菜 120g",
-    "recommend": "前期任务、献祭、金星品质作物包优先",
-    "bundle": "春季作物包；品质作物包 需金星×5",
-    "recipes": "防风草汤、农夫午餐",
-    "gifts": "帕姆最爱；蔬菜类多数村民喜欢",
-    "tasks": "新手任务需要收获1个",
-    "notes": "便宜好种，适合第一年春季铺量。",
-    "prices": {
-      "normal": 35,
-      "silver": 43,
-      "gold": 52,
-      "iridium": 70
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "春季 防风草 parsnip parsnip seeds 皮埃尔杂货店 20g 小桶：汁 78g｜罐头瓶：腌菜 120g 前期任务、献祭、金星品质作物包优先 春季作物包；品质作物包 需金星×5 防风草汤、农夫午餐 帕姆最爱；蔬菜类多数村民喜欢 新手任务需要收获1个 便宜好种，适合第一年春季铺量。 25能量 | 11生命值 joja超市 25g 开局赠送15粒 夜市魔法商船 春15 种子生产器"
-  },
-  {
-    "season": "春季",
-    "name_zh": "土豆",
-    "name_en": "Potato",
-    "seed": "Potato Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "50g",
-    "other_sources": [
-      "Joja超市 62g",
-      "夜市魔法商船 春15",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 6,
-    "regrowth": null,
-    "deadline": "春季22",
-    "xp": 14,
-    "base": 80,
-    "energy": "25能量 | 11生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 180g｜罐头瓶：腌菜 210g",
-    "recommend": "春季前期卖钱稳定",
-    "bundle": "春季作物包",
-    "recipes": "薯饼",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "约25%概率额外产出1个。",
-    "prices": {
-      "normal": 80,
-      "silver": 100,
-      "gold": 120,
-      "iridium": 160
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "春季 土豆 potato potato seeds 皮埃尔杂货店 50g 小桶：汁 180g｜罐头瓶：腌菜 210g 春季前期卖钱稳定 春季作物包 薯饼 蔬菜类多数村民喜欢 — 约25%概率额外产出1个。 25能量 | 11生命值 joja超市 62g 夜市魔法商船 春15 种子生产器"
-  },
-  {
-    "season": "春季",
-    "name_zh": "大黄",
-    "name_en": "Rhubarb",
-    "seed": "Rhubarb Seeds",
-    "main_source": "绿洲商店 · Sandy",
-    "seed_price": "100g",
-    "other_sources": [
-      "旅行货车 150-1000g",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 13,
-    "regrowth": null,
-    "deadline": "春季15",
-    "xp": 26,
-    "base": 220,
-    "energy": "不可食用",
-    "category": "fruit",
-    "artisan": "小桶：酒 660g｜罐头瓶：果酱 490g｜烘干机：干果 1675g",
-    "recommend": "春季高价值水果，优先小桶",
-    "bundle": "—",
-    "recipes": "大黄派",
-    "gifts": "水果类多数村民喜欢",
-    "tasks": "—",
-    "notes": "解锁沙漠后春季很值得种。",
-    "prices": {
-      "normal": 220,
-      "silver": 275,
-      "gold": 330,
-      "iridium": 440
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "春季 大黄 rhubarb rhubarb seeds 绿洲商店 · sandy 100g 小桶：酒 660g｜罐头瓶：果酱 490g｜烘干机：干果 1675g 春季高价值水果，优先小桶 — 大黄派 水果类多数村民喜欢 — 解锁沙漠后春季很值得种。 不可食用 旅行货车 150-1000g 种子生产器"
-  },
-  {
-    "season": "春季",
-    "name_zh": "草莓",
-    "name_en": "Strawberry",
-    "seed": "Strawberry Seeds",
-    "main_source": "复活节商店",
-    "seed_price": "100g",
-    "other_sources": [
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 8,
-    "regrowth": "4天",
-    "deadline": "春季20",
-    "xp": 18,
-    "base": 120,
-    "energy": "50能量 | 22生命值",
-    "category": "fruit",
-    "artisan": "小桶：酒 360g｜罐头瓶：果酱 290g｜烘干机：干果 925g",
-    "recommend": "第一年复活节当天种可收2次，后期可小桶",
-    "bundle": "—",
-    "recipes": "—",
-    "gifts": "玛鲁、德米特里厄斯最爱；水果类多数村民喜欢",
-    "tasks": "—",
-    "notes": "春季复收核心作物。",
-    "prices": {
-      "normal": 120,
-      "silver": 150,
-      "gold": 180,
-      "iridium": 240
-    },
-    "regrowth_label": "复收",
-    "search_text": "春季 草莓 strawberry strawberry seeds 复活节商店 100g 小桶：酒 360g｜罐头瓶：果酱 290g｜烘干机：干果 925g 第一年复活节当天种可收2次，后期可小桶 — — 玛鲁、德米特里厄斯最爱；水果类多数村民喜欢 — 春季复收核心作物。 50能量 | 22生命值 种子生产器"
-  },
-  {
-    "season": "春季",
-    "name_zh": "郁金香",
-    "name_en": "Tulip",
-    "seed": "Tulip Bulb",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "20g",
-    "other_sources": [
-      "Joja超市 25g",
-      "夜市魔法商船 春15",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 6,
-    "regrowth": null,
-    "deadline": "春季22",
-    "xp": 7,
-    "base": 30,
-    "energy": "45能量 | 20生命值",
-    "category": "flower",
-    "artisan": "不推荐加工｜蜂房：郁金香蜂蜜 160g",
-    "recommend": "送礼或蜂蜜增值",
-    "bundle": "—",
-    "recipes": "—",
-    "gifts": "伊芙琳最爱；多数村民喜欢",
-    "tasks": "—",
-    "notes": "便宜花类作物。",
-    "prices": {
-      "normal": 30,
-      "silver": 37,
-      "gold": 45,
-      "iridium": 60
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "春季 郁金香 tulip tulip bulb 皮埃尔杂货店 20g 不推荐加工｜蜂房：郁金香蜂蜜 160g 送礼或蜂蜜增值 — — 伊芙琳最爱；多数村民喜欢 — 便宜花类作物。 45能量 | 20生命值 joja超市 25g 夜市魔法商船 春15 种子生产器"
-  },
-  {
-    "season": "春季",
-    "name_zh": "未碾米",
-    "name_en": "Unmilled Rice",
-    "seed": "Rice Shoot",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "40g",
-    "other_sources": [
-      "第2年起",
-      "怪物掉落",
-      "钓鱼宝箱",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "春季"
-    ],
-    "growth_days": 8,
-    "regrowth": null,
-    "deadline": "春季20（靠水春22）",
-    "xp": 7,
-    "base": 30,
-    "energy": "不可食用",
-    "category": "special",
-    "artisan": "磨坊：未碾米 → 大米 100g",
-    "recommend": "靠水种更快，不用额外浇水",
-    "bundle": "—",
-    "recipes": "大米可用于多种料理",
-    "gifts": "—",
-    "tasks": "—",
-    "notes": "靠近水源约6天成熟。",
-    "prices": {
-      "normal": 30,
-      "silver": 37,
-      "gold": 45,
-      "iridium": 60
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "春季 未碾米 unmilled rice rice shoot 皮埃尔杂货店 40g 磨坊：未碾米 → 大米 100g 靠水种更快，不用额外浇水 — 大米可用于多种料理 — — 靠近水源约6天成熟。 不可食用 第2年起 怪物掉落 钓鱼宝箱 种子生产器"
-  },
-  {
-    "season": "夏季",
-    "name_zh": "蓝莓",
-    "name_en": "Blueberry",
-    "seed": "Blueberry Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "80g",
-    "other_sources": [
-      "夜市魔法商船 夏16",
-      "旅行货车 120-1000g",
-      "骷髅洞穴宝箱",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "growth_days": 13,
-    "regrowth": "4天",
-    "deadline": "夏季15",
-    "xp": 10,
-    "base": 50,
-    "energy": "25能量 | 11生命值",
-    "category": "fruit",
-    "artisan": "小桶：酒 150g｜罐头瓶：果酱 150g｜烘干机：干果 400g",
-    "recommend": "直接卖也稳，批量可烘干或做果酱",
-    "bundle": "夏季作物包",
-    "recipes": "蓝莓千层酥、水果沙拉",
-    "gifts": "水果类多数村民喜欢",
-    "tasks": "—",
-    "notes": "每次至少产出3个。",
-    "prices": {
-      "normal": 50,
-      "silver": 62,
-      "gold": 75,
-      "iridium": 100
-    },
-    "regrowth_label": "复收",
-    "search_text": "夏季 蓝莓 blueberry blueberry seeds 皮埃尔杂货店 80g 小桶：酒 150g｜罐头瓶：果酱 150g｜烘干机：干果 400g 直接卖也稳，批量可烘干或做果酱 夏季作物包 蓝莓千层酥、水果沙拉 水果类多数村民喜欢 — 每次至少产出3个。 25能量 | 11生命值 夜市魔法商船 夏16 旅行货车 120-1000g 骷髅洞穴宝箱 种子生产器"
-  },
-  {
-    "season": "夏季/秋季",
-    "name_zh": "玉米",
-    "name_en": "Corn",
-    "seed": "Corn Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "150g",
-    "other_sources": [
-      "Joja超市夏季187g；秋季150g",
-      "夜市魔法商船 夏16/秋16",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季",
-      "秋季"
-    ],
-    "growth_days": 14,
-    "regrowth": "4天",
-    "deadline": "夏/秋14",
-    "xp": 10,
-    "base": 50,
-    "energy": "25能量 | 11生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 112g｜罐头瓶：腌菜 150g｜榨油机：油 100g",
-    "recommend": "献祭金星优先，跨夏秋可长期复收",
-    "bundle": "秋季作物包；品质作物包 需金星×5",
-    "recipes": "玉米饼",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "夏秋跨季，不会在夏末枯死。",
-    "prices": {
-      "normal": 50,
-      "silver": 62,
-      "gold": 75,
-      "iridium": 100
-    },
-    "regrowth_label": "复收",
-    "search_text": "夏季/秋季 玉米 corn corn seeds 皮埃尔杂货店 150g 小桶：汁 112g｜罐头瓶：腌菜 150g｜榨油机：油 100g 献祭金星优先，跨夏秋可长期复收 秋季作物包；品质作物包 需金星×5 玉米饼 蔬菜类多数村民喜欢 — 夏秋跨季，不会在夏末枯死。 25能量 | 11生命值 joja超市夏季187g；秋季150g 夜市魔法商船 夏16/秋16 种子生产器"
-  },
-  {
-    "season": "夏季",
-    "name_zh": "啤酒花",
-    "name_en": "Hops",
-    "seed": "Hops Starter",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "60g",
-    "other_sources": [
-      "Joja超市 75g",
-      "夜市魔法商船 夏16",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "growth_days": 11,
-    "regrowth": "1天",
-    "deadline": "夏季17",
-    "xp": 6,
-    "base": 25,
-    "energy": "45能量 | 20生命值",
-    "category": "special",
-    "artisan": "小桶：淡啤酒 300g",
-    "recommend": "小桶收益很强，优先淡啤酒",
-    "bundle": "—",
-    "recipes": "—",
-    "gifts": "—",
-    "tasks": "—",
-    "notes": "棚架作物，不可穿过；成熟后每日收。",
-    "prices": {
-      "normal": 25,
-      "silver": 31,
-      "gold": 37,
-      "iridium": 50
-    },
-    "regrowth_label": "复收",
-    "search_text": "夏季 啤酒花 hops hops starter 皮埃尔杂货店 60g 小桶：淡啤酒 300g 小桶收益很强，优先淡啤酒 — — — — 棚架作物，不可穿过；成熟后每日收。 45能量 | 20生命值 joja超市 75g 夜市魔法商船 夏16 种子生产器"
-  },
-  {
-    "season": "夏季",
-    "name_zh": "辣椒",
-    "name_en": "Hot Pepper",
-    "seed": "Pepper Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "40g",
-    "other_sources": [
-      "Joja超市 50g",
-      "夜市魔法商船 夏16",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "growth_days": 5,
-    "regrowth": "3天",
-    "deadline": "夏季23",
-    "xp": 9,
-    "base": 40,
-    "energy": "13能量 | 5生命值",
-    "category": "fruit",
-    "artisan": "小桶：酒 120g｜罐头瓶：果酱 130g｜烘干机：干果 325g",
-    "recommend": "复收快，料理和送礼优先",
-    "bundle": "夏季作物包",
-    "recipes": "爆炒辣椒、香辣鳗鱼",
-    "gifts": "刘易斯、谢恩最爱；水果类多数村民喜欢",
-    "tasks": "—",
-    "notes": "前期给谢恩和刘易斯很好用。",
-    "prices": {
-      "normal": 40,
-      "silver": 50,
-      "gold": 60,
-      "iridium": 80
-    },
-    "regrowth_label": "复收",
-    "search_text": "夏季 辣椒 hot pepper pepper seeds 皮埃尔杂货店 40g 小桶：酒 120g｜罐头瓶：果酱 130g｜烘干机：干果 325g 复收快，料理和送礼优先 夏季作物包 爆炒辣椒、香辣鳗鱼 刘易斯、谢恩最爱；水果类多数村民喜欢 — 前期给谢恩和刘易斯很好用。 13能量 | 5生命值 joja超市 50g 夜市魔法商船 夏16 种子生产器"
-  },
-  {
-    "season": "夏季",
-    "name_zh": "甜瓜",
-    "name_en": "Melon",
-    "seed": "Melon Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "80g",
-    "other_sources": [
-      "Joja超市 100g",
-      "夜市魔法商船 夏16",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "growth_days": 12,
-    "regrowth": null,
-    "deadline": "夏季16",
-    "xp": 27,
-    "base": 250,
-    "energy": "113能量 | 50生命值",
-    "category": "fruit",
-    "artisan": "小桶：酒 750g｜罐头瓶：果酱 550g｜烘干机：干果 1900g",
-    "recommend": "小桶更赚，金星留品质作物包",
-    "bundle": "夏季作物包；品质作物包 需金星×5",
-    "recipes": "粉红蛋糕、水果沙拉",
-    "gifts": "潘妮最爱；水果类多数村民喜欢",
-    "tasks": "—",
-    "notes": "可长成巨大作物。",
-    "prices": {
-      "normal": 250,
-      "silver": 312,
-      "gold": 375,
-      "iridium": 500
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "夏季 甜瓜 melon melon seeds 皮埃尔杂货店 80g 小桶：酒 750g｜罐头瓶：果酱 550g｜烘干机：干果 1900g 小桶更赚，金星留品质作物包 夏季作物包；品质作物包 需金星×5 粉红蛋糕、水果沙拉 潘妮最爱；水果类多数村民喜欢 — 可长成巨大作物。 113能量 | 50生命值 joja超市 100g 夜市魔法商船 夏16 种子生产器"
-  },
-  {
-    "season": "夏季",
-    "name_zh": "罂粟",
-    "name_en": "Poppy",
-    "seed": "Poppy Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "100g",
-    "other_sources": [
-      "Joja超市 125g",
-      "夜市魔法商船 夏16",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "growth_days": 7,
-    "regrowth": null,
-    "deadline": "夏季21",
-    "xp": 20,
-    "base": 140,
-    "energy": "45能量 | 20生命值",
-    "category": "flower",
-    "artisan": "不推荐加工｜蜂房：罂粟蜂蜜 380g",
-    "recommend": "厨师包、潘妮送礼、蜂蜜增值",
-    "bundle": "厨师收集包",
-    "recipes": "罂粟籽松饼",
-    "gifts": "潘妮最爱；多数村民不喜欢",
-    "tasks": "—",
-    "notes": "花类里很特殊，送礼别乱送。",
-    "prices": {
-      "normal": 140,
-      "silver": 175,
-      "gold": 210,
-      "iridium": 280
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "夏季 罂粟 poppy poppy seeds 皮埃尔杂货店 100g 不推荐加工｜蜂房：罂粟蜂蜜 380g 厨师包、潘妮送礼、蜂蜜增值 厨师收集包 罂粟籽松饼 潘妮最爱；多数村民不喜欢 — 花类里很特殊，送礼别乱送。 45能量 | 20生命值 joja超市 125g 夜市魔法商船 夏16 种子生产器"
-  },
-  {
-    "season": "夏季",
-    "name_zh": "萝卜",
-    "name_en": "Radish",
-    "seed": "Radish Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "40g",
-    "other_sources": [
-      "Joja超市 50g",
-      "夜市魔法商船 夏16",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "growth_days": 6,
-    "regrowth": null,
-    "deadline": "夏季22",
-    "xp": 15,
-    "base": 90,
-    "energy": "45能量 | 20生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 202g｜罐头瓶：腌菜 230g",
-    "recommend": "短周期，罐头瓶更高",
-    "bundle": "—",
-    "recipes": "萝卜沙拉、红之盛宴",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "夏季中短期补收益。",
-    "prices": {
-      "normal": 90,
-      "silver": 112,
-      "gold": 135,
-      "iridium": 180
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "夏季 萝卜 radish radish seeds 皮埃尔杂货店 40g 小桶：汁 202g｜罐头瓶：腌菜 230g 短周期，罐头瓶更高 — 萝卜沙拉、红之盛宴 蔬菜类多数村民喜欢 — 夏季中短期补收益。 45能量 | 20生命值 joja超市 50g 夜市魔法商船 夏16 种子生产器"
-  },
-  {
-    "season": "夏季",
-    "name_zh": "红叶卷心菜",
-    "name_en": "Red Cabbage",
-    "seed": "Red Cabbage Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "100g",
-    "other_sources": [
-      "第2年起",
-      "旅行货车 150-1000g",
-      "夜市魔法商船 冬16",
-      "骷髅洞穴相关掉落",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "growth_days": 9,
-    "regrowth": null,
-    "deadline": "夏季19",
-    "xp": 28,
-    "base": 260,
-    "energy": "75能量 | 33生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 585g｜罐头瓶：腌菜 570g",
-    "recommend": "小桶略高，献祭优先留1个",
-    "bundle": "染料收集包",
-    "recipes": "鱼肉卷、红之盛宴",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "第一年通常靠旅行货车或骷髅洞穴机会获取。",
-    "prices": {
-      "normal": 260,
-      "silver": 325,
-      "gold": 390,
-      "iridium": 520
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "夏季 红叶卷心菜 red cabbage red cabbage seeds 皮埃尔杂货店 100g 小桶：汁 585g｜罐头瓶：腌菜 570g 小桶略高，献祭优先留1个 染料收集包 鱼肉卷、红之盛宴 蔬菜类多数村民喜欢 — 第一年通常靠旅行货车或骷髅洞穴机会获取。 75能量 | 33生命值 第2年起 旅行货车 150-1000g 夜市魔法商船 冬16 骷髅洞穴相关掉落 种子生产器"
-  },
-  {
-    "season": "夏季",
-    "name_zh": "杨桃",
-    "name_en": "Starfruit",
-    "seed": "Starfruit Seeds",
-    "main_source": "绿洲商店 · Sandy",
-    "seed_price": "400g",
-    "other_sources": [
-      "旅行货车 600-1000g",
-      "博物馆捐赠15件后可获1粒",
-      "骷髅洞穴宝箱 5-20粒",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "growth_days": 13,
-    "regrowth": null,
-    "deadline": "夏季15",
-    "xp": 43,
-    "base": 750,
-    "energy": "125能量 | 56生命值",
-    "category": "fruit",
-    "artisan": "小桶：酒 2250g｜罐头瓶：果酱 1550g｜烘干机：干果 5650g",
-    "recommend": "优先小桶酿酒；后期可陈酿",
-    "bundle": "重混染料包可选",
-    "recipes": "—",
-    "gifts": "水果类多数村民喜欢",
-    "tasks": "第2年夏15肯特可能要1个；祝尼魔屋×9",
-    "notes": "高价值酿酒核心。",
-    "prices": {
-      "normal": 750,
-      "silver": 937,
-      "gold": 1125,
-      "iridium": 1500
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "夏季 杨桃 starfruit starfruit seeds 绿洲商店 · sandy 400g 小桶：酒 2250g｜罐头瓶：果酱 1550g｜烘干机：干果 5650g 优先小桶酿酒；后期可陈酿 重混染料包可选 — 水果类多数村民喜欢 第2年夏15肯特可能要1个；祝尼魔屋×9 高价值酿酒核心。 125能量 | 56生命值 旅行货车 600-1000g 博物馆捐赠15件后可获1粒 骷髅洞穴宝箱 5-20粒 种子生产器"
-  },
-  {
-    "season": "夏季",
-    "name_zh": "夏季亮片",
-    "name_en": "Summer Spangle",
-    "seed": "Spangle Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "50g",
-    "other_sources": [
-      "Joja超市 62g",
-      "夜市魔法商船 夏16",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "growth_days": 8,
-    "regrowth": null,
-    "deadline": "夏季20",
-    "xp": 15,
-    "base": 90,
-    "energy": "45能量 | 20生命值",
-    "category": "flower",
-    "artisan": "不推荐加工｜蜂房：夏季亮片蜂蜜 280g",
-    "recommend": "蜂蜜增值和送礼",
-    "bundle": "—",
-    "recipes": "—",
-    "gifts": "卡洛琳最爱；多数村民喜欢",
-    "tasks": "—",
-    "notes": "夏季花类作物。",
-    "prices": {
-      "normal": 90,
-      "silver": 112,
-      "gold": 135,
-      "iridium": 180
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "夏季 夏季亮片 summer spangle spangle seeds 皮埃尔杂货店 50g 不推荐加工｜蜂房：夏季亮片蜂蜜 280g 蜂蜜增值和送礼 — — 卡洛琳最爱；多数村民喜欢 — 夏季花类作物。 45能量 | 20生命值 joja超市 62g 夜市魔法商船 夏16 种子生产器"
-  },
-  {
-    "season": "夏季",
-    "name_zh": "夏南瓜",
-    "name_en": "Summer Squash",
-    "seed": "Summer Squash Seeds",
-    "main_source": "夏季种子点",
-    "seed_price": "看条件",
-    "other_sources": [
-      "浣熊商店",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "growth_days": 6,
-    "regrowth": "3天",
-    "deadline": "夏季22",
-    "xp": 9,
-    "base": 45,
-    "energy": "63能量 | 28生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 101g｜罐头瓶：腌菜 140g",
-    "recommend": "复收短周期，罐头瓶更高",
-    "bundle": "—",
-    "recipes": "—",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "1.6新增。",
-    "prices": {
-      "normal": 45,
-      "silver": 56,
-      "gold": 67,
-      "iridium": 90
-    },
-    "regrowth_label": "复收",
-    "search_text": "夏季 夏南瓜 summer squash summer squash seeds 夏季种子点 看条件 小桶：汁 101g｜罐头瓶：腌菜 140g 复收短周期，罐头瓶更高 — — 蔬菜类多数村民喜欢 — 1.6新增。 63能量 | 28生命值 浣熊商店 种子生产器"
-  },
-  {
-    "season": "夏季/秋季",
-    "name_zh": "向日葵",
-    "name_en": "Sunflower",
-    "seed": "Sunflower Seeds",
-    "main_source": "Joja超市",
-    "seed_price": "125g",
-    "other_sources": [
-      "皮埃尔杂货店 200g",
-      "Joja会员后 100g",
-      "夜市魔法商船 夏17/秋17",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季",
-      "秋季"
-    ],
-    "growth_days": 8,
-    "regrowth": null,
-    "deadline": "夏/秋20",
-    "xp": 14,
-    "base": 80,
-    "energy": "45能量 | 20生命值",
-    "category": "flower",
-    "artisan": "榨油机：油 100g｜蜂房：向日葵蜂蜜 260g",
-    "recommend": "送礼、染料包或蜂蜜增值",
-    "bundle": "染料收集包",
-    "recipes": "—",
-    "gifts": "海莉最爱；多数村民喜欢",
-    "tasks": "—",
-    "notes": "收获时可返还0-2粒种子；夏秋两季。",
-    "prices": {
-      "normal": 80,
-      "silver": 100,
-      "gold": 120,
-      "iridium": 160
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "夏季/秋季 向日葵 sunflower sunflower seeds joja超市 125g 榨油机：油 100g｜蜂房：向日葵蜂蜜 260g 送礼、染料包或蜂蜜增值 染料收集包 — 海莉最爱；多数村民喜欢 — 收获时可返还0-2粒种子；夏秋两季。 45能量 | 20生命值 皮埃尔杂货店 200g joja会员后 100g 夜市魔法商船 夏17/秋17 种子生产器"
-  },
-  {
-    "season": "夏季",
-    "name_zh": "番茄",
-    "name_en": "Tomato",
-    "seed": "Tomato Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "50g",
-    "other_sources": [
-      "Joja超市 62g",
-      "夜市魔法商船 夏16",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "growth_days": 11,
-    "regrowth": "4天",
-    "deadline": "夏季17",
-    "xp": 12,
-    "base": 60,
-    "energy": "20能量 | 9生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 135g｜罐头瓶：腌菜 170g",
-    "recommend": "献祭留1个，料理需求多",
-    "bundle": "夏季作物包",
-    "recipes": "披萨、意大利面、鱼汤等",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "复收作物。",
-    "prices": {
-      "normal": 60,
-      "silver": 75,
-      "gold": 90,
-      "iridium": 120
-    },
-    "regrowth_label": "复收",
-    "search_text": "夏季 番茄 tomato tomato seeds 皮埃尔杂货店 50g 小桶：汁 135g｜罐头瓶：腌菜 170g 献祭留1个，料理需求多 夏季作物包 披萨、意大利面、鱼汤等 蔬菜类多数村民喜欢 — 复收作物。 20能量 | 9生命值 joja超市 62g 夜市魔法商船 夏16 种子生产器"
-  },
-  {
-    "season": "夏季/秋季",
-    "name_zh": "小麦",
-    "name_en": "Wheat",
-    "seed": "Wheat Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "10g",
-    "other_sources": [
-      "Joja超市 12g",
-      "夜市魔法商船 夏17/秋17",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季",
-      "秋季"
-    ],
-    "growth_days": 4,
-    "regrowth": null,
-    "deadline": "夏/秋24",
-    "xp": 6,
-    "base": 25,
-    "energy": "不可食用",
-    "category": "special",
-    "artisan": "小桶：啤酒 200g｜磨坊：小麦粉 50g",
-    "recommend": "便宜保地，夏末种可保留耕地到秋1",
-    "bundle": "饲料收集包 需小麦×10",
-    "recipes": "小麦粉可用于大量料理",
-    "gifts": "—",
-    "tasks": "—",
-    "notes": "用镰刀收获。",
-    "prices": {
-      "normal": 25,
-      "silver": 31,
-      "gold": 37,
-      "iridium": 50
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "夏季/秋季 小麦 wheat wheat seeds 皮埃尔杂货店 10g 小桶：啤酒 200g｜磨坊：小麦粉 50g 便宜保地，夏末种可保留耕地到秋1 饲料收集包 需小麦×10 小麦粉可用于大量料理 — — 用镰刀收获。 不可食用 joja超市 12g 夜市魔法商船 夏17/秋17 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "苋菜",
-    "name_en": "Amaranth",
-    "seed": "Amaranth Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "70g",
-    "other_sources": [
-      "Joja超市 87g",
-      "夜市魔法商船 秋17",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 7,
-    "regrowth": null,
-    "deadline": "秋季21",
-    "xp": 21,
-    "base": 150,
-    "energy": "50能量 | 22生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 337g｜罐头瓶：腌菜 350g",
-    "recommend": "罐头瓶略高，任务留1个",
-    "bundle": "—",
-    "recipes": "鲑鱼晚餐",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "玛妮“奶牛的喜悦”需要1个",
-    "notes": "用镰刀收获。",
-    "prices": {
-      "normal": 150,
-      "silver": 187,
-      "gold": 225,
-      "iridium": 300
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "秋季 苋菜 amaranth amaranth seeds 皮埃尔杂货店 70g 小桶：汁 337g｜罐头瓶：腌菜 350g 罐头瓶略高，任务留1个 — 鲑鱼晚餐 蔬菜类多数村民喜欢 玛妮“奶牛的喜悦”需要1个 用镰刀收获。 50能量 | 22生命值 joja超市 87g 夜市魔法商船 秋17 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "洋蓟",
-    "name_en": "Artichoke",
-    "seed": "Artichoke Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "30g",
-    "other_sources": [
-      "第2年起",
-      "夜市魔法商船 秋17",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 8,
-    "regrowth": null,
-    "deadline": "秋季20",
-    "xp": 22,
-    "base": 160,
-    "energy": "30能量 | 13生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 360g｜罐头瓶：腌菜 370g",
-    "recommend": "罐头瓶略高",
-    "bundle": "—",
-    "recipes": "洋蓟蘸酱、超级餐",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "第2年起稳定购买。",
-    "prices": {
-      "normal": 160,
-      "silver": 200,
-      "gold": 240,
-      "iridium": 320
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "秋季 洋蓟 artichoke artichoke seeds 皮埃尔杂货店 30g 小桶：汁 360g｜罐头瓶：腌菜 370g 罐头瓶略高 — 洋蓟蘸酱、超级餐 蔬菜类多数村民喜欢 — 第2年起稳定购买。 30能量 | 13生命值 第2年起 夜市魔法商船 秋17 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "甜菜",
-    "name_en": "Beet",
-    "seed": "Beet Seeds",
-    "main_source": "绿洲商店 · Sandy",
-    "seed_price": "20g",
-    "other_sources": [
-      "旅行货车 100-1000g",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 6,
-    "regrowth": null,
-    "deadline": "秋季22",
-    "xp": 16,
-    "base": 100,
-    "energy": "30能量 | 13生命值",
-    "category": "vegetable",
-    "artisan": "磨坊：甜菜 → 糖×3（合计150g）｜小桶：汁 225g｜罐头瓶：腌菜 250g",
-    "recommend": "齐先生任务优先留10个，平时小桶/罐头瓶均可",
-    "bundle": "—",
-    "recipes": "糖可用于大量料理",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "齐先生系列任务需要10个甜菜",
-    "notes": "沙漠解锁后非常容易大量购种。",
-    "prices": {
-      "normal": 100,
-      "silver": 125,
-      "gold": 150,
-      "iridium": 200
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "秋季 甜菜 beet beet seeds 绿洲商店 · sandy 20g 磨坊：甜菜 → 糖×3（合计150g）｜小桶：汁 225g｜罐头瓶：腌菜 250g 齐先生任务优先留10个，平时小桶/罐头瓶均可 — 糖可用于大量料理 蔬菜类多数村民喜欢 齐先生系列任务需要10个甜菜 沙漠解锁后非常容易大量购种。 30能量 | 13生命值 旅行货车 100-1000g 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "小白菜",
-    "name_en": "Bok Choy",
-    "seed": "Bok Choy Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "50g",
-    "other_sources": [
-      "Joja超市 62g",
-      "夜市魔法商船 秋17",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 4,
-    "regrowth": null,
-    "deadline": "秋季24",
-    "xp": 14,
-    "base": 80,
-    "energy": "25能量 | 11生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 180g｜罐头瓶：腌菜 210g",
-    "recommend": "秋季短周期补收益",
-    "bundle": "—",
-    "recipes": "超级餐",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "成熟很快。",
-    "prices": {
-      "normal": 80,
-      "silver": 100,
-      "gold": 120,
-      "iridium": 160
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "秋季 小白菜 bok choy bok choy seeds 皮埃尔杂货店 50g 小桶：汁 180g｜罐头瓶：腌菜 210g 秋季短周期补收益 — 超级餐 蔬菜类多数村民喜欢 — 成熟很快。 25能量 | 11生命值 joja超市 62g 夜市魔法商船 秋17 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "西兰花",
-    "name_en": "Broccoli",
-    "seed": "Broccoli Seeds",
-    "main_source": "秋季种子点",
-    "seed_price": "看条件",
-    "other_sources": [
-      "浣熊商店",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 8,
-    "regrowth": "4天",
-    "deadline": "秋季20",
-    "xp": 13,
-    "base": 70,
-    "energy": "63能量 | 28生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 157g｜罐头瓶：腌菜 190g",
-    "recommend": "复收，罐头瓶更高",
-    "bundle": "—",
-    "recipes": "—",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "1.6新增。",
-    "prices": {
-      "normal": 70,
-      "silver": 87,
-      "gold": 105,
-      "iridium": 140
-    },
-    "regrowth_label": "复收",
-    "search_text": "秋季 西兰花 broccoli broccoli seeds 秋季种子点 看条件 小桶：汁 157g｜罐头瓶：腌菜 190g 复收，罐头瓶更高 — — 蔬菜类多数村民喜欢 — 1.6新增。 63能量 | 28生命值 浣熊商店 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "蔓越莓",
-    "name_en": "Cranberries",
-    "seed": "Cranberry Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "240g",
-    "other_sources": [
-      "Joja超市 300g",
-      "夜市魔法商船 秋17",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 7,
-    "regrowth": "5天",
-    "deadline": "秋季21",
-    "xp": 14,
-    "base": 75,
-    "energy": "38能量 | 17生命值",
-    "category": "fruit",
-    "artisan": "小桶：酒 225g｜罐头瓶：果酱 200g｜烘干机：干果 587g",
-    "recommend": "直接卖已经强，批量可烘干",
-    "bundle": "—",
-    "recipes": "蔓越莓酱、蔓越莓糖果、馅料、超级餐",
-    "gifts": "水果类多数村民喜欢",
-    "tasks": "—",
-    "notes": "每次至少产出2个。",
-    "prices": {
-      "normal": 75,
-      "silver": 93,
-      "gold": 112,
-      "iridium": 150
-    },
-    "regrowth_label": "复收",
-    "search_text": "秋季 蔓越莓 cranberries cranberry seeds 皮埃尔杂货店 240g 小桶：酒 225g｜罐头瓶：果酱 200g｜烘干机：干果 587g 直接卖已经强，批量可烘干 — 蔓越莓酱、蔓越莓糖果、馅料、超级餐 水果类多数村民喜欢 — 每次至少产出2个。 38能量 | 17生命值 joja超市 300g 夜市魔法商船 秋17 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "茄子",
-    "name_en": "Eggplant",
-    "seed": "Eggplant Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "20g",
-    "other_sources": [
-      "Joja超市 25g",
-      "夜市魔法商船 秋17",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 5,
-    "regrowth": "5天",
-    "deadline": "秋季23",
-    "xp": 12,
-    "base": 60,
-    "energy": "20能量 | 9生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 135g｜罐头瓶：腌菜 170g",
-    "recommend": "献祭留1个，剩下随意",
-    "bundle": "秋季作物包",
-    "recipes": "茄子帕尔玛、救生汉堡",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "便宜复收。",
-    "prices": {
-      "normal": 60,
-      "silver": 75,
-      "gold": 90,
-      "iridium": 120
-    },
-    "regrowth_label": "复收",
-    "search_text": "秋季 茄子 eggplant eggplant seeds 皮埃尔杂货店 20g 小桶：汁 135g｜罐头瓶：腌菜 170g 献祭留1个，剩下随意 秋季作物包 茄子帕尔玛、救生汉堡 蔬菜类多数村民喜欢 — 便宜复收。 20能量 | 9生命值 joja超市 25g 夜市魔法商船 秋17 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "玫瑰仙子",
-    "name_en": "Fairy Rose",
-    "seed": "Fairy Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "200g",
-    "other_sources": [
-      "Joja超市 250g",
-      "夜市魔法商船 秋17",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 12,
-    "regrowth": null,
-    "deadline": "秋季16",
-    "xp": 29,
-    "base": 290,
-    "energy": "45能量 | 20生命值",
-    "category": "flower",
-    "artisan": "不推荐加工｜蜂房：玫瑰仙子蜂蜜 680g",
-    "recommend": "蜂蜜增值很强，仙尘也要用",
-    "bundle": "—",
-    "recipes": "仙尘",
-    "gifts": "伊芙琳、贾斯最爱；多数村民喜欢",
-    "tasks": "—",
-    "notes": "高价值花蜜核心。",
-    "prices": {
-      "normal": 290,
-      "silver": 362,
-      "gold": 435,
-      "iridium": 580
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "秋季 玫瑰仙子 fairy rose fairy seeds 皮埃尔杂货店 200g 不推荐加工｜蜂房：玫瑰仙子蜂蜜 680g 蜂蜜增值很强，仙尘也要用 — 仙尘 伊芙琳、贾斯最爱；多数村民喜欢 — 高价值花蜜核心。 45能量 | 20生命值 joja超市 250g 夜市魔法商船 秋17 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "葡萄",
-    "name_en": "Grape",
-    "seed": "Grape Starter",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "60g",
-    "other_sources": [
-      "Joja超市 75g",
-      "夜市魔法商船 秋17",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 10,
-    "regrowth": "3天",
-    "deadline": "秋季18",
-    "xp": 14,
-    "base": 80,
-    "energy": "38能量 | 17生命值",
-    "category": "fruit",
-    "artisan": "小桶：酒 240g｜罐头瓶：果酱 210g｜烘干机：干果 625g",
-    "recommend": "小桶或干果，送礼留给文森特",
-    "bundle": "夏季采集包用的是采集葡萄，不限作物葡萄",
-    "recipes": "—",
-    "gifts": "文森特最爱；水果类多数村民喜欢",
-    "tasks": "—",
-    "notes": "棚架作物，不可穿过。",
-    "prices": {
-      "normal": 80,
-      "silver": 100,
-      "gold": 120,
-      "iridium": 160
-    },
-    "regrowth_label": "复收",
-    "search_text": "秋季 葡萄 grape grape starter 皮埃尔杂货店 60g 小桶：酒 240g｜罐头瓶：果酱 210g｜烘干机：干果 625g 小桶或干果，送礼留给文森特 夏季采集包用的是采集葡萄，不限作物葡萄 — 文森特最爱；水果类多数村民喜欢 — 棚架作物，不可穿过。 38能量 | 17生命值 joja超市 75g 夜市魔法商船 秋17 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "南瓜",
-    "name_en": "Pumpkin",
-    "seed": "Pumpkin Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "100g",
-    "other_sources": [
-      "Joja超市 125g",
-      "夜市魔法商船 秋17",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 13,
-    "regrowth": null,
-    "deadline": "秋季15",
-    "xp": 31,
-    "base": 320,
-    "energy": "不可食用",
-    "category": "vegetable",
-    "artisan": "小桶：汁 720g｜罐头瓶：腌菜 690g",
-    "recommend": "小桶略高，金星留品质作物包",
-    "bundle": "秋季作物包；品质作物包 需金星×5",
-    "recipes": "南瓜派、南瓜汤、秋日恩赐",
-    "gifts": "阿比盖尔、科罗布斯、威利最爱；蔬菜类多数村民喜欢",
-    "tasks": "卡洛琳“雕刻南瓜”需要1个",
-    "notes": "可长成巨大作物。",
-    "prices": {
-      "normal": 320,
-      "silver": 400,
-      "gold": 480,
-      "iridium": 640
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "秋季 南瓜 pumpkin pumpkin seeds 皮埃尔杂货店 100g 小桶：汁 720g｜罐头瓶：腌菜 690g 小桶略高，金星留品质作物包 秋季作物包；品质作物包 需金星×5 南瓜派、南瓜汤、秋日恩赐 阿比盖尔、科罗布斯、威利最爱；蔬菜类多数村民喜欢 卡洛琳“雕刻南瓜”需要1个 可长成巨大作物。 不可食用 joja超市 125g 夜市魔法商船 秋17 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "山药",
-    "name_en": "Yam",
-    "seed": "Yam Seeds",
-    "main_source": "皮埃尔杂货店",
-    "seed_price": "60g",
-    "other_sources": [
-      "Joja超市 75g",
-      "夜市魔法商船 秋17",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 10,
-    "regrowth": null,
-    "deadline": "秋季18",
-    "xp": 22,
-    "base": 160,
-    "energy": "45能量 | 20生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 360g｜罐头瓶：腌菜 370g",
-    "recommend": "献祭留1个，罐头瓶略高",
-    "bundle": "秋季作物包",
-    "recipes": "糖渍山药、秋日恩赐",
-    "gifts": "莱纳斯最爱；蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "中期秋季作物。",
-    "prices": {
-      "normal": 160,
-      "silver": 200,
-      "gold": 240,
-      "iridium": 320
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "秋季 山药 yam yam seeds 皮埃尔杂货店 60g 小桶：汁 360g｜罐头瓶：腌菜 370g 献祭留1个，罐头瓶略高 秋季作物包 糖渍山药、秋日恩赐 莱纳斯最爱；蔬菜类多数村民喜欢 — 中期秋季作物。 45能量 | 20生命值 joja超市 75g 夜市魔法商船 秋17 种子生产器"
-  },
-  {
-    "season": "冬季",
-    "name_zh": "粉瓜",
-    "name_en": "Powdermelon",
-    "seed": "Powdermelon Seeds",
-    "main_source": "冬季种子点",
-    "seed_price": "看条件",
-    "other_sources": [
-      "浣熊商店",
-      "种子生产器",
-      "冬日星盛宴皮埃尔摊位偶尔售卖粉瓜"
-    ],
-    "farm_seasons": [
-      "冬季"
-    ],
-    "growth_days": 7,
-    "regrowth": null,
-    "deadline": "冬季21",
-    "xp": 12,
-    "base": 60,
-    "energy": "63能量 | 28生命值",
-    "category": "fruit",
-    "artisan": "小桶：酒 180g｜罐头瓶：果酱 170g｜烘干机：干果 475g",
-    "recommend": "冬季可露天种，小桶略优",
-    "bundle": "—",
-    "recipes": "—",
-    "gifts": "水果类多数村民喜欢",
-    "tasks": "—",
-    "notes": "1.6新增；可长成巨大作物。",
-    "prices": {
-      "normal": 60,
-      "silver": 75,
-      "gold": 90,
-      "iridium": 120
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "冬季 粉瓜 powdermelon powdermelon seeds 冬季种子点 看条件 小桶：酒 180g｜罐头瓶：果酱 170g｜烘干机：干果 475g 冬季可露天种，小桶略优 — — 水果类多数村民喜欢 — 1.6新增；可长成巨大作物。 63能量 | 28生命值 浣熊商店 种子生产器 冬日星盛宴皮埃尔摊位偶尔售卖粉瓜"
-  },
-  {
-    "season": "春季/夏季/秋季",
-    "name_zh": "上古水果",
-    "name_en": "Ancient Fruit",
-    "seed": "Ancient Seeds",
-    "main_source": "古代种子文物捐博物馆后解锁配方",
-    "seed_price": "免费制作",
-    "other_sources": [
-      "种子生产器",
-      "旅行货车偶尔售卖种子包"
-    ],
-    "farm_seasons": [
-      "春季",
-      "夏季",
-      "秋季"
-    ],
-    "growth_days": 28,
-    "regrowth": "7天",
-    "deadline": "看季节跨度",
-    "xp": 38,
-    "base": 550,
-    "energy": "不可食用",
-    "category": "fruit",
-    "artisan": "小桶：酒 1650g｜罐头瓶：果酱 1150g｜烘干机：干果 4150g",
-    "recommend": "温室和姜岛长期种植，通常酿酒",
-    "bundle": "重混稀有作物包可能用到",
-    "recipes": "—",
-    "gifts": "水果类多数村民喜欢",
-    "tasks": "—",
-    "notes": "长期收益核心。",
-    "prices": {
-      "normal": 550,
-      "silver": 687,
-      "gold": 825,
-      "iridium": 1100
-    },
-    "regrowth_label": "复收",
-    "search_text": "春季/夏季/秋季 上古水果 ancient fruit ancient seeds 古代种子文物捐博物馆后解锁配方 免费制作 小桶：酒 1650g｜罐头瓶：果酱 1150g｜烘干机：干果 4150g 温室和姜岛长期种植，通常酿酒 重混稀有作物包可能用到 — 水果类多数村民喜欢 — 长期收益核心。 不可食用 种子生产器 旅行货车偶尔售卖种子包"
-  },
-  {
-    "season": "特殊",
-    "name_zh": "仙人掌果子",
-    "name_en": "Cactus Fruit",
-    "seed": "Cactus Seeds",
-    "main_source": "绿洲商店 · Sandy",
-    "seed_price": "150g",
-    "other_sources": [
-      "旅行货车 225-1000g",
-      "骷髅洞穴采集",
-      "姜岛采集",
-      "种子生产器"
-    ],
-    "farm_seasons": [],
-    "special_locations": [
-      [
-        "花盆",
-        "室内"
-      ],
-      [
-        "温室",
-        "全年"
-      ],
-      [
-        "姜岛",
-        "全年"
-      ]
-    ],
-    "growth_days": 12,
-    "regrowth": "3天",
-    "deadline": "看条件",
-    "xp": 14,
-    "base": 75,
-    "energy": "75能量 | 33生命值",
-    "category": "fruit",
-    "artisan": "小桶：酒 225g｜罐头瓶：果酱 200g｜烘干机：干果 587g",
-    "recommend": "前期补能量，后期随意加工",
-    "bundle": "—",
-    "recipes": "—",
-    "gifts": "山姆、莱纳斯、潘姆最爱；水果类多数村民喜欢",
-    "tasks": "—",
-    "notes": "普通农场户外不能种。",
-    "prices": {
-      "normal": 75,
-      "silver": 93,
-      "gold": 112,
-      "iridium": 150
-    },
-    "regrowth_label": "复收",
-    "search_text": "特殊 仙人掌果子 cactus fruit cactus seeds 绿洲商店 · sandy 150g 小桶：酒 225g｜罐头瓶：果酱 200g｜烘干机：干果 587g 前期补能量，后期随意加工 — — 山姆、莱纳斯、潘姆最爱；水果类多数村民喜欢 — 普通农场户外不能种。 75能量 | 33生命值 旅行货车 225-1000g 骷髅洞穴采集 姜岛采集 种子生产器"
-  },
-  {
-    "season": "夏季/姜岛全年",
-    "name_zh": "菠萝",
-    "name_en": "Pineapple",
-    "seed": "Pineapple Seeds",
-    "main_source": "姜岛商人",
-    "seed_price": "岩浆帽×1",
-    "other_sources": [
-      "火山地牢掉落",
-      "金椰子",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "extra_locations": [
-      [
-        "姜岛",
-        "全年"
-      ],
-      [
-        "温室",
-        "全年"
-      ]
-    ],
-    "growth_days": 14,
-    "regrowth": "7天",
-    "deadline": "夏季14",
-    "xp": 30,
-    "base": 300,
-    "energy": "138能量 | 62生命值",
-    "category": "fruit",
-    "artisan": "小桶：酒 900g｜罐头瓶：果酱 650g｜烘干机：干果 2275g",
-    "recommend": "姜岛长期种植，小桶更好",
-    "bundle": "—",
-    "recipes": "热带咖喱",
-    "gifts": "水果类多数村民喜欢",
-    "tasks": "—",
-    "notes": "复收周期长，但单价高。",
-    "prices": {
-      "normal": 300,
-      "silver": 375,
-      "gold": 450,
-      "iridium": 600
-    },
-    "regrowth_label": "复收",
-    "search_text": "夏季/姜岛全年 菠萝 pineapple pineapple seeds 姜岛商人 岩浆帽×1 小桶：酒 900g｜罐头瓶：果酱 650g｜烘干机：干果 2275g 姜岛长期种植，小桶更好 — 热带咖喱 水果类多数村民喜欢 — 复收周期长，但单价高。 138能量 | 62生命值 火山地牢掉落 金椰子 种子生产器"
-  },
-  {
-    "season": "任务限定",
-    "name_zh": "齐瓜",
-    "name_en": "Qi Fruit",
-    "seed": "Qi Bean",
-    "main_source": "齐先生特别任务期间获得齐豆",
-    "seed_price": "任务",
-    "other_sources": [
-      "采集、砍树、钓鱼、打怪、开晶球等任务期间概率获得",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "任务期"
-    ],
-    "growth_days": 4,
-    "regrowth": null,
-    "deadline": "按任务剩余天数",
-    "xp": "任务",
-    "base": 1,
-    "prices": {
-      "normal": 1,
-      "silver": 1,
-      "gold": 1,
-      "iridium": 2
-    },
-    "energy": "不可食用",
-    "category": "fruit",
-    "artisan": "小桶：酒 3g｜罐头瓶：果酱 52g｜烘干机：干果 32g",
-    "recommend": "只服务齐先生任务，别按常规收益算",
-    "bundle": "—",
-    "recipes": "—",
-    "gifts": "—",
-    "tasks": "齐先生“齐瓜”特别任务",
-    "notes": "任务结束后齐豆和齐瓜会消失；可长成巨大作物。",
-    "regrowth_label": "一次收获",
-    "search_text": "任务限定 齐瓜 qi fruit qi bean 齐先生特别任务期间获得齐豆 任务 小桶：酒 3g｜罐头瓶：果酱 52g｜烘干机：干果 32g 只服务齐先生任务，别按常规收益算 — — — 齐先生“齐瓜”特别任务 任务结束后齐豆和齐瓜会消失；可长成巨大作物。 不可食用 采集、砍树、钓鱼、打怪、开晶球等任务期间概率获得 种子生产器"
-  },
-  {
-    "season": "秋季",
-    "name_zh": "宝石甜莓",
-    "name_en": "Sweet Gem Berry",
-    "seed": "Rare Seed",
-    "main_source": "旅行货车",
-    "seed_price": "600-1000g",
-    "other_sources": [
-      "常见1000g",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "秋季"
-    ],
-    "growth_days": 24,
-    "regrowth": null,
-    "deadline": "秋季4",
-    "xp": 64,
-    "base": 3000,
-    "energy": "不可食用",
-    "category": "special",
-    "artisan": "不可加工",
-    "recommend": "直接卖；先给老坎诺利换星之果实",
-    "bundle": "重混稀有作物包可能用到",
-    "recipes": "—",
-    "gifts": "—",
-    "tasks": "秘密森林老坎诺利雕像换星之果实",
-    "notes": "单个售价最高的作物之一。",
-    "prices": {
-      "normal": 3000,
-      "silver": 3750,
-      "gold": 4500,
-      "iridium": 6000
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "秋季 宝石甜莓 sweet gem berry rare seed 旅行货车 600-1000g 不可加工 直接卖；先给老坎诺利换星之果实 重混稀有作物包可能用到 — — 秘密森林老坎诺利雕像换星之果实 单个售价最高的作物之一。 不可食用 常见1000g 种子生产器"
-  },
-  {
-    "season": "夏季/姜岛全年",
-    "name_zh": "芋头",
-    "name_en": "Taro Root",
-    "seed": "Taro Tuber",
-    "main_source": "姜岛商人",
-    "seed_price": "骨头碎片×2",
-    "other_sources": [
-      "火山地牢掉落",
-      "金椰子",
-      "姜岛杂草/蚯蚓点/淘盘",
-      "狮子鱼鱼塘",
-      "种子生产器"
-    ],
-    "farm_seasons": [
-      "夏季"
-    ],
-    "extra_locations": [
-      [
-        "姜岛",
-        "全年"
-      ],
-      [
-        "温室",
-        "全年"
-      ]
-    ],
-    "growth_days": 10,
-    "regrowth": null,
-    "deadline": "夏季18（靠水夏21）",
-    "xp": 16,
-    "base": 100,
-    "energy": "100能量 | 45生命值",
-    "category": "vegetable",
-    "artisan": "小桶：汁 225g｜罐头瓶：腌菜 250g",
-    "recommend": "靠水种成熟约7天，罐头瓶更高",
-    "bundle": "—",
-    "recipes": "芋泥",
-    "gifts": "蔬菜类多数村民喜欢",
-    "tasks": "—",
-    "notes": "靠近水源时不需浇水。",
-    "prices": {
-      "normal": 100,
-      "silver": 125,
-      "gold": 150,
-      "iridium": 200
-    },
-    "regrowth_label": "一次收获",
-    "search_text": "夏季/姜岛全年 芋头 taro root taro tuber 姜岛商人 骨头碎片×2 小桶：汁 225g｜罐头瓶：腌菜 250g 靠水种成熟约7天，罐头瓶更高 — 芋泥 蔬菜类多数村民喜欢 — 靠近水源时不需浇水。 100能量 | 45生命值 火山地牢掉落 金椰子 姜岛杂草/蚯蚓点/淘盘 狮子鱼鱼塘 种子生产器"
-  },
-  {
-    "season": "全年",
-    "name_zh": "茶叶",
-    "name_en": "Tea Leaves",
-    "seed": "Tea Sapling",
-    "main_source": "卡洛琳2心事件后配方",
-    "seed_price": "免费制作",
-    "other_sources": [
-      "旅行货车偶尔售卖茶苗 1500-2500g"
-    ],
-    "farm_seasons": [
-      "春季",
-      "夏季",
-      "秋季"
-    ],
-    "special_locations": [
-      [
-        "农场",
-        "春夏秋"
-      ],
-      [
-        "花盆",
-        "全年"
-      ],
-      [
-        "温室",
-        "全年"
-      ],
-      [
-        "姜岛",
-        "全年"
-      ]
-    ],
-    "growth_days": 20,
-    "regrowth": "每季最后7天每日收",
-    "deadline": "每季8日左右",
-    "xp": 10,
-    "base": 50,
-    "energy": "不可食用",
-    "category": "special",
-    "artisan": "小桶：绿茶 100g",
-    "recommend": "不需浇水，室内冬季也能收",
-    "bundle": "—",
-    "recipes": "绿茶",
-    "gifts": "—",
-    "tasks": "—",
-    "notes": "茶树成熟后，每季最后一周可每天采茶叶。",
-    "prices": {
-      "normal": 50,
-      "silver": 62,
-      "gold": 75,
-      "iridium": 100
-    },
-    "regrowth_label": "复收",
-    "search_text": "全年 茶叶 tea leaves tea sapling 卡洛琳2心事件后配方 免费制作 小桶：绿茶 100g 不需浇水，室内冬季也能收 — 绿茶 — — 茶树成熟后，每季最后一周可每天采茶叶。 不可食用 旅行货车偶尔售卖茶苗 1500-2500g"
-  }
-];
 const search = document.getElementById("search");
-const resultList = document.getElementById("resultList");
+const resultBlock = document.getElementById("resultBlock");
 const emptyBlock = document.getElementById("emptyBlock");
+const devices = document.getElementById("devices");
+const deviceTitle = document.getElementById("deviceTitle");
 const resultCount = document.getElementById("resultCount");
-const chips = document.getElementById("chips");
-let activeFilter = "all";
-function escapeHtml(value){return String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[ch]));}
-function seasonBadge(season){if(season.includes("春")) return "green";if(season.includes("夏")) return "red";if(season.includes("秋")) return "gold";if(season.includes("冬")) return "blue";return "gray";}
-function getCycle(crop){return crop.regrowth ? `${crop.growth_days}天；复收 ${crop.regrowth}` : `${crop.growth_days}天（1次）`;}
-function getPlaces(crop){
-  const places = [];
-  const add = (name, tag) => {
-    if(!name || !tag) return;
-    const key = `${name}|${tag}`;
-    if(!places.some(item => `${item[0]}|${item[1]}` === key)) places.push([name, tag]);
-  };
-  if(crop.farm_seasons && crop.farm_seasons.length) add("农场", crop.farm_seasons.join("/"));
-  (crop.special_locations || []).forEach(item => add(item[0], item[1]));
-  (crop.extra_locations || []).forEach(item => add(item[0], item[1]));
-  if(!crop.special_locations && !crop.extra_locations){add("温室", "全年"); add("姜岛", "全年");}
-  const order = {"农场":1,"温室":2,"姜岛":3,"花盆":4,"特殊":5};
-  places.sort((a,b) => (order[a[0]] || 99) - (order[b[0]] || 99));
-  return places.length ? places : [["看条件", "特殊"]];
-}
-function renderPlaces(crop){
-  const places = getPlaces(crop);
-  const first = places.slice(0,1).map(([name,tag]) => `<span class="place-chip"><strong>${escapeHtml(name)}</strong><em>${escapeHtml(tag)}</em></span>`).join("");
-  const rest = places.slice(1).map(([name,tag]) => `<span class="place-chip"><strong>${escapeHtml(name)}</strong><em>${escapeHtml(tag)}</em></span>`).join("");
-  return `<div class="place-line"><div class="place-row">${first}</div>${rest ? `<div class="place-row">${rest}</div>` : ""}</div>`;
-}
-const jumpMap = [["小桶","keg"],["陈酿","cask"],["罐头瓶","jar"],["果酱","jar"],["腌菜","jar"],["烘干机","dehydrator"],["干果","dehydrator"],["磨坊","mill"],["榨油机","oil"],["蜂房","bee"],["蜂蜜","bee"],["种子生产器","seedmaker"],["祝尼魔屋","junimo"]];
-function linkDevices(text){
-  let out = escapeHtml(text);
-  for(const [word,id] of jumpMap){
-    const safe = escapeHtml(word);
-    out = out.replaceAll(safe, `<a class="inline-link" data-jump="${id}">${safe}</a>`);
-  }
-  return out;
-}
-function renderSeed(crop){
-  const other = crop.other_sources && crop.other_sources.length ? crop.other_sources.join(" · ") : "无";
-  return `<section class="block"><h3 class="block-title">🌱 种子</h3><div class="source-box"><div class="seed-mini-grid"><div class="seed-line"><span>种子名称</span><b>${escapeHtml(crop.seed)}</b></div><div class="seed-line"><span>主要来源</span><b>${escapeHtml(crop.main_source)}</b></div><div class="seed-line"><span>代价</span><b>${escapeHtml(crop.seed_price)}</b></div><div class="seed-line"><span>其他来源</span><b>${escapeHtml(other)}</b></div></div></div></section>`;
-}
-function renderPlant(crop){
-  return `<section class="block"><h3 class="block-title">🌾 种植</h3><div class="info-grid"><div class="info"><label>收获周期</label><b>${escapeHtml(getCycle(crop))}</b></div><div class="info"><label>种植截止</label><b>${escapeHtml(crop.deadline || "看场景")}</b><small>普通农场不加速</small></div><div class="info"><label>耕种经验</label><b>${escapeHtml(crop.xp)}${Number.isFinite(Number(crop.xp)) ? " XP" : ""}</b><small>收获时获得</small></div><div class="info"><label>种植地点</label>${renderPlaces(crop)}</div></div></section>`;
-}
-function renderProfit(crop){
-  const p = crop.prices || {};
-  return `<section class="block"><h3 class="block-title">💰 收益</h3><div class="profit-wrap"><table class="profit-table"><thead><tr><th>处理方式</th><th>产物</th><th>售价 / 参考</th></tr></thead><tbody><tr><td>直接卖掉</td><td>${escapeHtml(crop.name_zh)}</td><td><span class="rate">${escapeHtml(p.normal)}g</span></td></tr><tr><td>推荐加工</td><td>加工参考</td><td>${linkDevices(crop.artisan)}</td></tr></tbody></table></div><details><summary class="price-summary">进阶售价</summary><table class="small-table"><thead><tr><th>项目</th><th>普通</th><th>银星</th><th>金星</th><th>铱星</th></tr></thead><tbody><tr><td>${escapeHtml(crop.name_zh)}</td><td>${escapeHtml(p.normal)}g</td><td>${escapeHtml(p.silver)}g</td><td>${escapeHtml(p.gold)}g</td><td>${escapeHtml(p.iridium)}g</td></tr></tbody></table></details></section>`;
-}
-function row(label, value){
-  const safeValue = (!value || value === "—") ? `<span class="empty-value">无</span>` : linkDevices(value);
-  return `<div class="row"><span>${escapeHtml(label)}</span><b class="strict-value">${safeValue}</b></div>`;
-}
 
-function renderUses(crop){
-  const remark = [crop.notes, crop.recommend ? `建议：${crop.recommend}` : ""].filter(item => item && item !== "—").join("｜") || "—";
-  const rows = [row("献祭", crop.bundle), row("食谱", crop.recipes), row("送礼", crop.gifts), row("任务", crop.tasks), row("备注", remark), row("吃掉", crop.energy)].join("");
-  return `<section class="block"><h3 class="block-title">📌 用途</h3><div class="list-card">${rows}</div></section>`;
-}
-
-function renderCard(crop){
-  const seasonClass = seasonBadge(crop.season);
-  return `<article class="result-card"><div class="item-head"><div class="item-title"><h3>🌾 ${escapeHtml(crop.name_zh)}</h3><span class="en-name">${escapeHtml(crop.name_en)}</span><span class="badge">作物</span><span class="badge ${seasonClass}">${escapeHtml(crop.season)}</span><span class="badge blue">${escapeHtml(crop.regrowth_label)}</span></div></div>${renderSeed(crop)}${renderPlant(crop)}${renderProfit(crop)}${renderUses(crop)}</article>`;
-}
-function matchesFilter(crop){if(activeFilter === "all") return true;if(activeFilter === "特殊") return crop.season.includes("特殊") || crop.season.includes("任务") || ["上古水果","仙人掌果子","齐瓜","茶叶"].includes(crop.name_zh);if(activeFilter === "全年") return crop.season.includes("全年") || (crop.extra_locations || []).some(x => x[1] === "全年") || (crop.special_locations || []).some(x => x[1] === "全年");return crop.season.includes(activeFilter) || (crop.farm_seasons || []).includes(activeFilter);}
 function render(){
   const q = search.value.trim().toLowerCase();
-  const filtered = CROPS.filter(crop => (!q || crop.search_text.includes(q)) && matchesFilter(crop));
-  resultCount.textContent = `${filtered.length} 个结果`;
-  emptyBlock.style.display = filtered.length ? "none" : "block";
-  resultList.innerHTML = filtered.map(renderCard).join("");
+  const starfruitText = "杨桃 starfruit 杨桃种子 绿洲 sandy 旅行货车 骷髅洞穴 博物馆 种子生产器 种植 收益 售价 用途 肯特 染料 精灵裤";
+  const isStarfruit = !q || starfruitText.toLowerCase().includes(q) || q.includes("杨桃") || q.includes("starfruit");
+  const deviceMatches = [...devices.children].filter(card => {
+    const name = (card.dataset.name || "").toLowerCase();
+    return q && (name.includes(q) || q.includes(name));
+  });
+
+  if(isStarfruit){
+    resultBlock.style.display = "";
+    emptyBlock.style.display = "none";
+    resultCount.textContent = "1 个结果";
+    devices.style.display = "";
+    deviceTitle.style.display = "";
+    [...devices.children].forEach(card => card.style.display = "");
+    return;
+  }
+
+  if(deviceMatches.length){
+    resultBlock.style.display = "none";
+    emptyBlock.style.display = "none";
+    devices.style.display = "";
+    deviceTitle.style.display = "";
+    [...devices.children].forEach(card => {
+      card.style.display = deviceMatches.includes(card) ? "" : "none";
+    });
+    return;
+  }
+
+  resultBlock.style.display = "none";
+  emptyBlock.style.display = "block";
+  devices.style.display = "none";
+  deviceTitle.style.display = "none";
 }
-chips.addEventListener("click", e => {const chip = e.target.closest("[data-filter]");if(!chip) return;activeFilter = chip.dataset.filter;chips.querySelectorAll(".chip").forEach(item => item.classList.toggle("active", item === chip));render();});
-document.body.addEventListener("click", e => {const jump = e.target.closest("[data-jump]");if(jump){const el = document.getElementById(jump.dataset.jump);if(el){setTimeout(() => {el.scrollIntoView({behavior:"smooth", block:"center"});el.classList.add("flash");setTimeout(() => el.classList.remove("flash"), 1200);}, 30);}}});
-search.addEventListener("input", render);render();
+
+document.body.addEventListener("click", e => {
+  const chip = e.target.closest("[data-search]");
+  if(chip){
+    search.value = chip.dataset.search;
+    render();
+    return;
+  }
+
+  const jump = e.target.closest("[data-jump]");
+  if(jump){
+    const el = document.getElementById(jump.dataset.jump);
+    if(el){
+      setTimeout(() => {
+        el.scrollIntoView({behavior:"smooth", block:"center"});
+        el.classList.add("flash");
+        setTimeout(() => el.classList.remove("flash"), 1200);
+      }, 30);
+    }
+  }
+});
+
+search.addEventListener("input", render);
+render();
 </script>
 </body>
 </html>
