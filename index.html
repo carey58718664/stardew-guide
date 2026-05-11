@@ -126,37 +126,37 @@ button,input{font:inherit}
   display:flex;
   flex-direction:column;
   align-items:flex-start;
-  gap:4px;
-  font-size:14px;
-  line-height:1.25;
+  gap:5px;
 }
 .place-row{
   display:flex;
   align-items:center;
   flex-wrap:wrap;
-  gap:4px;
+  gap:5px;
 }
-.place-row span{
+.place-chip{
   display:inline-flex;
   align-items:center;
-  gap:3px;
-  white-space:nowrap;
+  gap:4px;
+  padding:3px 7px;
+  border:1px solid rgba(216,189,130,.7);
+  border-radius:999px;
+  background:#fff9ec;
+  line-height:1;
 }
-.place-line em{
+.place-chip strong{
+  font-size:14px;
+  font-weight:850;
+  color:var(--ink);
+}
+.place-chip em{
   font-style:normal;
   font-size:9px;
   line-height:1;
   color:#8b775e;
-  background:#f5ead0;
-  border:1px solid var(--line-soft);
+  background:#f3e5c5;
   border-radius:999px;
   padding:2px 4px;
-  transform:translateY(-1px);
-}
-.place-slash{
-  color:#b8a27d;
-  font-weight:700;
-  font-style:normal;
 }
 .list-card{
   background:#fff;border:1px solid var(--line-soft);border-radius:16px;
@@ -183,20 +183,21 @@ button,input{font:inherit}
 .row-detail summary{
   list-style:none;
   display:grid;
-  grid-template-columns:120px minmax(0,1fr) 16px;
+  grid-template-columns:92px minmax(0,1fr) 16px;
   align-items:center;
   column-gap:8px;
-  padding:7px 0;
+  padding:9px 0;
   cursor:pointer;
   font-size:14px;
 }
 .row-detail summary::-webkit-details-marker{display:none}
 .row-detail summary span{
   color:var(--ink);
-  font-weight:800;
+  font-weight:850;
 }
 .row-detail summary b{
-  color:var(--ink);
+  color:#5e3e1c;
+  font-size:14px;
   font-weight:800;
   text-align:right;
   justify-self:end;
@@ -210,26 +211,36 @@ button,input{font:inherit}
   text-align:right;
 }
 .row-detail[open] summary::after{transform:rotate(180deg)}
-.row-detail .small-table{
-  margin:1px 0 8px;
+.mini-grid{
+  display:grid;
+  grid-template-columns:58px 1fr 1.35fr;
+  gap:1px;
+  overflow:hidden;
+  border:1px solid rgba(216,189,130,.58);
+  border-radius:12px;
+  background:rgba(216,189,130,.45);
+  margin:0 0 7px;
   font-size:12px;
-  table-layout:fixed;
 }
-.row-detail .small-table th,
-.row-detail .small-table td{
-  padding:6px 5px;
+.mini-grid div{
+  background:#fffdf8;
+  padding:7px 6px;
+  line-height:1.28;
 }
-.row-detail .small-table th:nth-child(1),
-.row-detail .small-table td:nth-child(1){width:22%}
-.row-detail .small-table th:nth-child(2),
-.row-detail .small-table td:nth-child(2){width:32%}
-.row-detail .small-table th:nth-child(3),
-.row-detail .small-table td:nth-child(3){width:46%}
+.mini-grid .head{
+  background:#fff6e2;
+  color:#6f4728;
+  font-weight:900;
+}
+.mini-grid .level{
+  font-weight:900;
+  color:var(--wood);
+}
 .row-note{
   color:var(--muted);
   font-size:11px;
   line-height:1.35;
-  margin:-1px 0 8px;
+  margin:0 0 9px;
 }
 .profit-wrap{
   overflow:hidden;border:1.5px solid var(--line);border-radius:18px;
@@ -288,15 +299,18 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
   .primary-source-main{
     align-items:flex-start;
   }
-  .place-line{
+  .row-detail summary{
+    grid-template-columns:78px minmax(0,1fr) 14px;
+  }
+  .row-detail summary b{
     font-size:14px;
   }
-  .row-detail summary{
-    grid-template-columns:96px minmax(0,1fr) 16px;
-    align-items:flex-start;
-  }
-  .row-detail .small-table{
+  .mini-grid{
+    grid-template-columns:48px .98fr 1.32fr;
     font-size:11px;
+  }
+  .mini-grid div{
+    padding:6px 5px;
   }
   .profit-table th,.profit-table td{font-size:13px;padding:9px 7px}
   .profit-table th:nth-child(1),.profit-table td:nth-child(1){width:37%}
@@ -393,146 +407,63 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
           </div>
           <div class="info">
             <label>种植地点</label>
-            <b class="place-line">
-              <span class="place-row"><span>农场<em>夏季</em></span></span>
-              <span class="place-row">
-                <span>温室<em>全年</em></span><i class="place-slash">/</i>
-                <span>姜岛<em>全年</em></span>
-              </span>
-            </b>
+            <div class="place-line">
+              <div class="place-row">
+                <span class="place-chip"><strong>农场</strong><em>夏季</em></span>
+              </div>
+              <div class="place-row">
+                <span class="place-chip"><strong>温室</strong><em>全年</em></span>
+                <span class="place-chip"><strong>姜岛</strong><em>全年</em></span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="list-card">
           <div class="list-title">肥料与耕种加成</div>
 
-          <details class="row-detail">
+          <details class="row-detail" data-boost>
             <summary><span>肥料</span><b>提高作物品质</b></summary>
-            <table class="small-table">
-              <thead>
-                <tr>
-                  <th>种类</th>
-                  <th>何时施加</th>
-                  <th>效果</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>初级</td>
-                  <td>种子发芽前</td>
-                  <td>提高品质概率</td>
-                </tr>
-                <tr>
-                  <td>高级</td>
-                  <td>种子发芽前</td>
-                  <td>更高品质概率</td>
-                </tr>
-                <tr>
-                  <td>顶级</td>
-                  <td>播种前后或生长中</td>
-                  <td>可出铱星作物</td>
-                </tr>
-              </tbody>
-            </table>
-            <p class="row-note">直接卖杨桃时有用；做酒和果酱时，原作物品质不影响加工品基础售价。</p>
+            <div class="mini-grid">
+              <div class="head">种类</div><div class="head">何时施加</div><div class="head">效果</div>
+              <div class="level">初级</div><div>种子发芽前</div><div>提高品质概率</div>
+              <div class="level">高级</div><div>种子发芽前</div><div>更高品质概率</div>
+              <div class="level">顶级</div><div>播种前后或生长中</div><div>可出铱星作物</div>
+            </div>
+            <p class="row-note">加工品不吃原作物品质。</p>
           </details>
 
-          <details class="row-detail">
+          <details class="row-detail" data-boost>
             <summary><span>生长激素</span><b>缩短成熟天数</b></summary>
-            <table class="small-table">
-              <thead>
-                <tr>
-                  <th>种类</th>
-                  <th>何时施加</th>
-                  <th>效果</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>初级</td>
-                  <td>播种前后或生长中</td>
-                  <td>10% · 13天→11天</td>
-                </tr>
-                <tr>
-                  <td>高级</td>
-                  <td>播种前后或生长中</td>
-                  <td>25% · 13天→9天</td>
-                </tr>
-                <tr>
-                  <td>顶级</td>
-                  <td>播种前后或生长中</td>
-                  <td>33% · 13天→8天</td>
-                </tr>
-              </tbody>
-            </table>
-            <p class="row-note">越早施加越完整；晚施加不会补回已经过去的生长阶段。</p>
+            <div class="mini-grid">
+              <div class="head">种类</div><div class="head">何时施加</div><div class="head">效果</div>
+              <div class="level">初级</div><div>播种前后或生长中</div><div>10% · 13天→11天</div>
+              <div class="level">高级</div><div>播种前后或生长中</div><div>25% · 13天→9天</div>
+              <div class="level">顶级</div><div>播种前后或生长中</div><div>33% · 13天→8天</div>
+            </div>
+            <p class="row-note">越早施加越完整。</p>
           </details>
 
-          <details class="row-detail">
+          <details class="row-detail" data-boost>
             <summary><span>保湿土壤</span><b>减少浇水压力</b></summary>
-            <table class="small-table">
-              <thead>
-                <tr>
-                  <th>种类</th>
-                  <th>何时施加</th>
-                  <th>效果</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>初级</td>
-                  <td>播种前后或生长中</td>
-                  <td>33%概率保湿</td>
-                </tr>
-                <tr>
-                  <td>高级</td>
-                  <td>播种前后或生长中</td>
-                  <td>66%概率保湿</td>
-                </tr>
-                <tr>
-                  <td>顶级</td>
-                  <td>播种前后或生长中</td>
-                  <td>100%保湿</td>
-                </tr>
-              </tbody>
-            </table>
-            <p class="row-note">首次仍要浇水。温室和姜岛这种长期种植场景更省心。</p>
+            <div class="mini-grid">
+              <div class="head">种类</div><div class="head">何时施加</div><div class="head">效果</div>
+              <div class="level">初级</div><div>播种前后或生长中</div><div>33%概率保湿</div>
+              <div class="level">高级</div><div>播种前后或生长中</div><div>66%概率保湿</div>
+              <div class="level">顶级</div><div>播种前后或生长中</div><div>100%保湿</div>
+            </div>
+            <p class="row-note">首次仍要浇水。</p>
           </details>
 
-          <details class="row-detail">
+          <details class="row-detail" data-boost>
             <summary><span>耕种职业</span><b>售价 / 速度加成</b></summary>
-            <table class="small-table">
-              <thead>
-                <tr>
-                  <th>等级</th>
-                  <th>选择</th>
-                  <th>效果</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>5级</td>
-                  <td>农夫</td>
-                  <td>作物售价+10%</td>
-                </tr>
-                <tr>
-                  <td>10级</td>
-                  <td>工匠</td>
-                  <td>酒/果酱等+40%</td>
-                </tr>
-                <tr>
-                  <td>10级</td>
-                  <td>农业学家</td>
-                  <td>作物生长+10%</td>
-                </tr>
-                <tr>
-                  <td>叠加</td>
-                  <td>农业学家+生长激素</td>
-                  <td>20%→10天 / 35%→8天 / 43%→7天</td>
-                </tr>
-              </tbody>
-            </table>
-            <p class="row-note">杨桃做酒通常看工匠；赶季节收获次数时看农业学家和生长激素。</p>
+            <div class="mini-grid">
+              <div class="head">等级</div><div class="head">选择</div><div class="head">效果</div>
+              <div class="level">5级</div><div>农夫</div><div>作物售价+10%</div>
+              <div class="level">10级</div><div>工匠</div><div>酒/果酱等+40%</div>
+              <div class="level">10级</div><div>农业学家</div><div>作物生长+10%</div>
+            </div>
+            <p class="row-note">农业学家可与生长激素叠加。</p>
           </details>
         </div>
       </section>
@@ -716,6 +647,18 @@ function render(){
   devices.style.display = "none";
   deviceTitle.style.display = "none";
 }
+
+document.body.addEventListener("toggle", e => {
+  const current = e.target.closest("details[data-boost]");
+  if(!current || !current.open) return;
+
+  const group = current.closest(".list-card");
+  if(!group) return;
+
+  group.querySelectorAll("details[data-boost]").forEach(item => {
+    if(item !== current) item.open = false;
+  });
+}, true);
 
 document.body.addEventListener("click", e => {
   const chip = e.target.closest("[data-search]");
