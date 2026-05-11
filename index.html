@@ -3,20 +3,22 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>星露谷 · 杨桃收益表 Demo</title>
+<title>星露谷 · 杨桃收益对比</title>
 <style>
 :root{
-  --bg:#f7efd9;
+  --bg:#fbf3dc;
   --paper:#fffaf0;
   --ink:#30271d;
   --muted:#746858;
-  --line:#d7bd86;
+  --line:#d8bd82;
+  --line-soft:rgba(216,189,130,.55);
   --wood:#6f4728;
   --gold:#c8952d;
   --blue:#426f93;
+  --green:#4e845a;
   --red:#bd4b39;
-  --shadow:0 10px 28px rgba(81,55,27,.12);
-  --radius:18px;
+  --shadow:0 12px 32px rgba(81,55,27,.13);
+  --radius:20px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -25,151 +27,304 @@ body{
   font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;
   color:var(--ink);
   background:
-    radial-gradient(circle at 15% 20%,rgba(214,170,82,.18) 0 2px,transparent 2px 44px),
-    linear-gradient(180deg,#fbf4e2 0%,var(--bg) 100%);
-  padding:14px;
+    radial-gradient(circle at 16% 20%,rgba(200,149,45,.12) 0 2px,transparent 2px 42px),
+    radial-gradient(circle at 80% 8%,rgba(78,132,90,.10) 0 2px,transparent 2px 54px),
+    linear-gradient(180deg,#fff8e8 0%,var(--bg) 100%);
 }
 .header{
-  max-width:760px;
-  margin:0 auto 12px;
-  background:linear-gradient(135deg,#3a2719,#704725 64%,#8b5d34);
+  background:linear-gradient(135deg,#3a2719,#704725 68%,#8b5d34);
   color:#fff4d6;
-  border:1px solid rgba(255,244,214,.2);
   border-bottom:4px solid var(--gold);
-  border-radius:22px;
-  box-shadow:var(--shadow);
-  padding:18px 16px;
+  box-shadow:0 4px 22px rgba(0,0,0,.18);
 }
-.header small{color:#e7bd68;letter-spacing:.12em;text-transform:uppercase}
-.header h1{font-size:26px;margin-top:7px}
-.header p{color:rgba(255,244,214,.78);font-size:14px;margin-top:6px}
-.app{max-width:760px;margin:0 auto}
-.search-card{
-  background:rgba(255,250,240,.95);
-  border:1px solid var(--line);
-  border-radius:22px;
-  box-shadow:var(--shadow);
-  padding:12px;
-  position:sticky;
-  top:8px;
-  z-index:5;
+.header-inner{
+  max-width:880px;
+  margin:0 auto;
+  padding:18px 16px 16px;
 }
-.search{position:relative}
-.search span{position:absolute;left:14px;top:50%;transform:translateY(-50%)}
-.search input{
+.eyebrow{
+  font-size:12px;
+  letter-spacing:.14em;
+  color:#e7bd68;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.header h1{
+  font-size:clamp(25px,7vw,42px);
+  line-height:1.05;
+}
+.header p{
+  font-size:14px;
+  color:rgba(255,244,214,.76);
+  margin-top:8px;
+}
+.app{
+  max-width:880px;
+  margin:0 auto;
+  padding:14px;
+}
+.search-panel{
+  background:rgba(255,250,240,.96);
+  border:1px solid rgba(216,189,130,.86);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:13px;
+  margin-bottom:16px;
+}
+.search-box{
+  position:relative;
+}
+.search-box span{
+  position:absolute;
+  left:15px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#9b8a70;
+  font-size:22px;
+}
+.search-box input{
   width:100%;
   border:2px solid var(--line);
   border-radius:999px;
-  padding:12px 14px 12px 42px;
-  background:white;
+  background:#fff;
+  padding:13px 14px 13px 48px;
+  font-size:18px;
+  outline:0;
   color:var(--ink);
-  outline:none;
-  font:inherit;
 }
-.chips{display:flex;gap:8px;overflow:auto;padding-top:10px}
+.search-box input:focus{
+  border-color:var(--wood);
+  box-shadow:0 0 0 4px rgba(111,71,40,.14);
+}
+.chips{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding-top:12px;
+}
 .chip{
-  border:1px solid var(--line);
+  border:1.5px solid var(--line);
   background:#fff8e7;
   color:var(--wood);
   border-radius:999px;
-  padding:7px 12px;
-  font-size:13px;
+  padding:8px 13px;
   white-space:nowrap;
-  cursor:pointer;
+  font-size:14px;
+  font-weight:700;
 }
-.chip.hot{background:#fff0e8;border-color:#e3a18f;color:var(--red)}
-.section-title{margin:20px 2px 10px}
-.section-title h2{font-size:22px}
-.section-title p{font-size:13px;color:var(--muted);margin-top:2px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.card{
-  background:rgba(255,250,240,.96);
-  border:1px solid rgba(215,189,134,.92);
-  border-radius:var(--radius);
-  box-shadow:0 4px 14px rgba(81,55,27,.08);
-  padding:14px;
+.chip.hot{
+  color:var(--red);
+  background:#fff1ed;
+  border-color:#e6aa98;
 }
-.item{cursor:pointer;background:white}
-.item:hover{border-color:#c39148;box-shadow:0 8px 18px rgba(81,55,27,.1)}
-.item h3{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:18px}
-.meta{color:var(--muted);font-size:14px;line-height:1.55;margin-top:6px}
+.section-title{
+  margin:22px 3px 10px;
+}
+.section-title h2{
+  font-size:26px;
+  line-height:1.2;
+}
+.section-title p{
+  color:var(--muted);
+  margin-top:3px;
+  font-size:14px;
+}
+.result-card{
+  background:rgba(255,250,240,.98);
+  border:1.5px solid rgba(216,189,130,.92);
+  border-radius:24px;
+  box-shadow:0 7px 20px rgba(81,55,27,.10);
+  padding:15px;
+}
+.item-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  padding-bottom:11px;
+  border-bottom:1px solid var(--line-soft);
+}
+.item-title{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+}
+.item-title h3{
+  font-size:25px;
+}
 .badge{
   display:inline-flex;
+  align-items:center;
+  justify-content:center;
   border-radius:999px;
-  padding:3px 8px;
+  padding:3px 9px;
+  font-size:12px;
+  font-weight:900;
   background:#eee1c4;
   color:var(--wood);
-  font-size:11px;
-  font-weight:800;
 }
-.badge.red{background:rgba(189,75,57,.14);color:var(--red)}
-.badge.green{background:rgba(78,132,90,.14);color:#4e845a}
-.line{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:10px 0}
-.profit-table-wrap{overflow-x:auto;margin-top:10px}
+.badge.red{background:rgba(189,75,57,.13);color:var(--red)}
+.badge.green{background:rgba(78,132,90,.14);color:var(--green)}
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin:13px 0;
+}
+.info{
+  background:#fff;
+  border:1px solid var(--line-soft);
+  border-radius:15px;
+  padding:10px;
+  min-height:62px;
+}
+.info label{
+  display:block;
+  color:#97866e;
+  font-size:12px;
+  margin-bottom:3px;
+}
+.info b{
+  font-size:18px;
+}
+.info small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:2px;
+  line-height:1.25;
+}
+.profit-wrap{
+  overflow:hidden;
+  border:1.5px solid var(--line);
+  border-radius:18px;
+  background:#fff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+}
 .profit-table{
   width:100%;
-  min-width:420px;
-  border-collapse:separate;
-  border-spacing:0;
-  overflow:hidden;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:white;
+  border-collapse:collapse;
+  table-layout:fixed;
 }
-.profit-table th,.profit-table td{
-  padding:10px 9px;
-  border-bottom:1px solid rgba(215,189,134,.72);
+.profit-table th{
+  background:linear-gradient(180deg,#f3e4bd,#ead5a5);
+  color:#5e3e1c;
   font-size:13px;
+  font-weight:900;
+  padding:9px 8px;
   text-align:left;
+}
+.profit-table td{
+  padding:10px 8px;
+  font-size:15px;
+  border-top:1px solid var(--line-soft);
   vertical-align:middle;
 }
-.profit-table tr:last-child td{border-bottom:0}
-.profit-table th{background:#f4e6c7;color:var(--wood);font-weight:900}
-.profit-table td:nth-child(3),.profit-table td:nth-child(4){text-align:right;white-space:nowrap}
+.profit-table th:nth-child(1),
+.profit-table td:nth-child(1){width:42%}
+.profit-table th:nth-child(2),
+.profit-table td:nth-child(2){width:25%}
+.profit-table th:nth-child(3),
+.profit-table td:nth-child(3){width:17%;text-align:right;white-space:nowrap}
+.profit-table th:nth-child(4),
+.profit-table td:nth-child(4){width:16%;text-align:right;white-space:nowrap}
+.profit-table tbody tr:nth-child(even){
+  background:#fffaf2;
+}
+.rate{
+  font-weight:900;
+  color:var(--green);
+}
+.rate.zero{
+  color:var(--muted);
+}
 .inline-link{
-  border:1px solid var(--line);
+  display:inline-flex;
+  align-items:center;
+  border:1.5px solid var(--line);
   background:#fff8e7;
   color:var(--blue);
   border-radius:999px;
   padding:2px 7px;
-  font-size:12px;
-  font-weight:800;
+  font-size:13px;
+  font-weight:900;
+  text-decoration:none;
 }
-dialog{
-  width:min(680px,calc(100% - 24px));
-  border:0;
-  border-radius:22px;
-  box-shadow:0 28px 80px rgba(0,0,0,.34);
-  padding:0;
-  background:var(--paper);
-  color:var(--ink);
+.devices{
+  display:grid;
+  gap:10px;
 }
-dialog::backdrop{background:rgba(30,20,12,.42)}
-.modal-head{
+.device-card{
+  background:#fff;
+  border:1.5px solid rgba(216,189,130,.9);
+  border-radius:19px;
+  padding:13px;
+  box-shadow:0 5px 14px rgba(81,55,27,.07);
+}
+.device-card.flash{
+  animation:flash 1.1s ease;
+}
+@keyframes flash{
+  0%,100%{box-shadow:0 5px 14px rgba(81,55,27,.07)}
+  30%{box-shadow:0 0 0 5px rgba(66,111,147,.22),0 5px 14px rgba(81,55,27,.07)}
+}
+.device-card h3{
+  font-size:21px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  padding:14px 16px;
-  background:linear-gradient(135deg,#fff8e7,#f1dfb7);
-  border-bottom:1px solid var(--line);
+  gap:8px;
+  flex-wrap:wrap;
 }
-.modal-body{padding:16px;max-height:76vh;overflow:auto}
-.close-btn{border:0;background:rgba(111,71,40,.12);color:var(--wood);border-radius:12px;width:34px;height:34px;font-size:20px}
-@media(max-width:520px){body{padding:10px}.header{border-radius:20px}.profit-table th,.profit-table td{font-size:12px;padding:9px 7px}}
+.device-card p{
+  color:var(--muted);
+  font-size:15px;
+  margin-top:6px;
+  line-height:1.55;
+}
+.empty{
+  display:none;
+  background:#fff;
+  border:1px solid var(--line-soft);
+  border-radius:18px;
+  padding:18px;
+  color:var(--muted);
+}
+@media(max-width:640px){
+  .app{padding:10px}
+  .search-panel{border-radius:0 0 22px 22px;margin:-10px -10px 16px}
+  .info-grid{grid-template-columns:repeat(2,1fr)}
+  .result-card{padding:12px}
+  .profit-table th,
+  .profit-table td{
+    font-size:13px;
+    padding:9px 7px;
+  }
+  .profit-table th:nth-child(1),
+  .profit-table td:nth-child(1){width:38%}
+  .profit-table th:nth-child(2),
+  .profit-table td:nth-child(2){width:26%}
+  .profit-table th:nth-child(3),
+  .profit-table td:nth-child(3){width:18%}
+  .profit-table th:nth-child(4),
+  .profit-table td:nth-child(4){width:18%}
+}
 </style>
 </head>
 <body>
 <header class="header">
-  <small>Stardew Valley · Profit Table Demo</small>
-  <h1>⭐ 杨桃收益对比</h1>
-  <p>先只改杨桃：不写建议，不替玩家决定，只展示处理方式、产物、价格、收益率。</p>
+  <div class="header-inner">
+    <div class="eyebrow">Stardew Valley · Profit Table Demo</div>
+    <h1>⭐ 杨桃收益对比</h1>
+    <p>搜索结果直接展开完整信息，不再点开二级弹窗。</p>
+  </div>
 </header>
 
 <main class="app">
-  <section class="search-card">
-    <div class="search">
+  <section class="search-panel">
+    <div class="search-box">
       <span>🔍</span>
-      <input id="search" value="杨桃" placeholder="搜：杨桃、小桶、陈酿桶">
+      <input id="search" value="杨桃" placeholder="搜杨桃、小桶、陈酿桶…" />
     </div>
     <div class="chips">
       <button class="chip hot" data-search="杨桃">杨桃</button>
@@ -178,177 +333,163 @@ dialog::backdrop{background:rgba(30,20,12,.42)}
     </div>
   </section>
 
-  <section>
+  <section id="resultBlock">
     <div class="section-title">
       <h2>搜索结果</h2>
-      <p id="count">0 个结果</p>
+      <p id="resultCount">1 个结果</p>
     </div>
-    <div class="grid" id="results"></div>
+
+    <article class="result-card" id="starfruitCard">
+      <div class="item-head">
+        <div class="item-title">
+          <h3>⭐ 杨桃</h3>
+          <span class="badge">作物</span>
+          <span class="badge red">HOT</span>
+          <span class="badge green">夏</span>
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info source-info">
+          <label>来源</label>
+          <b>绿洲商店 · Sandy</b>
+          <small>沙漠 · 9:00AM-11:50PM · 400G/个</small>
+        </div>
+        <div class="info">
+          <label>其他来源</label>
+          <b>旅行货车</b>
+          <small>600-1000G/个 · 博物馆15件送1个 · 种子生产器</small>
+        </div>
+        <div class="info">
+          <label>收获周期</label>
+          <b>13天（1次）</b>
+        </div>
+        <div class="info">
+          <label>种植截止</label>
+          <b>夏15</b>
+        </div>
+      </div>
+
+      <div class="profit-wrap">
+        <table class="profit-table">
+          <thead>
+            <tr>
+              <th>处理方式</th>
+              <th>产物</th>
+              <th>价格</th>
+              <th>收益率</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>直接卖掉</td>
+              <td>杨桃</td>
+              <td>750G</td>
+              <td><span class="rate zero">0%</span></td>
+            </tr>
+            <tr>
+              <td>杨桃 + <a class="inline-link" href="#keg" data-jump="keg">小桶</a></td>
+              <td>杨桃酒</td>
+              <td>2250G</td>
+              <td><span class="rate">+200%</span></td>
+            </tr>
+            <tr>
+              <td>杨桃酒 + <a class="inline-link" href="#cask" data-jump="cask">陈酿桶</a></td>
+              <td>铱星杨桃酒</td>
+              <td>4500G</td>
+              <td><span class="rate">+500%</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
   </section>
 
-  <section id="equipment">
-    <div class="section-title">
-      <h2>设备</h2>
-      <p>收益表里的设备名可以跳到这里。</p>
-    </div>
-    <div class="grid" id="equipments"></div>
+  <section id="emptyBlock" class="empty">没有找到结果。</section>
+
+  <section class="section-title" id="deviceTitle">
+    <h2>设备</h2>
+    <p>收益表里的设备名可以跳到这里。</p>
+  </section>
+
+  <section class="devices" id="devices">
+    <article class="device-card" id="keg" data-name="小桶">
+      <h3>🍷 小桶 <span class="badge">工匠设备</span></h3>
+      <p>水果→酒，蔬菜→汁。杨桃、远古果实、啤酒花都常用小桶处理。</p>
+    </article>
+    <article class="device-card" id="cask" data-name="陈酿桶">
+      <h3>🍾 陈酿桶 <span class="badge">工匠设备</span></h3>
+      <p>酒和奶酪可以陈酿提升品质。需要房屋升级到地窖后使用。</p>
+    </article>
   </section>
 </main>
 
-<dialog id="modal">
-  <div class="modal-head">
-    <strong id="modalTitle">详情</strong>
-    <button class="close-btn" id="modalClose">×</button>
-  </div>
-  <div class="modal-body" id="modalBody"></div>
-</dialog>
-
 <script>
-const DATA = [
-  {
-    id:"starfruit",
-    name:"杨桃",
-    emoji:"⭐",
-    type:"作物",
-    season:"夏",
-    price:750,
-    hot:true,
-    profit:[
-      {method:"直接卖掉", output:"杨桃", price:750},
-      {method:"杨桃 + <button class='inline-link' data-jump='keg'>小桶</button>", output:"杨桃酒", price:2250},
-      {method:"杨桃酒 + <button class='inline-link' data-jump='cask'>陈酿桶</button>", output:"铱星杨桃酒", price:4500}
-    ]
-  },
-  {
-    id:"keg",
-    name:"小桶",
-    emoji:"🍷",
-    type:"工匠设备",
-    source:"耕种8级解锁",
-    recipe:"木材×30 + 铜锭×1 + 铁锭×1 + 橡树树脂×1",
-    desc:"水果→酒，蔬菜→汁。"
-  },
-  {
-    id:"cask",
-    name:"陈酿桶",
-    emoji:"🍾",
-    type:"工匠设备",
-    source:"房屋升级到地窖后可用",
-    recipe:"木材×20 + 硬木×1",
-    desc:"酒和奶酪可以陈酿提升品质。"
-  }
-];
-
-function $(id){return document.getElementById(id)}
-
-function rate(price, base){
-  const n = Math.round((price / base - 1) * 100);
-  return `${n > 0 ? "+" : ""}${n}%`;
-}
-
-function profitTable(item){
-  const base = item.price || item.profit[0].price;
-  return `
-    <div class="profit-table-wrap">
-      <table class="profit-table">
-        <thead>
-          <tr>
-            <th>处理方式</th>
-            <th>产物</th>
-            <th>价格</th>
-            <th>收益率</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${item.profit.map(row => `
-            <tr>
-              <td>${row.method}</td>
-              <td>${row.output}</td>
-              <td>${row.price}G</td>
-              <td>${rate(row.price, base)}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-    </div>
-  `;
-}
-
-function card(item){
-  return `
-    <article class="card item" data-id="${item.id}">
-      <h3>${item.emoji} ${item.name}
-        <span class="badge">${item.type}</span>
-        ${item.hot ? `<span class="badge red">HOT</span>` : ""}
-        ${item.season ? `<span class="badge green">${item.season}</span>` : ""}
-      </h3>
-      <p class="meta">${item.profit ? "点开查看收益对比。" : item.desc || "点开查看详情。"}</p>
-    </article>
-  `;
-}
-
-function detail(item){
-  if(item.profit){
-    return `
-      <h3>${item.emoji} ${item.name}</h3>
-      <div class="line"></div>
-      <p class="meta">基础价：${item.price}G</p>
-      ${profitTable(item)}
-    `;
-  }
-  return `
-    <h3>${item.emoji} ${item.name}</h3>
-    <div class="line"></div>
-    <p class="meta">来源：${item.source}</p>
-    <p class="meta">配方：${item.recipe}</p>
-    <p class="meta">${item.desc}</p>
-  `;
-}
+const search = document.getElementById("search");
+const resultBlock = document.getElementById("resultBlock");
+const emptyBlock = document.getElementById("emptyBlock");
+const devices = document.getElementById("devices");
+const deviceTitle = document.getElementById("deviceTitle");
+const starfruitCard = document.getElementById("starfruitCard");
+const resultCount = document.getElementById("resultCount");
 
 function render(){
-  const q = $("search").value.trim();
-  const items = DATA.filter(item => [item.name,item.type,item.source,item.desc,JSON.stringify(item.profit || [])].join(" ").includes(q));
-  $("count").textContent = `${items.length} 个结果`;
-  $("results").innerHTML = items.map(card).join("");
-  $("equipments").innerHTML = DATA.filter(i => i.type === "工匠设备").map(card).join("");
+  const q = search.value.trim();
+  const isStarfruit = !q || "杨桃".includes(q) || q.includes("杨桃") || "starfruit".includes(q.toLowerCase());
+  const isKeg = q.includes("小桶");
+  const isCask = q.includes("陈酿桶");
+
+  if(isStarfruit){
+    resultBlock.style.display = "";
+    emptyBlock.style.display = "none";
+    resultCount.textContent = "1 个结果";
+    starfruitCard.style.display = "";
+    devices.style.display = "";
+    deviceTitle.style.display = "";
+    return;
+  }
+
+  if(isKeg || isCask){
+    resultBlock.style.display = "none";
+    emptyBlock.style.display = "none";
+    devices.style.display = "";
+    deviceTitle.style.display = "";
+
+    [...devices.children].forEach(card => {
+      const match = card.dataset.name.includes(q) || q.includes(card.dataset.name);
+      card.style.display = match ? "" : "none";
+    });
+    return;
+  }
+
+  resultBlock.style.display = "none";
+  emptyBlock.style.display = "block";
+  devices.style.display = "none";
+  deviceTitle.style.display = "none";
 }
 
-function openDetail(id){
-  const item = DATA.find(i => i.id === id);
-  if(!item) return;
-  $("modalTitle").textContent = item.name;
-  $("modalBody").innerHTML = detail(item);
-  $("modal").showModal();
-}
-
-$("search").addEventListener("input", render);
-$("modalClose").addEventListener("click", () => $("modal").close());
-
- document.body.addEventListener("click", e => {
-  const searchBtn = e.target.closest("[data-search]");
-  if(searchBtn){
-    $("search").value = searchBtn.dataset.search;
+document.body.addEventListener("click", e => {
+  const chip = e.target.closest("[data-search]");
+  if(chip){
+    search.value = chip.dataset.search;
     render();
     return;
   }
 
   const jump = e.target.closest("[data-jump]");
   if(jump){
-    e.stopPropagation();
-    $("modal").close();
-    const el = document.querySelector(`[data-id="${jump.dataset.jump}"]`);
+    const el = document.getElementById(jump.dataset.jump);
     if(el){
-      el.scrollIntoView({behavior:"smooth", block:"center"});
-      el.style.outline = "3px solid rgba(66,111,147,.35)";
-      setTimeout(() => el.style.outline = "", 900);
+      setTimeout(() => {
+        el.scrollIntoView({behavior:"smooth", block:"center"});
+        el.classList.add("flash");
+        setTimeout(() => el.classList.remove("flash"), 1200);
+      }, 30);
     }
-    return;
   }
-
-  const item = e.target.closest(".item");
-  if(item) openDetail(item.dataset.id);
 });
 
+search.addEventListener("input", render);
 render();
 </script>
 </body>
