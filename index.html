@@ -124,13 +124,19 @@ button,input{font:inherit}
 }
 .place-line{
   display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  font-size:14px;
+  line-height:1.25;
+}
+.place-row{
+  display:flex;
   align-items:center;
   flex-wrap:wrap;
   gap:4px;
-  font-size:16px;
-  line-height:1.35;
 }
-.place-line span{
+.place-row span{
   display:inline-flex;
   align-items:center;
   gap:3px;
@@ -150,6 +156,7 @@ button,input{font:inherit}
 .place-slash{
   color:#b8a27d;
   font-weight:700;
+  font-style:normal;
 }
 .list-card{
   background:#fff;border:1px solid var(--line-soft);border-radius:16px;
@@ -175,38 +182,49 @@ button,input{font:inherit}
 .row-detail:first-of-type{border-top:0}
 .row-detail summary{
   list-style:none;
-  display:flex;
-  justify-content:space-between;
+  display:grid;
+  grid-template-columns:120px minmax(0,1fr) 16px;
   align-items:center;
-  gap:12px;
+  column-gap:8px;
   padding:7px 0;
   cursor:pointer;
   font-size:14px;
 }
 .row-detail summary::-webkit-details-marker{display:none}
-.row-detail summary span{color:var(--muted)}
+.row-detail summary span{
+  color:var(--ink);
+  font-weight:800;
+}
 .row-detail summary b{
   color:var(--ink);
   font-weight:800;
   text-align:right;
+  justify-self:end;
 }
 .row-detail summary::after{
   content:"▾";
   color:var(--wood);
   font-size:11px;
   font-weight:900;
-  margin-left:2px;
   transition:transform .18s ease;
+  text-align:right;
 }
 .row-detail[open] summary::after{transform:rotate(180deg)}
 .row-detail .small-table{
   margin:1px 0 8px;
   font-size:12px;
+  table-layout:fixed;
 }
 .row-detail .small-table th,
 .row-detail .small-table td{
   padding:6px 5px;
 }
+.row-detail .small-table th:nth-child(1),
+.row-detail .small-table td:nth-child(1){width:22%}
+.row-detail .small-table th:nth-child(2),
+.row-detail .small-table td:nth-child(2){width:32%}
+.row-detail .small-table th:nth-child(3),
+.row-detail .small-table td:nth-child(3){width:46%}
 .row-note{
   color:var(--muted);
   font-size:11px;
@@ -271,14 +289,10 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
     align-items:flex-start;
   }
   .place-line{
-    font-size:15px;
-    gap:3px;
-  }
-  .place-line em{
-    font-size:8.5px;
-    padding:2px 3px;
+    font-size:14px;
   }
   .row-detail summary{
+    grid-template-columns:96px minmax(0,1fr) 16px;
     align-items:flex-start;
   }
   .row-detail .small-table{
@@ -380,9 +394,11 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
           <div class="info">
             <label>种植地点</label>
             <b class="place-line">
-              <span>农场<em>夏季</em></span><i class="place-slash">/</i>
-              <span>温室<em>全年</em></span><i class="place-slash">/</i>
-              <span>姜岛<em>全年</em></span>
+              <span class="place-row"><span>农场<em>夏季</em></span></span>
+              <span class="place-row">
+                <span>温室<em>全年</em></span><i class="place-slash">/</i>
+                <span>姜岛<em>全年</em></span>
+              </span>
             </b>
           </div>
         </div>
@@ -391,7 +407,7 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
           <div class="list-title">肥料与耕种加成</div>
 
           <details class="row-detail">
-            <summary><span>品质肥料</span><b>提高作物品质</b></summary>
+            <summary><span>肥料</span><b>提高作物品质</b></summary>
             <table class="small-table">
               <thead>
                 <tr>
@@ -402,17 +418,17 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
               </thead>
               <tbody>
                 <tr>
-                  <td>基础肥料</td>
+                  <td>初级</td>
                   <td>种子发芽前</td>
                   <td>提高品质概率</td>
                 </tr>
                 <tr>
-                  <td>高级肥料</td>
+                  <td>高级</td>
                   <td>种子发芽前</td>
                   <td>更高品质概率</td>
                 </tr>
                 <tr>
-                  <td>顶级肥料</td>
+                  <td>顶级</td>
                   <td>播种前后或生长中</td>
                   <td>可出铱星作物</td>
                 </tr>
@@ -422,28 +438,28 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
           </details>
 
           <details class="row-detail">
-            <summary><span>生长激素类</span><b>缩短成熟天数</b></summary>
+            <summary><span>生长激素</span><b>缩短成熟天数</b></summary>
             <table class="small-table">
               <thead>
                 <tr>
                   <th>种类</th>
                   <th>何时施加</th>
-                  <th>杨桃效果</th>
+                  <th>效果</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>生长激素</td>
+                  <td>初级</td>
                   <td>播种前后或生长中</td>
                   <td>10% · 13天→11天</td>
                 </tr>
                 <tr>
-                  <td>高级生长激素</td>
+                  <td>高级</td>
                   <td>播种前后或生长中</td>
                   <td>25% · 13天→9天</td>
                 </tr>
                 <tr>
-                  <td>顶级生长激素</td>
+                  <td>顶级</td>
                   <td>播种前后或生长中</td>
                   <td>33% · 13天→8天</td>
                 </tr>
@@ -464,17 +480,17 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
               </thead>
               <tbody>
                 <tr>
-                  <td>保湿土壤</td>
+                  <td>初级</td>
                   <td>播种前后或生长中</td>
                   <td>33%概率保湿</td>
                 </tr>
                 <tr>
-                  <td>高级保湿土壤</td>
+                  <td>高级</td>
                   <td>播种前后或生长中</td>
                   <td>66%概率保湿</td>
                 </tr>
                 <tr>
-                  <td>顶级保湿土壤</td>
+                  <td>顶级</td>
                   <td>播种前后或生长中</td>
                   <td>100%保湿</td>
                 </tr>
