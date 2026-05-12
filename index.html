@@ -5,253 +5,213 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>星露谷物语 · 资料库</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=Noto+Serif+SC:wght@400;600;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f4ead5;
-    --bg-deep: #ead7b0;
-    --ink: #2d2418;
-    --ink-soft: #5a4a35;
-    --grass: #5c8a3a;
-    --grass-deep: #3d6024;
-    --sunset: #d96b3c;
-    --berry: #a93f3f;
-    --sky: #6b8caf;
-    --gold: #d4a23a;
-    --line: #2d2418;
-    --paper: #fbf4e0;
-  }
-
-- { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
 
 body {
-background: var(–bg);
-color: var(–ink);
-font-family: ‘Noto Serif SC’, serif;
-line-height: 1.6;
+background: #f4ead5;
+color: #2d2418;
+font-family: “PingFang SC”, “Hiragino Sans GB”, “Microsoft YaHei”, “STHeiti”, sans-serif;
+line-height: 1.7;
 min-height: 100vh;
 background-image:
-radial-gradient(circle at 20% 10%, rgba(217,107,60,0.06) 0%, transparent 40%),
-radial-gradient(circle at 80% 80%, rgba(92,138,58,0.08) 0%, transparent 50%);
+radial-gradient(circle at 20% 10%, rgba(217,107,60,0.08) 0%, transparent 40%),
+radial-gradient(circle at 80% 80%, rgba(92,138,58,0.10) 0%, transparent 50%);
 }
 
-/* 纸张噪点纹理 */
 body::before {
 content: ‘’;
 position: fixed;
 inset: 0;
 pointer-events: none;
 z-index: 1;
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘200’ height=‘200’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence baseFrequency=‘0.9’ numOctaves=‘2’/%3E%3CfeColorMatrix values=‘0 0 0 0 0.18 0 0 0 0 0.14 0 0 0 0 0.09 0 0 0 0.08 0’/%3E%3C/filter%3E%3Crect width=‘200’ height=‘200’ filter=‘url(%23n)’/%3E%3C/svg%3E”);
-opacity: 0.6;
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘200’ height=‘200’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence baseFrequency=‘0.9’ numOctaves=‘2’/%3E%3CfeColorMatrix values=‘0 0 0 0 0.18 0 0 0 0 0.14 0 0 0 0 0.09 0 0 0 0.06 0’/%3E%3C/filter%3E%3Crect width=‘200’ height=‘200’ filter=‘url(%23n)’/%3E%3C/svg%3E”);
+opacity: 0.5;
 mix-blend-mode: multiply;
 }
 
-/* === 顶部 === */
 header {
 position: relative;
-padding: 60px 8% 50px;
-border-bottom: 3px solid var(–line);
-background: var(–paper);
+padding: 40px 24px 30px;
+border-bottom: 3px solid #2d2418;
+background: #fbf4e0;
 z-index: 2;
 }
 
 .header-top {
-display: flex;
-justify-content: space-between;
-align-items: baseline;
-font-family: ‘DM Mono’, monospace;
-font-size: 12px;
+font-size: 11px;
 letter-spacing: 0.15em;
-color: var(–ink-soft);
-text-transform: uppercase;
-margin-bottom: 30px;
+color: #8b7355;
+margin-bottom: 24px;
+line-height: 1.8;
 }
 
-.header-top .meta { display: flex; gap: 24px; }
-.header-top .meta span::before { content: ’◆ ’; color: var(–sunset); }
+.header-top .brand {
+color: #d96b3c;
+font-weight: 600;
+margin-bottom: 6px;
+letter-spacing: 0.2em;
+}
+
+.header-top .meta span {
+margin-right: 14px;
+color: #6b5a3f;
+}
+
+.header-top .meta span::before { content: ’◆ ’; color: #d96b3c; }
 
 h1 {
-font-family: ‘Noto Serif SC’, serif;
 font-weight: 900;
-font-size: clamp(48px, 9vw, 120px);
-line-height: 0.95;
+font-size: clamp(44px, 13vw, 96px);
+line-height: 1;
 letter-spacing: -0.02em;
-color: var(–ink);
-margin-bottom: 20px;
-position: relative;
+color: #2d2418;
+margin-bottom: 16px;
 }
 
 h1 .pixel {
-font-family: ‘VT323’, monospace;
-font-weight: normal;
-color: var(–sunset);
-font-size: 0.6em;
+color: #d96b3c;
+font-size: 0.5em;
 vertical-align: super;
-margin-left: 8px;
 }
 
 .subtitle {
-display: flex;
-align-items: center;
-gap: 20px;
-font-family: ‘DM Mono’, monospace;
-font-size: 14px;
-color: var(–ink-soft);
-letter-spacing: 0.1em;
+font-size: 13px;
+color: #6b5a3f;
+letter-spacing: 0.05em;
+border-top: 1px solid #2d2418;
+padding-top: 12px;
+margin-top: 4px;
 }
 
-.subtitle .line {
-flex: 0 0 60px;
-height: 1px;
-background: var(–ink);
-}
-
-/* === 总览导航 === */
 .quicknav {
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-gap: 0;
-border-top: 3px solid var(–line);
-border-bottom: 3px solid var(–line);
-background: var(–bg-deep);
+grid-template-columns: repeat(4, 1fr);
+border-top: 3px solid #2d2418;
+border-bottom: 3px solid #2d2418;
+background: #ead7b0;
 position: sticky;
 top: 0;
 z-index: 10;
-backdrop-filter: blur(4px);
 }
 
 .quicknav a {
-padding: 16px 12px;
+padding: 14px 6px;
 text-align: center;
 text-decoration: none;
-color: var(–ink);
-font-family: ‘DM Mono’, monospace;
+color: #2d2418;
 font-size: 12px;
-letter-spacing: 0.1em;
-border-right: 1px solid var(–line);
+letter-spacing: 0.05em;
+border-right: 1px solid #2d2418;
+border-bottom: 1px solid #2d2418;
 transition: all 0.2s;
-text-transform: uppercase;
 display: flex;
 flex-direction: column;
 gap: 4px;
 align-items: center;
+background: #ead7b0;
 }
 
-.quicknav a:last-child { border-right: none; }
+.quicknav a:nth-child(4n) { border-right: none; }
+.quicknav a:nth-child(n+5) { border-bottom: none; }
 
+.quicknav a:active,
 .quicknav a:hover {
-background: var(–sunset);
-color: var(–paper);
+background: #d96b3c;
+color: #fbf4e0;
 }
 
 .quicknav .icon {
-font-size: 20px;
-font-family: ‘VT323’, monospace;
+font-size: 16px;
+color: #d96b3c;
 }
 
-/* === 主要内容 === */
+.quicknav a:hover .icon,
+.quicknav a:active .icon { color: #fbf4e0; }
+
 main {
 position: relative;
 z-index: 2;
-padding: 80px 8% 100px;
+padding: 50px 20px 70px;
 max-width: 1400px;
 margin: 0 auto;
 }
 
-section {
-margin-bottom: 100px;
-position: relative;
-}
+section { margin-bottom: 70px; }
 
 .section-header {
-display: flex;
-align-items: flex-end;
-gap: 30px;
-margin-bottom: 40px;
-padding-bottom: 24px;
-border-bottom: 2px solid var(–line);
-position: relative;
+display: grid;
+grid-template-columns: auto 1fr;
+gap: 18px;
+align-items: end;
+margin-bottom: 24px;
+padding-bottom: 18px;
+border-bottom: 2px solid #2d2418;
 }
 
 .section-num {
-font-family: ‘VT323’, monospace;
-font-size: 80px;
+font-size: 56px;
 line-height: 0.8;
-color: var(–sunset);
-flex: 0 0 auto;
+font-weight: 900;
+color: #d96b3c;
+font-family: “Courier New”, monospace;
 }
 
-.section-title-block { flex: 1; }
-
 .section-cat {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
+font-size: 10px;
 letter-spacing: 0.2em;
-color: var(–ink-soft);
-text-transform: uppercase;
-margin-bottom: 8px;
+color: #8b7355;
+margin-bottom: 6px;
 }
 
 h2 {
-font-family: ‘Noto Serif SC’, serif;
 font-weight: 900;
-font-size: clamp(32px, 5vw, 56px);
+font-size: 36px;
 line-height: 1;
 letter-spacing: -0.01em;
 }
 
 .section-desc {
+grid-column: 1 / -1;
+font-size: 13px;
+color: #6b5a3f;
 font-style: italic;
-color: var(–ink-soft);
-font-size: 15px;
-max-width: 500px;
-text-align: right;
-flex: 0 0 auto;
-align-self: flex-end;
+margin-top: 6px;
 }
 
-/* === 子模块卡片 === */
 .cards {
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-gap: 0;
-border: 2px solid var(–line);
-background: var(–paper);
+grid-template-columns: 1fr;
+border: 2px solid #2d2418;
+background: #fbf4e0;
 }
 
 .card {
-padding: 28px 26px;
-border-right: 1px solid var(–line);
-border-bottom: 1px solid var(–line);
+padding: 22px 20px;
+border-bottom: 1px solid #2d2418;
 position: relative;
-transition: background 0.25s;
-cursor: default;
 }
 
-.card:hover { background: var(–bg); }
+.card:last-child { border-bottom: none; }
 
 .card-num {
 position: absolute;
-top: 16px;
-right: 20px;
-font-family: ‘VT323’, monospace;
-font-size: 14px;
-color: var(–ink-soft);
+top: 14px;
+right: 16px;
+font-size: 11px;
+color: #8b7355;
 letter-spacing: 0.1em;
+font-family: “Courier New”, monospace;
 }
 
 .card h3 {
-font-family: ‘Noto Serif SC’, serif;
-font-weight: 600;
-font-size: 20px;
-margin-bottom: 14px;
+font-weight: 700;
+font-size: 18px;
+margin-bottom: 12px;
 padding-bottom: 10px;
-border-bottom: 1px dashed var(–ink-soft);
+border-bottom: 1px dashed #8b7355;
 display: flex;
 align-items: center;
 gap: 10px;
@@ -260,137 +220,137 @@ gap: 10px;
 .card h3 .marker {
 width: 10px;
 height: 10px;
-background: var(–accent, var(–sunset));
 flex-shrink: 0;
 display: inline-block;
 }
 
 .card ul {
 list-style: none;
-font-size: 14.5px;
-color: var(–ink-soft);
+font-size: 14px;
+color: #5a4a35;
 }
 
 .card li {
-padding: 4px 0;
+padding: 3px 0;
+padding-left: 16px;
 position: relative;
-padding-left: 18px;
-line-height: 1.55;
+line-height: 1.6;
 }
 
 .card li::before {
 content: ‘›’;
 position: absolute;
 left: 0;
-color: var(–accent, var(–sunset));
 font-weight: bold;
 }
 
-/* 不同板块用不同强调色 */
-#s-farm { –accent: var(–grass); }
-#s-combat { –accent: var(–berry); }
-#s-fishing { –accent: var(–sky); }
-#s-social { –accent: var(–sunset); }
-#s-craft { –accent: var(–gold); }
-#s-place { –accent: var(–grass-deep); }
-#s-style { –accent: var(–berry); }
-#s-progress { –accent: var(–sunset); }
+#s-farm .section-num { color: #5c8a3a; }
+#s-farm .card h3 .marker { background: #5c8a3a; }
+#s-farm .card li::before { color: #5c8a3a; }
 
-section .section-num { color: var(–accent, var(–sunset)); }
-section .card h3 .marker { background: var(–accent); }
-section .card li::before { color: var(–accent); }
+#s-combat .section-num { color: #a93f3f; }
+#s-combat .card h3 .marker { background: #a93f3f; }
+#s-combat .card li::before { color: #a93f3f; }
 
-/* === 像素装饰 === */
-.pixel-deco {
-position: absolute;
-font-family: ‘VT323’, monospace;
-color: var(–accent, var(–sunset));
-opacity: 0.25;
-pointer-events: none;
-user-select: none;
-}
+#s-fishing .section-num { color: #6b8caf; }
+#s-fishing .card h3 .marker { background: #6b8caf; }
+#s-fishing .card li::before { color: #6b8caf; }
 
-.pixel-deco.top-right {
-top: -20px;
-right: 0;
-font-size: 60px;
-line-height: 0.9;
-}
+#s-social .section-num { color: #d96b3c; }
+#s-social .card h3 .marker { background: #d96b3c; }
+#s-social .card li::before { color: #d96b3c; }
 
-/* === Footer === */
+#s-craft .section-num { color: #d4a23a; }
+#s-craft .card h3 .marker { background: #d4a23a; }
+#s-craft .card li::before { color: #d4a23a; }
+
+#s-place .section-num { color: #3d6024; }
+#s-place .card h3 .marker { background: #3d6024; }
+#s-place .card li::before { color: #3d6024; }
+
+#s-style .section-num { color: #a93f3f; }
+#s-style .card h3 .marker { background: #a93f3f; }
+#s-style .card li::before { color: #a93f3f; }
+
+#s-progress .section-num { color: #d96b3c; }
+#s-progress .card h3 .marker { background: #d96b3c; }
+#s-progress .card li::before { color: #d96b3c; }
+
 footer {
-background: var(–ink);
-color: var(–bg);
-padding: 50px 8%;
-font-family: ‘DM Mono’, monospace;
-font-size: 12px;
+background: #2d2418;
+color: #f4ead5;
+padding: 32px 24px;
+font-size: 11px;
 letter-spacing: 0.1em;
-text-transform: uppercase;
 position: relative;
 z-index: 2;
-}
-
-footer .row {
-display: flex;
-justify-content: space-between;
-align-items: center;
-flex-wrap: wrap;
-gap: 20px;
+text-align: center;
+line-height: 2;
 }
 
 footer .pixel-art {
-font-family: ‘VT323’, monospace;
-font-size: 30px;
-text-transform: none;
-color: var(–sunset);
-letter-spacing: 0;
+color: #d96b3c;
+font-size: 18px;
+letter-spacing: 4px;
+margin: 8px 0;
 }
 
-/* === 响应式 === */
-@media (max-width: 768px) {
-header { padding: 40px 6% 30px; }
-main { padding: 50px 6% 60px; }
-section { margin-bottom: 70px; }
+@media (min-width: 768px) {
+header { padding: 60px 8% 50px; }
+main { padding: 80px 8% 100px; }
+section { margin-bottom: 100px; }
+h1 { font-size: clamp(60px, 8vw, 110px); }
 
 ```
+.quicknav { grid-template-columns: repeat(8, 1fr); }
+.quicknav a {
+  padding: 16px 8px;
+  border-bottom: none;
+}
+.quicknav a:nth-child(n+5) { border-bottom: none; }
+.quicknav a:last-child { border-right: none; }
+
 .section-header {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
+  grid-template-columns: auto 1fr auto;
+  gap: 30px;
 }
-.section-desc { text-align: left; }
-.section-num { font-size: 56px; }
+.section-num { font-size: 80px; }
+h2 { font-size: 52px; }
+.section-desc {
+  grid-column: auto;
+  margin-top: 0;
+  text-align: right;
+  max-width: 360px;
+  align-self: end;
+}
 
-.quicknav { grid-template-columns: repeat(4, 1fr); }
-.quicknav a { font-size: 10px; padding: 10px 4px; }
-.quicknav a:nth-child(4) { border-right: none; }
-.quicknav a:nth-child(n+5) { border-top: 1px solid var(--line); }
-
-.header-top { flex-direction: column; gap: 8px; align-items: flex-start; }
+.cards {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+.card {
+  border-right: 1px solid #2d2418;
+  border-bottom: 1px solid #2d2418;
+}
 ```
 
 }
 
-/* 入场动画 */
 @keyframes fadeUp {
-from { opacity: 0; transform: translateY(20px); }
+from { opacity: 0; transform: translateY(15px); }
 to { opacity: 1; transform: translateY(0); }
 }
 
-section {
-animation: fadeUp 0.6s ease-out backwards;
-}
+section { animation: fadeUp 0.5s ease-out backwards; }
 section:nth-child(1) { animation-delay: 0s; }
-section:nth-child(2) { animation-delay: 0.08s; }
-section:nth-child(3) { animation-delay: 0.16s; }
-section:nth-child(4) { animation-delay: 0.24s; }
-section:nth-child(5) { animation-delay: 0.32s; }
-section:nth-child(6) { animation-delay: 0.4s; }
-section:nth-child(7) { animation-delay: 0.48s; }
-section:nth-child(8) { animation-delay: 0.56s; }
+section:nth-child(2) { animation-delay: 0.06s; }
+section:nth-child(3) { animation-delay: 0.12s; }
+section:nth-child(4) { animation-delay: 0.18s; }
+section:nth-child(5) { animation-delay: 0.24s; }
+section:nth-child(6) { animation-delay: 0.3s; }
+section:nth-child(7) { animation-delay: 0.36s; }
+section:nth-child(8) { animation-delay: 0.42s; }
 
-/* 选中时的小细节 */
-::selection { background: var(–sunset); color: var(–paper); }
+::selection { background: #d96b3c; color: #fbf4e0; }
 </style>
 
 </head>
@@ -398,40 +358,35 @@ section:nth-child(8) { animation-delay: 0.56s; }
 
 <header>
   <div class="header-top">
+    <div class="brand">★ STARDEW VALLEY ARCHIVE ★</div>
     <div class="meta">
-      <span>第 1.6 版</span>
+      <span>v1.6</span>
       <span>个人资料库</span>
       <span>按行为分类</span>
     </div>
-    <div>★ STARDEW VALLEY ARCHIVE ★</div>
   </div>
-  <h1>星露谷<span class="pixel">▲</span><br>资料库</h1>
-  <div class="subtitle">
-    <span class="line"></span>
-    <span>八大模块 / 按玩家做什么来组织 / 不按物品类型</span>
-  </div>
+  <h1>星露谷<span class="pixel">▲</span>资料库</h1>
+  <div class="subtitle">八大模块 / 按玩家做什么来组织 / 不按物品类型</div>
 </header>
 
 <nav class="quicknav">
   <a href="#s-farm"><span class="icon">▤</span>农业</a>
-  <a href="#s-combat"><span class="icon">✦</span>战斗采集</a>
+  <a href="#s-combat"><span class="icon">✦</span>战斗</a>
   <a href="#s-fishing"><span class="icon">≈</span>钓鱼</a>
   <a href="#s-social"><span class="icon">♥</span>社交</a>
-  <a href="#s-craft"><span class="icon">⚒</span>制作烹饪</a>
+  <a href="#s-craft"><span class="icon">⚒</span>制作</a>
   <a href="#s-place"><span class="icon">▣</span>地点</a>
-  <a href="#s-style"><span class="icon">◈</span>外观装备</a>
-  <a href="#s-progress"><span class="icon">☰</span>进度收集</a>
+  <a href="#s-style"><span class="icon">◈</span>外观</a>
+  <a href="#s-progress"><span class="icon">☰</span>进度</a>
 </nav>
 
 <main>
 
-  <!-- 1 农业 -->
-
   <section id="s-farm">
     <div class="section-header">
       <div class="section-num">01</div>
-      <div class="section-title-block">
-        <div class="section-cat">/ 行为模块 · FARMING</div>
+      <div>
+        <div class="section-cat">/ FARMING</div>
         <h2>农业</h2>
       </div>
       <div class="section-desc">种地、养殖、产出、卖钱，所有跟"经营农场"相关的内容</div>
@@ -488,16 +443,14 @@ section:nth-child(8) { animation-delay: 0.56s; }
     </div>
   </section>
 
-  <!-- 2 战斗采集 -->
-
   <section id="s-combat">
     <div class="section-header">
       <div class="section-num">02</div>
-      <div class="section-title-block">
-        <div class="section-cat">/ 行为模块 · COMBAT</div>
+      <div>
+        <div class="section-cat">/ COMBAT</div>
         <h2>战斗 & 采集</h2>
       </div>
-      <div class="section-desc">下矿、打怪、收集矿物和材料——同一个场景的事情</div>
+      <div class="section-desc">下矿、打怪、收集矿物和材料——同一个场景</div>
     </div>
     <div class="cards">
       <div class="card">
@@ -523,7 +476,7 @@ section:nth-child(8) { animation-delay: 0.56s; }
         <span class="card-num">02.C</span>
         <h3><span class="marker"></span>资源 & 掉落</h3>
         <ul>
-          <li>矿石（铜铁金铱）</li>
+          <li>矿石(铜铁金铱)</li>
           <li>宝石 & 矿物</li>
           <li>金属锭</li>
           <li>骨头 / 蝙蝠翅膀等</li>
@@ -541,16 +494,14 @@ section:nth-child(8) { animation-delay: 0.56s; }
     </div>
   </section>
 
-  <!-- 3 钓鱼 -->
-
   <section id="s-fishing">
     <div class="section-header">
       <div class="section-num">03</div>
-      <div class="section-title-block">
-        <div class="section-cat">/ 行为模块 · FISHING</div>
+      <div>
+        <div class="section-cat">/ FISHING</div>
         <h2>钓鱼</h2>
       </div>
-      <div class="section-desc">独立成模块——玩家找鱼的查询逻辑跟其他都不一样</div>
+      <div class="section-desc">独立成模块——查鱼的逻辑跟其他都不一样</div>
     </div>
     <div class="cards">
       <div class="card">
@@ -582,16 +533,14 @@ section:nth-child(8) { animation-delay: 0.56s; }
     </div>
   </section>
 
-  <!-- 4 社交 -->
-
   <section id="s-social">
     <div class="section-header">
       <div class="section-num">04</div>
-      <div class="section-title-block">
-        <div class="section-cat">/ 行为模块 · SOCIAL</div>
+      <div>
+        <div class="section-cat">/ SOCIAL</div>
         <h2>社交</h2>
       </div>
-      <div class="section-desc">攻略某个角色时打开这里——送礼、心之事件、求婚</div>
+      <div class="section-desc">攻略某个角色时打开——送礼、心之事件、求婚</div>
     </div>
     <div class="cards">
       <div class="card">
@@ -639,25 +588,23 @@ section:nth-child(8) { animation-delay: 0.56s; }
     </div>
   </section>
 
-  <!-- 5 制作烹饪 -->
-
   <section id="s-craft">
     <div class="section-header">
       <div class="section-num">05</div>
-      <div class="section-title-block">
-        <div class="section-cat">/ 行为模块 · CRAFTING</div>
+      <div>
+        <div class="section-cat">/ CRAFTING</div>
         <h2>制作 & 烹饪</h2>
       </div>
-      <div class="section-desc">"我要做X，需要什么材料"——配方查询的统一入口</div>
+      <div class="section-desc">"我要做X需要什么材料"——配方查询的统一入口</div>
     </div>
     <div class="cards">
       <div class="card">
         <span class="card-num">05.A</span>
         <h3><span class="marker"></span>制作配方</h3>
         <ul>
-          <li>农场类（栅栏/储物/洒水器）</li>
-          <li>战斗类（炸弹/陷阱）</li>
-          <li>功能类（图腾/避雷针）</li>
+          <li>农场类(栅栏/储物/洒水器)</li>
+          <li>战斗类(炸弹/陷阱)</li>
+          <li>功能类(图腾/避雷针)</li>
           <li>装饰 & 家具</li>
           <li>解锁方式索引</li>
         </ul>
@@ -669,7 +616,7 @@ section:nth-child(8) { animation-delay: 0.56s; }
           <li>全食谱列表</li>
           <li>按 Buff 效果索引</li>
           <li>食材来源</li>
-          <li>获取方式（电视/NPC/购买）</li>
+          <li>获取方式(电视/NPC/购买)</li>
         </ul>
       </div>
       <div class="card">
@@ -692,13 +639,11 @@ section:nth-child(8) { animation-delay: 0.56s; }
     </div>
   </section>
 
-  <!-- 6 地点 -->
-
   <section id="s-place">
     <div class="section-header">
       <div class="section-num">06</div>
-      <div class="section-title-block">
-        <div class="section-cat">/ 行为模块 · LOCATIONS</div>
+      <div>
+        <div class="section-cat">/ LOCATIONS</div>
         <h2>地点</h2>
       </div>
       <div class="section-desc">按地图区域组织——每个地点说清楚"这里能干什么"</div>
@@ -724,9 +669,9 @@ section:nth-child(8) { animation-delay: 0.56s; }
         <span class="card-num">06.C</span>
         <h3><span class="marker"></span>矿山 & 洞穴</h3>
         <ul>
-          <li>普通矿山（楼层/资源/怪物）</li>
+          <li>普通矿山(楼层/资源/怪物)</li>
           <li>骷髅洞穴</li>
-          <li>火山洞穴（姜岛）</li>
+          <li>火山洞穴(姜岛)</li>
         </ul>
       </div>
       <div class="card">
@@ -750,13 +695,11 @@ section:nth-child(8) { animation-delay: 0.56s; }
     </div>
   </section>
 
-  <!-- 7 外观装备 -->
-
   <section id="s-style">
     <div class="section-header">
       <div class="section-num">07</div>
-      <div class="section-title-block">
-        <div class="section-cat">/ 行为模块 · STYLE</div>
+      <div>
+        <div class="section-cat">/ STYLE</div>
         <h2>外观 & 装备</h2>
       </div>
       <div class="section-desc">捯饬角色、查戒指效果——同一个需求</div>
@@ -767,7 +710,7 @@ section:nth-child(8) { animation-delay: 0.56s; }
         <h3><span class="marker"></span>服装</h3>
         <ul>
           <li>帽子 / 上衣 / 裤子 / 裙子 / 鞋子</li>
-          <li>获取方式（裁缝 / 购买 / 掉落）</li>
+          <li>获取方式(裁缝 / 购买 / 掉落)</li>
         </ul>
       </div>
       <div class="card">
@@ -775,7 +718,7 @@ section:nth-child(8) { animation-delay: 0.56s; }
         <h3><span class="marker"></span>戒指</h3>
         <ul>
           <li>全戒指效果一览</li>
-          <li>推荐搭配（战斗向 / 农业向）</li>
+          <li>推荐搭配(战斗向 / 农业向)</li>
         </ul>
       </div>
       <div class="card">
@@ -789,16 +732,14 @@ section:nth-child(8) { animation-delay: 0.56s; }
     </div>
   </section>
 
-  <!-- 8 进度收集 -->
-
   <section id="s-progress">
     <div class="section-header">
       <div class="section-num">08</div>
-      <div class="section-title-block">
-        <div class="section-cat">/ 行为模块 · PROGRESS</div>
+      <div>
+        <div class="section-cat">/ PROGRESS</div>
         <h2>进度 & 收集</h2>
       </div>
-      <div class="section-desc">检查清单性质——打开这里是为了"我还差什么"</div>
+      <div class="section-desc">检查清单——打开这里是为了"我还差什么"</div>
     </div>
     <div class="cards">
       <div class="card">
@@ -846,11 +787,9 @@ section:nth-child(8) { animation-delay: 0.56s; }
 </main>
 
 <footer>
-  <div class="row">
-    <div>© 个人资料库 · 仅供查询</div>
-    <div class="pixel-art">▣ ▣ ▣ ▤ ▥ ✦</div>
-    <div>v 0.1 · 2026</div>
-  </div>
+  <div>© 个人资料库 · 仅供查询</div>
+  <div class="pixel-art">▣ ▤ ▥ ✦ ◈</div>
+  <div>v 0.2 · 2026</div>
 </footer>
 
 </body>
