@@ -336,9 +336,9 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
 /* Action Desk v3: 当前情况 + 待做事项 */
 .desk-two-blocks{align-items:start}
 .current-context-card,.action-output-card{position:relative}
-.context-box-grid{display:grid;grid-template-columns:1.45fr .85fr;gap:9px;margin-top:4px}
-.context-box{background:#fff;border:1px solid rgba(215,189,134,.82);border-radius:16px;padding:10px;box-shadow:0 4px 12px rgba(81,55,27,.05)}
-.context-box-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.context-box-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(112px,.8fr);gap:8px;margin-top:4px}
+.context-box{background:#fff;border:1px solid rgba(215,189,134,.82);border-radius:16px;padding:8px;box-shadow:0 4px 12px rgba(81,55,27,.05)}
+.context-box-title{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px}
 .context-box-title b{font-size:14px;color:var(--ink)}
 .context-box-title span{font-size:11px;color:var(--faint);font-weight:800}
 .mini-field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -348,9 +348,9 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
 .resource-panel summary::-webkit-details-marker{display:none}
 .resource-panel summary em{font-style:normal;color:var(--muted);font-size:12px;font-weight:700;text-align:right}
 .resource-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:9px}
-.resource-field{display:block;border:1px solid rgba(215,189,134,.72);border-radius:13px;background:#fffaf0;padding:7px}
-.resource-field span{display:block;color:var(--faint);font-size:11px;margin-bottom:4px;font-weight:850}
-.resource-field textarea{width:100%;height:42px;min-height:42px;max-height:42px;resize:none;overflow:auto;border:0;outline:0;background:transparent;color:var(--ink);font-size:13px;line-height:1.45}
+.resource-field{display:block;border:1px solid rgba(215,189,134,.72);border-radius:13px;background:#fffaf0;padding:6px}
+.resource-field span{display:block;color:var(--faint);font-size:11px;margin-bottom:3px;font-weight:850}
+.resource-field textarea{width:100%;height:34px;min-height:34px;max-height:34px;resize:none;overflow:auto;border:0;outline:0;background:transparent;color:var(--ink);font-size:13px;line-height:1.35}
 .resource-presets{margin-top:8px}
 .resource-presets .chip{font-size:12px;padding:6px 9px}
 .strategy-card{background:linear-gradient(135deg,#fff8e7,#f2e2bd);border:1px solid rgba(215,189,134,.9);border-radius:17px;padding:12px;margin-bottom:10px}
@@ -361,11 +361,20 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
 .action-card-tags .action-tag{max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .bag-inline-summary{font-size:12px;color:var(--muted);line-height:1.45;margin-top:7px}
 @media (max-width:760px){
-  .context-box-grid{grid-template-columns:1fr;gap:8px}
-  .resource-grid{grid-template-columns:repeat(2,1fr);gap:7px}
+  .context-box-grid{grid-template-columns:minmax(0,1.55fr) minmax(96px,.75fr);gap:6px}
+  .context-box{padding:7px;border-radius:14px}
+  .context-box-title{margin-bottom:5px}
+  .context-box-title span{display:none}
+  .mini-field-row{gap:5px}
+  .context-box .field{padding:6px}
+  .context-box .field label{font-size:10px;margin-bottom:2px}
+  .context-box .field select{font-size:13px}
+  .resource-grid{grid-template-columns:repeat(2,1fr);gap:6px}
+  .resource-panel{padding:8px;margin-top:8px}
   .resource-panel summary{align-items:flex-start;gap:4px}
-  .resource-field{padding:6px}
-  .resource-field textarea{height:40px;min-height:40px;max-height:40px;font-size:12px}
+  .resource-field{padding:5px}
+  .resource-field span{font-size:10px;margin-bottom:2px}
+  .resource-field textarea{height:30px;min-height:30px;max-height:30px;font-size:12px;line-height:1.25}
 }
 
 </style>
