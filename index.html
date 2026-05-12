@@ -238,6 +238,64 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
   border-radius:18px;padding:18px;color:var(--muted);
 }
 .footer-note{color:var(--muted);font-size:12px;line-height:1.45;margin:18px 3px 0}
+
+.home-panel{
+  background:rgba(255,250,240,.98);
+  border:1.5px solid rgba(216,189,130,.92);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  padding:15px;
+  margin:0 0 16px;
+}
+.home-kicker{
+  display:inline-flex;
+  align-items:center;
+  border:1px solid rgba(216,189,130,.85);
+  background:#fff8e7;
+  color:var(--wood);
+  border-radius:999px;
+  padding:4px 10px;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:9px;
+}
+.home-panel h2{font-size:28px;line-height:1.15;margin-bottom:6px}
+.home-panel p{color:var(--muted);font-size:14px;line-height:1.45;margin-bottom:12px}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.home-card{
+  display:block;
+  background:#fff;
+  border:1px solid var(--line-soft);
+  border-radius:18px;
+  padding:12px;
+  text-decoration:none;
+  color:var(--ink);
+  min-height:86px;
+}
+.home-card b{display:block;font-size:17px;line-height:1.2;margin-bottom:6px}
+.home-card small{display:block;color:var(--muted);font-size:12px;line-height:1.35}
+.home-card:hover{border-color:var(--line);box-shadow:0 6px 16px rgba(81,55,27,.08)}
+.top-jump{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1.5px solid var(--line);
+  background:#fff8e7;
+  color:var(--wood);
+  border-radius:999px;
+  padding:7px 12px;
+  font-size:13px;
+  font-weight:900;
+  text-decoration:none;
+  margin:0 0 10px 3px;
+}
+@media(max-width:640px){
+  .home-panel{border-radius:22px;padding:13px;margin-bottom:14px}
+  .home-grid{grid-template-columns:1fr}
+  .home-card{min-height:auto}
+  .home-panel h2{font-size:24px}
+}
+
 @media(max-width:640px){
   .app{padding:10px}
   .search-panel{border-radius:0 0 22px 22px;margin:-10px -10px 16px}
@@ -268,6 +326,18 @@ summary{cursor:pointer;font-weight:900;color:var(--wood)}
 </header>
 
 <main class="app">
+
+  <section class="home-panel" id="home">
+    <div class="home-kicker">首页</div>
+    <h2>星露谷全作物资料卡</h2>
+    <p>从这里进入作物搜索、季节筛选、杨桃母版和相关设备说明。杨桃卡片保持原母版格式。</p>
+    <div class="home-grid">
+      <a class="home-card" href="#resultBlock"><b>🌾 作物资料</b><small>查看全部作物卡，按种子、种植、收益、用途整理。</small></a>
+      <a class="home-card" href="#starfruitCard"><b>⭐ 杨桃母版</b><small>跳到杨桃卡，检查统一格式和收益表样式。</small></a>
+      <a class="home-card" href="#devices"><b>🛠️ 设备 / 建筑</b><small>查看小桶、陈酿桶、罐头瓶、烘干机、祝尼魔屋等说明。</small></a>
+    </div>
+  </section>
+
   <section class="search-panel">
     <div class="search-box"><span>🔍</span><input id="search" placeholder="搜杨桃、小桶、陈酿桶、祝尼魔屋、献祭…" /></div>
     <div class="chips" id="chips">
