@@ -63,6 +63,15 @@ button{cursor:pointer;touch-action:manipulation}
   z-index:10;
   backdrop-filter:blur(12px);
 }
+.today-state-card{
+  background:rgba(255,250,240,.96);
+  border:1px solid rgba(215,189,134,.78);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);
+  padding:12px;
+  margin-bottom:14px;
+}
+.search-panel-view{margin-top:14px;}
 .search-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
 .search-box{position:relative}
 .search-box span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
@@ -230,7 +239,7 @@ button{cursor:pointer;touch-action:manipulation}
   box-shadow:0 10px 32px rgba(0,0,0,.28);
   backdrop-filter:blur(14px);
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+  grid-template-columns:repeat(4,1fr);
   padding:6px;
 }
 .nav-btn{color:#eadfc8;background:transparent;border:0;border-radius:18px;padding:8px 4px;display:grid;place-items:center;gap:2px;font-size:11px}
@@ -245,6 +254,7 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
 @media (max-width:760px){
   .app{padding:10px}
   .top-card{border-radius:0 0 20px 20px;margin:-10px -10px 0}
+  .today-state-card{padding:10px}
   .state-grid{grid-template-columns:repeat(2,1fr)}
   .grid{display:block}
   .grid>.card{margin-bottom:10px}
@@ -264,7 +274,6 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
   <div class="header-inner">
     <div class="eyebrow"><span>Stardew Valley 1.6</span><span>·</span><span>Decision Handbook</span></div>
     <h1>🌾 星露谷 · 田间决策手册</h1>
-    <p>不是资料堆。它会按今天的季节、日期、天气，告诉你该补献祭、该送礼、该加工什么。</p>
   </div>
 </header>
 
@@ -277,16 +286,23 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
       </div>
       <button class="icon-btn" id="clearSearch" title="清空搜索">×</button>
     </div>
-    <div class="state-grid">
-      <div class="field"><label>当前季节</label><select id="seasonSelect"><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option></select></div>
-      <div class="field"><label>日期</label><input id="dayInput" type="number" min="1" max="28" value="1" /></div>
-      <div class="field"><label>天气</label><select id="weatherSelect"><option value="晴天">☀️ 晴天</option><option value="雨天">🌧️ 雨天</option></select></div>
-      <div class="field"><label>阶段</label><select id="phaseSelect"><option value="early">前期</option><option value="mid">中期</option><option value="late">后期</option></select></div>
-    </div>
     <div class="quick-chips" id="quickChips"></div>
   </section>
 
+  <section id="searchPanel" class="search-panel-view hidden">
+    <div class="section-head"><div><h2>万能搜索</h2><p>一个物品会同时显示献祭、送礼、加工、地点和建议。</p></div><span class="badge blue" id="searchCount">0 个结果</span></div>
+    <div id="searchResults" class="card-list"></div>
+  </section>
+
   <section id="view-today" class="view active">
+    <div class="today-state-card">
+      <div class="state-grid">
+        <div class="field"><label>当前季节</label><select id="seasonSelect"><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option></select></div>
+        <div class="field"><label>日期</label><input id="dayInput" type="number" min="1" max="28" value="1" /></div>
+        <div class="field"><label>天气</label><select id="weatherSelect"><option value="晴天">☀️ 晴天</option><option value="雨天">🌧️ 雨天</option></select></div>
+        <div class="field"><label>阶段</label><select id="phaseSelect"><option value="early">前期</option><option value="mid">中期</option><option value="late">后期</option></select></div>
+      </div>
+    </div>
     <div class="section-head">
       <div><h2>今日优先级</h2><p id="todaySubtitle">按当前日期和天气自动生成。</p></div>
       <button class="chip hot" data-action="open-view" data-view="bundles">看献祭进度</button>
@@ -308,10 +324,6 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
     </div>
   </section>
 
-  <section id="view-search" class="view">
-    <div class="section-head"><div><h2>万能搜索</h2><p>一个物品会同时显示献祭、送礼、加工、地点和建议。</p></div><span class="badge blue" id="searchCount">0 个结果</span></div>
-    <div id="searchResults" class="card-list"></div>
-  </section>
 
   <section id="view-bundles" class="view">
     <div class="section-head"><div><h2>社区中心献祭</h2><p>勾选后会保存在本机。点物品标签可以直接搜索。</p></div><button class="chip" id="resetBundles">重置勾选</button></div>
@@ -349,7 +361,6 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
 
 <nav class="bottom-nav" aria-label="主导航">
   <button class="nav-btn active" data-action="open-view" data-view="today"><b>🌤️</b><span>今日</span></button>
-  <button class="nav-btn" data-action="open-view" data-view="search"><b>🔎</b><span>搜索</span></button>
   <button class="nav-btn" data-action="open-view" data-view="bundles"><b>🎁</b><span>献祭</span></button>
   <button class="nav-btn" data-action="open-view" data-view="planner"><b>🎒</b><span>规划</span></button>
   <button class="nav-btn" data-action="open-view" data-view="library"><b>📚</b><span>资料</span></button>
@@ -778,6 +789,7 @@ const els = {
   statHot:document.getElementById("statHot"),
   todayBundleItems:document.getElementById("todayBundleItems"),
   seasonMoneyItems:document.getElementById("seasonMoneyItems"),
+  searchPanel:document.getElementById("searchPanel"),
   searchResults:document.getElementById("searchResults"),
   searchCount:document.getElementById("searchCount"),
   bundleRooms:document.getElementById("bundleRooms"),
@@ -926,8 +938,14 @@ function searchAll(q){
   [...guides.mining,...guides.cooking].forEach(g=>{const hay=[g.name,g.desc,g.type].join(" ").toLowerCase();if(hay.includes(query)) results.push({kind:"guide",obj:g,score:norm(g.name).includes(query)?80:20})});
   return results.sort((a,b)=>b.score-a.score);
 }
+function updateSearchVisibility(){
+  const hasQuery = !!norm(state.query);
+  if(els.searchPanel) els.searchPanel.classList.toggle("hidden", !hasQuery);
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("hidden", hasQuery));
+}
 function renderSearch(){
   const q = state.query || "";
+  updateSearchVisibility();
   const cropCount = q ? getCropMatchCount(q) : 0;
   if(q && cropCount){
     els.searchResults.className = "";
@@ -1120,18 +1138,25 @@ function renderChips(){
 function openView(view){
   state.view=view;
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-  document.getElementById("view-"+view).classList.add("active");
+  const viewEl = document.getElementById("view-"+view);
+  if(viewEl) viewEl.classList.add("active");
   document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active", b.dataset.view===view));
   saveState();
   if(view==="today") renderToday();
-  if(view==="search") renderSearch();
   if(view==="bundles") renderBundles();
   if(view==="planner") renderPlanner();
   if(view==="library") renderLibrary();
+  updateSearchVisibility();
 }
-function setSearch(q){state.query=q;els.search.value=q;saveState();openView("search")}
+function setSearch(q){
+  state.query=q;
+  els.search.value=q;
+  saveState();
+  renderSearch();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 function syncInputs(){els.season.value=state.season;els.day.value=state.day;els.weather.value=state.weather;els.phase.value=state.phase;els.search.value=state.query}
-function init(){renderChips();syncInputs();renderToday();renderSearch();renderBundles();renderPlanner();renderLibrary();openView(state.view || "today")}
+function init(){renderChips();syncInputs();renderToday();renderBundles();renderPlanner();renderLibrary();renderSearch();openView(state.view || "today");updateSearchVisibility()}
 
 document.body.addEventListener("click", e=>{
   const target=e.target.closest("[data-action]");
@@ -1163,7 +1188,7 @@ document.body.addEventListener("click", e=>{
   }
   if(action==="toggle-bundle"){const key=target.dataset.key;bundleChecked[key]=!bundleChecked[key];safeStore.setItem("sdv_bundle_checked_v3", JSON.stringify(bundleChecked));renderBundles()}
 });
-els.search.addEventListener("input", e=>{state.query=e.target.value.trim();saveState();openView("search")});
+els.search.addEventListener("input", e=>{state.query=e.target.value.trim();saveState();renderSearch()});
 els.clearSearch.addEventListener("click",()=>{state.query="";els.search.value="";saveState();renderSearch()});
 [els.season,els.day,els.weather,els.phase].forEach(el=>{el.addEventListener("change",()=>{state.season=els.season.value;state.day=Math.min(28,Math.max(1,Number(els.day.value||1)));state.weather=els.weather.value;state.phase=els.phase.value;saveState();renderToday();renderPlanner()})});
 els.resetBundles.addEventListener("click",()=>{if(!confirm("确定要清空献祭勾选吗？")) return;bundleChecked={};safeStore.removeItem("sdv_bundle_checked_v3");renderBundles()});
@@ -1175,5 +1200,3 @@ init();
 </script>
 </body>
 </html>
-
-```
