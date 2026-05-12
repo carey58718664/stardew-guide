@@ -333,30 +333,39 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
   .crop-card-frame{height:76vh}
 }
 
-/* Action Desk v2: 已有条件 + 待做事项 */
+/* Action Desk v3: 当前情况 + 待做事项 */
 .desk-two-blocks{align-items:start}
-.existing-conditions-card,.action-output-card{position:relative}
-.required-state-grid{grid-template-columns:repeat(3,1fr);margin-top:4px}
-.resource-panel{margin-top:12px;background:#fff;border:1px solid rgba(215,189,134,.74);border-radius:17px;padding:10px 11px}
+.current-context-card,.action-output-card{position:relative}
+.context-box-grid{display:grid;grid-template-columns:1.45fr .85fr;gap:9px;margin-top:4px}
+.context-box{background:#fff;border:1px solid rgba(215,189,134,.82);border-radius:16px;padding:10px;box-shadow:0 4px 12px rgba(81,55,27,.05)}
+.context-box-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.context-box-title b{font-size:14px;color:var(--ink)}
+.context-box-title span{font-size:11px;color:var(--faint);font-weight:800}
+.mini-field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.context-weather .field{height:calc(100% - 25px)}
+.resource-panel{margin-top:10px;background:#fff;border:1px solid rgba(215,189,134,.74);border-radius:16px;padding:9px 10px}
 .resource-panel summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--wood);font-weight:900}
 .resource-panel summary::-webkit-details-marker{display:none}
 .resource-panel summary em{font-style:normal;color:var(--muted);font-size:12px;font-weight:700;text-align:right}
-.resource-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:10px}
-.resource-field{display:block;border:1px solid rgba(215,189,134,.72);border-radius:14px;background:#fffaf0;padding:8px}
-.resource-field span{display:block;color:var(--faint);font-size:12px;margin-bottom:5px;font-weight:800}
-.resource-field textarea{width:100%;min-height:48px;resize:vertical;border:0;outline:0;background:transparent;color:var(--ink);font-size:13px;line-height:1.45}
+.resource-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:9px}
+.resource-field{display:block;border:1px solid rgba(215,189,134,.72);border-radius:13px;background:#fffaf0;padding:7px}
+.resource-field span{display:block;color:var(--faint);font-size:11px;margin-bottom:4px;font-weight:850}
+.resource-field textarea{width:100%;height:42px;min-height:42px;max-height:42px;resize:none;overflow:auto;border:0;outline:0;background:transparent;color:var(--ink);font-size:13px;line-height:1.45}
+.resource-presets{margin-top:8px}
+.resource-presets .chip{font-size:12px;padding:6px 9px}
 .strategy-card{background:linear-gradient(135deg,#fff8e7,#f2e2bd);border:1px solid rgba(215,189,134,.9);border-radius:17px;padding:12px;margin-bottom:10px}
-.strategy-card b{display:block;font-size:15px;margin-bottom:5px;color:var(--ink)}
-.strategy-card p{color:var(--muted);font-size:13px;line-height:1.55}
-.strategy-card .strategy-keywords{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
-.inline-keyword{border:1px solid rgba(215,189,134,.82);background:white;color:var(--blue);border-radius:999px;padding:4px 8px;font-size:12px;font-weight:900}
+.strategy-card>b{display:block;font-size:15px;margin-bottom:8px;color:var(--ink)}
+.strategy-list{display:grid;gap:7px}
+.strategy-line{background:rgba(255,255,255,.58);border:1px solid rgba(215,189,134,.55);border-radius:13px;padding:8px 9px;color:var(--muted);font-size:13px;line-height:1.55}
+.inline-keyword{display:inline;border:0;background:#fff;color:var(--blue);border-radius:999px;padding:1px 6px;margin:0 1px;font-size:12px;font-weight:950;vertical-align:baseline;box-shadow:inset 0 0 0 1px rgba(215,189,134,.75)}
 .action-card-tags .action-tag{max-width:100%;overflow:hidden;text-overflow:ellipsis}
-.bag-inline-summary{font-size:12px;color:var(--muted);line-height:1.45;margin-top:9px}
+.bag-inline-summary{font-size:12px;color:var(--muted);line-height:1.45;margin-top:7px}
 @media (max-width:760px){
-  .required-state-grid{grid-template-columns:1fr 1fr}
-  .required-state-grid .field:nth-child(3){grid-column:span 2}
-  .resource-grid{grid-template-columns:1fr}
-  .resource-panel summary{align-items:flex-start;flex-direction:column;gap:2px}
+  .context-box-grid{grid-template-columns:1fr;gap:8px}
+  .resource-grid{grid-template-columns:repeat(2,1fr);gap:7px}
+  .resource-panel summary{align-items:flex-start;gap:4px}
+  .resource-field{padding:6px}
+  .resource-field textarea{height:40px;min-height:40px;max-height:40px;font-size:12px}
 }
 
 </style>
@@ -388,44 +397,52 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
 
   <section id="view-today" class="view active">
     <div class="section-head action-title-row">
-      <div><h2>行动台</h2><p id="todaySubtitle">先填已有条件，再看系统整理出的待做事项。</p></div>
+      <div><h2>行动台</h2><p id="todaySubtitle">填时间和天气，选填当前资源，待做事项会自动更新。</p></div>
       <button class="chip hot" data-action="open-view" data-view="bundles">看献祭进度</button>
     </div>
 
     <div class="grid action-grid desk-two-blocks">
-      <article class="card span-12 existing-conditions-card">
-        <div class="card-head-line">
+      <article class="card span-12 current-context-card">
+        <div class="card-head-line compact-head">
           <div>
-            <h3>① 已有条件</h3>
-            <p>季节、日期、天气必填。当前资源选填，填得越多，待做事项越准。</p>
+            <h3>当前情况</h3>
+            <p>时间和天气必填。当前资源想填多少填多少，不填也能给基础建议。</p>
           </div>
-          <span class="badge green">必填 3 项</span>
+          <span class="badge green">自动判断</span>
         </div>
 
-        <div class="state-grid required-state-grid">
-          <div class="field"><label>当前季节</label><select id="seasonSelect"><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option></select></div>
-          <div class="field"><label>日期</label><input id="dayInput" type="number" min="1" max="28" value="1" /></div>
-          <div class="field"><label>天气</label><select id="weatherSelect"><option value="晴天">☀️ 晴天</option><option value="雨天">🌧️ 雨天</option></select></div>
-          <input id="phaseSelect" type="hidden" value="auto" />
+        <div class="context-box-grid">
+          <section class="context-box context-time" aria-label="时间">
+            <div class="context-box-title"><b>时间</b><span>季节 + 日期</span></div>
+            <div class="mini-field-row">
+              <div class="field"><label>季节</label><select id="seasonSelect"><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option></select></div>
+              <div class="field"><label>日期</label><select id="dayInput"><option value="1">1日</option><option value="2">2日</option><option value="3">3日</option><option value="4">4日</option><option value="5">5日</option><option value="6">6日</option><option value="7">7日</option><option value="8">8日</option><option value="9">9日</option><option value="10">10日</option><option value="11">11日</option><option value="12">12日</option><option value="13">13日</option><option value="14">14日</option><option value="15">15日</option><option value="16">16日</option><option value="17">17日</option><option value="18">18日</option><option value="19">19日</option><option value="20">20日</option><option value="21">21日</option><option value="22">22日</option><option value="23">23日</option><option value="24">24日</option><option value="25">25日</option><option value="26">26日</option><option value="27">27日</option><option value="28">28日</option></select></div>
+            </div>
+          </section>
+          <section class="context-box context-weather" aria-label="天气">
+            <div class="context-box-title"><b>天气</b><span>今天</span></div>
+            <div class="field"><label>天气</label><select id="weatherSelect"><option value="晴天">☀️ 晴天</option><option value="雨天">🌧️ 雨天</option></select></div>
+            <input id="phaseSelect" type="hidden" value="auto" />
+          </section>
         </div>
 
         <div class="action-status-bar" aria-label="行动台概览">
           <span><b id="statAvailable">0</b> 今日可补献祭</span>
           <span><b id="statBirthday">0</b> 今日生日</span>
-          <span><b id="statHot">0</b> 本季高收益关键词</span>
+          <span><b id="statHot">0</b> 本季关键词</span>
         </div>
 
         <details class="resource-panel" open>
-          <summary><span>当前资源（选填）</span><em>可以只填你正在纠结的东西</em></summary>
+          <summary><span>当前资源（选填）</span><em>只填你正在纠结的内容</em></summary>
           <div class="resource-grid">
-            <label class="resource-field"><span>作物 / 鱼 / 物品</span><textarea id="bagInput" data-resource-input="items" placeholder="例如：南瓜 鲶鱼 紫水晶 鸡蛋 松露"></textarea></label>
-            <label class="resource-field"><span>工具 / 建筑</span><textarea id="resourceTools" data-resource-input="tools" placeholder="例如：铜斧 铁镐 鸡舍 畜棚 筒仓"></textarea></label>
-            <label class="resource-field"><span>动物 / 产品</span><textarea id="resourceAnimals" data-resource-input="animals" placeholder="例如：鸡 牛 猪 蛋 奶 松露"></textarea></label>
-            <label class="resource-field"><span>矿石 / 探索</span><textarea id="resourceOres" data-resource-input="ores" placeholder="例如：铜矿 铁矿 矿井80层 沙漠 骷髅洞穴"></textarea></label>
-            <label class="resource-field"><span>机器</span><textarea id="resourceMachines" data-resource-input="machines" placeholder="例如：小桶 罐头瓶 蛋黄酱机 奶酪机 制油机"></textarea></label>
-            <label class="resource-field"><span>解锁 / 地点</span><textarea id="resourceUnlocks" data-resource-input="unlocks" placeholder="例如：温室 姜岛 下水道 绿洲"></textarea></label>
+            <label class="resource-field"><span>作物 / 鱼 / 物品</span><textarea id="bagInput" data-resource-input="items" placeholder="南瓜 鲶鱼 鸡蛋"></textarea></label>
+            <label class="resource-field"><span>工具 / 建筑</span><textarea id="resourceTools" data-resource-input="tools" placeholder="铜斧 鸡舍 筒仓"></textarea></label>
+            <label class="resource-field"><span>动物 / 产品</span><textarea id="resourceAnimals" data-resource-input="animals" placeholder="鸡 牛 猪 松露"></textarea></label>
+            <label class="resource-field"><span>矿石 / 探索</span><textarea id="resourceOres" data-resource-input="ores" placeholder="铁矿 矿井80层"></textarea></label>
+            <label class="resource-field"><span>机器</span><textarea id="resourceMachines" data-resource-input="machines" placeholder="小桶 罐头瓶"></textarea></label>
+            <label class="resource-field"><span>地点 / 解锁</span><textarea id="resourceUnlocks" data-resource-input="unlocks" placeholder="温室 姜岛 绿洲"></textarea></label>
           </div>
-          <div class="tip-row">
+          <div class="tip-row resource-presets">
             <button class="chip" data-action="fill-bag" data-bag="南瓜 鲶鱼 紫水晶 鸡蛋 松露">示例</button>
             <button class="chip" data-action="fill-bag" data-bag="春季采集 青豆 花椰菜 土豆 防风草">春季献祭</button>
             <button class="chip" data-action="fill-bag" data-bag="杨桃 远古果实 啤酒花 蓝莓 小麦 小桶 罐头瓶">加工收益</button>
@@ -437,8 +454,8 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
       <article class="card span-12 action-output-card">
         <div class="card-head-line">
           <div>
-            <h3>② 待做事项</h3>
-            <p>先给本季赚钱主线，再把具体事项按时间压力贴上便签。</p>
+            <h3>待做事项</h3>
+            <p>先看本季赚钱主线，再按时间紧迫程度处理具体事项。</p>
           </div>
           <span class="badge gold">可勾掉</span>
         </div>
@@ -3693,27 +3710,60 @@ function priorityBadge(days, reason){
   return {label:`${days}天内｜${reason}前`, tone:days<=2 ? "red" : days<=5 ? "gold" : "blue"};
 }
 function keywordButton(name){return `<button class="inline-keyword" data-action="search" data-query="${escapeHTML(name)}">${escapeHTML(name)}</button>`}
+function strategyLine(text){return `<p class="strategy-line">${text}</p>`}
 function seasonMoneyStrategyHTML(){
   const day = Number(state.day || 1);
   const p = inferProfile();
-  let title = "本季赚钱主线";
-  let text = "先保证现金流，再把高价值物品交给合适机器。";
-  let keys = [];
+  const kw = keywordButton;
+  let lines = [];
   if(state.season === "春"){
-    if(day < 13){text = "开局用防风草和土豆稳现金流，春13前攒钱买草莓。献祭作物各留 1 个。"; keys=["防风草","土豆","草莓","花椰菜"];}
-    else if(day <= 16){text = "草莓还能补种，收益开始下降。没钱就用土豆和甘蓝过渡，同时准备夏季资金。"; keys=["草莓","土豆","甘蓝"];}
-    else{text = "后半季别乱买长周期作物，补献祭和攒夏季启动资金更重要。"; keys=["花椰菜","土豆","青豆","蓝莓"];}
+    if(day < 13){
+      lines = [
+        `先用 ${kw("防风草")} 和 ${kw("土豆")} 回现金流，别把钱全压到长周期作物。`,
+        `春 13 前攒钱，复活节当天买 ${kw("草莓")}，买完当天能种就种。`,
+        `春季作物包先各留 1 个：${kw("防风草")}、${kw("土豆")}、${kw("花椰菜")}、${kw("青豆")}。`
+      ];
+    }else if(day <= 16){
+      lines = [
+        `${kw("草莓")} 还能补种，但收益开始下降，钱少就用 ${kw("土豆")} 和 ${kw("甘蓝")} 过渡。`,
+        `春季献祭缺口先补齐，剩余现金留给夏 1 买 ${kw("蓝莓")}。`,
+        `超过成熟窗口的长周期作物别追，后半季优先现金和献祭。`
+      ];
+    }else{
+      lines = [
+        `后半季别再加仓长周期作物，先补 ${kw("花椰菜")}、${kw("土豆")}、${kw("青豆")} 这些献祭缺口。`,
+        `能卖的作物换现金，目标是夏 1 有钱铺 ${kw("蓝莓")}。`,
+        `机器不多时别纠结加工，前期现金流比等待更重要。`
+      ];
+    }
   }else if(state.season === "夏"){
-    text = p.hasKeg ? "蓝莓铺现金流，啤酒花优先进小桶；解锁沙漠后，杨桃是爆发线。" : "蓝莓先铺现金流，甜瓜兼顾献祭和高品质包；小桶做出来后再把啤酒花拉起来。";
-    keys = p.hasDesert ? ["蓝莓","啤酒花","杨桃","小桶"] : ["蓝莓","甜瓜","啤酒花","小桶"];
+    lines = [
+      `夏 1 优先铺 ${kw("蓝莓")}，先把稳定现金流做出来。`,
+      `有 ${kw("小桶")} 就补 ${kw("啤酒花")}，日收作物持续进桶，别把桶空着。`,
+      p.hasDesert ? `已经有 ${kw("绿洲")} 或沙漠后，现金富余就用 ${kw("杨桃")} 做爆发收益。` : `没有沙漠时，${kw("甜瓜")} 先兼顾献祭和高品质作物包，别漏留。`
+    ];
   }else if(state.season === "秋"){
-    text = "蔓越莓负责稳定现金流，南瓜兼顾献祭、送礼和加工；有稀有种子时记得留足生长时间。";
-    keys=["蔓越莓","南瓜","稀有种子","罐头瓶"];
+    lines = [
+      `秋 1 先铺 ${kw("蔓越莓")} 做稳定现金流。`,
+      `${kw("南瓜")} 至少留 1 个，金星南瓜优先留给高品质作物包。`,
+      `有 ${kw("罐头瓶")} 或 ${kw("小桶")} 后，把高价作物按机器空位加工，机器少时别平均分配。`
+    ];
   }else{
-    text = p.hasGreenhouse || p.hasGinger ? "冬季田地停摆，收益主线转向温室、姜岛、动物产品和机器加工。" : "冬季先把矿石、工具、动物和社区中心缺口补起来，为春季扩张做准备。";
-    keys=p.hasGreenhouse || p.hasGinger ? ["温室","远古果实","杨桃","松露"] : ["矿石","工具升级","鸡舍","畜棚"];
+    if(p.hasGreenhouse || p.hasGinger){
+      lines = [
+        `冬季田地停摆，收益主线转到 ${kw("温室")}、${kw("姜岛")} 和机器。`,
+        `${kw("远古果实")} 适合长期铺，${kw("杨桃")} 适合高收益爆发。`,
+        `动物产品继续进 ${kw("蛋黄酱机")}、${kw("奶酪机")}、${kw("制油机")}，别直接卖低价原料。`
+      ];
+    }else{
+      lines = [
+        `冬季先刷 ${kw("矿石")}，把工具升级和机器材料补起来。`,
+        `有余钱就补 ${kw("鸡舍")} 或 ${kw("畜棚")}，春季前把动物线铺好。`,
+        `社区中心缺口趁冬天整理，春 1 直接回到种植扩张。`
+      ];
+    }
   }
-  return `<b>${title}</b><p>${escapeHTML(text)}</p><div class="strategy-keywords">${keys.map(keywordButton).join("")}</div>`;
+  return `<b>本季赚钱主线</b><div class="strategy-list">${lines.map(strategyLine).join("")}</div>`;
 }
 function isSeasonMatch(item, season=state.season){
   const s = item.season || "";
@@ -3875,7 +3925,7 @@ function bagActionCard(item){
 function renderToday(){
   const day = Number(state.day || 1);
   const profile = inferProfile();
-  els.todaySubtitle.textContent = `${state.season}${day}日 · ${state.weather} · 行动台会按已填条件更新`; 
+  els.todaySubtitle.textContent = `${state.season}${day}日 · ${state.weather} · 行动台会按当前情况更新`; 
   if(els.moneyStrategy) els.moneyStrategy.innerHTML = seasonMoneyStrategyHTML();
 
   const todayBundle = allItems.filter(i=>i.sacrifices?.length && availableToday(i));
@@ -3916,18 +3966,17 @@ function renderToday(){
   }
 
   const invItems = getInventoryItems();
-  invItems.forEach(item=>push(6, bagActionCard(item)));
+  invItems.forEach(item=>{
+    const advice = bagAdvice(item);
+    push(advice.group === "today" ? 2 : 82, bagActionCard(item));
+  });
 
-  if(profile.hasKeg && (state.season === "夏" || profile.hasGreenhouse || profile.hasGinger)){
-    push(45, actionCardHTML({icon:"🧪",title:"小桶优先给高价值作物",sub:"啤酒花、杨桃、远古果实优先级高。机器少时别平均分配。",badge:"候选",tone:"gold",kind:"加工",key:actionKey("machine", "keg-priority")}));
-  }
   if(profile.hasPig && profile.hasOil){
-    push(6, actionCardHTML({icon:"🐷",title:"松露做松露油",sub:"有制油机时优先加工。没有机器也别低估松露的直接售价。",badge:"候选",tone:"green",kind:"加工",key:actionKey("animal", "truffle-oil")}));
+    push(80, actionCardHTML({icon:"🐷",title:"松露做松露油",sub:"有制油机时优先加工。没有机器也别低估松露的直接售价。",badge:"候选",tone:"green",kind:"加工",key:actionKey("animal", "truffle-oil")}));
   }
-  if(!invItems.length){
-    push(90, actionCardHTML({icon:"📦",title:"当前资源可以选填",sub:"把正在纠结的物品、机器、动物或解锁地点填进去，待做事项会变得更具体。",badge:"候选",tone:"gold",kind:"提示",key:actionKey("hint", "resource-input")}));
+  if(profile.hasKeg && (state.season === "夏" || profile.hasGreenhouse || profile.hasGinger)){
+    push(81, actionCardHTML({icon:"🧪",title:"小桶优先给高价值作物",sub:"啤酒花、杨桃、远古果实优先级高。机器少时别平均分配。",badge:"候选",tone:"gold",kind:"加工",key:actionKey("machine", "keg-priority")}));
   }
-  push(95, actionCardHTML({icon:"🧺",title:"处理底线",sub:"献祭物先留一个。高价作物和动物产品优先看机器。没识别的物品直接用顶部搜索查资料卡。",badge:"候选",tone:"gold",kind:"规则",key:actionKey("rule", "handling-rule")}));
 
   actions.sort((a,b)=>a.order-b.order);
   els.todayTasks.innerHTML = actions.map(a=>a.html).join("");
@@ -3968,7 +4017,7 @@ function renderAdviceCard(item,a){
 }
 function renderBagAdvisor(){
   const tokens=splitBag(getResourceText());
-  if(!tokens.length){els.bagResults.innerHTML=`<div class="notice">填入当前资源后，待做事项会自动变得更具体。</div>`;return}
+  if(!tokens.length){els.bagResults.innerHTML="";return}
   const recognized=[];const misses=[];const seen=new Set();
   tokens.forEach(t=>{
     const item=findItemByName(t);
@@ -3977,9 +4026,8 @@ function renderBagAdvisor(){
     seen.add(item.id);
     recognized.push(item);
   });
-  const pills = recognized.map(i=>`<span class="bag-pill">${i.emoji || "📦"} ${escapeHTML(i.name)}</span>`).join("");
-  const miss = misses.length ? `<div class="notice">没识别：${misses.map(escapeHTML).join("、")}。可以换完整物品名。</div>` : "";
-  els.bagResults.innerHTML = `<div>已识别 ${recognized.length} 个物品，处理建议已并入待做事项。</div><div class="bag-pill-row">${pills}</div>${miss}`;
+  const miss = misses.length ? `，${misses.length} 个未识别` : "";
+  els.bagResults.innerHTML = `已识别 ${recognized.length} 个物品${miss}，建议已并入待做事项。`;
 }
 function renderPlanner(){
   if(els.bagInput) els.bagInput.value = state.resources?.items || state.inventory || "";
