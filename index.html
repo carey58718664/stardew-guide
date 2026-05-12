@@ -1,463 +1,857 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>星露谷 · 资料三级分类原型</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星露谷物语 · 资料库</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Noto+Serif+SC:wght@400;600;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#f7efd9;
-  --paper:#fffaf0;
-  --paper-2:#f1e3c4;
-  --paper-3:#ead7ae;
-  --ink:#30271d;
-  --muted:#746858;
-  --faint:#9a8b74;
-  --line:#d7bd86;
-  --line-soft:rgba(215,189,134,.65);
-  --wood:#6f4728;
-  --wood-2:#8a5b32;
-  --gold:#c8952d;
-  --green:#4e845a;
-  --blue:#426f93;
-  --red:#bd4b39;
-  --purple:#705c91;
-  --shadow:0 12px 30px rgba(81,55,27,.10);
-  --shadow-sm:0 4px 14px rgba(81,55,27,.08);
-  --radius:18px;
-  --safe-bottom:env(safe-area-inset-bottom,0px);
+  :root {
+    --bg: #f4ead5;
+    --bg-deep: #ead7b0;
+    --ink: #2d2418;
+    --ink-soft: #5a4a35;
+    --grass: #5c8a3a;
+    --grass-deep: #3d6024;
+    --sunset: #d96b3c;
+    --berry: #a93f3f;
+    --sky: #6b8caf;
+    --gold: #d4a23a;
+    --line: #2d2418;
+    --paper: #fbf4e0;
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+background: var(–bg);
+color: var(–ink);
+font-family: ‘Noto Serif SC’, serif;
+line-height: 1.6;
+min-height: 100vh;
+background-image:
+radial-gradient(circle at 20% 10%, rgba(217,107,60,0.06) 0%, transparent 40%),
+radial-gradient(circle at 80% 80%, rgba(92,138,58,0.08) 0%, transparent 50%);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  min-height:100vh;
-  color:var(--ink);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;
-  background:
-    radial-gradient(circle at 15% 20%,rgba(214,170,82,.18) 0 2px,transparent 2px 44px),
-    radial-gradient(circle at 85% 15%,rgba(86,132,91,.12) 0 2px,transparent 2px 54px),
-    linear-gradient(180deg,#fbf4e2 0%,var(--bg) 100%);
-  padding-bottom:calc(86px + var(--safe-bottom));
+
+/* 纸张噪点纹理 */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+pointer-events: none;
+z-index: 1;
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘200’ height=‘200’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence baseFrequency=‘0.9’ numOctaves=‘2’/%3E%3CfeColorMatrix values=‘0 0 0 0 0.18 0 0 0 0 0.14 0 0 0 0 0.09 0 0 0 0.08 0’/%3E%3C/filter%3E%3Crect width=‘200’ height=‘200’ filter=‘url(%23n)’/%3E%3C/svg%3E”);
+opacity: 0.6;
+mix-blend-mode: multiply;
 }
-button,input{font:inherit}
-button{cursor:pointer;touch-action:manipulation}
-.header{
-  background:linear-gradient(135deg,#3a2719,#704725 64%,#8b5d34);
-  color:#fff4d6;
-  border-bottom:4px solid var(--gold);
-  box-shadow:0 4px 20px rgba(0,0,0,.18);
+
+/* === 顶部 === */
+header {
+position: relative;
+padding: 60px 8% 50px;
+border-bottom: 3px solid var(–line);
+background: var(–paper);
+z-index: 2;
 }
-.header-inner{max-width:1120px;margin:0 auto;padding:18px 16px 16px}
-.eyebrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#e7bd68;margin-bottom:7px}
-.header h1{font-size:clamp(24px,6vw,38px);line-height:1.08;letter-spacing:.02em}
-.header p{color:rgba(255,244,214,.78);font-size:14px;margin-top:8px;line-height:1.45}
-.app{width:min(1120px,100%);margin:0 auto;padding:14px}
-.top-card{
-  background:rgba(255,250,240,.92);
-  border:1px solid rgba(215,189,134,.78);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:12px;
-  position:sticky;
-  top:0;
-  z-index:10;
-  backdrop-filter:blur(12px);
+
+.header-top {
+display: flex;
+justify-content: space-between;
+align-items: baseline;
+font-family: ‘DM Mono’, monospace;
+font-size: 12px;
+letter-spacing: 0.15em;
+color: var(–ink-soft);
+text-transform: uppercase;
+margin-bottom: 30px;
 }
-.search-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-.search-box{position:relative}
-.search-box span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
-.search-box input{
-  width:100%;border:2px solid var(--line);border-radius:999px;
-  padding:12px 14px 12px 42px;background:white;color:var(--ink);outline:none;
-  box-shadow:var(--shadow-sm);
+
+.header-top .meta { display: flex; gap: 24px; }
+.header-top .meta span::before { content: ’◆ ’; color: var(–sunset); }
+
+h1 {
+font-family: ‘Noto Serif SC’, serif;
+font-weight: 900;
+font-size: clamp(48px, 9vw, 120px);
+line-height: 0.95;
+letter-spacing: -0.02em;
+color: var(–ink);
+margin-bottom: 20px;
+position: relative;
 }
-.search-box input:focus{border-color:var(--wood-2);box-shadow:0 0 0 4px rgba(138,91,50,.16),var(--shadow-sm)}
-.icon-btn{border:0;color:white;background:var(--wood);min-width:46px;height:46px;border-radius:999px;box-shadow:var(--shadow-sm);font-size:22px}
-.quick-chips{display:flex;gap:7px;overflow:auto;padding-top:10px;scrollbar-width:none}
-.quick-chips::-webkit-scrollbar{display:none}
-.chip{
-  border:1px solid var(--line);background:#fff8e7;color:var(--wood);
-  border-radius:999px;padding:7px 11px;font-size:13px;white-space:nowrap;
+
+h1 .pixel {
+font-family: ‘VT323’, monospace;
+font-weight: normal;
+color: var(–sunset);
+font-size: 0.6em;
+vertical-align: super;
+margin-left: 8px;
 }
-.chip.hot{background:#fff0e8;border-color:#e3a18f;color:var(--red)}
-.view{display:none;margin-top:14px}.view.active{display:block}
-.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:18px 2px 10px}
-.section-head h2{font-size:21px}.section-head p{color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
-.card{
-  background:rgba(255,250,240,.96);border:1px solid rgba(215,189,134,.92);
-  border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:14px;overflow:hidden;
+
+.subtitle {
+display: flex;
+align-items: center;
+gap: 20px;
+font-family: ‘DM Mono’, monospace;
+font-size: 14px;
+color: var(–ink-soft);
+letter-spacing: 0.1em;
 }
-.notice{padding:12px;border-radius:16px;background:#fff5df;border:1px solid var(--line);color:var(--muted);font-size:13px;line-height:1.55}
-.badge{
-  display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:3px 8px;
-  background:#eee1c4;color:var(--wood);font-size:11px;font-weight:850;white-space:nowrap;
+
+.subtitle .line {
+flex: 0 0 60px;
+height: 1px;
+background: var(–ink);
 }
-.badge.green{background:rgba(78,132,90,.14);color:var(--green)}
-.badge.red{background:rgba(189,75,57,.14);color:var(--red)}
-.badge.blue{background:rgba(66,111,147,.14);color:var(--blue)}
-.badge.gold{background:rgba(200,149,45,.18);color:#9a6d17}
-.badge.purple{background:rgba(112,92,145,.14);color:var(--purple)}
-.library-shell{display:grid;grid-template-columns:230px 1fr;gap:12px;align-items:start}
-.level-one{position:sticky;top:93px;display:grid;gap:8px}
-.l1-btn{
-  border:1px solid rgba(215,189,134,.9);background:rgba(255,250,240,.96);color:var(--ink);
-  border-radius:16px;padding:11px 12px;text-align:left;box-shadow:var(--shadow-sm);
+
+/* === 总览导航 === */
+.quicknav {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+gap: 0;
+border-top: 3px solid var(–line);
+border-bottom: 3px solid var(–line);
+background: var(–bg-deep);
+position: sticky;
+top: 0;
+z-index: 10;
+backdrop-filter: blur(4px);
 }
-.l1-btn strong{display:block;font-size:15px}.l1-btn span{display:block;color:var(--muted);font-size:12px;margin-top:2px;line-height:1.35}
-.l1-btn.active{background:var(--wood);border-color:var(--wood);color:#fff4d6}
-.l1-btn.active span{color:rgba(255,244,214,.72)}
-.library-main{min-width:0}
-.level-two-wrap{
-  background:rgba(255,250,240,.88);border:1px solid rgba(215,189,134,.75);
-  border-radius:18px;box-shadow:var(--shadow-sm);padding:10px;margin-bottom:12px;
+
+.quicknav a {
+padding: 16px 12px;
+text-align: center;
+text-decoration: none;
+color: var(–ink);
+font-family: ‘DM Mono’, monospace;
+font-size: 12px;
+letter-spacing: 0.1em;
+border-right: 1px solid var(–line);
+transition: all 0.2s;
+text-transform: uppercase;
+display: flex;
+flex-direction: column;
+gap: 4px;
+align-items: center;
 }
-.level-two{display:flex;gap:8px;overflow:auto;scrollbar-width:none}
-.level-two::-webkit-scrollbar{display:none}
-.l2-btn{
-  border:1px solid var(--line);background:#fff;color:var(--wood);border-radius:999px;
-  padding:8px 12px;font-weight:850;white-space:nowrap;font-size:13px;
+
+.quicknav a:last-child { border-right: none; }
+
+.quicknav a:hover {
+background: var(–sunset);
+color: var(–paper);
 }
-.l2-btn.active{background:var(--wood);color:#fff4d6;border-color:var(--wood)}
-.pathbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin:0 2px 10px}
-.pathbar b{color:var(--ink)}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.item-card{
-  background:white;border:1px solid rgba(215,189,134,.9);border-radius:18px;
-  box-shadow:var(--shadow-sm);padding:13px;min-height:178px;
+
+.quicknav .icon {
+font-size: 20px;
+font-family: ‘VT323’, monospace;
 }
-.item-head{display:flex;align-items:flex-start;gap:8px;justify-content:space-between;margin-bottom:8px}
-.item-title{min-width:0}.item-title h3{font-size:17px;line-height:1.25}.item-title small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
-.emoji{font-size:28px;line-height:1;filter:drop-shadow(0 4px 8px rgba(81,55,27,.10))}
-.meta-list{display:grid;gap:6px;margin-top:10px}
-.meta-row{display:grid;grid-template-columns:68px 1fr;gap:8px;font-size:13px;line-height:1.45;border-top:1px dashed var(--line-soft);padding-top:6px}
-.meta-row:first-child{border-top:0;padding-top:0}
-.meta-row span{color:var(--faint)}.meta-row b{font-weight:750;color:var(--ink)}
-.card-note{color:var(--muted);font-size:13px;line-height:1.5;margin-top:9px;background:#fff8e7;border:1px solid rgba(215,189,134,.6);border-radius:13px;padding:8px}
-.empty{display:none;text-align:center;padding:34px 16px;color:var(--muted)}
-.bottom-nav{
-  position:fixed;left:50%;bottom:calc(10px + var(--safe-bottom));transform:translateX(-50%);z-index:50;
-  width:min(620px,calc(100% - 20px));background:rgba(48,39,29,.92);border:1px solid rgba(255,255,255,.12);
-  border-radius:24px;box-shadow:0 10px 32px rgba(0,0,0,.28);backdrop-filter:blur(14px);
-  display:grid;grid-template-columns:repeat(5,1fr);padding:6px;
+
+/* === 主要内容 === */
+main {
+position: relative;
+z-index: 2;
+padding: 80px 8% 100px;
+max-width: 1400px;
+margin: 0 auto;
 }
-.nav-btn{color:#eadfc8;background:transparent;border:0;border-radius:18px;padding:8px 4px;display:grid;place-items:center;gap:2px;font-size:11px}
-.nav-btn b{font-size:18px;line-height:1}.nav-btn.active{background:#fff4d6;color:var(--wood)}
-.mock-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.mock-list{display:grid;gap:8px}.mock-row{padding:10px;border-radius:14px;background:#fff;border:1px solid rgba(215,189,134,.72);font-size:14px;color:var(--muted);line-height:1.45}.mock-row b{color:var(--ink)}
-@media(max-width:860px){
-  .library-shell{grid-template-columns:1fr}.level-one{position:static;display:flex;overflow:auto;scrollbar-width:none}.level-one::-webkit-scrollbar{display:none}.l1-btn{min-width:148px}.grid{grid-template-columns:repeat(2,1fr)}
+
+section {
+margin-bottom: 100px;
+position: relative;
 }
-@media(max-width:640px){
-  .app{padding:10px}.top-card{border-radius:0 0 20px 20px;margin:-10px -10px 0}.section-head{align-items:flex-start;flex-direction:column;gap:2px}.grid,.mock-grid{grid-template-columns:1fr}.item-card{min-height:auto}.meta-row{grid-template-columns:64px 1fr}.header-inner{padding:16px 14px}
+
+.section-header {
+display: flex;
+align-items: flex-end;
+gap: 30px;
+margin-bottom: 40px;
+padding-bottom: 24px;
+border-bottom: 2px solid var(–line);
+position: relative;
 }
+
+.section-num {
+font-family: ‘VT323’, monospace;
+font-size: 80px;
+line-height: 0.8;
+color: var(–sunset);
+flex: 0 0 auto;
+}
+
+.section-title-block { flex: 1; }
+
+.section-cat {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+letter-spacing: 0.2em;
+color: var(–ink-soft);
+text-transform: uppercase;
+margin-bottom: 8px;
+}
+
+h2 {
+font-family: ‘Noto Serif SC’, serif;
+font-weight: 900;
+font-size: clamp(32px, 5vw, 56px);
+line-height: 1;
+letter-spacing: -0.01em;
+}
+
+.section-desc {
+font-style: italic;
+color: var(–ink-soft);
+font-size: 15px;
+max-width: 500px;
+text-align: right;
+flex: 0 0 auto;
+align-self: flex-end;
+}
+
+/* === 子模块卡片 === */
+.cards {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: 0;
+border: 2px solid var(–line);
+background: var(–paper);
+}
+
+.card {
+padding: 28px 26px;
+border-right: 1px solid var(–line);
+border-bottom: 1px solid var(–line);
+position: relative;
+transition: background 0.25s;
+cursor: default;
+}
+
+.card:hover { background: var(–bg); }
+
+.card-num {
+position: absolute;
+top: 16px;
+right: 20px;
+font-family: ‘VT323’, monospace;
+font-size: 14px;
+color: var(–ink-soft);
+letter-spacing: 0.1em;
+}
+
+.card h3 {
+font-family: ‘Noto Serif SC’, serif;
+font-weight: 600;
+font-size: 20px;
+margin-bottom: 14px;
+padding-bottom: 10px;
+border-bottom: 1px dashed var(–ink-soft);
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.card h3 .marker {
+width: 10px;
+height: 10px;
+background: var(–accent, var(–sunset));
+flex-shrink: 0;
+display: inline-block;
+}
+
+.card ul {
+list-style: none;
+font-size: 14.5px;
+color: var(–ink-soft);
+}
+
+.card li {
+padding: 4px 0;
+position: relative;
+padding-left: 18px;
+line-height: 1.55;
+}
+
+.card li::before {
+content: ‘›’;
+position: absolute;
+left: 0;
+color: var(–accent, var(–sunset));
+font-weight: bold;
+}
+
+/* 不同板块用不同强调色 */
+#s-farm { –accent: var(–grass); }
+#s-combat { –accent: var(–berry); }
+#s-fishing { –accent: var(–sky); }
+#s-social { –accent: var(–sunset); }
+#s-craft { –accent: var(–gold); }
+#s-place { –accent: var(–grass-deep); }
+#s-style { –accent: var(–berry); }
+#s-progress { –accent: var(–sunset); }
+
+section .section-num { color: var(–accent, var(–sunset)); }
+section .card h3 .marker { background: var(–accent); }
+section .card li::before { color: var(–accent); }
+
+/* === 像素装饰 === */
+.pixel-deco {
+position: absolute;
+font-family: ‘VT323’, monospace;
+color: var(–accent, var(–sunset));
+opacity: 0.25;
+pointer-events: none;
+user-select: none;
+}
+
+.pixel-deco.top-right {
+top: -20px;
+right: 0;
+font-size: 60px;
+line-height: 0.9;
+}
+
+/* === Footer === */
+footer {
+background: var(–ink);
+color: var(–bg);
+padding: 50px 8%;
+font-family: ‘DM Mono’, monospace;
+font-size: 12px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+position: relative;
+z-index: 2;
+}
+
+footer .row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+gap: 20px;
+}
+
+footer .pixel-art {
+font-family: ‘VT323’, monospace;
+font-size: 30px;
+text-transform: none;
+color: var(–sunset);
+letter-spacing: 0;
+}
+
+/* === 响应式 === */
+@media (max-width: 768px) {
+header { padding: 40px 6% 30px; }
+main { padding: 50px 6% 60px; }
+section { margin-bottom: 70px; }
+
+```
+.section-header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+.section-desc { text-align: left; }
+.section-num { font-size: 56px; }
+
+.quicknav { grid-template-columns: repeat(4, 1fr); }
+.quicknav a { font-size: 10px; padding: 10px 4px; }
+.quicknav a:nth-child(4) { border-right: none; }
+.quicknav a:nth-child(n+5) { border-top: 1px solid var(--line); }
+
+.header-top { flex-direction: column; gap: 8px; align-items: flex-start; }
+```
+
+}
+
+/* 入场动画 */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+section {
+animation: fadeUp 0.6s ease-out backwards;
+}
+section:nth-child(1) { animation-delay: 0s; }
+section:nth-child(2) { animation-delay: 0.08s; }
+section:nth-child(3) { animation-delay: 0.16s; }
+section:nth-child(4) { animation-delay: 0.24s; }
+section:nth-child(5) { animation-delay: 0.32s; }
+section:nth-child(6) { animation-delay: 0.4s; }
+section:nth-child(7) { animation-delay: 0.48s; }
+section:nth-child(8) { animation-delay: 0.56s; }
+
+/* 选中时的小细节 */
+::selection { background: var(–sunset); color: var(–paper); }
 </style>
+
 </head>
 <body>
-<header class="header">
-  <div class="header-inner">
-    <div class="eyebrow"><span>Stardew Valley 1.6</span><span>·</span><span>Library Prototype</span></div>
-    <h1>📚 资料库三级分类原型</h1>
-    <p>一级按玩家目标分组，二级是资料 tab，三级是卡片内容。先放典型数据看界面。</p>
+
+<header>
+  <div class="header-top">
+    <div class="meta">
+      <span>第 1.6 版</span>
+      <span>个人资料库</span>
+      <span>按行为分类</span>
+    </div>
+    <div>★ STARDEW VALLEY ARCHIVE ★</div>
+  </div>
+  <h1>星露谷<span class="pixel">▲</span><br>资料库</h1>
+  <div class="subtitle">
+    <span class="line"></span>
+    <span>八大模块 / 按玩家做什么来组织 / 不按物品类型</span>
   </div>
 </header>
 
-<main class="app">
-  <section class="top-card">
-    <div class="search-row">
-      <div class="search-box">
-        <span>🔍</span>
-        <input id="globalSearch" placeholder="搜任何东西：杨桃、肥料、小桶、鲶鱼、戒指、书籍…" autocomplete="off" />
-      </div>
-      <button class="icon-btn" id="clearSearch" title="清空搜索">×</button>
-    </div>
-    <div class="quick-chips" id="quickChips"></div>
-  </section>
-
-  <section id="view-today" class="view">
-    <div class="section-head"><div><h2>今日</h2><p>这里只保留占位，重点看资料页。</p></div></div>
-    <div class="mock-grid">
-      <article class="card"><h3>🧭 今天先做什么</h3><div class="mock-list"><div class="mock-row"><b>雨天优先：</b>河流补鲶鱼和西鲱。</div><div class="mock-row"><b>田地检查：</b>本季献祭作物先留一个。</div></div></article>
-      <article class="card"><h3>💰 加工提醒</h3><div class="mock-list"><div class="mock-row"><b>小桶：</b>杨桃、上古水果、啤酒花优先。</div><div class="mock-row"><b>罐头瓶：</b>前中期蔬菜很稳。</div></div></article>
-    </div>
-  </section>
-
-  <section id="view-search" class="view">
-    <div class="section-head"><div><h2>搜索结果</h2><p>顶部搜索会跨所有一级和二级 tab 查典型数据。</p></div><span class="badge blue" id="searchCount">0 个结果</span></div>
-    <div class="grid" id="searchResults"></div>
-    <div class="empty" id="searchEmpty">没搜到。试试“杨桃”“小桶”“鱼塘”“武器”。</div>
-  </section>
-
-  <section id="view-bundles" class="view">
-    <div class="section-head"><div><h2>献祭</h2><p>底部快捷入口照旧保留，完整资料归到「关系任务 → 献祭」。</p></div></div>
-    <div class="grid">
-      <article class="item-card"><div class="item-head"><div class="item-title"><h3>春季作物包</h3><small>茶水间</small></div><div class="emoji">🌱</div></div><div class="meta-list"><div class="meta-row"><span>需要</span><b>防风草、绿豆、花椰菜、土豆</b></div><div class="meta-row"><span>奖励</span><b>生长激素×20</b></div></div></article>
-      <article class="item-card"><div class="item-head"><div class="item-title"><h3>河鱼包</h3><small>鱼缸</small></div><div class="emoji">🎣</div></div><div class="meta-list"><div class="meta-row"><span>需要</span><b>太阳鱼、鲶鱼、西鲱、虎纹鳟鱼</b></div><div class="meta-row"><span>注意</span><b>鲶鱼和西鲱需要雨天</b></div></div></article>
-    </div>
-  </section>
-
-  <section id="view-planner" class="view">
-    <div class="section-head"><div><h2>规划</h2><p>这里保留背包规划入口。资料结构成型后再接真实判断逻辑。</p></div></div>
-    <article class="card"><div class="notice">示例：输入“杨桃 鲶鱼 紫水晶 鸡蛋”，之后可以从资料库反查献祭、送礼和加工。</div></article>
-  </section>
-
-  <section id="view-library" class="view active">
-    <div class="section-head">
-      <div><h2>资料</h2><p>一级分类在左侧或顶部横滑，二级 tab 在内容区顶部，下面展示三级卡片。</p></div>
-      <span class="badge gold" id="dataCount">0 条</span>
-    </div>
-    <div class="library-shell">
-      <aside class="level-one" id="levelOne"></aside>
-      <section class="library-main">
-        <div class="level-two-wrap"><div class="level-two" id="levelTwo"></div></div>
-        <div class="pathbar" id="pathbar"></div>
-        <div class="grid" id="libraryContent"></div>
-      </section>
-    </div>
-  </section>
-</main>
-
-<nav class="bottom-nav" aria-label="主导航">
-  <button class="nav-btn" data-view="today"><b>🌤️</b><span>今日</span></button>
-  <button class="nav-btn" data-view="search"><b>🔎</b><span>搜索</span></button>
-  <button class="nav-btn" data-view="bundles"><b>🎁</b><span>献祭</span></button>
-  <button class="nav-btn" data-view="planner"><b>🎒</b><span>规划</span></button>
-  <button class="nav-btn active" data-view="library"><b>📚</b><span>资料</span></button>
+<nav class="quicknav">
+  <a href="#s-farm"><span class="icon">▤</span>农业</a>
+  <a href="#s-combat"><span class="icon">✦</span>战斗采集</a>
+  <a href="#s-fishing"><span class="icon">≈</span>钓鱼</a>
+  <a href="#s-social"><span class="icon">♥</span>社交</a>
+  <a href="#s-craft"><span class="icon">⚒</span>制作烹饪</a>
+  <a href="#s-place"><span class="icon">▣</span>地点</a>
+  <a href="#s-style"><span class="icon">◈</span>外观装备</a>
+  <a href="#s-progress"><span class="icon">☰</span>进度收集</a>
 </nav>
 
-<script>
-const libraryData = [
-  {id:"field",name:"田地",icon:"🌾",desc:"种什么，怎么长",tabs:[
-    {id:"crops",name:"作物",items:[
-      {title:"杨桃",emoji:"⭐",tags:["夏","高价值","一次收获"],meta:{种子:"绿洲商店 · Sandy 400g",周期:"13天（1次）",收益:"小桶→杨桃酒 2250g"},note:"保持作物资料卡格式，正式版这里换成完整杨桃卡。"},
-      {title:"蓝莓",emoji:"🫐",tags:["夏","复收"],meta:{种子:"皮埃尔 80g",周期:"13天；复收4天",献祭:"夏季作物包"},note:"每次至少产出3个，前期现金流稳。"},
-      {title:"南瓜",emoji:"🎃",tags:["秋","高价值"],meta:{种子:"皮埃尔 100g",周期:"13天（1次）",用途:"秋季作物包、品质作物包"},note:"可长成巨大作物，也常用于送礼和料理。"}
-    ]},
-    {id:"boost",name:"种植加成",items:[
-      {title:"品质加成",emoji:"✨",tags:["肥料","等级"],meta:{包含:"基础/优质/高级肥料",判定:"收获时判定品质",关键:"高级肥料可出铱星作物"},note:"肥料和耕种等级共同影响普通作物品质。"},
-      {title:"速度加成",emoji:"⚡",tags:["生长激素","农业学家"],meta:{包含:"生长激素、高级、顶级",职业:"农业学家 +10%",注意:"不缩短复收间隔"},note:"正式版可以放最晚种植日计算器。"},
-      {title:"保水规则",emoji:"💧",tags:["土壤","省操作"],meta:{包含:"基础/优质/高级保水土壤",用途:"减少浇水压力",联动:"温室、姜岛、洒水器"},note:"本体归种植加成，洒水器详细布局归建设工具。"}
-    ]},
-    {id:"trees",name:"果树",items:[
-      {title:"苹果树",emoji:"🍎",tags:["秋","果树"],meta:{价格:"皮埃尔 4000g",成熟:"28天",用途:"工匠包、饲料包"},note:"周围8格必须保持空。"},
-      {title:"石榴树",emoji:"🔴",tags:["秋","果树"],meta:{价格:"皮埃尔 6000g",成熟:"28天",用途:"工匠包、魔法师包"},note:"温室边缘种法很适合长期收益。"}
-    ]},
-    {id:"giant",name:"巨型作物",items:[
-      {title:"巨大甜瓜",emoji:"🍈",tags:["夏","3×3"],meta:{条件:"成熟同种3×3",概率:"每日约1%",收获:"斧头"},note:"成熟后继续浇水也有机会变巨大。"},
-      {title:"巨大南瓜",emoji:"🎃",tags:["秋","3×3"],meta:{条件:"成熟同种3×3",用途:"装饰、收获更多",收获:"斧头"},note:"正式版可加巨大化作物清单。"}
-    ]}
-  ]},
-  {id:"production",name:"生产",icon:"🐄",desc:"产出和加工赚钱",tabs:[
-    {id:"animals",name:"畜牧",items:[
-      {title:"鸡",emoji:"🐔",tags:["鸡舍","每日"],meta:{建筑:"鸡舍",产物:"鸡蛋",加工:"蛋黄酱机"},note:"鸡蛋不建议直接卖，前期蛋黄酱很稳。"},
-      {title:"猪",emoji:"🐖",tags:["高级畜棚","高价值"],meta:{建筑:"高级畜棚",产物:"松露",加工:"松露油"},note:"下雨和冬天不出门。"}
-    ]},
-    {id:"artisan",name:"工匠设备",items:[
-      {title:"小桶",emoji:"🍷",tags:["酒","汁"],meta:{解锁:"耕种8级",配方:"木材30 铜锭1 铁锭1 橡树树脂1",优先:"杨桃、上古水果、啤酒花"},note:"高价值水果优先级最高。"},
-      {title:"罐头瓶",emoji:"🫙",tags:["果酱","腌菜"],meta:{解锁:"耕种4级",配方:"木材50 石头40 煤炭8",优先:"中低价作物"},note:"前中期设备少时很实用。"}
-    ]},
-    {id:"profit",name:"加工收益",items:[
-      {title:"杨桃加工路线",emoji:"⭐",tags:["小桶","陈酿"],meta:{原价:"750g",酒:"2250g",铱星酒:"4500g"},note:"后期最高优先级之一。"},
-      {title:"啤酒花加工路线",emoji:"🌿",tags:["淡啤酒","日收"],meta:{原价:"25g",淡啤酒:"300g",特点:"复收1天"},note:"强但很吃收取频率。"}
-    ]},
-    {id:"bee",name:"蜂房",items:[
-      {title:"玫瑰仙子蜂蜜",emoji:"🍯",tags:["秋","高价值"],meta:{花:"玫瑰仙子",蜂蜜:"680g",场景:"姜岛全年布局"},note:"花类蜂蜜收益核心。"},
-      {title:"罂粟蜂蜜",emoji:"🌺",tags:["夏","蜂蜜"],meta:{花:"罂粟",蜂蜜:"380g",注意:"花不要被收走"},note:"蜂房范围需要单独画布局。"}
-    ]},
-    {id:"fishpond",name:"鱼塘",items:[
-      {title:"鲟鱼鱼塘",emoji:"🐟",tags:["鱼子酱","献祭"],meta:{产物:"鲟鱼鱼籽",加工:"罐头瓶→鱼子酱",建议:"第一条先献祭"},note:"鱼子酱是后期重要目标。"},
-      {title:"岩浆鳗鱼鱼塘",emoji:"🌋",tags:["高价值","矿场"],meta:{产物:"鱼籽、岩浆晶球等",难度:"捕获较难",收益:"高"},note:"中后期再考虑。"}
-    ]}
-  ]},
-  {id:"collect",name:"收集",icon:"🎣",desc:"去哪找东西",tabs:[
-    {id:"fish",name:"钓鱼",items:[
-      {title:"鲶鱼",emoji:"🐠",tags:["春/秋","雨天"],meta:{地点:"河流",时间:"6AM-12AM",用途:"河鱼包"},note:"春季雨天优先补。"},
-      {title:"河豚",emoji:"🐡",tags:["夏","晴天"],meta:{地点:"海洋",时间:"12PM-4PM",用途:"特色鱼类包"},note:"窗口很短，容易漏。"}
-    ]},
-    {id:"tackle",name:"鱼饵钓具",items:[
-      {title:"陷阱浮标",emoji:"🪝",tags:["钓具","控条"],meta:{效果:"鱼逃脱更慢",适合:"高难鱼",搭配:"铱金鱼竿"},note:"钓传奇鱼时很常用。"},
-      {title:"磁铁",emoji:"🧲",tags:["宝箱","消耗品"],meta:{效果:"增加宝箱概率",适合:"刷宝箱",注意:"不是普通鱼饵"},note:"前期刷稀有物可以考虑。"}
-    ]},
-    {id:"forage",name:"觅食",items:[
-      {title:"蕨菜",emoji:"🌿",tags:["夏","秘密森林"],meta:{地点:"秘密森林",用途:"厨师包",注意:"季节限定"},note:"布告栏很容易卡它。"},
-      {title:"水晶果",emoji:"💎",tags:["冬","采集"],meta:{地点:"冬季户外",用途:"冬季采集包",加工:"小桶→酒"},note:"冬季也能赚钱的小目标。"}
-    ]},
-    {id:"minerals",name:"矿物文物",items:[
-      {title:"泪晶",emoji:"💧",tags:["矿物","40-79层"],meta:{地点:"冰层矿井",用途:"地理学家包",送礼:"塞巴斯蒂安最爱"},note:"既献祭又送礼。"},
-      {title:"古代种子",emoji:"🏺",tags:["文物","关键"],meta:{来源:"蚯蚓点、怪物、钓鱼宝箱",奖励:"博物馆解锁配方",用途:"上古水果"},note:"拿到后尽早捐。"}
-    ]},
-    {id:"materials",name:"材料",items:[
-      {title:"硬木",emoji:"🪵",tags:["材料","建筑"],meta:{来源:"大树桩、秘密森林",用途:"马厩、房屋升级",建议:"每日秘密森林"},note:"前中期很容易缺。"},
-      {title:"煤炭",emoji:"⚫",tags:["材料","消耗大"],meta:{来源:"矿井、木炭窑",用途:"熔炉、罐头瓶",推荐:"灰尘精灵"},note:"设备铺开后会疯狂缺。"}
-    ]}
-  ]},
-  {id:"social",name:"关系任务",icon:"🎁",desc:"交给谁，做什么",tabs:[
-    {id:"npc",name:"NPC",items:[
-      {title:"阿比盖尔",emoji:"💜",tags:["秋13","NPC"],meta:{最爱:"紫水晶、南瓜、香辣鳗鱼",住处:"皮埃尔杂货店",备注:"矿洞向礼物好送"},note:"正式版可加日程。"},
-      {title:"潘妮",emoji:"📚",tags:["夏2","NPC"],meta:{最爱:"绿宝石、罂粟、红之盛宴",常见:"博物馆教书",注意:"罂粟别全献祭"},note:"生日礼物收益很高。"}
-    ]},
-    {id:"gift",name:"送礼生日",items:[
-      {title:"万能喜欢",emoji:"🎁",tags:["送礼","路线"],meta:{前期:"黄水仙、咖啡",中期:"钻石、兔脚",注意:"个别NPC例外"},note:"正式版按NPC过滤讨厌礼物。"},
-      {title:"本周生日",emoji:"🎂",tags:["提醒","高优先"],meta:{用途:"自动按日期生成",展示:"NPC + 最易得最爱",联动:"背包规划"},note:"这个模块适合接首页。"}
-    ]},
-    {id:"bundles",name:"献祭",items:[
-      {title:"茶水间",emoji:"🏡",tags:["温室","作物"],meta:{奖励:"修复温室",重点:"春夏秋作物、品质作物、工匠包",容易卡:"果树、动物产物"},note:"底部献祭页是快捷入口，这里是资料反查。"},
-      {title:"鱼缸",emoji:"🐟",tags:["鱼类","天气"],meta:{奖励:"移除巨大闪石",重点:"雨天鱼、季节鱼",容易卡:"鲟鱼、河豚、木跃鱼"},note:"适合做季节缺口提示。"}
-    ]},
-    {id:"quests",name:"任务",items:[
-      {title:"肯特的杨桃",emoji:"⭐",tags:["第2年","夏15"],meta:{需求:"杨桃×1",奖励:"500g",建议:"提前种或绿洲购买"},note:"作物卡里也会反链到这里。"},
-      {title:"齐瓜任务",emoji:"🟦",tags:["齐先生","限时"],meta:{需求:"齐瓜×500",种子:"齐豆",注意:"任务结束后消失"},note:"归到任务，齐瓜作物卡做交叉链接。"}
-    ]}
-  ]},
-  {id:"adventure",name:"冒险",icon:"⛏️",desc:"下矿和战斗",tabs:[
-    {id:"mine",name:"矿井",items:[
-      {title:"矿井40-79层",emoji:"❄️",tags:["铁矿","泪晶"],meta:{资源:"铁矿、泪晶、煤",怪物:"灰尘精灵",建议:"刷煤炭"},note:"前中期常驻层。"},
-      {title:"骷髅洞穴",emoji:"💀",tags:["铱矿","深层"],meta:{前置:"沙漠巴士",准备:"炸弹、楼梯、咖啡",重点:"运气日"},note:"正式版可加深层收益策略。"}
-    ]},
-    {id:"monster",name:"怪物",items:[
-      {title:"灰尘精灵",emoji:"⚫",tags:["煤炭","矿井"],meta:{地点:"40-79层",掉落:"煤炭",目标:"冒险家公会击杀数"},note:"刷煤和戒指路线都需要。"},
-      {title:"史莱姆",emoji:"🟢",tags:["常见","材料"],meta:{掉落:"史莱姆泥",用途:"设备、献祭",地点:"矿井各层"},note:"冒险初期最多。"}
-    ]},
-    {id:"gear",name:"装备",items:[
-      {title:"银河剑",emoji:"⚔️",tags:["武器","中后期"],meta:{获得:"沙漠三柱献五彩碎片",升级:"可锻造成无限之刃",用途:"骷髅洞穴"},note:"装备卡归冒险。"},
-      {title:"铱环",emoji:"💍",tags:["戒指","通用"],meta:{效果:"发光、磁力、攻击",配方:"战斗9级",搭配:"可在火山合成"},note:"正式版可做戒指组合推荐。"}
-    ]},
-    {id:"supplies",name:"下矿补给",items:[
-      {title:"炸弹",emoji:"💣",tags:["效率","矿洞"],meta:{用途:"快速开矿",来源:"矮人、制作",建议:"骷髅洞穴必带"},note:"提升下矿效率最明显。"},
-      {title:"三倍浓缩咖啡",emoji:"☕",tags:["速度","饮品"],meta:{效果:"速度+1",来源:"咖啡×3",搭配:"香辣鳗鱼"},note:"速度 Buff 是下矿核心。"}
-    ]}
-  ]},
-  {id:"build",name:"建设工具",icon:"🏗️",desc:"建什么，升级什么",tabs:[
-    {id:"buildings",name:"建筑",items:[
-      {title:"筒仓",emoji:"🌾",tags:["早期","建筑"],meta:{花费:"100g + 石头100 + 粘土10 + 铜锭5",用途:"储存干草",建议:"鸡舍前优先"},note:"前期很容易忘。"},
-      {title:"马厩",emoji:"🐴",tags:["移动","建筑"],meta:{花费:"10000g + 硬木100 + 铁锭5",效果:"获得马",优先:"中期"},note:"移动体验提升很大。"}
-    ]},
-    {id:"tools",name:"工具",items:[
-      {title:"喷壶升级",emoji:"💧",tags:["工具","雨天"],meta:{铜:"3格",铁:"5格",建议:"看天气预报雨前送升级"},note:"正式版可做升级路线。"},
-      {title:"斧头升级",emoji:"🪓",tags:["工具","硬木"],meta:{铜:"砍大树桩",钢:"开秘密森林",用途:"硬木"},note:"关系到秘密森林和硬木来源。"}
-    ]},
-    {id:"sprinkler",name:"洒水传送",items:[
-      {title:"优质洒水器",emoji:"💦",tags:["8格","布局"],meta:{解锁:"耕种2级",材料:"铁锭、金锭、精炼石英",范围:"周围8格"},note:"春末夏初开始铺最舒服。"},
-      {title:"沙漠图腾",emoji:"🏜️",tags:["传送","下矿"],meta:{用途:"早进骷髅洞穴",来源:"沙漠商人/制作",搭配:"回家魔杖"},note:"传送归建设工具，冒险里交叉引用。"}
-    ]},
-    {id:"junimo",name:"祝尼魔屋",items:[
-      {title:"祝尼魔屋",emoji:"🏡",tags:["后期","自动收获"],meta:{花费:"20000g + 石头200 + 杨桃9 + 纤维100",范围:"17×17",注意:"雨天不收"},note:"杨桃卡制造建筑会链接到这里。"},
-      {title:"宝石控制颜色",emoji:"💎",tags:["祝尼魔","装饰"],meta:{规则:"放宝石改变祝尼魔颜色",用途:"布局美化",注意:"不影响收获"},note:"这个适合放在细节折叠里。"}
-    ]}
-  ]},
-  {id:"progress",name:"图鉴进度",icon:"📚",desc:"查漏补缺",tabs:[
-    {id:"shipping",name:"出货",items:[
-      {title:"作物出货",emoji:"📦",tags:["完美度","收集"],meta:{范围:"所有可出货作物",容易漏:"宝石甜莓、齐瓜",联动:"作物资料卡"},note:"正式版可以做勾选。"},
-      {title:"工匠品出货",emoji:"🫙",tags:["完美度","加工"],meta:{范围:"酒、果酱、腌菜、油等",容易漏:"鱼子酱、虚空蛋黄酱",联动:"生产"},note:"与加工收益互相跳转。"}
-    ]},
-    {id:"cooking",name:"烹饪",items:[
-      {title:"香辣鳗鱼",emoji:"🌶️",tags:["速度","运气"],meta:{材料:"鳗鱼 + 辣椒",效果:"速度+1 运气+1",场景:"下矿"},note:"既是食谱，也会出现在冒险 Buff。"},
-      {title:"粉红蛋糕",emoji:"🍰",tags:["礼物","食谱"],meta:{最爱:"海莉、贾斯、文森特",来源:"电视食谱",材料:"甜瓜等"},note:"料理也能服务送礼。"}
-    ]},
-    {id:"collection",name:"收藏",items:[
-      {title:"秘密纸条",emoji:"📝",tags:["收藏","解谜"],meta:{解锁:"冬季神秘事件",用途:"藏宝、NPC喜好",展示:"编号列表"},note:"适合做清单式页面。"},
-      {title:"日记残页",emoji:"📖",tags:["姜岛","金核桃"],meta:{地点:"姜岛",用途:"核桃线索",展示:"残页编号"},note:"和姜岛进度联动。"}
-    ]},
-    {id:"books",name:"书籍精通",items:[
-      {title:"书籍",emoji:"📘",tags:["1.6","永久能力"],meta:{来源:"书店、奖励、掉落",类型:"技能书、能力书",用途:"经验或永久效果"},note:"正式版可以按来源和价格过滤。"},
-      {title:"精通",emoji:"🏆",tags:["五项技能","后期"],meta:{解锁:"五项技能10级",地点:"精通洞穴",奖励:"精通能力"},note:"属于完美度和后期规划。"}
-    ]}
-  ]}
-];
+<main>
 
-const state = {view:"library",l1:"field",l2:"crops",query:""};
-const $ = sel => document.querySelector(sel);
-const $$ = sel => [...document.querySelectorAll(sel)];
-const els = {
-  search:$("#globalSearch"), clear:$("#clearSearch"), chips:$("#quickChips"),
-  levelOne:$("#levelOne"), levelTwo:$("#levelTwo"), libraryContent:$("#libraryContent"),
-  pathbar:$("#pathbar"), dataCount:$("#dataCount"), searchResults:$("#searchResults"),
-  searchCount:$("#searchCount"), searchEmpty:$("#searchEmpty")
-};
-function esc(s){return String(s ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
-function getCat(){return libraryData.find(x=>x.id===state.l1) || libraryData[0];}
-function getTab(){const cat=getCat();return cat.tabs.find(x=>x.id===state.l2) || cat.tabs[0];}
-function cardHTML(item,catName,tabName){
-  const tags = (item.tags || []).map(t=>`<span class="badge ${tagColor(t)}">${esc(t)}</span>`).join("");
-  const meta = Object.entries(item.meta || {}).map(([k,v])=>`<div class="meta-row"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("");
-  return `<article class="item-card" data-hay="${esc([catName,tabName,item.title,item.tags?.join(' '),Object.values(item.meta||{}).join(' '),item.note].join(' '))}">
-    <div class="item-head"><div class="item-title"><h3>${esc(item.title)}</h3><small>${esc(catName)} → ${esc(tabName)}</small></div><div class="emoji">${item.emoji || "📦"}</div></div>
-    <div>${tags}</div>
-    <div class="meta-list">${meta}</div>
-    ${item.note ? `<div class="card-note">${esc(item.note)}</div>` : ""}
-  </article>`;
-}
-function tagColor(t){
-  if(/高价值|HOT|后期|限时|关键/.test(t)) return "red";
-  if(/夏|春|秋|冬|速度|布局/.test(t)) return "green";
-  if(/献祭|完美|收藏|NPC|送礼/.test(t)) return "gold";
-  if(/矿|冒险|武器|戒指|钓具|鱼/.test(t)) return "blue";
-  if(/1\.6|齐先生|精通/.test(t)) return "purple";
-  return "";
-}
-function renderChips(){
-  const chips = ["杨桃","种植加成","小桶","蜂房","鲶鱼","阿比盖尔","祝尼魔屋","书籍"];
-  els.chips.innerHTML = chips.map((c,i)=>`<button class="chip ${i<3?'hot':''}" data-search="${c}">${c}</button>`).join("");
-}
-function renderLevelOne(){
-  els.levelOne.innerHTML = libraryData.map(cat=>`<button class="l1-btn ${cat.id===state.l1?'active':''}" data-l1="${cat.id}"><strong>${cat.icon} ${esc(cat.name)}</strong><span>${esc(cat.desc)}</span></button>`).join("");
-}
-function renderLevelTwo(){
-  const cat = getCat();
-  if (!cat.tabs.some(t=>t.id===state.l2)) state.l2 = cat.tabs[0].id;
-  els.levelTwo.innerHTML = cat.tabs.map(tab=>`<button class="l2-btn ${tab.id===state.l2?'active':''}" data-l2="${tab.id}">${esc(tab.name)}</button>`).join("");
-}
-function renderLibrary(){
-  renderLevelOne();
-  renderLevelTwo();
-  const cat = getCat();
-  const tab = getTab();
-  els.pathbar.innerHTML = `<span>当前位置</span><b>${cat.icon} ${esc(cat.name)}</b><span>›</span><b>${esc(tab.name)}</b><span>›</span><span>三级卡片</span>`;
-  els.libraryContent.innerHTML = tab.items.map(item=>cardHTML(item,cat.name,tab.name)).join("");
-  els.dataCount.textContent = `${tab.items.length} 条`;
-}
-function allCards(){
-  const arr=[];
-  libraryData.forEach(cat=>cat.tabs.forEach(tab=>tab.items.forEach(item=>arr.push({cat,tab,item}))));
-  return arr;
-}
-function renderSearch(){
-  const q = state.query.trim().toLowerCase();
-  const rows = allCards().filter(({cat,tab,item})=>{
-    const hay = [cat.name,tab.name,item.title,item.tags?.join(" "),Object.values(item.meta||{}).join(" "),item.note].join(" ").toLowerCase();
-    return !q || hay.includes(q);
-  });
-  els.searchCount.textContent = `${rows.length} 个结果`;
-  els.searchResults.innerHTML = rows.map(r=>cardHTML(r.item,r.cat.name,r.tab.name)).join("");
-  els.searchEmpty.style.display = rows.length ? "none" : "block";
-}
-function openView(view){
-  state.view = view;
-  $$(".view").forEach(v=>v.classList.toggle("active",v.id === "view-"+view));
-  $$(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.view === view));
-  if(view === "library") renderLibrary();
-  if(view === "search") renderSearch();
-}
-function setSearch(q){
-  state.query = q;
-  els.search.value = q;
-  openView("search");
-}
-document.body.addEventListener("click",e=>{
-  const nav = e.target.closest("[data-view]");
-  if(nav){openView(nav.dataset.view);return;}
-  const l1 = e.target.closest("[data-l1]");
-  if(l1){state.l1=l1.dataset.l1;state.l2=getCat().tabs[0].id;renderLibrary();return;}
-  const l2 = e.target.closest("[data-l2]");
-  if(l2){state.l2=l2.dataset.l2;renderLibrary();return;}
-  const chip = e.target.closest("[data-search]");
-  if(chip){setSearch(chip.dataset.search);return;}
-});
-els.search.addEventListener("input",e=>{state.query=e.target.value.trim();openView("search");});
-els.clear.addEventListener("click",()=>{state.query="";els.search.value="";renderSearch();});
-renderChips();
-renderLibrary();
-renderSearch();
-openView("library");
-</script>
+  <!-- 1 农业 -->
+
+  <section id="s-farm">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title-block">
+        <div class="section-cat">/ 行为模块 · FARMING</div>
+        <h2>农业</h2>
+      </div>
+      <div class="section-desc">种地、养殖、产出、卖钱，所有跟"经营农场"相关的内容</div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-num">01.A</span>
+        <h3><span class="marker"></span>作物</h3>
+        <ul>
+          <li>春季作物</li>
+          <li>夏季作物</li>
+          <li>秋季作物</li>
+          <li>冬季作物</li>
+          <li>花卉（含蜂蜜联动）</li>
+          <li>果树 & 树苗</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">01.B</span>
+        <h3><span class="marker"></span>种植配套</h3>
+        <ul>
+          <li>种子获取方式</li>
+          <li>化肥种类 & 效果</li>
+          <li>喷水器（省时核心）</li>
+          <li>温室解锁条件</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">01.C</span>
+        <h3><span class="marker"></span>养殖</h3>
+        <ul>
+          <li>动物种类 & 解锁</li>
+          <li>动物产品（蛋/奶/羊毛/松露）</li>
+          <li>友好度机制</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">01.D</span>
+        <h3><span class="marker"></span>加工产出</h3>
+        <ul>
+          <li>工匠设备一览</li>
+          <li>工匠产品 & 售价</li>
+          <li>蜂蜜机 / 果冻机</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">01.E</span>
+        <h3><span class="marker"></span>收益参考</h3>
+        <ul>
+          <li>各季最高收益作物</li>
+          <li>加工前后价格对比</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 战斗采集 -->
+
+  <section id="s-combat">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title-block">
+        <div class="section-cat">/ 行为模块 · COMBAT</div>
+        <h2>战斗 & 采集</h2>
+      </div>
+      <div class="section-desc">下矿、打怪、收集矿物和材料——同一个场景的事情</div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-num">02.A</span>
+        <h3><span class="marker"></span>武器</h3>
+        <ul>
+          <li>剑 / 匕首 / 锤 / 弹弓</li>
+          <li>属性对比</li>
+          <li>获取方式</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">02.B</span>
+        <h3><span class="marker"></span>怪物</h3>
+        <ul>
+          <li>史莱姆系 / 蝙蝠系</li>
+          <li>虫类 / 亡灵系</li>
+          <li>元素系 / 火焰系</li>
+          <li>HP · 掉落 · 出现楼层</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">02.C</span>
+        <h3><span class="marker"></span>资源 & 掉落</h3>
+        <ul>
+          <li>矿石（铜铁金铱）</li>
+          <li>宝石 & 矿物</li>
+          <li>金属锭</li>
+          <li>骨头 / 蝙蝠翅膀等</li>
+          <li>木材 & 植物材料</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">02.D</span>
+        <h3><span class="marker"></span>采集工具</h3>
+        <ul>
+          <li>镐 / 斧头</li>
+          <li>各级升级材料 & 效果</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 钓鱼 -->
+
+  <section id="s-fishing">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title-block">
+        <div class="section-cat">/ 行为模块 · FISHING</div>
+        <h2>钓鱼</h2>
+      </div>
+      <div class="section-desc">独立成模块——玩家找鱼的查询逻辑跟其他都不一样</div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-num">03.A</span>
+        <h3><span class="marker"></span>鱼种图鉴</h3>
+        <ul>
+          <li>按季节索引</li>
+          <li>按地点索引</li>
+          <li>按天气索引</li>
+          <li>稀有鱼 & 传说鱼</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">03.B</span>
+        <h3><span class="marker"></span>装备</h3>
+        <ul>
+          <li>钓竿种类 & 升级</li>
+          <li>鱼饵 & 浮漂效果</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">03.C</span>
+        <h3><span class="marker"></span>机制</h3>
+        <ul>
+          <li>钓鱼小游戏说明</li>
+          <li>钓鱼技能加成</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 社交 -->
+
+  <section id="s-social">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title-block">
+        <div class="section-cat">/ 行为模块 · SOCIAL</div>
+        <h2>社交</h2>
+      </div>
+      <div class="section-desc">攻略某个角色时打开这里——送礼、心之事件、求婚</div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-num">04.A</span>
+        <h3><span class="marker"></span>村民图鉴</h3>
+        <ul>
+          <li>全部村民基本信息</li>
+          <li>生日 & 位置时间表</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">04.B</span>
+        <h3><span class="marker"></span>送礼系统</h3>
+        <ul>
+          <li>各村民喜爱 / 厌恶礼物</li>
+          <li>万能礼物清单</li>
+          <li>送礼效率排行</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">04.C</span>
+        <h3><span class="marker"></span>心之事件</h3>
+        <ul>
+          <li>各心数触发条件</li>
+          <li>容易错过的事件提醒</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">04.D</span>
+        <h3><span class="marker"></span>婚配</h3>
+        <ul>
+          <li>单身汉 / 单身女士</li>
+          <li>求婚流程</li>
+          <li>婚后互动机制</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">04.E</span>
+        <h3><span class="marker"></span>店主 & 功能NPC</h3>
+        <ul>
+          <li>各商店营业时间 & 售卖</li>
+          <li>医生 / 铁匠 / 魔法师等</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 制作烹饪 -->
+
+  <section id="s-craft">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title-block">
+        <div class="section-cat">/ 行为模块 · CRAFTING</div>
+        <h2>制作 & 烹饪</h2>
+      </div>
+      <div class="section-desc">"我要做X，需要什么材料"——配方查询的统一入口</div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-num">05.A</span>
+        <h3><span class="marker"></span>制作配方</h3>
+        <ul>
+          <li>农场类（栅栏/储物/洒水器）</li>
+          <li>战斗类（炸弹/陷阱）</li>
+          <li>功能类（图腾/避雷针）</li>
+          <li>装饰 & 家具</li>
+          <li>解锁方式索引</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">05.B</span>
+        <h3><span class="marker"></span>烹饪配方</h3>
+        <ul>
+          <li>全食谱列表</li>
+          <li>按 Buff 效果索引</li>
+          <li>食材来源</li>
+          <li>获取方式（电视/NPC/购买）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">05.C</span>
+        <h3><span class="marker"></span>消耗品</h3>
+        <ul>
+          <li>药剂 & Buff 食物</li>
+          <li>图腾使用场景</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">05.D</span>
+        <h3><span class="marker"></span>农业工具</h3>
+        <ul>
+          <li>浇水壶 / 锄头 / 镰刀</li>
+          <li>垃圾桶 / 平底锅</li>
+          <li>升级材料 & 效果</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 地点 -->
+
+  <section id="s-place">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title-block">
+        <div class="section-cat">/ 行为模块 · LOCATIONS</div>
+        <h2>地点</h2>
+      </div>
+      <div class="section-desc">按地图区域组织——每个地点说清楚"这里能干什么"</div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-num">06.A</span>
+        <h3><span class="marker"></span>小镇</h3>
+        <ul>
+          <li>各建筑功能</li>
+          <li>NPC 位置</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">06.B</span>
+        <h3><span class="marker"></span>农场</h3>
+        <ul>
+          <li>6 种地图类型对比</li>
+          <li>农场建筑解锁 & 功能</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">06.C</span>
+        <h3><span class="marker"></span>矿山 & 洞穴</h3>
+        <ul>
+          <li>普通矿山（楼层/资源/怪物）</li>
+          <li>骷髅洞穴</li>
+          <li>火山洞穴（姜岛）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">06.D</span>
+        <h3><span class="marker"></span>野外</h3>
+        <ul>
+          <li>森林 & 山区</li>
+          <li>海滩</li>
+          <li>卡利科沙漠</li>
+          <li>下水道 / 女巫沼泽</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">06.E</span>
+        <h3><span class="marker"></span>姜岛</h3>
+        <ul>
+          <li>解锁方式</li>
+          <li>岛上内容总览</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 外观装备 -->
+
+  <section id="s-style">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title-block">
+        <div class="section-cat">/ 行为模块 · STYLE</div>
+        <h2>外观 & 装备</h2>
+      </div>
+      <div class="section-desc">捯饬角色、查戒指效果——同一个需求</div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-num">07.A</span>
+        <h3><span class="marker"></span>服装</h3>
+        <ul>
+          <li>帽子 / 上衣 / 裤子 / 裙子 / 鞋子</li>
+          <li>获取方式（裁缝 / 购买 / 掉落）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">07.B</span>
+        <h3><span class="marker"></span>戒指</h3>
+        <ul>
+          <li>全戒指效果一览</li>
+          <li>推荐搭配（战斗向 / 农业向）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">07.C</span>
+        <h3><span class="marker"></span>饰品</h3>
+        <ul>
+          <li>1.6 新增 Trinkets</li>
+          <li>效果 & 获取</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 进度收集 -->
+
+  <section id="s-progress">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div class="section-title-block">
+        <div class="section-cat">/ 行为模块 · PROGRESS</div>
+        <h2>进度 & 收集</h2>
+      </div>
+      <div class="section-desc">检查清单性质——打开这里是为了"我还差什么"</div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-num">08.A</span>
+        <h3><span class="marker"></span>社区中心捆绑包</h3>
+        <ul>
+          <li>各房间捆绑包物品</li>
+          <li>易卖错物品预警</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">08.B</span>
+        <h3><span class="marker"></span>博物馆捐赠</h3>
+        <ul>
+          <li>矿物 & 化石清单</li>
+          <li>奖励列表</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">08.C</span>
+        <h3><span class="marker"></span>成就</h3>
+        <ul>
+          <li>全成就 & 解锁条件</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">08.D</span>
+        <h3><span class="marker"></span>收集品</h3>
+        <ul>
+          <li>帽子商人特殊物品</li>
+          <li>限时 & 节日限定</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-num">08.E</span>
+        <h3><span class="marker"></span>节日 & 活动</h3>
+        <ul>
+          <li>全年节日时间表</li>
+          <li>各节日玩法 & 奖励</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="row">
+    <div>© 个人资料库 · 仅供查询</div>
+    <div class="pixel-art">▣ ▣ ▣ ▤ ▥ ✦</div>
+    <div>v 0.1 · 2026</div>
+  </div>
+</footer>
+
 </body>
 </html>
