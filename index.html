@@ -7,348 +7,207 @@
 <title>星露谷物语 · 资料库</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #f4ead5;
+    color: #2d2418;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(217,107,60,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(92,138,58,0.10) 0%, transparent 50%);
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.18 0 0 0 0 0.14 0 0 0 0 0.09 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.5; mix-blend-mode: multiply;
+  }
 
-html { scroll-behavior: smooth; }
-
-body {
-background: #f4ead5;
-color: #2d2418;
-font-family: “PingFang SC”, “Hiragino Sans GB”, “Microsoft YaHei”, “STHeiti”, sans-serif;
-line-height: 1.7;
-min-height: 100vh;
-background-image:
-radial-gradient(circle at 20% 10%, rgba(217,107,60,0.08) 0%, transparent 40%),
-radial-gradient(circle at 80% 80%, rgba(92,138,58,0.10) 0%, transparent 50%);
-}
-
-body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-pointer-events: none;
-z-index: 1;
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘200’ height=‘200’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence baseFrequency=‘0.9’ numOctaves=‘2’/%3E%3CfeColorMatrix values=‘0 0 0 0 0.18 0 0 0 0 0.14 0 0 0 0 0.09 0 0 0 0.06 0’/%3E%3C/filter%3E%3Crect width=‘200’ height=‘200’ filter=‘url(%23n)’/%3E%3C/svg%3E”);
-opacity: 0.5;
-mix-blend-mode: multiply;
-}
-
-header {
-position: relative;
-padding: 40px 24px 30px;
-border-bottom: 3px solid #2d2418;
-background: #fbf4e0;
-z-index: 2;
-}
-
-.header-top {
-font-size: 11px;
-letter-spacing: 0.15em;
-color: #8b7355;
-margin-bottom: 24px;
-line-height: 1.8;
-}
-
-.header-top .brand {
-color: #d96b3c;
-font-weight: 600;
-margin-bottom: 6px;
-letter-spacing: 0.2em;
-}
-
-.header-top .meta span {
-margin-right: 14px;
-color: #6b5a3f;
-}
-
+header { padding: 40px 24px 30px; border-bottom: 3px solid #2d2418; background: #fbf4e0; position: relative; z-index: 2; }
+.header-top { font-size: 11px; letter-spacing: 0.15em; color: #8b7355; margin-bottom: 24px; line-height: 1.8; }
+.header-top .brand { color: #d96b3c; font-weight: 600; margin-bottom: 6px; letter-spacing: 0.2em; }
+.header-top .meta span { margin-right: 14px; color: #6b5a3f; }
 .header-top .meta span::before { content: ’◆ ’; color: #d96b3c; }
-
-h1 {
-font-weight: 900;
-font-size: clamp(44px, 13vw, 96px);
-line-height: 1;
-letter-spacing: -0.02em;
-color: #2d2418;
-margin-bottom: 16px;
-}
-
-h1 .pixel {
-color: #d96b3c;
-font-size: 0.5em;
-vertical-align: super;
-}
-
-.subtitle {
-font-size: 13px;
-color: #6b5a3f;
-letter-spacing: 0.05em;
-border-top: 1px solid #2d2418;
-padding-top: 12px;
-margin-top: 4px;
-}
+h1 { font-weight: 900; font-size: clamp(44px, 13vw, 96px); line-height: 1; letter-spacing: -0.02em; color: #2d2418; margin-bottom: 16px; }
+h1 .pixel { color: #d96b3c; font-size: 0.5em; vertical-align: super; }
+.subtitle { font-size: 13px; color: #6b5a3f; border-top: 1px solid #2d2418; padding-top: 12px; margin-top: 4px; }
 
 .quicknav {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-border-top: 3px solid #2d2418;
-border-bottom: 3px solid #2d2418;
-background: #ead7b0;
-position: sticky;
-top: 0;
-z-index: 10;
+display: grid; grid-template-columns: repeat(4, 1fr);
+border-top: 3px solid #2d2418; border-bottom: 3px solid #2d2418;
+background: #ead7b0; position: sticky; top: 0; z-index: 10;
 }
-
 .quicknav a {
-padding: 14px 6px;
-text-align: center;
-text-decoration: none;
-color: #2d2418;
-font-size: 12px;
-letter-spacing: 0.05em;
-border-right: 1px solid #2d2418;
-border-bottom: 1px solid #2d2418;
-transition: all 0.2s;
-display: flex;
-flex-direction: column;
-gap: 4px;
-align-items: center;
-background: #ead7b0;
+padding: 14px 6px; text-align: center; text-decoration: none; color: #2d2418;
+font-size: 12px; letter-spacing: 0.05em;
+border-right: 1px solid #2d2418; border-bottom: 1px solid #2d2418;
+transition: all 0.2s; display: flex; flex-direction: column; gap: 4px;
+align-items: center; background: #ead7b0;
 }
-
 .quicknav a:nth-child(4n) { border-right: none; }
 .quicknav a:nth-child(n+5) { border-bottom: none; }
+.quicknav a:active, .quicknav a:hover { background: #d96b3c; color: #fbf4e0; }
+.quicknav .icon { font-size: 16px; color: #d96b3c; }
+.quicknav a:hover .icon, .quicknav a:active .icon { color: #fbf4e0; }
 
-.quicknav a:active,
-.quicknav a:hover {
-background: #d96b3c;
-color: #fbf4e0;
-}
-
-.quicknav .icon {
-font-size: 16px;
-color: #d96b3c;
-}
-
-.quicknav a:hover .icon,
-.quicknav a:active .icon { color: #fbf4e0; }
-
-main {
-position: relative;
-z-index: 2;
-padding: 50px 20px 70px;
-max-width: 1400px;
-margin: 0 auto;
-}
-
+main { position: relative; z-index: 2; padding: 50px 20px 70px; max-width: 1400px; margin: 0 auto; }
 section { margin-bottom: 70px; }
 
 .section-header {
-display: grid;
-grid-template-columns: auto 1fr;
-gap: 18px;
-align-items: end;
-margin-bottom: 24px;
-padding-bottom: 18px;
-border-bottom: 2px solid #2d2418;
+display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: end;
+margin-bottom: 24px; padding-bottom: 18px; border-bottom: 2px solid #2d2418;
 }
+.section-num { font-size: 56px; line-height: 0.8; font-weight: 900; color: #d96b3c; font-family: “Courier New”, monospace; }
+.section-cat { font-size: 10px; letter-spacing: 0.2em; color: #8b7355; margin-bottom: 6px; }
+h2 { font-weight: 900; font-size: 36px; line-height: 1; }
+.section-desc { grid-column: 1 / -1; font-size: 13px; color: #6b5a3f; font-style: italic; margin-top: 6px; }
 
-.section-num {
-font-size: 56px;
-line-height: 0.8;
-font-weight: 900;
-color: #d96b3c;
-font-family: “Courier New”, monospace;
-}
-
-.section-cat {
-font-size: 10px;
-letter-spacing: 0.2em;
-color: #8b7355;
-margin-bottom: 6px;
-}
-
-h2 {
-font-weight: 900;
-font-size: 36px;
-line-height: 1;
-letter-spacing: -0.01em;
-}
-
-.section-desc {
-grid-column: 1 / -1;
-font-size: 13px;
-color: #6b5a3f;
-font-style: italic;
-margin-top: 6px;
-}
-
-.cards {
-display: grid;
-grid-template-columns: 1fr;
-border: 2px solid #2d2418;
-background: #fbf4e0;
-}
-
-.card {
-padding: 22px 20px;
-border-bottom: 1px solid #2d2418;
-position: relative;
-}
-
+/* 索引卡片（无数据的那些板块用）*/
+.cards { display: grid; grid-template-columns: 1fr; border: 2px solid #2d2418; background: #fbf4e0; }
+.card { padding: 22px 20px; border-bottom: 1px solid #2d2418; position: relative; }
 .card:last-child { border-bottom: none; }
+.card-num { position: absolute; top: 14px; right: 16px; font-size: 11px; color: #8b7355; font-family: “Courier New”, monospace; }
+.card h3 { font-weight: 700; font-size: 18px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #8b7355; display: flex; align-items: center; gap: 10px; }
+.card h3 .marker { width: 10px; height: 10px; flex-shrink: 0; display: inline-block; }
+.card ul { list-style: none; font-size: 14px; color: #5a4a35; }
+.card li { padding: 3px 0; padding-left: 16px; position: relative; }
+.card li::before { content: ‘›’; position: absolute; left: 0; font-weight: bold; }
 
-.card-num {
-position: absolute;
-top: 14px;
-right: 16px;
-font-size: 11px;
-color: #8b7355;
-letter-spacing: 0.1em;
-font-family: “Courier New”, monospace;
+/* === 数据卡片样式（农业 & 烹饪）=== */
+.subsection-label {
+font-size: 14px; font-weight: 700; letter-spacing: 0.05em;
+color: #5a4a35; margin: 30px 0 14px;
+padding: 8px 14px; background: #ead7b0;
+border-left: 4px solid #d96b3c;
+}
+#s-farm .subsection-label { border-left-color: #5c8a3a; }
+#s-craft .subsection-label { border-left-color: #d4a23a; }
+
+.item-grid {
+display: grid; grid-template-columns: 1fr; gap: 10px;
+margin-bottom: 8px;
 }
 
-.card h3 {
-font-weight: 700;
-font-size: 18px;
-margin-bottom: 12px;
-padding-bottom: 10px;
-border-bottom: 1px dashed #8b7355;
-display: flex;
-align-items: center;
-gap: 10px;
+.item-card {
+display: grid; grid-template-columns: 56px 1fr; gap: 12px;
+padding: 14px; background: #fbf4e0;
+border: 1.5px solid #2d2418; position: relative;
+}
+.item-card.hl { background: #fff5e0; border-color: #d96b3c; border-width: 2px; }
+
+.item-icon {
+width: 56px; height: 56px;
+background: #ead7b0; border: 1px dashed #8b7355;
+display: flex; align-items: center; justify-content: center;
+font-size: 24px; color: #8b7355;
+/* 留给后期补游戏图标 */
 }
 
-.card h3 .marker {
-width: 10px;
-height: 10px;
-flex-shrink: 0;
-display: inline-block;
+.item-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.item-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.item-head h4 {
+font-size: 16px; font-weight: 700; color: #2d2418;
+display: flex; align-items: center; gap: 6px;
+}
+.item-head .en {
+font-size: 11px; color: #8b7355;
+font-family: “Courier New”, monospace; letter-spacing: 0.05em;
+}
+.item-head .star { color: #d96b3c; font-size: 13px; }
+
+.item-stats {
+display: flex; flex-wrap: wrap; gap: 6px 10px;
+font-size: 12px; margin-top: 2px;
+}
+.stat {
+display: inline-flex; align-items: center; gap: 4px;
+padding: 2px 6px; background: #ead7b0;
+border-radius: 2px; line-height: 1.4;
+}
+.stat label { color: #8b7355; font-size: 10px; }
+.stat b { color: #2d2418; font-weight: 700; font-size: 12px; }
+.stat.sell { background: #f4d4a0; }
+.stat.sell b { color: #a93f1c; }
+
+.badge {
+padding: 2px 6px; font-size: 10px; font-weight: 700;
+background: #5c8a3a; color: #fbf4e0;
+letter-spacing: 0.05em;
 }
 
-.card ul {
-list-style: none;
-font-size: 14px;
-color: #5a4a35;
+.meta-line {
+font-size: 12px; color: #5a4a35; line-height: 1.55;
+padding: 4px 0;
+}
+.meta-line label {
+display: inline-block; min-width: 36px;
+color: #8b7355; font-size: 10px;
+letter-spacing: 0.1em; margin-right: 6px;
 }
 
-.card li {
-padding: 3px 0;
-padding-left: 16px;
-position: relative;
-line-height: 1.6;
+.buff {
+font-size: 12px; color: #a93f1c; font-weight: 600;
+padding: 5px 8px; background: #ffe5cc;
+border-left: 3px solid #d96b3c; margin: 2px 0;
 }
 
-.card li::before {
-content: ‘›’;
-position: absolute;
-left: 0;
-font-weight: bold;
+.note {
+font-size: 11px; color: #8b7355; font-style: italic;
+margin-top: 2px;
 }
-
-#s-farm .section-num { color: #5c8a3a; }
-#s-farm .card h3 .marker { background: #5c8a3a; }
-#s-farm .card li::before { color: #5c8a3a; }
-
-#s-combat .section-num { color: #a93f3f; }
-#s-combat .card h3 .marker { background: #a93f3f; }
-#s-combat .card li::before { color: #a93f3f; }
-
-#s-fishing .section-num { color: #6b8caf; }
-#s-fishing .card h3 .marker { background: #6b8caf; }
-#s-fishing .card li::before { color: #6b8caf; }
-
-#s-social .section-num { color: #d96b3c; }
-#s-social .card h3 .marker { background: #d96b3c; }
-#s-social .card li::before { color: #d96b3c; }
-
-#s-craft .section-num { color: #d4a23a; }
-#s-craft .card h3 .marker { background: #d4a23a; }
-#s-craft .card li::before { color: #d4a23a; }
-
-#s-place .section-num { color: #3d6024; }
-#s-place .card h3 .marker { background: #3d6024; }
-#s-place .card li::before { color: #3d6024; }
-
-#s-style .section-num { color: #a93f3f; }
-#s-style .card h3 .marker { background: #a93f3f; }
-#s-style .card li::before { color: #a93f3f; }
-
-#s-progress .section-num { color: #d96b3c; }
-#s-progress .card h3 .marker { background: #d96b3c; }
-#s-progress .card li::before { color: #d96b3c; }
 
 footer {
-background: #2d2418;
-color: #f4ead5;
-padding: 32px 24px;
-font-size: 11px;
-letter-spacing: 0.1em;
-position: relative;
-z-index: 2;
-text-align: center;
-line-height: 2;
+background: #2d2418; color: #f4ead5;
+padding: 32px 24px; font-size: 11px; letter-spacing: 0.1em;
+position: relative; z-index: 2; text-align: center; line-height: 2;
 }
+footer .pixel-art { color: #d96b3c; font-size: 18px; letter-spacing: 4px; margin: 8px 0; }
 
-footer .pixel-art {
-color: #d96b3c;
-font-size: 18px;
-letter-spacing: 4px;
-margin: 8px 0;
-}
-
+/* 桌面端 */
 @media (min-width: 768px) {
 header { padding: 60px 8% 50px; }
 main { padding: 80px 8% 100px; }
 section { margin-bottom: 100px; }
 h1 { font-size: clamp(60px, 8vw, 110px); }
-
-```
 .quicknav { grid-template-columns: repeat(8, 1fr); }
-.quicknav a {
-  padding: 16px 8px;
-  border-bottom: none;
-}
+.quicknav a { padding: 16px 8px; border-bottom: none; }
 .quicknav a:nth-child(n+5) { border-bottom: none; }
 .quicknav a:last-child { border-right: none; }
-
-.section-header {
-  grid-template-columns: auto 1fr auto;
-  gap: 30px;
-}
+.section-header { grid-template-columns: auto 1fr auto; gap: 30px; }
 .section-num { font-size: 80px; }
 h2 { font-size: 52px; }
-.section-desc {
-  grid-column: auto;
-  margin-top: 0;
-  text-align: right;
-  max-width: 360px;
-  align-self: end;
+.section-desc { grid-column: auto; margin-top: 0; text-align: right; max-width: 360px; align-self: end; }
+.cards { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.card { border-right: 1px solid #2d2418; border-bottom: 1px solid #2d2418; }
+.item-grid { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
 }
 
-.cards {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-.card {
-  border-right: 1px solid #2d2418;
-  border-bottom: 1px solid #2d2418;
-}
-```
-
-}
-
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(15px); }
-to { opacity: 1; transform: translateY(0); }
-}
-
-section { animation: fadeUp 0.5s ease-out backwards; }
-section:nth-child(1) { animation-delay: 0s; }
-section:nth-child(2) { animation-delay: 0.06s; }
-section:nth-child(3) { animation-delay: 0.12s; }
-section:nth-child(4) { animation-delay: 0.18s; }
-section:nth-child(5) { animation-delay: 0.24s; }
-section:nth-child(6) { animation-delay: 0.3s; }
-section:nth-child(7) { animation-delay: 0.36s; }
-section:nth-child(8) { animation-delay: 0.42s; }
+/* 板块强调色 */
+#s-farm .section-num { color: #5c8a3a; }
+#s-farm .card h3 .marker { background: #5c8a3a; }
+#s-farm .card li::before { color: #5c8a3a; }
+#s-combat .section-num { color: #a93f3f; }
+#s-combat .card h3 .marker { background: #a93f3f; }
+#s-combat .card li::before { color: #a93f3f; }
+#s-fishing .section-num { color: #6b8caf; }
+#s-fishing .card h3 .marker { background: #6b8caf; }
+#s-fishing .card li::before { color: #6b8caf; }
+#s-social .section-num { color: #d96b3c; }
+#s-social .card h3 .marker { background: #d96b3c; }
+#s-social .card li::before { color: #d96b3c; }
+#s-craft .section-num { color: #d4a23a; }
+#s-craft .card h3 .marker { background: #d4a23a; }
+#s-craft .card li::before { color: #d4a23a; }
+#s-place .section-num { color: #3d6024; }
+#s-place .card h3 .marker { background: #3d6024; }
+#s-place .card li::before { color: #3d6024; }
+#s-style .section-num { color: #a93f3f; }
+#s-style .card h3 .marker { background: #a93f3f; }
+#s-style .card li::before { color: #a93f3f; }
+#s-progress .section-num { color: #d96b3c; }
+#s-progress .card h3 .marker { background: #d96b3c; }
+#s-progress .card li::before { color: #d96b3c; }
 
 ::selection { background: #d96b3c; color: #fbf4e0; }
 </style>
@@ -360,9 +219,7 @@ section:nth-child(8) { animation-delay: 0.42s; }
   <div class="header-top">
     <div class="brand">★ STARDEW VALLEY ARCHIVE ★</div>
     <div class="meta">
-      <span>v1.6</span>
-      <span>个人资料库</span>
-      <span>按行为分类</span>
+      <span>v1.6</span><span>个人资料库</span><span>按行为分类</span>
     </div>
   </div>
   <h1>星露谷<span class="pixel">▲</span>资料库</h1>
@@ -391,56 +248,1313 @@ section:nth-child(8) { animation-delay: 0.42s; }
       </div>
       <div class="section-desc">种地、养殖、产出、卖钱，所有跟"经营农场"相关的内容</div>
     </div>
-    <div class="cards">
-      <div class="card">
-        <span class="card-num">01.A</span>
-        <h3><span class="marker"></span>作物</h3>
-        <ul>
-          <li>春季作物</li>
-          <li>夏季作物</li>
-          <li>秋季作物</li>
-          <li>冬季作物</li>
-          <li>花卉（含蜂蜜联动）</li>
-          <li>果树 & 树苗</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">01.B</span>
-        <h3><span class="marker"></span>种植配套</h3>
-        <ul>
-          <li>种子获取方式</li>
-          <li>化肥种类 & 效果</li>
-          <li>喷水器（省时核心）</li>
-          <li>温室解锁条件</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">01.C</span>
-        <h3><span class="marker"></span>养殖</h3>
-        <ul>
-          <li>动物种类 & 解锁</li>
-          <li>动物产品（蛋/奶/羊毛/松露）</li>
-          <li>友好度机制</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">01.D</span>
-        <h3><span class="marker"></span>加工产出</h3>
-        <ul>
-          <li>工匠设备一览</li>
-          <li>工匠产品 & 售价</li>
-          <li>蜂蜜机 / 果冻机</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">01.E</span>
-        <h3><span class="marker"></span>收益参考</h3>
-        <ul>
-          <li>各季最高收益作物</li>
-          <li>加工前后价格对比</li>
-        </ul>
+<div class="subsection-label">🌸 春 季作物</div>
+<div class="item-grid">
+    <div class="item-card">
+      <div class="item-icon" data-icon="parsnip">·</div>
+      <div class="item-body">
+        <div class="item-head">
+          <h4>防风草</h4>
+          <span class="en">Parsnip</span>
+        </div>
+        <div class="item-stats">
+          <span class="stat"><label>生长</label><b>4d</b></span>
+
+```
+      <span class="stat"><label>种子</label><b>20g</b></span>
+      <span class="stat sell"><label>卖价</label><b>35g</b></span>
+      <span class="stat"><label>体力</label><b>25</b></span>
+      <span class="stat"><label>HP</label><b>10</b></span>
+    </div>
+    
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="carrot">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>胡萝卜</h4>
+      <span class="en">Carrot</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>3d</b></span>
+      
+      <span class="stat"><label>种子</label><b>0g</b></span>
+      <span class="stat sell"><label>卖价</label><b>35g</b></span>
+      <span class="stat"><label>体力</label><b>50</b></span>
+      <span class="stat"><label>HP</label><b>22</b></span>
+    </div>
+    <div class="buff">马速+0.4</div>
+    <div class="note">1.6新增 浣熊妻商店</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="garlic">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>大蒜</h4>
+      <span class="en">Garlic</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>4d</b></span>
+      
+      <span class="stat"><label>种子</label><b>40g</b></span>
+      <span class="stat sell"><label>卖价</label><b>60g</b></span>
+      <span class="stat"><label>体力</label><b>25</b></span>
+      <span class="stat"><label>HP</label><b>10</b></span>
+    </div>
+    
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="potato">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>土豆</h4>
+      <span class="en">Potato</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>6d</b></span>
+      
+      <span class="stat"><label>种子</label><b>50g</b></span>
+      <span class="stat sell"><label>卖价</label><b>80g</b></span>
+      <span class="stat"><label>体力</label><b>68</b></span>
+      <span class="stat"><label>HP</label><b>30</b></span>
+    </div>
+    
+    <div class="note">20% 概率额外掉落</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="kale">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>羽衣甘蓝</h4>
+      <span class="en">Kale</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>6d</b></span>
+      
+      <span class="stat"><label>种子</label><b>70g</b></span>
+      <span class="stat sell"><label>卖价</label><b>110g</b></span>
+      <span class="stat"><label>体力</label><b>75</b></span>
+      <span class="stat"><label>HP</label><b>33</b></span>
+    </div>
+    <div class="buff">攻击+2</div>
+    <div class="note">用镰刀收割</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="bluejazz">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>蓝爵士花</h4>
+      <span class="en">Blue Jazz</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>7d</b></span>
+      
+      <span class="stat"><label>种子</label><b>30g</b></span>
+      <span class="stat sell"><label>卖价</label><b>50g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">花卉 蜂蜜联动</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="tulip">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>郁金香</h4>
+      <span class="en">Tulip</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>6d</b></span>
+      
+      <span class="stat"><label>种子</label><b>20g</b></span>
+      <span class="stat sell"><label>卖价</label><b>30g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">花卉</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="strawberry">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>草莓</h4>
+      <span class="en">Strawberry</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>8d</b></span>
+      <span class="badge regrow">再生 4d</span>
+      <span class="stat"><label>种子</label><b>100g</b></span>
+      <span class="stat sell"><label>卖价</label><b>120g</b></span>
+      <span class="stat"><label>体力</label><b>50</b></span>
+      <span class="stat"><label>HP</label><b>22</b></span>
+    </div>
+    
+    <div class="note">仅蛋节售卖</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="greenbean">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>青豆</h4>
+      <span class="en">Green Bean</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>10d</b></span>
+      <span class="badge regrow">再生 3d</span>
+      <span class="stat"><label>种子</label><b>60g</b></span>
+      <span class="stat sell"><label>卖价</label><b>40g</b></span>
+      <span class="stat"><label>体力</label><b>40</b></span>
+      <span class="stat"><label>HP</label><b>17</b></span>
+    </div>
+    
+    <div class="note">需藤架</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="cauliflower">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>花椰菜</h4>
+      <span class="en">Cauliflower</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>12d</b></span>
+      
+      <span class="stat"><label>种子</label><b>80g</b></span>
+      <span class="stat sell"><label>卖价</label><b>175g</b></span>
+      <span class="stat"><label>体力</label><b>75</b></span>
+      <span class="stat"><label>HP</label><b>33</b></span>
+    </div>
+    
+    <div class="note">可变巨型作物</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="rhubarb">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>大黄</h4>
+      <span class="en">Rhubarb</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>13d</b></span>
+      
+      <span class="stat"><label>种子</label><b>100g</b></span>
+      <span class="stat sell"><label>卖价</label><b>220g</b></span>
+      <span class="stat"><label>体力</label><b>-25</b></span>
+      <span class="stat"><label>HP</label><b>0</b></span>
+    </div>
+    
+    <div class="note">沙漠商店</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="coffeebean">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>咖啡豆</h4>
+      <span class="en">Coffee Bean</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>10d</b></span>
+      <span class="badge regrow">再生 2d</span>
+      <span class="stat"><label>种子</label><b>2500g</b></span>
+      <span class="stat sell"><label>卖价</label><b>15g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">春夏两季 4 粒一收</div>
+  </div>
+</div></div>
+```
+
+<div class="subsection-label">☀ 夏 季作物</div>
+<div class="item-grid">
+    <div class="item-card">
+      <div class="item-icon" data-icon="hotpepper">·</div>
+      <div class="item-body">
+        <div class="item-head">
+          <h4>热椒</h4>
+          <span class="en">Hot Pepper</span>
+        </div>
+        <div class="item-stats">
+          <span class="stat"><label>生长</label><b>5d</b></span>
+          <span class="badge regrow">再生 3d</span>
+          <span class="stat"><label>种子</label><b>40g</b></span>
+          <span class="stat sell"><label>卖价</label><b>40g</b></span>
+          <span class="stat"><label>体力</label><b>13</b></span>
+          <span class="stat"><label>HP</label><b>5</b></span>
+        </div>
+
+```
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="wheat">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>小麦</h4>
+      <span class="en">Wheat</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>4d</b></span>
+      
+      <span class="stat"><label>种子</label><b>10g</b></span>
+      <span class="stat sell"><label>卖价</label><b>25g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">夏秋通用 镰刀收</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="radish">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>萝卜</h4>
+      <span class="en">Radish</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>6d</b></span>
+      
+      <span class="stat"><label>种子</label><b>40g</b></span>
+      <span class="stat sell"><label>卖价</label><b>90g</b></span>
+      <span class="stat"><label>体力</label><b>45</b></span>
+      <span class="stat"><label>HP</label><b>20</b></span>
+    </div>
+    
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="summersquash">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>夏日南瓜</h4>
+      <span class="en">Summer Squash</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>6d</b></span>
+      <span class="badge regrow">再生 3d</span>
+      <span class="stat"><label>种子</label><b>0g</b></span>
+      <span class="stat sell"><label>卖价</label><b>50g</b></span>
+      <span class="stat"><label>体力</label><b>45</b></span>
+      <span class="stat"><label>HP</label><b>20</b></span>
+    </div>
+    
+    <div class="note">1.6 浣熊妻</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="hops">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>啤酒花</h4>
+      <span class="en">Hops</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>11d</b></span>
+      <span class="badge regrow">再生 1d</span>
+      <span class="stat"><label>种子</label><b>60g</b></span>
+      <span class="stat sell"><label>卖价</label><b>25g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">需藤架 啤酒原料</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="sunflower">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>向日葵</h4>
+      <span class="en">Sunflower</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>8d</b></span>
+      
+      <span class="stat"><label>种子</label><b>200g</b></span>
+      <span class="stat sell"><label>卖价</label><b>80g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">夏秋 产向日葵油</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="poppy">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>罂粟</h4>
+      <span class="en">Poppy</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>7d</b></span>
+      
+      <span class="stat"><label>种子</label><b>100g</b></span>
+      <span class="stat sell"><label>卖价</label><b>140g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">花卉</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="spangle">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>夏日穗花</h4>
+      <span class="en">Summer Spangle</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>8d</b></span>
+      
+      <span class="stat"><label>种子</label><b>50g</b></span>
+      <span class="stat sell"><label>卖价</label><b>90g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">花卉</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="blueberry">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>蓝莓</h4>
+      <span class="en">Blueberry</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>13d</b></span>
+      <span class="badge regrow">再生 4d</span>
+      <span class="stat"><label>种子</label><b>80g</b></span>
+      <span class="stat sell"><label>卖价</label><b>50g</b></span>
+      <span class="stat"><label>体力</label><b>50</b></span>
+      <span class="stat"><label>HP</label><b>22</b></span>
+    </div>
+    
+    <div class="note">一收 3 颗 夏季神作</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="corn">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>玉米</h4>
+      <span class="en">Corn</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>14d</b></span>
+      <span class="badge regrow">再生 4d</span>
+      <span class="stat"><label>种子</label><b>150g</b></span>
+      <span class="stat sell"><label>卖价</label><b>50g</b></span>
+      <span class="stat"><label>体力</label><b>25</b></span>
+      <span class="stat"><label>HP</label><b>10</b></span>
+    </div>
+    
+    <div class="note">夏秋通用</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="tomato">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>番茄</h4>
+      <span class="en">Tomato</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>11d</b></span>
+      <span class="badge regrow">再生 4d</span>
+      <span class="stat"><label>种子</label><b>50g</b></span>
+      <span class="stat sell"><label>卖价</label><b>60g</b></span>
+      <span class="stat"><label>体力</label><b>20</b></span>
+      <span class="stat"><label>HP</label><b>8</b></span>
+    </div>
+    
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="redcabbage">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>红甘蓝</h4>
+      <span class="en">Red Cabbage</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>9d</b></span>
+      
+      <span class="stat"><label>种子</label><b>100g</b></span>
+      <span class="stat sell"><label>卖价</label><b>260g</b></span>
+      <span class="stat"><label>体力</label><b>90</b></span>
+      <span class="stat"><label>HP</label><b>40</b></span>
+    </div>
+    
+    <div class="note">捆绑包必需</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="melon">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>甜瓜</h4>
+      <span class="en">Melon</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>12d</b></span>
+      
+      <span class="stat"><label>种子</label><b>80g</b></span>
+      <span class="stat sell"><label>卖价</label><b>250g</b></span>
+      <span class="stat"><label>体力</label><b>113</b></span>
+      <span class="stat"><label>HP</label><b>50</b></span>
+    </div>
+    
+    <div class="note">可变巨型作物</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="starfruit">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>星之果实</h4>
+      <span class="en">Starfruit</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>13d</b></span>
+      
+      <span class="stat"><label>种子</label><b>400g</b></span>
+      <span class="stat sell"><label>卖价</label><b>750g</b></span>
+      <span class="stat"><label>体力</label><b>125</b></span>
+      <span class="stat"><label>HP</label><b>56</b></span>
+    </div>
+    
+    <div class="note">沙漠商店 利润王</div>
+  </div>
+</div></div>
+```
+
+<div class="subsection-label">🍁 秋 季作物</div>
+<div class="item-grid">
+    <div class="item-card">
+      <div class="item-icon" data-icon="bokchoy">·</div>
+      <div class="item-body">
+        <div class="item-head">
+          <h4>白菜</h4>
+          <span class="en">Bok Choy</span>
+        </div>
+        <div class="item-stats">
+          <span class="stat"><label>生长</label><b>4d</b></span>
+
+```
+      <span class="stat"><label>种子</label><b>50g</b></span>
+      <span class="stat sell"><label>卖价</label><b>80g</b></span>
+      <span class="stat"><label>体力</label><b>45</b></span>
+      <span class="stat"><label>HP</label><b>20</b></span>
+    </div>
+    
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="eggplant">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>茄子</h4>
+      <span class="en">Eggplant</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>5d</b></span>
+      <span class="badge regrow">再生 5d</span>
+      <span class="stat"><label>种子</label><b>20g</b></span>
+      <span class="stat sell"><label>卖价</label><b>60g</b></span>
+      <span class="stat"><label>体力</label><b>20</b></span>
+      <span class="stat"><label>HP</label><b>8</b></span>
+    </div>
+    
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="broccoli">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>西兰花</h4>
+      <span class="en">Broccoli</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>8d</b></span>
+      <span class="badge regrow">再生 4d</span>
+      <span class="stat"><label>种子</label><b>0g</b></span>
+      <span class="stat sell"><label>卖价</label><b>70g</b></span>
+      <span class="stat"><label>体力</label><b>65</b></span>
+      <span class="stat"><label>HP</label><b>29</b></span>
+    </div>
+    
+    <div class="note">1.6 浣熊妻</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="beet">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>甜菜</h4>
+      <span class="en">Beet</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>6d</b></span>
+      
+      <span class="stat"><label>种子</label><b>20g</b></span>
+      <span class="stat sell"><label>卖价</label><b>100g</b></span>
+      <span class="stat"><label>体力</label><b>30</b></span>
+      <span class="stat"><label>HP</label><b>13</b></span>
+    </div>
+    
+    <div class="note">沙漠商店</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="cranberries">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>蔓越莓</h4>
+      <span class="en">Cranberries</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>7d</b></span>
+      <span class="badge regrow">再生 5d</span>
+      <span class="stat"><label>种子</label><b>240g</b></span>
+      <span class="stat sell"><label>卖价</label><b>75g</b></span>
+      <span class="stat"><label>体力</label><b>38</b></span>
+      <span class="stat"><label>HP</label><b>16</b></span>
+    </div>
+    
+    <div class="note">一收 2 颗</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="amaranth">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>苋菜</h4>
+      <span class="en">Amaranth</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>7d</b></span>
+      
+      <span class="stat"><label>种子</label><b>70g</b></span>
+      <span class="stat sell"><label>卖价</label><b>150g</b></span>
+      <span class="stat"><label>体力</label><b>50</b></span>
+      <span class="stat"><label>HP</label><b>22</b></span>
+    </div>
+    
+    <div class="note">镰刀收</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="grape">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>葡萄</h4>
+      <span class="en">Grape</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>10d</b></span>
+      <span class="badge regrow">再生 3d</span>
+      <span class="stat"><label>种子</label><b>60g</b></span>
+      <span class="stat sell"><label>卖价</label><b>80g</b></span>
+      <span class="stat"><label>体力</label><b>38</b></span>
+      <span class="stat"><label>HP</label><b>16</b></span>
+    </div>
+    
+    <div class="note">需藤架</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="yam">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>山药</h4>
+      <span class="en">Yam</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>10d</b></span>
+      
+      <span class="stat"><label>种子</label><b>60g</b></span>
+      <span class="stat sell"><label>卖价</label><b>160g</b></span>
+      <span class="stat"><label>体力</label><b>45</b></span>
+      <span class="stat"><label>HP</label><b>20</b></span>
+    </div>
+    
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="artichoke">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>洋蓟</h4>
+      <span class="en">Artichoke</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>8d</b></span>
+      
+      <span class="stat"><label>种子</label><b>30g</b></span>
+      <span class="stat sell"><label>卖价</label><b>160g</b></span>
+      <span class="stat"><label>体力</label><b>30</b></span>
+      <span class="stat"><label>HP</label><b>13</b></span>
+    </div>
+    
+    <div class="note">二年起售卖</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="pumpkin">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>南瓜</h4>
+      <span class="en">Pumpkin</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>13d</b></span>
+      
+      <span class="stat"><label>种子</label><b>100g</b></span>
+      <span class="stat sell"><label>卖价</label><b>320g</b></span>
+      <span class="stat"><label>体力</label><b>90</b></span>
+      <span class="stat"><label>HP</label><b>40</b></span>
+    </div>
+    
+    <div class="note">可变巨型作物</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="powdermelon">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>粉粉瓜</h4>
+      <span class="en">Powdermelon</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>7d</b></span>
+      
+      <span class="stat"><label>种子</label><b>0g</b></span>
+      <span class="stat sell"><label>卖价</label><b>60g</b></span>
+      <span class="stat"><label>体力</label><b>25</b></span>
+      <span class="stat"><label>HP</label><b>10</b></span>
+    </div>
+    
+    <div class="note">1.6 冬季也能种</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="fairyrose">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>仙女玫瑰</h4>
+      <span class="en">Fairy Rose</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>12d</b></span>
+      
+      <span class="stat"><label>种子</label><b>200g</b></span>
+      <span class="stat sell"><label>卖价</label><b>290g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">花卉 最佳蜂蜜</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="sweetgem">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>甜浆果</h4>
+      <span class="en">Sweet Gem Berry</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>24d</b></span>
+      
+      <span class="stat"><label>种子</label><b>1000g</b></span>
+      <span class="stat sell"><label>卖价</label><b>3000g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">旅行商人 隐藏神物</div>
+  </div>
+</div></div>
+```
+
+<div class="subsection-label">❄ 冬 季作物</div>
+<div class="item-grid">
+    <div class="item-card">
+      <div class="item-icon" data-icon="powdermelon">·</div>
+      <div class="item-body">
+        <div class="item-head">
+          <h4>粉粉瓜</h4>
+          <span class="en">Powdermelon</span>
+        </div>
+        <div class="item-stats">
+          <span class="stat"><label>生长</label><b>7d</b></span>
+
+```
+      <span class="stat"><label>种子</label><b>0g</b></span>
+      <span class="stat sell"><label>卖价</label><b>60g</b></span>
+      <span class="stat"><label>体力</label><b>25</b></span>
+      <span class="stat"><label>HP</label><b>10</b></span>
+    </div>
+    
+    <div class="note">1.6 唯一冬季作物</div>
+  </div>
+</div></div>
+```
+
+<div class="subsection-label">✦ 特殊 季作物</div>
+<div class="item-grid">
+    <div class="item-card">
+      <div class="item-icon" data-icon="ancientfruit">·</div>
+      <div class="item-body">
+        <div class="item-head">
+          <h4>古代水果</h4>
+          <span class="en">Ancient Fruit</span>
+        </div>
+        <div class="item-stats">
+          <span class="stat"><label>生长</label><b>28d</b></span>
+          <span class="badge regrow">再生 7d</span>
+          <span class="stat"><label>种子</label><b>—g</b></span>
+          <span class="stat sell"><label>卖价</label><b>550g</b></span>
+          <span class="stat"><label>体力</label><b>38</b></span>
+          <span class="stat"><label>HP</label><b>16</b></span>
+        </div>
+
+```
+    <div class="note">春夏秋持续产 神作</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="qifruit">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>齐之果</h4>
+      <span class="en">Qi Fruit</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>4d</b></span>
+      <span class="badge regrow">再生 4d</span>
+      <span class="stat"><label>种子</label><b>—g</b></span>
+      <span class="stat sell"><label>卖价</label><b>1g</b></span>
+      <span class="stat"><label>体力</label><b>25</b></span>
+      <span class="stat"><label>HP</label><b>11</b></span>
+    </div>
+    
+    <div class="note">齐先生任务专属</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="qibean">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>齐之豆</h4>
+      <span class="en">Qi Bean</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>4d</b></span>
+      <span class="badge regrow">再生 2d</span>
+      <span class="stat"><label>种子</label><b>—g</b></span>
+      <span class="stat sell"><label>卖价</label><b>75g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">齐先生任务专属</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="tealeaves">·</div>
+  <div class="item-body">
+    <div class="item-head">
+      <h4>茶叶灌木</h4>
+      <span class="en">Tea Leaves</span>
+    </div>
+    <div class="item-stats">
+      <span class="stat"><label>生长</label><b>20d</b></span>
+      <span class="badge regrow">再生 1d</span>
+      <span class="stat"><label>种子</label><b>—g</b></span>
+      <span class="stat sell"><label>卖价</label><b>50g</b></span>
+      <span class="stat"><label>体力</label><b>—</b></span>
+      <span class="stat"><label>HP</label><b>—</b></span>
+    </div>
+    
+    <div class="note">每季最后一周产出</div>
+  </div>
+</div></div>
+```
+
+<div class="subsection-label">🍑 果树</div>
+<div class="item-grid">
+    <div class="item-card">
+      <div class="item-icon" data-icon="cherry">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>樱桃树</h4><span class="en">Cherry</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>季节</label><b>春</b></span>
+          <span class="stat"><label>成熟</label><b>28d</b></span>
+          <span class="stat"><label>树苗</label><b>3400g</b></span>
+          <span class="stat sell"><label>果实</label><b>80g</b></span>
+          <span class="stat"><label>体力</label><b>38</b></span>
+          <span class="stat"><label>HP</label><b>16</b></span>
+        </div>
       </div>
     </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="apricot">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>杏树</h4><span class="en">Apricot</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>季节</label><b>春</b></span>
+          <span class="stat"><label>成熟</label><b>28d</b></span>
+          <span class="stat"><label>树苗</label><b>2000g</b></span>
+          <span class="stat sell"><label>果实</label><b>50g</b></span>
+          <span class="stat"><label>体力</label><b>38</b></span>
+          <span class="stat"><label>HP</label><b>16</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="orange">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>橙树</h4><span class="en">Orange</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>季节</label><b>夏</b></span>
+          <span class="stat"><label>成熟</label><b>28d</b></span>
+          <span class="stat"><label>树苗</label><b>4000g</b></span>
+          <span class="stat sell"><label>果实</label><b>100g</b></span>
+          <span class="stat"><label>体力</label><b>38</b></span>
+          <span class="stat"><label>HP</label><b>16</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="peach">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>桃树</h4><span class="en">Peach</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>季节</label><b>夏</b></span>
+          <span class="stat"><label>成熟</label><b>28d</b></span>
+          <span class="stat"><label>树苗</label><b>6000g</b></span>
+          <span class="stat sell"><label>果实</label><b>140g</b></span>
+          <span class="stat"><label>体力</label><b>38</b></span>
+          <span class="stat"><label>HP</label><b>16</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="apple">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>苹果树</h4><span class="en">Apple</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>季节</label><b>秋</b></span>
+          <span class="stat"><label>成熟</label><b>28d</b></span>
+          <span class="stat"><label>树苗</label><b>4000g</b></span>
+          <span class="stat sell"><label>果实</label><b>100g</b></span>
+          <span class="stat"><label>体力</label><b>38</b></span>
+          <span class="stat"><label>HP</label><b>16</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="pomegranate">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>石榴树</h4><span class="en">Pomegranate</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>季节</label><b>秋</b></span>
+          <span class="stat"><label>成熟</label><b>28d</b></span>
+          <span class="stat"><label>树苗</label><b>6000g</b></span>
+          <span class="stat sell"><label>果实</label><b>140g</b></span>
+          <span class="stat"><label>体力</label><b>38</b></span>
+          <span class="stat"><label>HP</label><b>16</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="banana">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>香蕉树</h4><span class="en">Banana</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>季节</label><b>夏 姜岛</b></span>
+          <span class="stat"><label>成熟</label><b>28d</b></span>
+          <span class="stat"><label>树苗</label><b>—g</b></span>
+          <span class="stat sell"><label>果实</label><b>150g</b></span>
+          <span class="stat"><label>体力</label><b>75</b></span>
+          <span class="stat"><label>HP</label><b>33</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="mango">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>杧果树</h4><span class="en">Mango</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>季节</label><b>夏 姜岛</b></span>
+          <span class="stat"><label>成熟</label><b>28d</b></span>
+          <span class="stat"><label>树苗</label><b>—g</b></span>
+          <span class="stat sell"><label>果实</label><b>130g</b></span>
+          <span class="stat"><label>体力</label><b>100</b></span>
+          <span class="stat"><label>HP</label><b>45</b></span>
+        </div>
+      </div>
+    </div></div>
+<div class="subsection-label">🐔 动物 & 产出</div>
+<div class="item-grid">
+    <div class="item-card">
+      <div class="item-icon" data-icon="chicken">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>鸡</h4><span class="en">Chicken</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>购入</label><b>800g</b></span>
+          <span class="stat"><label>建筑</label><b>鸡舍</b></span>
+          <span class="stat"><label>产出</label><b>白蛋/棕蛋</b></span>
+          <span class="stat"><label>周期</label><b>每天</b></span>
+          <span class="stat sell"><label>售价</label><b>50/120g</b></span>
+        </div>
+
+```
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="duck">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>鸭</h4><span class="en">Duck</span></div>
+    <div class="item-stats">
+      <span class="stat"><label>购入</label><b>1200g</b></span>
+      <span class="stat"><label>建筑</label><b>鸡舍 大</b></span>
+      <span class="stat"><label>产出</label><b>鸭蛋/鸭羽毛</b></span>
+      <span class="stat"><label>周期</label><b>每 2 天</b></span>
+      <span class="stat sell"><label>售价</label><b>95/250g</b></span>
+    </div>
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="rabbit">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>兔子</h4><span class="en">Rabbit</span></div>
+    <div class="item-stats">
+      <span class="stat"><label>购入</label><b>8000g</b></span>
+      <span class="stat"><label>建筑</label><b>鸡舍 豪华</b></span>
+      <span class="stat"><label>产出</label><b>兔毛/兔脚</b></span>
+      <span class="stat"><label>周期</label><b>每 4 天</b></span>
+      <span class="stat sell"><label>售价</label><b>60/565g</b></span>
+    </div>
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="dinosaur">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>恐龙</h4><span class="en">Dinosaur</span></div>
+    <div class="item-stats">
+      <span class="stat"><label>购入</label><b>—</b></span>
+      <span class="stat"><label>建筑</label><b>鸡舍 大</b></span>
+      <span class="stat"><label>产出</label><b>恐龙蛋</b></span>
+      <span class="stat"><label>周期</label><b>每 7 天</b></span>
+      <span class="stat sell"><label>售价</label><b>350g</b></span>
+    </div>
+    <div class="note">孵化恐龙蛋获得</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="ostrich">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>鸵鸟</h4><span class="en">Ostrich</span></div>
+    <div class="item-stats">
+      <span class="stat"><label>购入</label><b>—</b></span>
+      <span class="stat"><label>建筑</label><b>鸡舍 豪华</b></span>
+      <span class="stat"><label>产出</label><b>鸵鸟蛋</b></span>
+      <span class="stat"><label>周期</label><b>每 7 天</b></span>
+      <span class="stat sell"><label>售价</label><b>600g</b></span>
+    </div>
+    <div class="note">孵化蛋 姜岛获得</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="voidchicken">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>空灵鸡</h4><span class="en">Void Chicken</span></div>
+    <div class="item-stats">
+      <span class="stat"><label>购入</label><b>—</b></span>
+      <span class="stat"><label>建筑</label><b>鸡舍</b></span>
+      <span class="stat"><label>产出</label><b>空灵蛋</b></span>
+      <span class="stat"><label>周期</label><b>每天</b></span>
+      <span class="stat sell"><label>售价</label><b>65g</b></span>
+    </div>
+    <div class="note">幻影事件触发</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="goldenchicken">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>金鸡</h4><span class="en">Golden Chicken</span></div>
+    <div class="item-stats">
+      <span class="stat"><label>购入</label><b>—</b></span>
+      <span class="stat"><label>建筑</label><b>鸡舍</b></span>
+      <span class="stat"><label>产出</label><b>金蛋</b></span>
+      <span class="stat"><label>周期</label><b>每天</b></span>
+      <span class="stat sell"><label>售价</label><b>500g</b></span>
+    </div>
+    <div class="note">齐之挑战奖励</div>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="cow">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>奶牛</h4><span class="en">Cow</span></div>
+    <div class="item-stats">
+      <span class="stat"><label>购入</label><b>1500g</b></span>
+      <span class="stat"><label>建筑</label><b>畜棚</b></span>
+      <span class="stat"><label>产出</label><b>牛奶/大牛奶</b></span>
+      <span class="stat"><label>周期</label><b>每天</b></span>
+      <span class="stat sell"><label>售价</label><b>125/190g</b></span>
+    </div>
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="goat">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>山羊</h4><span class="en">Goat</span></div>
+    <div class="item-stats">
+      <span class="stat"><label>购入</label><b>4000g</b></span>
+      <span class="stat"><label>建筑</label><b>畜棚 大</b></span>
+      <span class="stat"><label>产出</label><b>羊奶/大羊奶</b></span>
+      <span class="stat"><label>周期</label><b>每 2 天</b></span>
+      <span class="stat sell"><label>售价</label><b>225/345g</b></span>
+    </div>
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="pig">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>猪</h4><span class="en">Pig</span></div>
+    <div class="item-stats">
+      <span class="stat"><label>购入</label><b>16000g</b></span>
+      <span class="stat"><label>建筑</label><b>畜棚 豪华</b></span>
+      <span class="stat"><label>产出</label><b>松露</b></span>
+      <span class="stat"><label>周期</label><b>白天放养</b></span>
+      <span class="stat sell"><label>售价</label><b>625g</b></span>
+    </div>
+    
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-icon" data-icon="sheep">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>绵羊</h4><span class="en">Sheep</span></div>
+    <div class="item-stats">
+      <span class="stat"><label>购入</label><b>8000g</b></span>
+      <span class="stat"><label>建筑</label><b>畜棚 豪华</b></span>
+      <span class="stat"><label>产出</label><b>羊毛</b></span>
+      <span class="stat"><label>周期</label><b>每 3 天</b></span>
+      <span class="stat sell"><label>售价</label><b>340g</b></span>
+    </div>
+    
+  </div>
+</div></div>
+```
+
+<div class="subsection-label">⚙ 加工设备</div>
+<div class="item-grid">
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="beehouse">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>蜂房</h4><span class="en">Bee House</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>附近花朵</b></span>
+          <span class="stat"><label>输出</label><b>蜂蜜</b></span>
+          <span class="stat"><label>耗时</label><b>4 天</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>40 木材+8 铁锭+1 槭糖浆</div>
+        <div class="note">花朵决定蜂蜜种类与售价</div>
+      </div>
+    </div>
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="keg">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>酒桶</h4><span class="en">Keg</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>水果/蔬菜/小麦</b></span>
+          <span class="stat"><label>输出</label><b>果酒/酒/啤酒</b></span>
+          <span class="stat"><label>耗时</label><b>1-10 天</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>30 木材+1 铜锭+1 铁锭+1 橡木树脂</div>
+        <div class="note">果酒=原价×3</div>
+      </div>
+    </div>
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="preservesjar">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>腌菜罐</h4><span class="en">Preserves Jar</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>水果/蔬菜</b></span>
+          <span class="stat"><label>输出</label><b>果酱/腌菜</b></span>
+          <span class="stat"><label>耗时</label><b>≈3 天</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>50 石头+1 煤+40 木材</div>
+        <div class="note">果酱=原价×2+50</div>
+      </div>
+    </div>
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="cheesepress">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>奶酪机</h4><span class="en">Cheese Press</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>牛奶/羊奶</b></span>
+          <span class="stat"><label>输出</label><b>奶酪/羊奶酪</b></span>
+          <span class="stat"><label>耗时</label><b>3.3 时</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>45 木材+45 石头+1 硬木+1 铜锭</div>
+        <div class="note">牛奶 230 → 奶酪 230</div>
+      </div>
+    </div>
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="mayonnaisemachine">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>蛋黄酱机</h4><span class="en">Mayonnaise Machine</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>各种蛋</b></span>
+          <span class="stat"><label>输出</label><b>蛋黄酱</b></span>
+          <span class="stat"><label>耗时</label><b>3 时</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>15 石头+1 土豆+1 木地板</div>
+        <div class="note">金蛋→金蛋黄酱 525g</div>
+      </div>
+    </div>
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="loom">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>织布机</h4><span class="en">Loom</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>羊毛</b></span>
+          <span class="stat"><label>输出</label><b>布料</b></span>
+          <span class="stat"><label>耗时</label><b>4 时</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>60 木材+30 纤维+1 松露蛋油</div>
+        <div class="note">羊毛 340 → 布料 470</div>
+      </div>
+    </div>
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="oilmaker">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>油料机</h4><span class="en">Oil Maker</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>向日葵/玉米/松露</b></span>
+          <span class="stat"><label>输出</label><b>油/松露油</b></span>
+          <span class="stat"><label>耗时</label><b>≈6 时</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>50 石头+20 硬木+1 金锭</div>
+        <div class="note">松露油 1065g</div>
+      </div>
+    </div>
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="fishpond">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>鱼塘</h4><span class="en">Fish Pond</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>鱼</b></span>
+          <span class="stat"><label>输出</label><b>鱼卵/产物</b></span>
+          <span class="stat"><label>耗时</label><b>每天</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>200 石头+5 海草+5 绿藻+5 铱矿石</div>
+        <div class="note">古代水果鱼卵=种古代水果种子</div>
+      </div>
+    </div>
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="cask">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>陈酿桶</h4><span class="en">Cask</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>酒/啤酒/奶酪</b></span>
+          <span class="stat"><label>输出</label><b>升级品质</b></span>
+          <span class="stat"><label>耗时</label><b>1-2 季</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>20 木材+1 硬木</div>
+        <div class="note">仅地窖可用</div>
+      </div>
+    </div>
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="seedmaker">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>种子机</h4><span class="en">Seed Maker</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>作物</b></span>
+          <span class="stat"><label>输出</label><b>种子 1-3</b></span>
+          <span class="stat"><label>耗时</label><b>20 分</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>25 木材+10 煤+1 金锭</div>
+        <div class="note">可量产古代水果种子</div>
+      </div>
+    </div>
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="crystalarium">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>压榨机</h4><span class="en">Crystalarium</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>宝石</b></span>
+          <span class="stat"><label>输出</label><b>复制宝石</b></span>
+          <span class="stat"><label>耗时</label><b>≈5 天</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>99 石头+5 金锭+2 铱锭+1 电池组</div>
+        <div class="note">钻石每天复制</div>
+      </div>
+    </div>
+    <div class="item-card wide">
+      <div class="item-icon" data-icon="recyclingmachine">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>重组器</h4><span class="en">Recycling Machine</span></div>
+        <div class="item-stats">
+          <span class="stat"><label>输入</label><b>垃圾</b></span>
+          <span class="stat"><label>输出</label><b>随机材料</b></span>
+          <span class="stat"><label>耗时</label><b>1 时</b></span>
+        </div>
+        <div class="meta-line"><label>合成</label>25 木材+25 石头+1 铁锭</div>
+
+```
+  </div>
+</div>
+<div class="item-card wide">
+  <div class="item-icon" data-icon="tapper">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>槭糖浆桶</h4><span class="en">Tapper</span></div>
+    <div class="item-stats">
+      <span class="stat"><label>输入</label><b>树木</b></span>
+      <span class="stat"><label>输出</label><b>树脂/糖浆</b></span>
+      <span class="stat"><label>耗时</label><b>7-9 天</b></span>
+    </div>
+    <div class="meta-line"><label>合成</label>40 木材+2 铜锭</div>
+    <div class="note">槭/松/橡/桃花心</div>
+  </div>
+</div></div>
+```
+
   </section>
 
   <section id="s-combat">
@@ -453,44 +1567,10 @@ section:nth-child(8) { animation-delay: 0.42s; }
       <div class="section-desc">下矿、打怪、收集矿物和材料——同一个场景</div>
     </div>
     <div class="cards">
-      <div class="card">
-        <span class="card-num">02.A</span>
-        <h3><span class="marker"></span>武器</h3>
-        <ul>
-          <li>剑 / 匕首 / 锤 / 弹弓</li>
-          <li>属性对比</li>
-          <li>获取方式</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">02.B</span>
-        <h3><span class="marker"></span>怪物</h3>
-        <ul>
-          <li>史莱姆系 / 蝙蝠系</li>
-          <li>虫类 / 亡灵系</li>
-          <li>元素系 / 火焰系</li>
-          <li>HP · 掉落 · 出现楼层</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">02.C</span>
-        <h3><span class="marker"></span>资源 & 掉落</h3>
-        <ul>
-          <li>矿石(铜铁金铱)</li>
-          <li>宝石 & 矿物</li>
-          <li>金属锭</li>
-          <li>骨头 / 蝙蝠翅膀等</li>
-          <li>木材 & 植物材料</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">02.D</span>
-        <h3><span class="marker"></span>采集工具</h3>
-        <ul>
-          <li>镐 / 斧头</li>
-          <li>各级升级材料 & 效果</li>
-        </ul>
-      </div>
+      <div class="card"><span class="card-num">02.A</span><h3><span class="marker"></span>武器</h3><ul><li>剑 / 匕首 / 锤 / 弹弓</li><li>属性对比</li><li>获取方式</li></ul></div>
+      <div class="card"><span class="card-num">02.B</span><h3><span class="marker"></span>怪物</h3><ul><li>史莱姆系 / 蝙蝠系</li><li>虫类 / 亡灵系</li><li>元素系 / 火焰系</li><li>HP · 掉落 · 出现楼层</li></ul></div>
+      <div class="card"><span class="card-num">02.C</span><h3><span class="marker"></span>资源 & 掉落</h3><ul><li>矿石(铜铁金铱)</li><li>宝石 & 矿物</li><li>金属锭</li><li>骨头 / 蝙蝠翅膀等</li><li>木材 & 植物材料</li></ul></div>
+      <div class="card"><span class="card-num">02.D</span><h3><span class="marker"></span>采集工具</h3><ul><li>镐 / 斧头</li><li>各级升级材料 & 效果</li></ul></div>
     </div>
   </section>
 
@@ -504,32 +1584,9 @@ section:nth-child(8) { animation-delay: 0.42s; }
       <div class="section-desc">独立成模块——查鱼的逻辑跟其他都不一样</div>
     </div>
     <div class="cards">
-      <div class="card">
-        <span class="card-num">03.A</span>
-        <h3><span class="marker"></span>鱼种图鉴</h3>
-        <ul>
-          <li>按季节索引</li>
-          <li>按地点索引</li>
-          <li>按天气索引</li>
-          <li>稀有鱼 & 传说鱼</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">03.B</span>
-        <h3><span class="marker"></span>装备</h3>
-        <ul>
-          <li>钓竿种类 & 升级</li>
-          <li>鱼饵 & 浮漂效果</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">03.C</span>
-        <h3><span class="marker"></span>机制</h3>
-        <ul>
-          <li>钓鱼小游戏说明</li>
-          <li>钓鱼技能加成</li>
-        </ul>
-      </div>
+      <div class="card"><span class="card-num">03.A</span><h3><span class="marker"></span>鱼种图鉴</h3><ul><li>按季节索引</li><li>按地点索引</li><li>按天气索引</li><li>稀有鱼 & 传说鱼</li></ul></div>
+      <div class="card"><span class="card-num">03.B</span><h3><span class="marker"></span>装备</h3><ul><li>钓竿种类 & 升级</li><li>鱼饵 & 浮漂效果</li></ul></div>
+      <div class="card"><span class="card-num">03.C</span><h3><span class="marker"></span>机制</h3><ul><li>钓鱼小游戏说明</li><li>钓鱼技能加成</li></ul></div>
     </div>
   </section>
 
@@ -543,48 +1600,11 @@ section:nth-child(8) { animation-delay: 0.42s; }
       <div class="section-desc">攻略某个角色时打开——送礼、心之事件、求婚</div>
     </div>
     <div class="cards">
-      <div class="card">
-        <span class="card-num">04.A</span>
-        <h3><span class="marker"></span>村民图鉴</h3>
-        <ul>
-          <li>全部村民基本信息</li>
-          <li>生日 & 位置时间表</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">04.B</span>
-        <h3><span class="marker"></span>送礼系统</h3>
-        <ul>
-          <li>各村民喜爱 / 厌恶礼物</li>
-          <li>万能礼物清单</li>
-          <li>送礼效率排行</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">04.C</span>
-        <h3><span class="marker"></span>心之事件</h3>
-        <ul>
-          <li>各心数触发条件</li>
-          <li>容易错过的事件提醒</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">04.D</span>
-        <h3><span class="marker"></span>婚配</h3>
-        <ul>
-          <li>单身汉 / 单身女士</li>
-          <li>求婚流程</li>
-          <li>婚后互动机制</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">04.E</span>
-        <h3><span class="marker"></span>店主 & 功能NPC</h3>
-        <ul>
-          <li>各商店营业时间 & 售卖</li>
-          <li>医生 / 铁匠 / 魔法师等</li>
-        </ul>
-      </div>
+      <div class="card"><span class="card-num">04.A</span><h3><span class="marker"></span>村民图鉴</h3><ul><li>全部村民基本信息</li><li>生日 & 位置时间表</li></ul></div>
+      <div class="card"><span class="card-num">04.B</span><h3><span class="marker"></span>送礼系统</h3><ul><li>各村民喜爱 / 厌恶礼物</li><li>万能礼物清单</li><li>送礼效率排行</li></ul></div>
+      <div class="card"><span class="card-num">04.C</span><h3><span class="marker"></span>心之事件</h3><ul><li>各心数触发条件</li><li>容易错过的事件提醒</li></ul></div>
+      <div class="card"><span class="card-num">04.D</span><h3><span class="marker"></span>婚配</h3><ul><li>单身汉 / 单身女士</li><li>求婚流程</li><li>婚后互动机制</li></ul></div>
+      <div class="card"><span class="card-num">04.E</span><h3><span class="marker"></span>店主 & 功能NPC</h3><ul><li>各商店营业时间 & 售卖</li><li>医生 / 铁匠 / 魔法师等</li></ul></div>
     </div>
   </section>
 
@@ -597,46 +1617,877 @@ section:nth-child(8) { animation-delay: 0.42s; }
       </div>
       <div class="section-desc">"我要做X需要什么材料"——配方查询的统一入口</div>
     </div>
-    <div class="cards">
-      <div class="card">
-        <span class="card-num">05.A</span>
-        <h3><span class="marker"></span>制作配方</h3>
-        <ul>
-          <li>农场类(栅栏/储物/洒水器)</li>
-          <li>战斗类(炸弹/陷阱)</li>
-          <li>功能类(图腾/避雷针)</li>
-          <li>装饰 & 家具</li>
-          <li>解锁方式索引</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">05.B</span>
-        <h3><span class="marker"></span>烹饪配方</h3>
-        <ul>
-          <li>全食谱列表</li>
-          <li>按 Buff 效果索引</li>
-          <li>食材来源</li>
-          <li>获取方式(电视/NPC/购买)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">05.C</span>
-        <h3><span class="marker"></span>消耗品</h3>
-        <ul>
-          <li>药剂 & Buff 食物</li>
-          <li>图腾使用场景</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">05.D</span>
-        <h3><span class="marker"></span>农业工具</h3>
-        <ul>
-          <li>浇水壶 / 锄头 / 镰刀</li>
-          <li>垃圾桶 / 平底锅</li>
-          <li>升级材料 & 效果</li>
-        </ul>
+<div class="subsection-label">🍳 烹饪食谱 · 含 Buff 优先标★</div>
+<div class="item-grid">
+    <div class="item-card recipe">
+      <div class="item-icon" data-icon="friedegg">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>煎蛋</h4><span class="en">Fried Egg</span></div>
+        <div class="meta-line"><label>材料</label>1 鸡蛋</div>
+        <div class="item-stats">
+          <span class="stat"><label>体力</label><b>+50</b></span>
+          <span class="stat"><label>HP</label><b>+22</b></span>
+          <span class="stat sell"><label>卖价</label><b>35g</b></span>
+        </div>
+
+```
+    <div class="note">学习：初始</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="omelet">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>煎蛋卷</h4><span class="en">Omelet</span></div>
+    <div class="meta-line"><label>材料</label>1 鸡蛋+1 牛奶</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+100</b></span>
+      <span class="stat"><label>HP</label><b>+45</b></span>
+      <span class="stat sell"><label>卖价</label><b>125g</b></span>
+    </div>
+    
+    <div class="note">学习：厨艺秀 春7Y2</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="salad">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>沙拉</h4><span class="en">Salad</span></div>
+    <div class="meta-line"><label>材料</label>1 莴苣+1 蒲公英+1 卷心菜</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+113</b></span>
+      <span class="stat"><label>HP</label><b>+50</b></span>
+      <span class="stat sell"><label>卖价</label><b>110g</b></span>
+    </div>
+    
+    <div class="note">学习：厨艺秀 春28Y1</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="cheesecauliflower">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>奶酪花椰菜</h4><span class="en">Cheese Cauliflower</span></div>
+    <div class="meta-line"><label>材料</label>1 花椰菜+1 奶酪</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+138</b></span>
+      <span class="stat"><label>HP</label><b>+62</b></span>
+      <span class="stat sell"><label>卖价</label><b>300g</b></span>
+    </div>
+    
+    <div class="note">学习：厨艺秀 夏28Y1</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="bakedfish">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>烤鱼</h4><span class="en">Baked Fish</span></div>
+    <div class="meta-line"><label>材料</label>1 鳟鱼+1 太阳鱼+1 小麦粉</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+75</b></span>
+      <span class="stat"><label>HP</label><b>+33</b></span>
+      <span class="stat sell"><label>卖价</label><b>100g</b></span>
+    </div>
+    
+    <div class="note">学习：厨艺秀 夏7Y1</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="parsnipsoup">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>防风草汤</h4><span class="en">Parsnip Soup</span></div>
+    <div class="meta-line"><label>材料</label>1 防风草+1 牛奶+1 醋</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+85</b></span>
+      <span class="stat"><label>HP</label><b>+38</b></span>
+      <span class="stat sell"><label>卖价</label><b>120g</b></span>
+    </div>
+    
+    <div class="note">学习：卡萝琳邮件</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="pepperpoppers">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>辣椒爆米花</h4><span class="en">Pepper Poppers</span></div>
+    <div class="meta-line"><label>材料</label>1 热椒+1 奶酪</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+90</b></span>
+      <span class="stat"><label>HP</label><b>+40</b></span>
+      <span class="stat sell"><label>卖价</label><b>200g</b></span>
+    </div>
+    <div class="buff">⚡ 农业+2 速度+1 · 7 分</div>
+    <div class="note">学习：雪莉 3 心</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="completebreakfast">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>完整早餐</h4><span class="en">Complete Breakfast</span></div>
+    <div class="meta-line"><label>材料</label>1 煎蛋+1 薯饼+1 煎饼+1 牛奶</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+200</b></span>
+      <span class="stat"><label>HP</label><b>+90</b></span>
+      <span class="stat sell"><label>卖价</label><b>350g</b></span>
+    </div>
+    <div class="buff">⚡ 最大体力+50 防御+1 · 7 分</div>
+    <div class="note">学习：厨艺秀 冬21Y1</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="fruitsalad">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>果味沙拉</h4><span class="en">Fruit Salad</span></div>
+    <div class="meta-line"><label>材料</label>1 蓝莓+1 甜瓜+1 杨桃</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+263</b></span>
+      <span class="stat"><label>HP</label><b>+118</b></span>
+      <span class="stat sell"><label>卖价</label><b>450g</b></span>
+    </div>
+    
+    <div class="note">学习：厨艺秀 秋7Y2</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="spicyeel">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>辣鳗</h4><span class="en">Spicy Eel</span></div>
+    <div class="meta-line"><label>材料</label>1 鳗鱼+1 热椒</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+115</b></span>
+      <span class="stat"><label>HP</label><b>+51</b></span>
+      <span class="stat sell"><label>卖价</label><b>175g</b></span>
+    </div>
+    <div class="buff">⚡ 幸运+1 速度+1 · 7 分</div>
+    <div class="note">学习：金属头 7 心</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="luckylunch">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>幸运午餐</h4><span class="en">Lucky Lunch</span></div>
+    <div class="meta-line"><label>材料</label>1 翻车鱼+1 烈酒+1 海蓝宝石</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+100</b></span>
+      <span class="stat"><label>HP</label><b>+45</b></span>
+      <span class="stat sell"><label>卖价</label><b>250g</b></span>
+    </div>
+    <div class="buff">⚡ 幸运+3 · 11 分</div>
+    <div class="note">学习：厨艺秀 春21Y2</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="minerstreat">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>矿工的礼物</h4><span class="en">Miner's Treat</span></div>
+    <div class="meta-line"><label>材料</label>1 洞穴胡萝卜+1 糖+1 牛奶</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+125</b></span>
+      <span class="stat"><label>HP</label><b>+56</b></span>
+      <span class="stat sell"><label>卖价</label><b>200g</b></span>
+    </div>
+    <div class="buff">⚡ 采矿+3 磁力+32 · 5 分</div>
+    <div class="note">学习：采矿等级 3</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="fishtaco">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>鱼肉卷饼</h4><span class="en">Fish Taco</span></div>
+    <div class="meta-line"><label>材料</label>1 金枪鱼+1 玉米饼+1 红卷心菜+1 蛋黄酱</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+165</b></span>
+      <span class="stat"><label>HP</label><b>+74</b></span>
+      <span class="stat sell"><label>卖价</label><b>500g</b></span>
+    </div>
+    <div class="buff">⚡ 钓鱼+2 · 7 分</div>
+    <div class="note">学习：琳 7 心</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="dishothesea">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>海之菜</h4><span class="en">Dish O' The Sea</span></div>
+    <div class="meta-line"><label>材料</label>2 沙丁鱼+1 薯饼</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+150</b></span>
+      <span class="stat"><label>HP</label><b>+67</b></span>
+      <span class="stat sell"><label>卖价</label><b>220g</b></span>
+    </div>
+    <div class="buff">⚡ 钓鱼+3 · 5 分</div>
+    <div class="note">学习：钓鱼等级 3</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="seafoampudding">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>海泡布丁</h4><span class="en">Seafoam Pudding</span></div>
+    <div class="meta-line"><label>材料</label>1 比目鱼+1 午夜鲤鱼+1 墨鱼汁</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+175</b></span>
+      <span class="stat"><label>HP</label><b>+78</b></span>
+      <span class="stat sell"><label>卖价</label><b>300g</b></span>
+    </div>
+    <div class="buff">⚡ 钓鱼+4 · 3.5 分</div>
+    <div class="note">学习：钓鱼等级 9</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="eggplantparmesan">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>茄子帕马森干酪</h4><span class="en">Eggplant Parmesan</span></div>
+    <div class="meta-line"><label>材料</label>1 茄子+1 番茄</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+175</b></span>
+      <span class="stat"><label>HP</label><b>+78</b></span>
+      <span class="stat sell"><label>卖价</label><b>200g</b></span>
+    </div>
+    <div class="buff">⚡ 采矿+1 防御+5 · 16 分</div>
+    <div class="note">学习：厨艺秀 秋21Y2</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="shrimpcocktail">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>鲜虾鸡尾酒</h4><span class="en">Shrimp Cocktail</span></div>
+    <div class="meta-line"><label>材料</label>1 鲜虾+1 番茄+1 草药</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+165</b></span>
+      <span class="stat"><label>HP</label><b>+74</b></span>
+      <span class="stat sell"><label>卖价</label><b>160g</b></span>
+    </div>
+    <div class="buff">⚡ 钓鱼+1 体力恢复 +35% · 16 分</div>
+    <div class="note">学习：厨艺秀 冬7Y2</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="salmondinner">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>牛排晚餐</h4><span class="en">Salmon Dinner</span></div>
+    <div class="meta-line"><label>材料</label>1 鲑鱼+1 紫菜+1 凯尔</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+125</b></span>
+      <span class="stat"><label>HP</label><b>+56</b></span>
+      <span class="stat sell"><label>卖价</label><b>300g</b></span>
+    </div>
+    <div class="buff">⚡ 速度+1 · 5 分</div>
+    <div class="note">学习：格斯 3 心</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="crabcakes">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>鲑鱼晚餐</h4><span class="en">Crab Cakes</span></div>
+    <div class="meta-line"><label>材料</label>1 螃蟹+1 小麦粉+1 鸡蛋+1 油</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+225</b></span>
+      <span class="stat"><label>HP</label><b>+101</b></span>
+      <span class="stat sell"><label>卖价</label><b>275g</b></span>
+    </div>
+    <div class="buff">⚡ 速度+1 防御+1 · 16 分</div>
+    <div class="note">学习：厨艺秀 秋21Y2</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="troutsoup">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>蟹饼</h4><span class="en">Trout Soup</span></div>
+    <div class="meta-line"><label>材料</label>1 七彩鳟鱼+1 绿藻</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+100</b></span>
+      <span class="stat"><label>HP</label><b>+45</b></span>
+      <span class="stat sell"><label>卖价</label><b>100g</b></span>
+    </div>
+    <div class="buff">⚡ 钓鱼+1 · 4 分</div>
+    <div class="note">学习：厨艺秀 秋7Y1</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="pumpkinsoup">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>南瓜浓汤</h4><span class="en">Pumpkin Soup</span></div>
+    <div class="meta-line"><label>材料</label>1 南瓜+1 牛奶</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+220</b></span>
+      <span class="stat"><label>HP</label><b>+99</b></span>
+      <span class="stat sell"><label>卖价</label><b>300g</b></span>
+    </div>
+    <div class="buff">⚡ 幸运+2 防御+2 · 7 分</div>
+    <div class="note">学习：罗宾 7 心</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="stuffedmushrooms">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>蘑菇炖肉</h4><span class="en">Stuffed Mushrooms</span></div>
+    <div class="meta-line"><label>材料</label>1 蘑菇+1 大蒜+1 黄油</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+165</b></span>
+      <span class="stat"><label>HP</label><b>+74</b></span>
+      <span class="stat sell"><label>卖价</label><b>165g</b></span>
+    </div>
+    <div class="buff">⚡ 防御+2 攻击+2 · 7 分</div>
+    <div class="note">学习：厨艺秀 冬14Y2</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="redplate">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>红盘</h4><span class="en">Red Plate</span></div>
+    <div class="meta-line"><label>材料</label>1 红卷心菜+1 萝卜</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+240</b></span>
+      <span class="stat"><label>HP</label><b>+108</b></span>
+      <span class="stat sell"><label>卖价</label><b>400g</b></span>
+    </div>
+    <div class="buff">⚡ 最大体力+50 · 3 分</div>
+    <div class="note">学习：厨艺秀 冬7Y2</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="beanhotpot">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>豆煲</h4><span class="en">Bean Hotpot</span></div>
+    <div class="meta-line"><label>材料</label>2 青豆</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+125</b></span>
+      <span class="stat"><label>HP</label><b>+56</b></span>
+      <span class="stat sell"><label>卖价</label><b>100g</b></span>
+    </div>
+    <div class="buff">⚡ 最大体力+30 · 7 分</div>
+    <div class="note">学习：克莱尔 7 心</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="maplebar">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>枫木酒</h4><span class="en">Maple Bar</span></div>
+    <div class="meta-line"><label>材料</label>1 槭糖浆+1 小麦粉+1 糖</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+225</b></span>
+      <span class="stat"><label>HP</label><b>+101</b></span>
+      <span class="stat sell"><label>卖价</label><b>300g</b></span>
+    </div>
+    <div class="buff">⚡ 钓鱼+1 采矿+1 农业+1 · 5 分</div>
+    <div class="note">学习：厨艺秀 夏14Y2</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="pancakes">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>螺旋面</h4><span class="en">Pancakes</span></div>
+    <div class="meta-line"><label>材料</label>1 小麦粉+1 鸡蛋</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+90</b></span>
+      <span class="stat"><label>HP</label><b>+40</b></span>
+      <span class="stat sell"><label>卖价</label><b>80g</b></span>
+    </div>
+    <div class="buff">⚡ 采集+2 · 11 分</div>
+    <div class="note">学习：厨艺秀 夏21Y1</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="glazedyams">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>向日葵油</h4><span class="en">Glazed Yams</span></div>
+    <div class="meta-line"><label>材料</label>1 山药+1 糖</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+200</b></span>
+      <span class="stat"><label>HP</label><b>+90</b></span>
+      <span class="stat sell"><label>卖价</label><b>200g</b></span>
+    </div>
+    
+    <div class="note">学习：厨艺秀 冬28Y1</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="carpsurprise">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>蜜蜡饼干</h4><span class="en">Carp Surprise</span></div>
+    <div class="meta-line"><label>材料</label>4 鲤鱼</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+35</b></span>
+      <span class="stat"><label>HP</label><b>+14</b></span>
+      <span class="stat sell"><label>卖价</label><b>150g</b></span>
+    </div>
+    
+    <div class="note">学习：厨艺秀 春14Y2</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="chocolatecake">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>巧克力蛋糕</h4><span class="en">Chocolate Cake</span></div>
+    <div class="meta-line"><label>材料</label>1 小麦粉+1 糖+1 鸡蛋</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+150</b></span>
+      <span class="stat"><label>HP</label><b>+67</b></span>
+      <span class="stat sell"><label>卖价</label><b>200g</b></span>
+    </div>
+    
+    <div class="note">学习：厨艺秀 冬14Y1</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="pinkcake">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>粉色蛋糕</h4><span class="en">Pink Cake</span></div>
+    <div class="meta-line"><label>材料</label>1 甜瓜+1 小麦粉+1 糖+1 鸡蛋</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+175</b></span>
+      <span class="stat"><label>HP</label><b>+78</b></span>
+      <span class="stat sell"><label>卖价</label><b>480g</b></span>
+    </div>
+    
+    <div class="note">学习：厨艺秀 夏21Y2</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="espresso">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>三倍意式咖啡</h4><span class="en">Triple Shot Espresso</span></div>
+    <div class="meta-line"><label>材料</label>3 咖啡</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+1</b></span>
+      <span class="stat"><label>HP</label><b>+0</b></span>
+      <span class="stat sell"><label>卖价</label><b>450g</b></span>
+    </div>
+    <div class="buff">⚡ 速度+1 (饮料Buff 可叠加) · 13 分</div>
+    <div class="note">学习：格斯 5000g</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="gingerale">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>姜汁啤酒</h4><span class="en">Ginger Ale</span></div>
+    <div class="meta-line"><label>材料</label>3 姜+1 糖</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+50</b></span>
+      <span class="stat"><label>HP</label><b>+22</b></span>
+      <span class="stat sell"><label>卖价</label><b>120g</b></span>
+    </div>
+    <div class="buff">⚡ 幸运+1 (饮料) · 5 分</div>
+    <div class="note">学习：姜岛火山</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="greentea">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>绿茶</h4><span class="en">Green Tea</span></div>
+    <div class="meta-line"><label>材料</label>1 茶叶</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+20</b></span>
+      <span class="stat"><label>HP</label><b>+0</b></span>
+      <span class="stat sell"><label>卖价</label><b>100g</b></span>
+    </div>
+    <div class="buff">⚡ 采集+1 (饮料) · 5 分</div>
+    <div class="note">学习：厨艺秀 夏28Y2</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="squidinkravioli">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>墨鱼汁意面</h4><span class="en">Squid Ink Ravioli</span></div>
+    <div class="meta-line"><label>材料</label>1 墨鱼汁+1 小麦粉+1 番茄+1 奶酪</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+125</b></span>
+      <span class="stat"><label>HP</label><b>+56</b></span>
+      <span class="stat sell"><label>卖价</label><b>150g</b></span>
+    </div>
+    <div class="buff">⚡ 采矿+1 解除负面 · 5 分+3 分</div>
+    <div class="note">学习：战斗等级 9</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="tropicalcurry">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>热带咖喱</h4><span class="en">Tropical Curry</span></div>
+    <div class="meta-line"><label>材料</label>1 椰子+1 菠萝+1 热椒</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+225</b></span>
+      <span class="stat"><label>HP</label><b>+101</b></span>
+      <span class="stat sell"><label>卖价</label><b>260g</b></span>
+    </div>
+    
+    <div class="note">学习：姜岛度假村 2000g</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="bananapudding">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>香蕉布丁</h4><span class="en">Banana Pudding</span></div>
+    <div class="meta-line"><label>材料</label>1 香蕉+1 牛奶+1 糖</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+200</b></span>
+      <span class="stat"><label>HP</label><b>+90</b></span>
+      <span class="stat sell"><label>卖价</label><b>260g</b></span>
+    </div>
+    <div class="buff">⚡ 采矿+1 幸运+1 防御+1 · 5 分</div>
+    <div class="note">学习：岛屿商人 30 骨头碎片</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="mosssoup">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>苔藓汤</h4><span class="en">Moss Soup</span></div>
+    <div class="meta-line"><label>材料</label>20 苔藓</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+200</b></span>
+      <span class="stat"><label>HP</label><b>+90</b></span>
+      <span class="stat sell"><label>卖价</label><b>80g</b></span>
+    </div>
+    <div class="buff">⚡ 采集+3 防御+3 · 11 分</div>
+    <div class="note">学习：采集等级 3</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="supermeal">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>超级餐</h4><span class="en">Super Meal</span></div>
+    <div class="meta-line"><label>材料</label>1 白菜+1 番茄+1 鸡腿</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+200</b></span>
+      <span class="stat"><label>HP</label><b>+90</b></span>
+      <span class="stat sell"><label>卖价</label><b>220g</b></span>
+    </div>
+    <div class="buff">⚡ 最大体力+40 速度+1 · 3.5 分</div>
+    <div class="note">学习：克里斯 7 心</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="sashimi">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>刺身</h4><span class="en">Sashimi</span></div>
+    <div class="meta-line"><label>材料</label>1 鱼</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+75</b></span>
+      <span class="stat"><label>HP</label><b>+33</b></span>
+      <span class="stat sell"><label>卖价</label><b>75g</b></span>
+    </div>
+    
+    <div class="note">学习：琳达 3 心</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="palebroth">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>苍白汤</h4><span class="en">Pale Broth</span></div>
+    <div class="meta-line"><label>材料</label>2 白藻</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+113</b></span>
+      <span class="stat"><label>HP</label><b>+50</b></span>
+      <span class="stat sell"><label>卖价</label><b>150g</b></span>
+    </div>
+    <div class="buff">⚡ 采矿+2 · 5.5 分</div>
+    <div class="note">学习：玛尼 3 心</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="autumnsbounty">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>秋之收成</h4><span class="en">Autumn's Bounty</span></div>
+    <div class="meta-line"><label>材料</label>1 山药+1 南瓜</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+150</b></span>
+      <span class="stat"><label>HP</label><b>+67</b></span>
+      <span class="stat sell"><label>卖价</label><b>350g</b></span>
+    </div>
+    <div class="buff">⚡ 采集+2 防御+2 · 5 分</div>
+    <div class="note">学习：采集等级 7</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="vegmedley">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>维齐</h4><span class="en">Vegetable Medley</span></div>
+    <div class="meta-line"><label>材料</label>1 番茄+1 甜菜</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+165</b></span>
+      <span class="stat"><label>HP</label><b>+74</b></span>
+      <span class="stat sell"><label>卖价</label><b>120g</b></span>
+    </div>
+    
+    <div class="note">学习：卡萝琳 7 心</div>
+  </div>
+</div>
+<div class="item-card recipe">
+  <div class="item-icon" data-icon="powdermelonfrappe">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4>粉粉甜瓜冷饮</h4><span class="en">Powdermelon Frappe</span></div>
+    <div class="meta-line"><label>材料</label>1 粉粉瓜+1 牛奶</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+75</b></span>
+      <span class="stat"><label>HP</label><b>+33</b></span>
+      <span class="stat sell"><label>卖价</label><b>220g</b></span>
+    </div>
+    <div class="buff">⚡ 采集+2 · 5 分</div>
+    <div class="note">学习：1.6 新增</div>
+  </div>
+</div>
+<div class="item-card recipe  hl">
+  <div class="item-icon" data-icon="lobsterbisque">·</div>
+  <div class="item-body">
+    <div class="item-head"><h4><span class="star">★</span>杂烩面</h4><span class="en">Lobster Bisque</span></div>
+    <div class="meta-line"><label>材料</label>1 龙虾+1 牛奶</div>
+    <div class="item-stats">
+      <span class="stat"><label>体力</label><b>+175</b></span>
+      <span class="stat"><label>HP</label><b>+78</b></span>
+      <span class="stat sell"><label>卖价</label><b>205g</b></span>
+    </div>
+    <div class="buff">⚡ 最大体力+50 · 16 分</div>
+    <div class="note">学习：威利 9 心</div>
+  </div>
+</div></div>
+```
+
+<div class="subsection-label">🛠 制作配方 · 农业类</div>
+<div class="item-grid">
+    <div class="item-card">
+      <div class="item-icon" data-icon="sprinkler">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>普通洒水器</h4><span class="en">Sprinkler</span></div>
+        <div class="meta-line"><label>材料</label>1 铜锭+1 铁锭</div>
+        <div class="meta-line"><label>效果</label>浇灌十字 4 格</div>
+        <div class="note">解锁：农业等级 2</div>
       </div>
     </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="qualitysprinkler">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>优质洒水器</h4><span class="en">Quality Sprinkler</span></div>
+        <div class="meta-line"><label>材料</label>1 铁锭+1 金锭+1 精炼石英</div>
+        <div class="meta-line"><label>效果</label>浇灌周围 8 格</div>
+        <div class="note">解锁：农业等级 6</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="iridiumsprinkler">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>铱质洒水器</h4><span class="en">Iridium Sprinkler</span></div>
+        <div class="meta-line"><label>材料</label>1 金锭+1 铱锭+1 电池组</div>
+        <div class="meta-line"><label>效果</label>浇灌周围 24 格</div>
+        <div class="note">解锁：农业等级 9</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="basicfertilizer">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>基础化肥</h4><span class="en">Basic Fertilizer</span></div>
+        <div class="meta-line"><label>材料</label>2 沙子+1 黏土</div>
+        <div class="meta-line"><label>效果</label>提升作物品质（低）</div>
+        <div class="note">解锁：农业等级 1</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="qualityfertilizer">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>品质化肥</h4><span class="en">Quality Fertilizer</span></div>
+        <div class="meta-line"><label>材料</label>1 鱼+2 沙子+1 黏土</div>
+        <div class="meta-line"><label>效果</label>提升作物品质（中）</div>
+        <div class="note">解锁：农业等级 9</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="deluxefertilizer">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>豪华化肥</h4><span class="en">Deluxe Fertilizer</span></div>
+        <div class="meta-line"><label>材料</label>5 铱矿石+1 鲨鱼诱饵</div>
+        <div class="meta-line"><label>效果</label>可获铱品质作物</div>
+        <div class="note">解锁：1.6 新增</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="basicretainingsoil">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>基础保湿土</h4><span class="en">Basic Retaining Soil</span></div>
+        <div class="meta-line"><label>材料</label>2 石头+2 黏土</div>
+        <div class="meta-line"><label>效果</label>30% 概率隔夜保湿</div>
+        <div class="note">解锁：农业等级 4</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="speed-gro">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>速生肥料</h4><span class="en">Speed-Gro</span></div>
+        <div class="meta-line"><label>材料</label>1 桐木+1 三角藻</div>
+        <div class="meta-line"><label>效果</label>生长速度+10%</div>
+        <div class="note">解锁：农业等级 3</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="deluxespeed-gro">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>深速生肥料</h4><span class="en">Deluxe Speed-Gro</span></div>
+        <div class="meta-line"><label>材料</label>1 樱花花瓣+1 槭糖浆</div>
+        <div class="meta-line"><label>效果</label>生长速度+25%</div>
+        <div class="note">解锁：农业等级 8</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="hardwoodfence">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>草篱</h4><span class="en">Hardwood Fence</span></div>
+        <div class="meta-line"><label>材料</label>1 硬木</div>
+        <div class="meta-line"><label>效果</label>持久围栏</div>
+        <div class="note">解锁：采集等级 6</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="scarecrow">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>稻草人</h4><span class="en">Scarecrow</span></div>
+        <div class="meta-line"><label>材料</label>50 木材+20 纤维+1 煤</div>
+        <div class="meta-line"><label>效果</label>驱赶乌鸦 半径 8</div>
+        <div class="note">解锁：农业等级 1</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="deluxescarecrow">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>豪华稻草人</h4><span class="en">Deluxe Scarecrow</span></div>
+        <div class="meta-line"><label>材料</label>50 木材+40 纤维+20 铱矿石</div>
+        <div class="meta-line"><label>效果</label>驱鸦半径 16</div>
+        <div class="note">解锁：农业等级 8</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="gardenpot">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>园艺花盆</h4><span class="en">Garden Pot</span></div>
+        <div class="meta-line"><label>材料</label>1 黏土+10 石头+10 精炼石英</div>
+        <div class="meta-line"><label>效果</label>可在任意地点种植</div>
+        <div class="note">解锁：魔法师事件</div>
+      </div>
+    </div></div>
+<div class="subsection-label">💣 制作配方 · 战斗 & 钓鱼</div>
+<div class="item-grid">
+    <div class="item-card">
+      <div class="item-icon" data-icon="cherrybomb">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>樱桃炸弹</h4><span class="en">Cherry Bomb</span></div>
+        <div class="meta-line"><label>材料</label>4 铜矿石+1 煤</div>
+        <div class="meta-line"><label>效果</label>小范围爆炸</div>
+        <div class="note">解锁：采矿等级 1</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="bomb">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>炸弹</h4><span class="en">Bomb</span></div>
+        <div class="meta-line"><label>材料</label>4 铁矿石+1 煤</div>
+        <div class="meta-line"><label>效果</label>中范围爆炸</div>
+        <div class="note">解锁：采矿等级 6</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="megabomb">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>巨型炸弹</h4><span class="en">Mega Bomb</span></div>
+        <div class="meta-line"><label>材料</label>4 金矿石+1 太阳精华+1 虚空精华</div>
+        <div class="meta-line"><label>效果</label>大范围爆炸</div>
+        <div class="note">解锁：采矿等级 8</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="bait">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>坚固包装</h4><span class="en">Bait</span></div>
+        <div class="meta-line"><label>材料</label>1 虫肉</div>
+        <div class="meta-line"><label>效果</label>钓鱼诱饵</div>
+        <div class="note">解锁：钓鱼等级 2</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="magicbait">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>魔法诱饵</h4><span class="en">Magic Bait</span></div>
+        <div class="meta-line"><label>材料</label>1 铱矿石+1 河怪幻象</div>
+        <div class="meta-line"><label>效果</label>无视季节天气</div>
+        <div class="note">解锁：1.6 / 姜岛</div>
+      </div>
+    </div></div>
+<div class="subsection-label">⚡ 制作配方 · 功能 & 图腾</div>
+<div class="item-grid">
+    <div class="item-card">
+      <div class="item-icon" data-icon="warptotemfarm">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>回家图腾</h4><span class="en">Warp Totem: Farm</span></div>
+        <div class="meta-line"><label>材料</label>1 槭糖浆+1 苦根+8 纤维</div>
+        <div class="meta-line"><label>效果</label>传送回农场</div>
+        <div class="note">解锁：采集等级 8</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="warptotembeach">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>海滩图腾</h4><span class="en">Warp Totem: Beach</span></div>
+        <div class="meta-line"><label>材料</label>10 木材+1 珊瑚+2 海带</div>
+        <div class="meta-line"><label>效果</label>传送海滩</div>
+        <div class="note">解锁：采集等级 6</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="warptotemmountains">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>山区图腾</h4><span class="en">Warp Totem: Mountains</span></div>
+        <div class="meta-line"><label>材料</label>10 木材+1 铁锭+25 石头</div>
+        <div class="meta-line"><label>效果</label>传送山区</div>
+        <div class="note">解锁：采集等级 7</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="warptotemdesert">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>沙漠图腾</h4><span class="en">Warp Totem: Desert</span></div>
+        <div class="meta-line"><label>材料</label>2 铱矿石+4 煤+8 仙人掌果</div>
+        <div class="meta-line"><label>效果</label>传送沙漠</div>
+        <div class="note">解锁：采集等级 10</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="warptotemisland">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>岛屿图腾</h4><span class="en">Warp Totem: Island</span></div>
+        <div class="meta-line"><label>材料</label>5 硬木+1 龙牙+1 珊瑚</div>
+        <div class="meta-line"><label>效果</label>传送姜岛</div>
+        <div class="note">解锁：姜岛事件</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="raintotem">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>雨之图腾</h4><span class="en">Rain Totem</span></div>
+        <div class="meta-line"><label>材料</label>1 硬木+5 树脂+1 鲶鱼</div>
+        <div class="meta-line"><label>效果</label>明天必下雨</div>
+        <div class="note">解锁：采集等级 9</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="lightningrod">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>避雷针</h4><span class="en">Lightning Rod</span></div>
+        <div class="meta-line"><label>材料</label>1 铁锭+1 精炼石英+5 蝙蝠翅膀</div>
+        <div class="meta-line"><label>效果</label>雷暴 → 电池组</div>
+        <div class="note">解锁：采集等级 6</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="campfire">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>篝火</h4><span class="en">Campfire</span></div>
+        <div class="meta-line"><label>材料</label>10 木材+10 纤维+10 石头</div>
+        <div class="meta-line"><label>效果</label>睡眠 +1 体力恢复</div>
+        <div class="note">解锁：采集等级 0</div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="item-icon" data-icon="cookoutkit">·</div>
+      <div class="item-body">
+        <div class="item-head"><h4>煮饭工具包</h4><span class="en">Cookout Kit</span></div>
+        <div class="meta-line"><label>材料</label>15 木材+10 纤维+3 煤</div>
+        <div class="meta-line"><label>效果</label>野外烹饪</div>
+        <div class="note">解锁：采集等级 9</div>
+      </div>
+    </div></div>
+
   </section>
 
   <section id="s-place">
@@ -649,49 +2500,11 @@ section:nth-child(8) { animation-delay: 0.42s; }
       <div class="section-desc">按地图区域组织——每个地点说清楚"这里能干什么"</div>
     </div>
     <div class="cards">
-      <div class="card">
-        <span class="card-num">06.A</span>
-        <h3><span class="marker"></span>小镇</h3>
-        <ul>
-          <li>各建筑功能</li>
-          <li>NPC 位置</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">06.B</span>
-        <h3><span class="marker"></span>农场</h3>
-        <ul>
-          <li>6 种地图类型对比</li>
-          <li>农场建筑解锁 & 功能</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">06.C</span>
-        <h3><span class="marker"></span>矿山 & 洞穴</h3>
-        <ul>
-          <li>普通矿山(楼层/资源/怪物)</li>
-          <li>骷髅洞穴</li>
-          <li>火山洞穴(姜岛)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">06.D</span>
-        <h3><span class="marker"></span>野外</h3>
-        <ul>
-          <li>森林 & 山区</li>
-          <li>海滩</li>
-          <li>卡利科沙漠</li>
-          <li>下水道 / 女巫沼泽</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">06.E</span>
-        <h3><span class="marker"></span>姜岛</h3>
-        <ul>
-          <li>解锁方式</li>
-          <li>岛上内容总览</li>
-        </ul>
-      </div>
+      <div class="card"><span class="card-num">06.A</span><h3><span class="marker"></span>小镇</h3><ul><li>各建筑功能</li><li>NPC 位置</li></ul></div>
+      <div class="card"><span class="card-num">06.B</span><h3><span class="marker"></span>农场</h3><ul><li>6 种地图类型对比</li><li>农场建筑解锁 & 功能</li></ul></div>
+      <div class="card"><span class="card-num">06.C</span><h3><span class="marker"></span>矿山 & 洞穴</h3><ul><li>普通矿山(楼层/资源/怪物)</li><li>骷髅洞穴</li><li>火山洞穴(姜岛)</li></ul></div>
+      <div class="card"><span class="card-num">06.D</span><h3><span class="marker"></span>野外</h3><ul><li>森林 & 山区</li><li>海滩</li><li>卡利科沙漠</li><li>下水道 / 女巫沼泽</li></ul></div>
+      <div class="card"><span class="card-num">06.E</span><h3><span class="marker"></span>姜岛</h3><ul><li>解锁方式</li><li>岛上内容总览</li></ul></div>
     </div>
   </section>
 
@@ -705,30 +2518,9 @@ section:nth-child(8) { animation-delay: 0.42s; }
       <div class="section-desc">捯饬角色、查戒指效果——同一个需求</div>
     </div>
     <div class="cards">
-      <div class="card">
-        <span class="card-num">07.A</span>
-        <h3><span class="marker"></span>服装</h3>
-        <ul>
-          <li>帽子 / 上衣 / 裤子 / 裙子 / 鞋子</li>
-          <li>获取方式(裁缝 / 购买 / 掉落)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">07.B</span>
-        <h3><span class="marker"></span>戒指</h3>
-        <ul>
-          <li>全戒指效果一览</li>
-          <li>推荐搭配(战斗向 / 农业向)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">07.C</span>
-        <h3><span class="marker"></span>饰品</h3>
-        <ul>
-          <li>1.6 新增 Trinkets</li>
-          <li>效果 & 获取</li>
-        </ul>
-      </div>
+      <div class="card"><span class="card-num">07.A</span><h3><span class="marker"></span>服装</h3><ul><li>帽子 / 上衣 / 裤子 / 裙子 / 鞋子</li><li>获取方式(裁缝 / 购买 / 掉落)</li></ul></div>
+      <div class="card"><span class="card-num">07.B</span><h3><span class="marker"></span>戒指</h3><ul><li>全戒指效果一览</li><li>推荐搭配(战斗向 / 农业向)</li></ul></div>
+      <div class="card"><span class="card-num">07.C</span><h3><span class="marker"></span>饰品</h3><ul><li>1.6 新增 Trinkets</li><li>效果 & 获取</li></ul></div>
     </div>
   </section>
 
@@ -742,45 +2534,11 @@ section:nth-child(8) { animation-delay: 0.42s; }
       <div class="section-desc">检查清单——打开这里是为了"我还差什么"</div>
     </div>
     <div class="cards">
-      <div class="card">
-        <span class="card-num">08.A</span>
-        <h3><span class="marker"></span>社区中心捆绑包</h3>
-        <ul>
-          <li>各房间捆绑包物品</li>
-          <li>易卖错物品预警</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">08.B</span>
-        <h3><span class="marker"></span>博物馆捐赠</h3>
-        <ul>
-          <li>矿物 & 化石清单</li>
-          <li>奖励列表</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">08.C</span>
-        <h3><span class="marker"></span>成就</h3>
-        <ul>
-          <li>全成就 & 解锁条件</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">08.D</span>
-        <h3><span class="marker"></span>收集品</h3>
-        <ul>
-          <li>帽子商人特殊物品</li>
-          <li>限时 & 节日限定</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="card-num">08.E</span>
-        <h3><span class="marker"></span>节日 & 活动</h3>
-        <ul>
-          <li>全年节日时间表</li>
-          <li>各节日玩法 & 奖励</li>
-        </ul>
-      </div>
+      <div class="card"><span class="card-num">08.A</span><h3><span class="marker"></span>社区中心捆绑包</h3><ul><li>各房间捆绑包物品</li><li>易卖错物品预警</li></ul></div>
+      <div class="card"><span class="card-num">08.B</span><h3><span class="marker"></span>博物馆捐赠</h3><ul><li>矿物 & 化石清单</li><li>奖励列表</li></ul></div>
+      <div class="card"><span class="card-num">08.C</span><h3><span class="marker"></span>成就</h3><ul><li>全成就 & 解锁条件</li></ul></div>
+      <div class="card"><span class="card-num">08.D</span><h3><span class="marker"></span>收集品</h3><ul><li>帽子商人特殊物品</li><li>限时 & 节日限定</li></ul></div>
+      <div class="card"><span class="card-num">08.E</span><h3><span class="marker"></span>节日 & 活动</h3><ul><li>全年节日时间表</li><li>各节日玩法 & 奖励</li></ul></div>
     </div>
   </section>
 
@@ -789,7 +2547,7 @@ section:nth-child(8) { animation-delay: 0.42s; }
 <footer>
   <div>© 个人资料库 · 仅供查询</div>
   <div class="pixel-art">▣ ▤ ▥ ✦ ◈</div>
-  <div>v 0.2 · 2026</div>
+  <div>v 0.3 · 数据填充 · 2026</div>
 </footer>
 
 </body>
