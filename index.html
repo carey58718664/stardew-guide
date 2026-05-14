@@ -377,6 +377,40 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
   .resource-field textarea{height:30px;min-height:30px;max-height:30px;font-size:12px;line-height:1.25}
 }
 
+
+/* Action Desk v5: 当前资源改为下拉复选框，候选收纳，行动卡依据 */
+.resource-panel{margin-top:10px;background:#fff;border:1px solid rgba(215,189,134,.74);border-radius:16px;padding:9px 10px}
+.resource-panel summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--wood);font-weight:900}
+.resource-panel summary::-webkit-details-marker{display:none}
+.resource-panel summary em{font-style:normal;color:var(--muted);font-size:12px;font-weight:700;text-align:right}
+.selected-resource-bar{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0 8px;min-height:24px}
+.selected-resource-empty{color:var(--muted);font-size:12px;line-height:1.45}
+.selected-chip{border:1px solid rgba(215,189,134,.82);background:#fff8e7;color:var(--wood);border-radius:999px;padding:4px 8px;font-size:12px;font-weight:850}
+.resource-picker-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+.resource-picker{background:#fffaf0;border:1px solid rgba(215,189,134,.72);border-radius:14px;overflow:hidden}
+.resource-picker>summary{padding:8px 9px;font-size:13px;color:var(--ink)}
+.resource-picker>summary b{font-size:13px;color:var(--wood)}
+.resource-picker>summary span{color:var(--muted);font-size:11px;font-weight:800}
+.resource-option-list{max-height:156px;overflow:auto;padding:0 8px 8px;display:grid;gap:5px;scrollbar-width:thin}
+.resource-option{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid rgba(215,189,134,.55);border-radius:11px;padding:6px 7px;font-size:12px;line-height:1.25;color:var(--ink)}
+.resource-option input{accent-color:var(--wood)}
+.resource-option small{margin-left:auto;color:var(--muted);font-size:10px;white-space:nowrap}
+.action-basis{display:block;color:#8b775e;font-size:12px;line-height:1.35;margin-top:5px}
+.action-basis b{color:var(--wood)}
+.more-candidates{background:#fff;border:1px dashed rgba(215,189,134,.9);border-radius:16px;padding:9px 10px}
+.more-candidates summary{cursor:pointer;color:var(--wood);font-weight:900;font-size:13px}
+.more-candidates .action-feed{margin-top:9px}
+.item-card .action-links{margin-top:8px}
+@media (max-width:760px){
+  .resource-picker-grid{grid-template-columns:repeat(2,1fr);gap:6px}
+  .resource-picker>summary{padding:7px 8px;font-size:12px;align-items:center}
+  .resource-picker>summary b{font-size:12px}
+  .resource-picker>summary span{font-size:10px}
+  .resource-option-list{max-height:132px;padding:0 6px 6px;gap:4px}
+  .resource-option{padding:5px 6px;font-size:11px;border-radius:10px}
+  .selected-chip{font-size:11px;padding:3px 7px}
+}
+
 </style>
 </head>
 <body>
@@ -442,20 +476,9 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
         </div>
 
         <details class="resource-panel" open>
-          <summary><span>当前资源（选填）</span><em>只填你正在纠结的内容</em></summary>
-          <div class="resource-grid">
-            <label class="resource-field"><span>作物 / 鱼 / 物品</span><textarea id="bagInput" data-resource-input="items" placeholder="南瓜 鲶鱼 鸡蛋"></textarea></label>
-            <label class="resource-field"><span>工具 / 建筑</span><textarea id="resourceTools" data-resource-input="tools" placeholder="铜斧 鸡舍 筒仓"></textarea></label>
-            <label class="resource-field"><span>动物 / 产品</span><textarea id="resourceAnimals" data-resource-input="animals" placeholder="鸡 牛 猪 松露"></textarea></label>
-            <label class="resource-field"><span>矿石 / 探索</span><textarea id="resourceOres" data-resource-input="ores" placeholder="铁矿 矿井80层"></textarea></label>
-            <label class="resource-field"><span>机器</span><textarea id="resourceMachines" data-resource-input="machines" placeholder="小桶 罐头瓶"></textarea></label>
-            <label class="resource-field"><span>地点 / 解锁</span><textarea id="resourceUnlocks" data-resource-input="unlocks" placeholder="温室 姜岛 绿洲"></textarea></label>
-          </div>
-          <div class="tip-row resource-presets">
-            <button class="chip" data-action="fill-bag" data-bag="南瓜 鲶鱼 紫水晶 鸡蛋 松露">示例</button>
-            <button class="chip" data-action="fill-bag" data-bag="春季采集 青豆 花椰菜 土豆 防风草">春季献祭</button>
-            <button class="chip" data-action="fill-bag" data-bag="杨桃 远古果实 啤酒花 蓝莓 小麦 小桶 罐头瓶">加工收益</button>
-          </div>
+          <summary><span>当前资源（选填）</span><em>勾你已经有的东西，不用填数量</em></summary>
+          <div id="selectedResourceBar" class="selected-resource-bar"></div>
+          <div id="resourcePickerGrid" class="resource-picker-grid"></div>
           <div id="bagResults" class="bag-inline-summary"></div>
         </details>
       </article>
@@ -3654,6 +3677,8 @@ const els = {
   modalBody:document.getElementById("modalBody"),
   modalClose:document.getElementById("modalClose"),
   moneyStrategy:document.getElementById("moneyStrategy"),
+  selectedResourceBar:document.getElementById("selectedResourceBar"),
+  resourcePickerGrid:document.getElementById("resourcePickerGrid"),
   resourceInputs:Array.from(document.querySelectorAll("[data-resource-input]"))
 };
 
@@ -3671,8 +3696,9 @@ const safeStore = (() => {
 
 function readJSON(key, fallback){try{return JSON.parse(safeStore.getItem(key)||fallback)}catch(err){return JSON.parse(fallback)}}
 let state = readJSON("sdv_assistant_state_v3", "{}");
-state = {view:"today",season:"春",day:1,weather:"晴天",phase:"auto",libraryTop:"agriculture",library:"crops",query:"",inventory:"",resources:{items:"",tools:"",animals:"",ores:"",machines:"",unlocks:""},...state};
+state = {view:"today",season:"春",day:1,weather:"晴天",phase:"auto",libraryTop:"agriculture",library:"crops",query:"",inventory:"",resources:{items:"",tools:"",animals:"",ores:"",machines:"",unlocks:""},selectedResources:{crops:[],fish:[],items:[],machines:[],farm:[],explore:[]},...state};
 state.resources = {items:state.inventory || "",tools:"",animals:"",ores:"",machines:"",unlocks:"",...(state.resources || {})};
+state.selectedResources = {crops:[],fish:[],items:[],machines:[],farm:[],explore:[],...(state.selectedResources || {})};
 state.inventory = state.resources.items || state.inventory || "";
 if(state.view === "planner") state.view = "today";
 if(state.library === "cropCards") state.library = "crops";
@@ -3683,17 +3709,90 @@ let actionDone = readJSON("sdv_action_done_v1", "{}");
 function saveState(){safeStore.setItem("sdv_assistant_state_v3", JSON.stringify(state))}
 function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
 function norm(s){return String(s||"").toLowerCase().trim()}
-function getResourceText(){
+function selectedResourceNames(){
+  const sel = state.selectedResources || {};
+  return Object.values(sel).flat().filter(Boolean);
+}
+function legacyResourceText(){
   const res = state.resources || {};
   return [state.inventory, res.items, res.tools, res.animals, res.ores, res.machines, res.unlocks].filter(Boolean).join(" ");
 }
-function syncResourceInputs(){
-  if(!els.resourceInputs) return;
-  els.resourceInputs.forEach(input=>{
-    const key = input.dataset.resourceInput;
-    input.value = (state.resources && state.resources[key]) || (key === "items" ? state.inventory || "" : "");
-  });
+function getResourceText(){
+  return [legacyResourceText(), selectedResourceNames().join(" ")].filter(Boolean).join(" ");
 }
+function uniqueNames(list){
+  const seen = new Set();
+  return list.map(x=>String(x||"").replace(/^[^\u4e00-\u9fa5A-Za-z0-9]+\s*/,"").trim()).filter(Boolean).filter(x=>{const k=norm(x); if(seen.has(k)) return false; seen.add(k); return true;});
+}
+function getCropOptionNames(){
+  try{
+    const names = Array.from(getCropDoc().querySelectorAll(".result-card h3")).map(h=>h.textContent || "");
+    return uniqueNames([...names, ...DB.crops.map(i=>i.name)]);
+  }catch(err){
+    return uniqueNames(DB.crops.map(i=>i.name));
+  }
+}
+function getResourceGroups(){
+  return [
+    {id:"crops", label:"作物", hint:"所有作物", options:getCropOptionNames().map(name=>({name}))},
+    {id:"fish", label:"鱼类", hint:"献祭鱼优先", options:DB.fish.map(i=>({name:i.name, note:i.season || ""}))},
+    {id:"items", label:"物品", hint:"产品/矿物/采集", options:[...DB.animal, ...DB.foraging, ...materialDB].map(i=>({name:i.name, note:i.type || ""}))},
+    {id:"machines", label:"机器", hint:"加工判断", options:["小桶","罐头瓶","蛋黄酱机","奶酪机","制油机","脱水机","熏鱼机","鱼塘","树液采集器","织布机"].map(name=>({name}))},
+    {id:"farm", label:"农场", hint:"建筑/动物/工具", options:["鸡舍","大鸡舍","豪华鸡舍","畜棚","大畜棚","豪华畜棚","筒仓","鸡","鸭","牛","山羊","羊","猪","兔子","喷水器","优质洒水器","铱制洒水器","铜斧","铜镐","铁斧","铁镐","金斧","金镐"].map(name=>({name}))},
+    {id:"explore", label:"解锁", hint:"地点/进度", options:["温室","沙漠","绿洲","姜岛","下水道","矿井40层","矿井80层","骷髅洞穴","秘密森林","巴士修复"].map(name=>({name}))}
+  ];
+}
+function resourceCount(groupId){return ((state.selectedResources || {})[groupId] || []).length}
+function isResourceSelected(groupId, name){return ((state.selectedResources || {})[groupId] || []).includes(name)}
+function setResourceSelected(groupId, name, checked){
+  state.selectedResources = {crops:[],fish:[],items:[],machines:[],farm:[],explore:[],...(state.selectedResources || {})};
+  const arr = state.selectedResources[groupId] || [];
+  if(checked){
+    if(!arr.includes(name)) arr.push(name);
+  }else{
+    const idx = arr.indexOf(name);
+    if(idx >= 0) arr.splice(idx,1);
+  }
+  state.selectedResources[groupId] = arr;
+}
+function groupForItem(item){
+  if(!item) return "items";
+  if(item.type === "作物") return "crops";
+  if(item.type === "鱼") return "fish";
+  return "items";
+}
+function addResourceByName(name, groupId="items"){
+  const item = findItemByName(name);
+  const g = groupId || groupForItem(item);
+  setResourceSelected(g, item ? item.name : name, true);
+  saveState();
+  renderResourcePickers();
+  renderPlanner();
+  renderToday();
+}
+function renderSelectedResourceBar(){
+  if(!els.selectedResourceBar) return;
+  const sel = state.selectedResources || {};
+  const chips = [];
+  Object.entries(sel).forEach(([group, names])=>{
+    (names || []).forEach(name=>chips.push(`<button class="selected-chip" data-action="remove-resource" data-resource-group="${escapeHTML(group)}" data-resource-name="${escapeHTML(name)}">${escapeHTML(name)} ×</button>`));
+  });
+  els.selectedResourceBar.innerHTML = chips.length ? chips.join("") : `<span class="selected-resource-empty">只填时间和天气也能用。勾选资源后，会补充加工、献祭、赚钱和送礼判断。</span>`;
+}
+function renderResourcePickers(){
+  if(!els.resourcePickerGrid) return;
+  renderSelectedResourceBar();
+  const groups = getResourceGroups();
+  els.resourcePickerGrid.innerHTML = groups.map(group=>{
+    const count = resourceCount(group.id);
+    const options = group.options.map(opt=>{
+      const checked = isResourceSelected(group.id, opt.name) ? "checked" : "";
+      return `<label class="resource-option"><input type="checkbox" data-resource-check="1" data-group="${escapeHTML(group.id)}" value="${escapeHTML(opt.name)}" ${checked}><span>${escapeHTML(opt.name)}</span>${opt.note ? `<small>${escapeHTML(opt.note)}</small>` : ""}</label>`;
+    }).join("");
+    return `<details class="resource-picker"><summary><b>${escapeHTML(group.label)}</b><span>${count ? `已选 ${count}` : group.hint}</span></summary><div class="resource-option-list">${options}</div></details>`;
+  }).join("");
+}
+function syncResourceInputs(){renderResourcePickers()}
 function hasAny(text, words){return words.some(w=>text.includes(w))}
 function inferProfile(){
   const text = getResourceText();
@@ -3812,6 +3911,7 @@ function renderMiniItem(item){
     ${item.location ? `<div class="meta">📍 ${escapeHTML(item.location)} ${item.time ? " · 🕒 " + escapeHTML(item.time) : ""}</div>` : ""}
     ${item.basePrice ? `<div class="meta">💰 基础价 ${item.basePrice}G${best ? ` · 最优 ${escapeHTML(best.m)} ${best.p}G` : ""}</div>` : ""}
     <div class="line"></div><p>${escapeHTML(shortAdvice(item))}</p>
+    <div class="action-links"><button class="link-btn" data-action="detail" data-kind="item" data-id="${item.id}">查看资料</button><button class="link-btn" data-action="add-resource" data-resource-group="${groupForItem(item)}" data-resource-name="${escapeHTML(item.name)}">加入当前资源</button></div>
   </article>`;
 }
 function renderGenericCard(obj, kind){
@@ -3821,7 +3921,8 @@ function renderGenericCard(obj, kind){
   if(kind === "equipment") extra = `<div class="meta">📜 ${escapeHTML(obj.source)}</div><div class="meta">🔧 ${escapeHTML(obj.recipe)}</div><p>${escapeHTML(obj.desc)}</p>`;
   if(kind === "building") extra = `<div class="meta">📍 ${escapeHTML(obj.source)}</div><div class="meta">💰 ${escapeHTML(obj.cost)}</div><p>${escapeHTML(obj.desc)}</p>`;
   if(kind === "guide") extra = `<p>${escapeHTML(obj.desc || "")}</p>`;
-  return `<article class="item-card" data-action="detail" data-kind="${kind}" data-id="${obj.id}"><div class="item-title"><h3>${emoji} ${escapeHTML(obj.name)}</h3><span class="badge">${escapeHTML(obj.type || "")}</span></div>${extra}</article>`;
+  const addBtn = (kind === "equipment" || kind === "building") ? `<div class="action-links"><button class="link-btn" data-action="add-resource" data-resource-group="${kind === "equipment" ? "machines" : "farm"}" data-resource-name="${escapeHTML(obj.name)}">加入当前资源</button></div>` : "";
+  return `<article class="item-card" data-action="detail" data-kind="${kind}" data-id="${obj.id}"><div class="item-title"><h3>${emoji} ${escapeHTML(obj.name)}</h3><span class="badge">${escapeHTML(obj.type || "")}</span></div>${extra}${addBtn}</article>`;
 }
 function renderItemDetail(item){
   const loved = getLovedBy(item.name);
@@ -3892,7 +3993,7 @@ function renderSearch(){
   const cropCount = q ? getCropMatchCount(q) : 0;
   if(q && cropCount){
     els.searchResults.className = "";
-    els.searchResults.innerHTML = `<div class="crop-card-host" id="cropSearchHost"></div>`;
+    els.searchResults.innerHTML = `<div class="notice" style="margin-bottom:10px">搜到作物卡。也可以把“${escapeHTML(q)}”加入当前资源，行动台会据此判断。 <button class="link-btn" data-action="add-resource" data-resource-group="crops" data-resource-name="${escapeHTML(q)}">加入当前资源</button></div><div class="crop-card-host" id="cropSearchHost"></div>`;
     renderCropCardsInto(document.getElementById("cropSearchHost"), q);
     els.searchCount.textContent = `${cropCount} 个作物结果`;
     return;
@@ -3909,17 +4010,23 @@ function renderSearch(){
 }
 function birthdayNPCs(){return allNPCs.filter(n=>n.birthday === state.season + Number(state.day))}
 function actionKey(prefix, title){return `${state.season}${state.day}-${prefix}-${norm(title).replace(/[^\w\u4e00-\u9fa5]+/g,"-").slice(0,40)}`}
-function actionCardHTML({icon="📌",title,sub,badge="今日",tone="red",key,kind="",item=null}){
+function actionCardHTML({icon="📌",title,sub,badge="今日",tone="red",key,kind="",item=null,basis="",keywords=[]}){
   const doneKey = key || actionKey(kind || badge, title);
   const done = !!actionDone[doneKey];
+  const keyList = [];
+  if(item) keyList.push(item.name);
+  (keywords || []).forEach(k=>{if(k && !keyList.includes(k)) keyList.push(k)});
+  const keywordLinks = keyList.length ? keyList.map(k=>`<button class="link-btn" data-action="search" data-query="${escapeHTML(k)}">${escapeHTML(k)}</button>`).join("") : "";
   const itemLink = item ? `<button class="link-btn" data-action="detail" data-kind="item" data-id="${item.id}">查看资料</button>` : "";
+  const links = [itemLink, keywordLinks].filter(Boolean).join("");
   return `<div class="action-card ${done ? "done" : ""}" data-action-key="${escapeHTML(doneKey)}">
     <button class="action-check" data-action="toggle-action-done" data-key="${escapeHTML(doneKey)}" title="标记完成">${done ? "✓" : ""}</button>
     <div class="action-card-main">
       <h4>${escapeHTML(title)}</h4>
       <p>${escapeHTML(sub)}</p>
+      ${basis ? `<span class="action-basis"><b>依据：</b>${escapeHTML(basis)}</span>` : ""}
       <div class="action-card-tags"><span class="action-tag ${tone}">${escapeHTML(badge)}</span>${kind ? `<span class="action-tag">${escapeHTML(kind)}</span>` : ""}</div>
-      ${itemLink ? `<div class="action-links">${itemLink}</div>` : ""}
+      ${links ? `<div class="action-links">${links}</div>` : ""}
     </div>
     <div class="action-card-icon">${icon}</div>
   </div>`;
@@ -3929,7 +4036,7 @@ function bagActionCard(item){
   const iconMap={today:"🎂",keep:"📌",process:"🧪",gift:"🎁",sell:"💰"};
   const toneMap={today:"red",keep:"gold",process:"green",gift:"blue",sell:""};
   const titleMap={today:`今天处理 ${item.name}`,keep:`${item.name} 先别卖`,process:`${item.name} 丢进机器`,gift:`${item.name} 留着送礼`,sell:`${item.name} 可以卖`};
-  return actionCardHTML({icon:iconMap[a.group]||"📦",title:titleMap[a.group]||`${item.name} 怎么处理`,sub:a.text,badge:a.group==="today" ? "今日" : "候选",tone:toneMap[a.group]||"gold",kind:a.tag,key:actionKey("bag", item.id+"-"+a.tag),item});
+  return actionCardHTML({icon:iconMap[a.group]||"📦",title:titleMap[a.group]||`${item.name} 怎么处理`,sub:a.text,badge:a.group==="today" ? "今日" : "候选",tone:toneMap[a.group]||"gold",kind:a.tag,key:actionKey("bag", item.id+"-"+a.tag),item,basis:`当前资源已选：${item.name}`});
 }
 function renderToday(){
   const day = Number(state.day || 1);
@@ -3947,31 +4054,31 @@ function renderToday(){
   const actions = [];
   const push = (order, html) => actions.push({order, html});
 
-  birthday.forEach(n=>push(0, actionCardHTML({icon:"🎂",title:`今天是 ${n.name} 生日`,sub:`最爱：${n.loves}。能送就别拖，生日收益最高。`,badge:"今日",tone:"red",kind:"生日",key:actionKey("birthday", n.name)})));
+  birthday.forEach(n=>push(0, actionCardHTML({icon:"🎂",title:`今天是 ${n.name} 生日`,sub:`最爱：${n.loves}。能送就别拖，生日收益最高。`,badge:"今日",tone:"red",kind:"生日",key:actionKey("birthday", n.name),basis:`${state.season}${day}日生日`,keywords:[n.name]})));
 
   if(state.season === "春" && day <= 13){
     const b = priorityBadge(13 - day, "复活节");
-    push(13-day<=0 ? 0 : 10+(13-day), actionCardHTML({icon:"🌱",title:"攒钱买草莓种子",sub:"春13复活节购买。第一年春季最重要的收益转折点。",badge:b.label,tone:b.tone,kind:"赚钱",key:actionKey("festival", "egg-festival-strawberry")}));
+    push(13-day<=0 ? 0 : 10+(13-day), actionCardHTML({icon:"🌱",title:"攒钱买草莓种子",sub:"春13复活节购买。第一年春季最重要的收益转折点。",badge:b.label,tone:b.tone,kind:"赚钱",key:actionKey("festival", "egg-festival-strawberry"),basis:`距离春13还有 ${Math.max(0,13-day)} 天`,keywords:["草莓","复活节"]}));
   }
   if(state.season === "夏" && day <= 11){
     const b = priorityBadge(11 - day, "最后播种");
-    push(20+(11-day), actionCardHTML({icon:"🍈",title:"甜瓜还来得及种",sub:"甜瓜 12 天成熟。要补夏季作物包或高品质作物包，别拖过最后播种窗口。",badge:b.label,tone:b.tone,kind:"种植",key:actionKey("plant", "melon-last-day")}));
+    push(20+(11-day), actionCardHTML({icon:"🍈",title:"甜瓜还来得及种",sub:"甜瓜 12 天成熟。要补夏季作物包或高品质作物包，别拖过最后播种窗口。",badge:b.label,tone:b.tone,kind:"种植",key:actionKey("plant", "melon-last-day"),basis:`夏${day}，最晚建议夏11播种`,keywords:["甜瓜","夏季作物包"]}));
   }
   if(state.season === "秋" && day <= 15){
     const b = priorityBadge(15 - day, "最后播种");
-    push(20+(15-day), actionCardHTML({icon:"🎃",title:"南瓜还来得及种",sub:"南瓜 13 天成熟。献祭、送礼、加工都用得上，至少留 1 个。",badge:b.label,tone:b.tone,kind:"种植",key:actionKey("plant", "pumpkin-last-day")}));
+    push(20+(15-day), actionCardHTML({icon:"🎃",title:"南瓜还来得及种",sub:"南瓜 13 天成熟。献祭、送礼、加工都用得上，至少留 1 个。",badge:b.label,tone:b.tone,kind:"种植",key:actionKey("plant", "pumpkin-last-day"),basis:`秋${day}，最晚建议秋15播种`,keywords:["南瓜","秋季作物包"]}));
   }
 
   const rainLimited = todayBundle.filter(i=>(i.time||"").includes("雨天")).slice(0,3);
-  rainLimited.forEach(i=>push(1, actionCardHTML({icon:"🌧️",title:`雨天补 ${i.name}`,sub:`${i.location || "看地点"} ${i.time || ""}。献祭需要，天气窗口容易错过。`,badge:"今日",tone:"red",kind:"雨天限定",key:actionKey("rain", i.id),item:i})));
+  rainLimited.forEach(i=>push(1, actionCardHTML({icon:"🌧️",title:`雨天补 ${i.name}`,sub:`${i.location || "看地点"} ${i.time || ""}。献祭需要，天气窗口容易错过。`,badge:"今日",tone:"red",kind:"雨天限定",key:actionKey("rain", i.id),item:i,basis:`${state.weather}｜${i.season || "不限季节"}｜献祭未完成时优先`,keywords:[i.location || ""]})));
 
   const fishToday = todayBundle.filter(i=>i.type==="鱼" && !rainLimited.some(r=>r.id===i.id)).slice(0,2);
-  fishToday.forEach(i=>push(8, actionCardHTML({icon:"🎣",title:`今天能补 ${i.name}`,sub:`${i.location || "看地点"} ${i.time || ""}。钓到先留给社区中心。`,badge:"今日",tone:"blue",kind:"献祭",key:actionKey("fish", i.id),item:i})));
+  fishToday.forEach(i=>push(8, actionCardHTML({icon:"🎣",title:`今天能补 ${i.name}`,sub:`${i.location || "看地点"} ${i.time || ""}。钓到先留给社区中心。`,badge:"今日",tone:"blue",kind:"献祭",key:actionKey("fish", i.id),item:i,basis:`${state.season}${day}日｜${state.weather}｜当前可获得`,keywords:[i.location || ""]})));
 
   const cropToday = todayBundle.filter(i=>i.type==="作物").slice(0,4);
   if(cropToday.length){
     const b = priorityBadge(Math.max(0, 28-day), "季末");
-    push(35, actionCardHTML({icon:"🌾",title:"本季献祭作物先各留 1 个",sub:`先留：${cropToday.map(i=>i.name).join("、")}。别把第一批全卖掉。`,badge:b.label,tone:b.tone,kind:"献祭",key:actionKey("crop-bundle", cropToday.map(i=>i.id).join("-"))}));
+    push(35, actionCardHTML({icon:"🌾",title:"本季献祭作物先各留 1 个",sub:`先留：${cropToday.map(i=>i.name).join("、")}。别把第一批全卖掉。`,badge:b.label,tone:b.tone,kind:"献祭",key:actionKey("crop-bundle", cropToday.map(i=>i.id).join("-")),basis:`${state.season}季可种｜距离季末 ${Math.max(0,28-day)} 天`,keywords:cropToday.map(i=>i.name)}));
   }
 
   const invItems = getInventoryItems();
@@ -3981,14 +4088,19 @@ function renderToday(){
   });
 
   if(profile.hasPig && profile.hasOil){
-    push(80, actionCardHTML({icon:"🐷",title:"松露做松露油",sub:"有制油机时优先加工。没有机器也别低估松露的直接售价。",badge:"候选",tone:"green",kind:"加工",key:actionKey("animal", "truffle-oil")}));
+    push(80, actionCardHTML({icon:"🐷",title:"松露做松露油",sub:"有制油机时优先加工。没有机器也别低估松露的直接售价。",badge:"候选",tone:"green",kind:"加工",key:actionKey("animal", "truffle-oil"),basis:"当前资源包含猪/松露 + 制油机",keywords:["松露","制油机"]}));
   }
   if(profile.hasKeg && (state.season === "夏" || profile.hasGreenhouse || profile.hasGinger)){
-    push(81, actionCardHTML({icon:"🧪",title:"小桶优先给高价值作物",sub:"啤酒花、杨桃、远古果实优先级高。机器少时别平均分配。",badge:"候选",tone:"gold",kind:"加工",key:actionKey("machine", "keg-priority")}));
+    push(81, actionCardHTML({icon:"🧪",title:"小桶优先给高价值作物",sub:"啤酒花、杨桃、远古果实优先级高。机器少时别平均分配。",badge:"候选",tone:"gold",kind:"加工",key:actionKey("machine", "keg-priority"),basis:"当前资源包含小桶，且季节/解锁支持高价值作物",keywords:["小桶","啤酒花","杨桃","远古果实"]}));
   }
 
   actions.sort((a,b)=>a.order-b.order);
-  els.todayTasks.innerHTML = actions.map(a=>a.html).join("");
+  const urgent = actions.filter(a=>a.order < 80);
+  const candidates = actions.filter(a=>a.order >= 80);
+  const shownCandidates = candidates.slice(0,4);
+  const hiddenCandidates = candidates.slice(4);
+  const candidateHTML = hiddenCandidates.length ? `<details class="more-candidates"><summary>查看更多候选（${hiddenCandidates.length}）</summary><div class="action-feed">${hiddenCandidates.map(a=>a.html).join("")}</div></details>` : "";
+  els.todayTasks.innerHTML = [...urgent, ...shownCandidates].map(a=>a.html).join("") + candidateHTML;
   if(els.todayBundleItems) els.todayBundleItems.innerHTML = todayBundle.slice(0,5).map(renderMiniItem).join("");
   if(els.seasonMoneyItems) els.seasonMoneyItems.innerHTML = hotSeason.slice(0,5).map(renderMiniItem).join("");
 }
@@ -4001,7 +4113,11 @@ function renderBundles(){
   }).join("");
 }
 function splitBag(text){return String(text||"").split(/[\s,，、。;；\n]+/).map(x=>x.trim()).filter(Boolean)}
-function findItemByName(token){const q=norm(token);return allItems.find(i=>norm(i.name)===q) || allItems.find(i=>norm(i.name).includes(q) || q.includes(norm(i.name)))}
+function findItemByName(token){
+  const aliases = {"上古水果":"远古果实","古代水果":"远古果实","绿豆":"青豆","产油机":"制油机"};
+  const q=norm(aliases[token] || token);
+  return allItems.find(i=>norm(i.name)===q) || allItems.find(i=>norm(i.name).includes(q) || q.includes(norm(i.name)))
+}
 function getInventoryItems(){
   const seen = new Set();
   const items = [];
@@ -4025,22 +4141,21 @@ function renderAdviceCard(item,a){
   return `<div class="advice-card ${a.cls}" data-action="detail" data-kind="item" data-id="${item.id}"><strong>${item.emoji || "📦"} ${escapeHTML(item.name)} <span class="badge">${a.tag}</span></strong><p>${escapeHTML(a.text)}</p></div>`;
 }
 function renderBagAdvisor(){
-  const tokens=splitBag(getResourceText());
-  if(!tokens.length){els.bagResults.innerHTML="";return}
+  const selected = selectedResourceNames();
+  if(!selected.length){els.bagResults.innerHTML="";return}
   const recognized=[];const misses=[];const seen=new Set();
-  tokens.forEach(t=>{
+  selected.forEach(t=>{
     const item=findItemByName(t);
     if(!item){misses.push(t);return}
     if(seen.has(item.id)) return;
     seen.add(item.id);
     recognized.push(item);
   });
-  const miss = misses.length ? `，${misses.length} 个未识别` : "";
-  els.bagResults.innerHTML = `已识别 ${recognized.length} 个物品${miss}，建议已并入待做事项。`;
+  const miss = misses.length ? `，${misses.length} 个只用于阶段判断` : "";
+  els.bagResults.innerHTML = `已选 ${selected.length} 项，识别为可处理物品 ${recognized.length} 个${miss}。`;
 }
 function renderPlanner(){
-  if(els.bagInput) els.bagInput.value = state.resources?.items || state.inventory || "";
-  syncResourceInputs();
+  renderResourcePickers();
   renderBagAdvisor();
   const invItems = getInventoryItems();
   let candidates = invItems.filter(i=>bestProcess(i)).map(i=>({item:i,best:bestProcess(i),gain:bestProcess(i).p-(i.basePrice||0),source:"当前资源"}));
@@ -4176,7 +4291,7 @@ function setSearch(q){
   renderSearch();
   window.scrollTo({top:0,behavior:"smooth"});
 }
-function syncInputs(){els.season.value=state.season;els.day.value=state.day;els.weather.value=state.weather;if(els.phase) els.phase.value=state.phase || "auto";els.search.value=state.query;syncResourceInputs()}
+function syncInputs(){els.season.value=state.season;els.day.value=state.day;els.weather.value=state.weather;if(els.phase) els.phase.value=state.phase || "auto";els.search.value=state.query;renderResourcePickers()}
 function init(){renderChips();syncInputs();renderToday();renderBundles();renderPlanner();renderLibrary();renderSearch();openView(state.view || "today");updateSearchVisibility()}
 
 document.body.addEventListener("click", e=>{
@@ -4186,7 +4301,18 @@ document.body.addEventListener("click", e=>{
   if(action==="open-view") openView(target.dataset.view);
   if(action==="detail") openDetail(target.dataset.kind,target.dataset.id);
   if(action==="search") setSearch(target.dataset.query || "");
-  if(action==="fill-bag"){state.inventory=target.dataset.bag || "";state.resources={...(state.resources||{}),items:state.inventory};saveState();openView("today");renderPlanner();renderToday()}
+  if(action==="fill-bag"){
+    splitBag(target.dataset.bag || "").forEach(name=>addResourceByName(name, groupForItem(findItemByName(name))));
+    openView("today");
+  }
+  if(action==="add-resource"){
+    addResourceByName(target.dataset.resourceName || "", target.dataset.resourceGroup || "items");
+    openView("today");
+  }
+  if(action==="remove-resource"){
+    setResourceSelected(target.dataset.resourceGroup || "items", target.dataset.resourceName || "", false);
+    saveState(); renderResourcePickers(); renderPlanner(); renderToday();
+  }
   if(action==="library-top"){
     state.libraryTop = target.dataset.libraryTop;
     const top = libraryTree.find(item => item.id === state.libraryTop) || libraryTree[0];
@@ -4214,8 +4340,15 @@ els.search.addEventListener("input", e=>{state.query=e.target.value.trim();saveS
 els.clearSearch.addEventListener("click",()=>{state.query="";els.search.value="";saveState();renderSearch()});
 [els.season,els.day,els.weather,els.phase].filter(Boolean).forEach(el=>{el.addEventListener("change",()=>{state.season=els.season.value;state.day=Math.min(28,Math.max(1,Number(els.day.value||1)));state.weather=els.weather.value;state.phase=els.phase ? els.phase.value : "auto";saveState();renderToday();renderPlanner()})});
 els.resetBundles.addEventListener("click",()=>{if(!confirm("确定要清空献祭勾选吗？")) return;bundleChecked={};safeStore.removeItem("sdv_bundle_checked_v3");renderBundles()});
-if(els.bagInput) els.bagInput.addEventListener("input",e=>{state.inventory=e.target.value;state.resources={...(state.resources||{}),items:e.target.value};saveState();renderPlanner();renderToday()});
-if(els.resourceInputs) els.resourceInputs.forEach(input=>{if(input.id==="bagInput") return; input.addEventListener("input",e=>{const key=e.target.dataset.resourceInput;state.resources={...(state.resources||{}),[key]:e.target.value};saveState();renderPlanner();renderToday()})});
+if(els.resourcePickerGrid) els.resourcePickerGrid.addEventListener("change", e=>{
+  const input = e.target.closest("[data-resource-check]");
+  if(!input) return;
+  setResourceSelected(input.dataset.group || "items", input.value, input.checked);
+  saveState();
+  renderResourcePickers();
+  renderPlanner();
+  renderToday();
+});
 if(els.analyzeBag) els.analyzeBag.addEventListener("click",()=>renderPlanner());
 els.modalClose.addEventListener("click",closeDetail);
 els.modal.addEventListener("click",e=>{if(e.target===els.modal) closeDetail()});
