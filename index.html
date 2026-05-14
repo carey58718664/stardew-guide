@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -380,7 +379,7 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
 .strategy-card>b{display:block;font-size:15px;margin-bottom:8px;color:var(--ink)}
 .strategy-list{display:grid;gap:7px}
 .strategy-line{background:rgba(255,255,255,.58);border:1px solid rgba(215,189,134,.55);border-radius:13px;padding:8px 9px;color:var(--muted);font-size:13px;line-height:1.55}
-.inline-keyword{display:inline;border:0;background:rgba(66,111,147,.08);color:var(--blue);border-radius:7px;padding:1px 5px;margin:0 1px;font-size:12px;font-weight:950;vertical-align:baseline;box-shadow:inset 0 -1px 0 rgba(66,111,147,.35)}
+.inline-keyword{display:inline;border:0;background:transparent;color:#245f87;border-radius:0;padding:0 1px;margin:0 1px;font-size:inherit;font-weight:900;line-height:inherit;vertical-align:baseline;text-decoration:underline;text-decoration-style:dotted;text-decoration-thickness:1.5px;text-underline-offset:3px;box-shadow:none}.inline-keyword::after{content:"↗";font-size:.68em;margin-left:1px;opacity:.58;text-decoration:none}.inline-keyword:active,.inline-keyword:hover{color:#174866;background:rgba(66,111,147,.07);border-radius:5px}
 .action-card-tags .action-tag{max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .bag-inline-summary{font-size:12px;color:var(--muted);line-height:1.45;margin-top:7px}
 @media (max-width:760px){
@@ -3457,11 +3456,9 @@ const RESOURCE_OPTIONS = {
     "苋菜","洋蓟","甜菜","小白菜","西兰花","蔓越莓","茄子","仙女玫瑰","葡萄","南瓜","山药",
     "粉瓜","远古果实","仙人掌果子","纤维","混合花卉种子","混合种子","菠萝","芋头","宝石甜莓","茶叶","野生种子"
   ]},
-  fish:{label:"鱼类", note:"覆盖常规鱼、夜市鱼、姜岛鱼和传说鱼", options:[
-    "河豚","鳀鱼","金枪鱼","沙丁鱼","鲷鱼","大嘴鲈鱼","小嘴鲈鱼","虹鳟鱼","鲑鱼","大眼鱼","河鲈","鲤鱼","鲶鱼","狗鱼","太阳鱼","红鲻鱼","鲱鱼","鳗鱼",
-    "章鱼","红鲷鱼","鱿鱼","海参","超级海参","鬼鱼","石鱼","冰柱鱼","岩浆鳗鱼","沙鱼","蝎鲤鱼","比目鱼","午夜鲤鱼","鲟鱼","虎纹鳟鱼","大头鱼","罗非鱼",
-    "鲢鱼","剑鱼","长鳍金枪鱼","西鲱","鳕鱼","大比目鱼","木跃鱼","虚空鲑鱼","史莱姆鱼","黄貂鱼","狮子鱼","蓝铁饼鱼","虾虎鱼",
-    "午夜鱿鱼","幽灵鱼","水滴鱼","绯红鱼","安康鱼","传说之鱼","冰川鱼","变种鲤鱼","绯红鱼之子","雌鮟鱇鱼","传说之鱼二代","冰川鱼之子","放射性鲤鱼"
+  fish:{label:"鱼类", note:"先放常查鱼和献祭鱼，后续可继续扩完整鱼表", options:[
+    "鲶鱼","鲟鱼","河豚","鳗鱼","太阳鱼","西鲱","虎纹鳟鱼","大嘴鲈鱼","鲤鱼","大头鱼","鬼鱼","沙鱼","木跃鱼",
+    "沙丁鱼","金枪鱼","红鲷鱼","罗非鱼","鲷鱼","鲑鱼","虹鳟鱼","章鱼","鱿鱼","海参","超级海参","午夜鲤鱼","午夜鱿鱼","比目鱼","虾虎鱼"
   ]},
   items:{label:"物品", note:"动物产品、觅食、矿物和常用材料", options:[
     "鸡蛋","大鸡蛋","鸭蛋","牛奶","大壶牛奶","山羊奶","羊毛","松露","紫水晶","石英","泪晶","地晶","火水晶","钻石","翡翠","红宝石","海蓝宝石","黄水晶","玉石",
@@ -3768,7 +3765,7 @@ function ensureSelectedResourceArrays(){
   state.selectedResources = {crops:[],fish:[],items:[],machines:[],farm:[],unlocks:[],...(state.selectedResources || {})};
   Object.keys(state.selectedResources).forEach(k=>{state.selectedResources[k]=[...new Set(state.selectedResources[k] || [])].filter(Boolean)});
 }
-function setResourceSelected(group,name,checked,keepOpen=false){
+function setResourceSelected(group,name,checked){
   ensureSelectedResourceArrays();
   const list = new Set(state.selectedResources[group] || []);
   checked ? list.add(name) : list.delete(name);
@@ -3777,10 +3774,6 @@ function setResourceSelected(group,name,checked,keepOpen=false){
   state.resources = {...(state.resources || {}), items:state.inventory};
   saveState();
   renderResourceSelectors();
-  if(keepOpen){
-    const picker = document.querySelector(`.resource-picker[data-resource-picker="${CSS.escape(group)}"]`);
-    if(picker) picker.classList.add("open");
-  }
   renderPlanner();
   renderToday();
 }
@@ -4120,7 +4113,6 @@ function renderToday(){
 
   const invItems = getInventoryItems();
   invItems.forEach(item=>{
-    if(String(item.id||"").startsWith("resource_")) return;
     const advice = bagAdvice(item);
     push(advice.group === "today" ? 2 : 82, bagActionCard(item));
   });
@@ -4347,13 +4339,13 @@ document.body.addEventListener("click", e=>{
     closeResourceMenus();
     if(picker && !wasOpen) picker.classList.add("open");
   }
-  if(action==="toggle-resource-option"){setResourceSelected(target.dataset.group, target.dataset.name, target.checked, true)}
+  if(action==="toggle-resource-option"){setResourceSelected(target.dataset.group, target.dataset.name, target.checked)}
   if(action==="filter-resource-options"){filterResourceOptions(target.dataset.group, target.value)}
   if(action==="remove-resource"){const name=target.dataset.name;const group=RESOURCE_NAME_TO_GROUP[name] || Object.keys(state.selectedResources||{}).find(k=>(state.selectedResources[k]||[]).includes(name)); if(group) setResourceSelected(group,name,false)}
-  if(action==="resource-preset"){splitBag(target.dataset.values || "").forEach(addResourceByName);openView("today");renderResourceSelectors();renderPlanner();renderToday()}
+  if(action==="resource-preset"){String(target.dataset.values||"").split(/[,，、\s]+/).filter(Boolean).forEach(addResourceByName);openView("today");renderResourceSelectors();renderPlanner();renderToday()}
   if(action==="clear-resources"){clearSelectedResources()}
-  if(action==="add-resource"){addResourceByName(target.dataset.name || target.dataset.query || "");state.query="";els.search.value="";saveState();renderSearch();openView("today");renderResourceSelectors();renderPlanner();renderToday()}
-  if(action==="fill-bag"){splitBag(target.dataset.bag || "").forEach(addResourceByName);openView("today");renderPlanner();renderToday()}
+  if(action==="add-resource"){addResourceByName(target.dataset.name || target.dataset.query || "");openView("today");renderResourceSelectors();renderPlanner();renderToday()}
+  if(action==="fill-bag"){String(target.dataset.bag || "").split(/[\s,，、。;；]+/).filter(Boolean).forEach(addResourceByName);openView("today");renderPlanner();renderToday()}
   if(action==="library-top"){
     state.libraryTop = target.dataset.libraryTop;
     const top = libraryTree.find(item => item.id === state.libraryTop) || libraryTree[0];
@@ -4395,5 +4387,3 @@ init();
 </script>
 </body>
 </html>
-
-```
