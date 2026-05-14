@@ -72,7 +72,7 @@ button{cursor:pointer;touch-action:manipulation}
   margin-bottom:14px;
 }
 .search-panel-view{margin-top:14px;}
-.search-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.search-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center}
 .search-box{position:relative}
 .search-box span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
 .search-box input{
@@ -87,11 +87,12 @@ button{cursor:pointer;touch-action:manipulation}
 }
 .search-box input:focus{border-color:var(--wood-2);box-shadow:0 0 0 4px rgba(138,91,50,.16),var(--shadow-sm)}
 .icon-btn{border:0;color:white;background:var(--wood);min-width:46px;height:46px;border-radius:999px;box-shadow:var(--shadow-sm);font-size:22px}
+.search-submit-btn{border:0;color:#fff4d6;background:var(--wood-2);height:46px;border-radius:999px;padding:0 15px;box-shadow:var(--shadow-sm);font-size:14px;font-weight:900;white-space:nowrap}
 .state-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
 .field{background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px}
 .field label{display:block;font-size:11px;color:var(--faint);margin-bottom:4px}
 .field select,.field input{width:100%;border:0;outline:0;background:transparent;color:var(--ink);font-weight:700}
-.quick-chips{display:flex;gap:7px;overflow:auto;padding-top:10px;scrollbar-width:none}
+.quick-chips{display:none;gap:7px;overflow:auto;padding-top:10px;scrollbar-width:none}
 .quick-chips::-webkit-scrollbar{display:none}
 .chip{
   border:1px solid var(--line);
@@ -303,7 +304,13 @@ button{cursor:pointer;touch-action:manipulation}
 .nav-btn.active{background:#fff4d6;color:var(--wood)}
 dialog{width:min(680px,calc(100% - 24px));border:0;border-radius:22px;box-shadow:0 28px 80px rgba(0,0,0,.34);padding:0;background:var(--paper);color:var(--ink)}
 dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
-.modal-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:linear-gradient(135deg,#fff8e7,#f1dfb7);border-bottom:1px solid var(--line)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:14px 16px;background:linear-gradient(135deg,#fff8e7,#f1dfb7);border-bottom:1px solid var(--line)}
+.page-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.action-status-bar{display:none!important}
+.bag-inline-summary{display:none!important}
+.modal-back-btn{border:0;background:rgba(111,71,40,.12);color:var(--wood);border-radius:12px;padding:8px 10px;font-weight:900}
+.modal-head strong{flex:1;text-align:center}
+
 .modal-body{padding:16px;max-height:76vh;overflow:auto}
 .close-btn{border:0;background:rgba(111,71,40,.12);color:var(--wood);border-radius:12px;width:34px;height:34px}
 .hidden{display:none!important}
@@ -318,6 +325,9 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
 }
 @media (max-width:760px){
   .app{padding:10px}
+  .search-row{grid-template-columns:1fr auto auto;gap:6px}
+  .search-submit-btn{height:44px;padding:0 12px;font-size:13px}
+  .icon-btn{min-width:44px;height:44px}
   .top-card{border-radius:0 0 20px 20px;margin:-10px -10px 0}
   .today-state-card{padding:10px}
   .state-grid{grid-template-columns:repeat(2,1fr)}
@@ -354,7 +364,7 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
 .resource-presets{margin-top:8px}
 .resource-presets .chip{font-size:12px;padding:6px 9px}
 .current-context-card,.resource-panel{overflow:visible}
-.selected-resource-bar{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:28px;align-items:center}
+.selected-resource-bar{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:0;align-items:center}
 .selected-resource-empty{color:var(--muted);font-size:12px;line-height:1.4}
 .selected-resource-chip{border:1px solid rgba(215,189,134,.86);background:#fff8e7;color:var(--wood);border-radius:999px;padding:4px 8px;font-size:12px;font-weight:850}
 .selected-resource-chip button{border:0;background:transparent;color:var(--red);font-weight:900;margin-left:4px;padding:0}
@@ -388,7 +398,7 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
   .context-box-title{margin-bottom:5px}
   .context-box-title span{display:none}
   .mini-field-row{gap:5px}
-  .context-box .field{padding:6px}
+  .context-box .field{padding:8px 9px}
   .context-box .field label{font-size:10px;margin-bottom:2px}
   .context-box .field select{font-size:13px}
   .resource-grid{grid-template-columns:repeat(2,1fr);gap:6px}
@@ -421,16 +431,17 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
         <span>🔍</span>
         <input id="globalSearch" placeholder="搜任何东西：鲶鱼、南瓜、小桶、阿比盖尔、温室…" autocomplete="off" />
       </div>
+      <button class="search-submit-btn" id="submitSearch" title="搜索">搜索</button>
       <button class="icon-btn" id="clearSearch" title="清空搜索">×</button>
     </div>
-    <div class="quick-chips" id="quickChips"></div>
+    <div class="quick-chips hidden" id="quickChips"></div>
   </section>
 
   <section id="searchPanel" class="search-panel-view hidden">
     <div class="section-head search-head">
-      <div><h2>万能搜索</h2><p>一个物品会同时显示献祭、送礼、加工、地点和建议。</p></div>
+      <div><h2>万能搜索</h2></div>
       <div class="search-actions">
-        <button class="chip" data-action="close-search">返回行动台</button>
+        <button class="chip" data-action="close-search">← 返回行动台</button>
         <span class="badge blue" id="searchCount">0 个结果</span>
       </div>
     </div>
@@ -439,31 +450,28 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
 
   <section id="view-today" class="view active">
     <div class="section-head action-title-row">
-      <div><h2>行动台</h2><p id="todaySubtitle">填时间和天气，选填当前资源，待做事项会自动更新。</p></div>
-      <button class="chip hot" data-action="open-view" data-view="bundles">看献祭进度</button>
+      <div><h2>行动台</h2><p id="todaySubtitle" class="hidden"></p></div>
     </div>
 
     <div class="grid action-grid desk-two-blocks">
       <article class="card span-12 current-context-card">
         <div class="card-head-line compact-head">
           <div>
-            <h3>当前情况</h3>
-            <p>时间和天气必填。当前资源想填多少填多少，不填也能给基础建议。</p>
+            <h3>当前情况（必填）</h3>
           </div>
-          <span class="badge green">自动判断</span>
         </div>
 
         <div class="context-box-grid">
           <section class="context-box context-time" aria-label="时间">
-            <div class="context-box-title"><b>时间</b><span>季节 + 日期</span></div>
+            <div class="context-box-title"><b>时间</b></div>
             <div class="mini-field-row">
-              <div class="field"><label>季节</label><select id="seasonSelect"><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option></select></div>
-              <div class="field"><label>日期</label><select id="dayInput"><option value="1">1日</option><option value="2">2日</option><option value="3">3日</option><option value="4">4日</option><option value="5">5日</option><option value="6">6日</option><option value="7">7日</option><option value="8">8日</option><option value="9">9日</option><option value="10">10日</option><option value="11">11日</option><option value="12">12日</option><option value="13">13日</option><option value="14">14日</option><option value="15">15日</option><option value="16">16日</option><option value="17">17日</option><option value="18">18日</option><option value="19">19日</option><option value="20">20日</option><option value="21">21日</option><option value="22">22日</option><option value="23">23日</option><option value="24">24日</option><option value="25">25日</option><option value="26">26日</option><option value="27">27日</option><option value="28">28日</option></select></div>
+              <div class="field"><select id="seasonSelect" aria-label="季节"><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option></select></div>
+              <div class="field"><select id="dayInput" aria-label="日期"><option value="1">1日</option><option value="2">2日</option><option value="3">3日</option><option value="4">4日</option><option value="5">5日</option><option value="6">6日</option><option value="7">7日</option><option value="8">8日</option><option value="9">9日</option><option value="10">10日</option><option value="11">11日</option><option value="12">12日</option><option value="13">13日</option><option value="14">14日</option><option value="15">15日</option><option value="16">16日</option><option value="17">17日</option><option value="18">18日</option><option value="19">19日</option><option value="20">20日</option><option value="21">21日</option><option value="22">22日</option><option value="23">23日</option><option value="24">24日</option><option value="25">25日</option><option value="26">26日</option><option value="27">27日</option><option value="28">28日</option></select></div>
             </div>
           </section>
           <section class="context-box context-weather" aria-label="天气">
-            <div class="context-box-title"><b>天气</b><span>今天</span></div>
-            <div class="field"><label>天气</label><select id="weatherSelect"><option value="晴天">☀️ 晴天</option><option value="雨天">🌧️ 雨天</option></select></div>
+            <div class="context-box-title"><b>天气</b></div>
+            <div class="field"><select id="weatherSelect" aria-label="天气"><option value="晴天">☀️ 晴天</option><option value="雨天">🌧️ 雨天</option></select></div>
             <input id="phaseSelect" type="hidden" value="auto" />
           </section>
         </div>
@@ -475,15 +483,10 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
         </div>
 
         <details class="resource-panel" open>
-          <summary><span>当前资源（选填）</span><em>勾选你拥有或正在纠结的内容</em></summary>
+          <summary><span>当前资源（选填）</span></summary>
           <div id="selectedResourceBar" class="selected-resource-bar"></div>
           <div id="resourceSelectorGrid" class="resource-selector-grid"></div>
-          <div class="tip-row resource-presets">
-            <button class="chip" data-action="resource-preset" data-values="南瓜,鲶鱼,紫水晶,鸡蛋,松露">示例</button>
-            <button class="chip" data-action="resource-preset" data-values="青豆,花椰菜,土豆,防风草">春季献祭</button>
-            <button class="chip" data-action="resource-preset" data-values="杨桃,远古果实,啤酒花,蓝莓,小麦,小桶,罐头瓶">加工收益</button>
-            <button class="chip" data-action="clear-resources">清空资源</button>
-          </div>
+          <div class="tip-row resource-presets hidden"></div>
           <div id="bagResults" class="bag-inline-summary"></div>
         </details>
       </article>
@@ -492,9 +495,7 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
         <div class="card-head-line">
           <div>
             <h3>待做事项</h3>
-            <p>先看本季赚钱主线，再按时间紧迫程度处理具体事项。</p>
           </div>
-          <span class="badge gold">可勾掉</span>
         </div>
         <div id="moneyStrategy" class="strategy-card"></div>
         <div class="action-feed" id="todayTasks"></div>
@@ -511,13 +512,14 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
   </section>
 
   <section id="view-bundles" class="view">
-    <div class="section-head"><div><h2>社区中心献祭</h2><p>勾选后会保存在本机。点物品标签可以直接搜索。</p></div><button class="chip" id="resetBundles">重置勾选</button></div>
+    <div class="section-head"><div><h2>社区中心献祭</h2></div><div class="page-actions"><button class="chip" data-action="back-to-action">← 返回行动台</button><button class="chip" id="resetBundles">重置勾选</button></div></div>
     <div id="bundleRooms" class="card-list"></div>
   </section>
 
   <section id="view-library" class="view">
     <div class="section-head">
-      <div><h2>资料库</h2><p>按行为场景分成一级分类，再用二级 tab 进入具体资料。顶部搜索仍可直接搜作物卡。</p></div>
+      <div><h2>资料库</h2></div>
+      <button class="chip" data-action="back-to-action">← 返回行动台</button>
     </div>
     <div class="library-tabs library-major-tabs" id="libraryTabs"></div>
     <div class="library-tabs library-sub-tabs" id="librarySubTabs"></div>
@@ -532,7 +534,7 @@ dialog::backdrop{background:rgba(30,20,12,.42);backdrop-filter:blur(4px)}
 </nav>
 
 <dialog id="detailModal">
-  <div class="modal-head"><strong id="modalTitle">详情</strong><button class="close-btn" id="modalClose">×</button></div>
+  <div class="modal-head"><button class="modal-back-btn" data-action="close-detail">← 返回</button><strong id="modalTitle">详情</strong><button class="close-btn" id="modalClose">×</button></div>
   <div class="modal-body" id="modalBody"></div>
 </dialog>
 
@@ -3681,6 +3683,7 @@ const libraryTree = [
 const els = {
   search:document.getElementById("globalSearch"),
   clearSearch:document.getElementById("clearSearch"),
+  submitSearch:document.getElementById("submitSearch"),
   chips:document.getElementById("quickChips"),
   season:document.getElementById("seasonSelect"),
   day:document.getElementById("dayInput"),
@@ -3799,7 +3802,7 @@ function renderResourceSelectors(){
   ensureSelectedResourceArrays();
   if(!els.resourceSelectorGrid || !els.selectedResourceBar) return;
   const selected = getSelectedResourceNames();
-  els.selectedResourceBar.innerHTML = selected.length ? selected.map(name=>`<span class="selected-resource-chip">${escapeHTML(name)}<button data-action="remove-resource" data-name="${escapeHTML(name)}">×</button></span>`).join("") : `<span class="selected-resource-empty">只按时间和天气也能用。勾选资源后，会补充加工、献祭和解锁判断。</span>`;
+  els.selectedResourceBar.innerHTML = selected.length ? selected.map(name=>`<span class="selected-resource-chip">${escapeHTML(name)}<button data-action="remove-resource" data-name="${escapeHTML(name)}">×</button></span>`).join("") : "";
   els.resourceSelectorGrid.innerHTML = Object.entries(RESOURCE_OPTIONS).map(([group,def])=>{
     const selectedCount = (state.selectedResources[group] || []).length;
     return `<div class="resource-picker" data-resource-picker="${group}">
@@ -4299,8 +4302,7 @@ function searchLibraryTree(q){
   return results.sort((a,b)=>b.score-a.score);
 }
 function renderChips(){
-  const chips=["杨桃","远古果实","蓝莓","南瓜","啤酒花","小桶","松露","阿比盖尔","温室","鲟鱼","蟹黄糕"];
-  els.chips.innerHTML = chips.map((c,i)=>`<button class="chip ${i<5 ? "hot" : ""}" data-action="search" data-query="${c}">${c}</button>`).join("");
+  if(els.chips) els.chips.innerHTML = "";
 }
 function openView(view){
   if(view === "planner") view = "today";
@@ -4316,11 +4318,14 @@ function openView(view){
   updateSearchVisibility();
 }
 function setSearch(q){
-  state.query=q;
-  els.search.value=q;
+  state.query=String(q || "").trim();
+  els.search.value=state.query;
   saveState();
   renderSearch();
   window.scrollTo({top:0,behavior:"smooth"});
+}
+function submitSearch(){
+  setSearch(els.search.value || "");
 }
 function syncInputs(){els.season.value=state.season;els.day.value=state.day;els.weather.value=state.weather;if(els.phase) els.phase.value=state.phase || "auto";els.search.value=state.query;syncResourceInputs()}
 function init(){renderChips();syncInputs();renderResourceSelectors();renderToday();renderBundles();renderPlanner();renderLibrary();renderSearch();openView(state.view || "today");updateSearchVisibility()}
@@ -4332,7 +4337,9 @@ document.body.addEventListener("click", e=>{
   if(action==="open-view") openView(target.dataset.view);
   if(action==="detail") openDetail(target.dataset.kind,target.dataset.id);
   if(action==="search") setSearch(target.dataset.query || "");
-  if(action==="close-search"){state.query="";els.search.value="";saveState();renderSearch();window.scrollTo({top:0,behavior:"smooth"})}
+  if(action==="close-search"){state.query="";els.search.value="";saveState();renderSearch();openView("today");window.scrollTo({top:0,behavior:"smooth"})}
+  if(action==="back-to-action"){openView("today");window.scrollTo({top:0,behavior:"smooth"})}
+  if(action==="close-detail"){closeDetail()}
   if(action==="toggle-resource-menu"){
     const picker = target.closest(".resource-picker");
     const wasOpen = picker?.classList.contains("open");
@@ -4345,7 +4352,7 @@ document.body.addEventListener("click", e=>{
   if(action==="resource-preset"){String(target.dataset.values||"").split(/[,，、\s]+/).filter(Boolean).forEach(addResourceByName);openView("today");renderResourceSelectors();renderPlanner();renderToday()}
   if(action==="clear-resources"){clearSelectedResources()}
   if(action==="add-resource"){addResourceByName(target.dataset.name || target.dataset.query || "");openView("today");renderResourceSelectors();renderPlanner();renderToday()}
-  if(action==="fill-bag"){String(target.dataset.bag || "").split(/[\s,，、。;；\n]+/).filter(Boolean).forEach(addResourceByName);openView("today");renderPlanner();renderToday()}
+  if(action==="fill-bag"){String(target.dataset.bag || "").split(/[\\s,，、。;；\\n]+/).filter(Boolean).forEach(addResourceByName);openView("today");renderPlanner();renderToday()}
   if(action==="library-top"){
     state.libraryTop = target.dataset.libraryTop;
     const top = libraryTree.find(item => item.id === state.libraryTop) || libraryTree[0];
@@ -4374,7 +4381,8 @@ document.body.addEventListener("input", e=>{
   const target = e.target.closest("[data-action='filter-resource-options']");
   if(target) filterResourceOptions(target.dataset.group, target.value);
 });
-els.search.addEventListener("input", e=>{state.query=e.target.value.trim();saveState();renderSearch()});
+els.search.addEventListener("keydown", e=>{if(e.key === "Enter") submitSearch()});
+if(els.submitSearch) els.submitSearch.addEventListener("click", submitSearch);
 els.clearSearch.addEventListener("click",()=>{state.query="";els.search.value="";saveState();renderSearch()});
 [els.season,els.day,els.weather,els.phase].filter(Boolean).forEach(el=>{el.addEventListener("change",()=>{state.season=els.season.value;state.day=Math.min(28,Math.max(1,Number(els.day.value||1)));state.weather=els.weather.value;state.phase=els.phase ? els.phase.value : "auto";saveState();renderToday();renderPlanner()})});
 els.resetBundles.addEventListener("click",()=>{if(!confirm("确定要清空献祭勾选吗？")) return;bundleChecked={};safeStore.removeItem("sdv_bundle_checked_v3");renderBundles()});
