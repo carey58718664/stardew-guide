@@ -4506,32 +4506,36 @@ h1 {
 .inv-chip img, .inv-chip .fallback-icon { width: 18px; height: 18px; }
 .inv-chip .inv-count { color: var(--gold); }
 
-.inv-suggestions {
-  margin-top: 10px;
-  padding: 10px;
-  background: #fffce8;
-  border: 1px solid #e6d9a8;
-  border-radius: 8px;
-}
 .inv-suggestion {
   font-size: 12.5px;
-  padding: 4px 0;
+  padding: 7px 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
+  line-height: 1.45;
 }
 .inv-suggestion + .inv-suggestion { border-top: 1px dashed #e2d0aa; }
 .inv-suggestion .badge {
   font-size: 10px;
   font-weight: 900;
-  padding: 1px 7px;
+  padding: 2px 7px;
   border-radius: 4px;
   background: var(--green-soft);
   color: var(--green);
   white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 .inv-suggestion .badge.recommend { background: #fff0d2; color: #9c620e; }
 .inv-suggestion .badge.bundle { background: #e0eef8; color: #2c5d8a; }
+.inv-suggestion .badge.goal { background: var(--green-soft); color: var(--green); }
+.inv-empty {
+  padding: 14px 8px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
 
 .add-item-btn {
   width: 100%;
@@ -4659,57 +4663,78 @@ h1 {
   text-align: center;
 }
 
-/* 数量编辑 */
+/* 数量编辑浮窗 - 紧凑居中 */
+.qty-backdrop {
+  position: fixed; inset: 0;
+  z-index: 200;
+  background: rgba(60,40,20,0.35);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
 .qty-popover {
-  position: fixed;
-  z-index: 100;
+  width: 100%;
+  max-width: 290px;
   background: #fff;
   border: 2px solid var(--wood);
-  border-radius: 12px;
-  padding: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  border-radius: 14px;
+  padding: 12px 12px 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-width: 220px;
+  gap: 6px;
 }
-.qty-popover .qty-title { font-weight: 900; font-size: 14px; margin-bottom: 4px; text-align: center; display: flex; align-items: center; gap: 6px; justify-content: center; }
+.qty-popover .qty-title { font-weight: 900; font-size: 14px; text-align: center; display: flex; align-items: center; gap: 6px; justify-content: center; margin-bottom: 2px; }
 .qty-popover .qty-title img, .qty-popover .qty-title .fallback-icon { width: 22px; height: 22px; }
-.qty-row { display: flex; align-items: center; gap: 6px; }
+.qty-row { display: flex; align-items: center; gap: 4px; }
 .qty-btn {
-  min-width: 36px; height: 36px;
+  flex: 1;
+  min-width: 0;
+  height: 34px;
   border: 1.5px solid var(--line);
   border-radius: 6px;
   background: var(--paper-deep);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 900;
   cursor: pointer;
+  padding: 0;
 }
 .qty-btn.minus { background: #fde9e6; border-color: #e6b8b0; color: var(--red); }
 .qty-btn.plus { background: #e9f6e6; border-color: #a6cf9a; color: var(--green); }
 .qty-input {
-  flex: 1;
+  flex: 1.4;
   min-width: 0;
-  height: 36px;
+  height: 38px;
   text-align: center;
   border: 2px solid var(--line);
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 900;
+  padding: 0;
 }
 .qty-actions { display: flex; gap: 6px; margin-top: 4px; }
-.qty-actions button { flex: 1; min-height: 36px; border-radius: 6px; font-weight: 900; cursor: pointer; }
+.qty-actions button { flex: 1; min-height: 36px; border-radius: 6px; font-weight: 900; cursor: pointer; font-size: 13px; }
 .qty-confirm { background: var(--green); color: #fff; border: 2px solid var(--green); }
 .qty-cancel { background: var(--paper-deep); color: var(--ink); border: 2px solid var(--line); }
 .qty-clear { background: #fde9e6; color: var(--red); border: 2px solid #e6b8b0; }
+.qty-hint {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  padding: 4px 6px;
+  background: #fffce8;
+  border-radius: 6px;
+  line-height: 1.35;
+}
+.qty-hint b { color: var(--gold); }
 
 /* 工具/设备/建筑 */
 .equip-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 6px;
 }
-.equip-tile {
+/* 设备 / 建筑统一行式 */
+.equip-row {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -4717,31 +4742,35 @@ h1 {
   border: 1.5px solid var(--line);
   border-radius: 7px;
   background: var(--paper);
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
-  cursor: pointer;
-  text-align: left;
 }
-.equip-tile.has { background: var(--green-soft); border-color: #88c19a; }
-.equip-tile .tool-icon { font-size: 18px; }
-.equip-tile .tool-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.equip-tile .tool-level {
-  font-size: 10px;
-  font-weight: 900;
-  padding: 1px 6px;
-  border-radius: 4px;
+.equip-row.has { background: var(--green-soft); border-color: #88c19a; }
+.equip-row .tool-icon { font-size: 18px; }
+.equip-row .tool-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.equip-mini-btn {
+  width: 26px; height: 26px;
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
   background: var(--paper-deep);
-  color: var(--wood-dark);
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
 }
-.equip-tile.has .tool-level { background: var(--green); color: #fff; }
-.equip-tile-count {
-  font-size: 11px;
+.equip-mini-btn.minus { background: #fde9e6; border-color: #e6b8b0; color: var(--red); }
+.equip-mini-btn.plus { background: #e9f6e6; border-color: #a6cf9a; color: var(--green); }
+.equip-mini-btn.check { width: 38px; }
+.equip-mini-btn.check.has { background: var(--green); color: #fff; border-color: var(--green); }
+.equip-count-display {
+  min-width: 28px;
+  text-align: center;
   font-weight: 900;
   color: var(--gold);
-  padding: 1px 6px;
-  background: #fffce0;
-  border-radius: 4px;
+  font-size: 13px;
 }
+.equip-row.has .equip-count-display { color: var(--green); }
 
 .tool-level-picker {
   display: flex;
@@ -5015,6 +5044,11 @@ h1 {
   <h2 class="app-panel-title">🎒 我的背包 <span class="subtle">实时联动献祭</span></h2>
   <div id="invSummary" class="inventory-summary"></div>
   <button class="add-item-btn" id="openInventoryBtn" type="button">+ 录入 / 调整库存</button>
+</section>
+
+<!-- 💡 智能建议 -->
+<section class="app-panel" id="suggestionsPanel">
+  <h2 class="app-panel-title">💡 建议 <span class="subtle" id="suggestionsCount"></span></h2>
   <div id="invSuggestions"></div>
 </section>
 
@@ -6785,16 +6819,83 @@ h1 {
       "葡萄": [{ method: "小桶", out: "葡萄酒", price: 240, gain: "+200%" }],
       "牛奶": [{ method: "奶酪压榨机", out: "奶酪", price: 230, gain: "+77%" }],
       "羊毛": [{ method: "织布机", out: "布料", price: 470, gain: "+58%" }],
+      "山羊奶": [{ method: "奶酪压榨机", out: "山羊奶酪", price: 400, gain: "+108%" }],
+      "鸭蛋": [{ method: "蛋黄酱机", out: "鸭蛋黄酱", price: 375, gain: "+295%" }],
+      // 采集物可加工
+      "黑莓": [{ method: "罐头瓶", out: "黑莓果酱", price: 90, gain: "+350%" }, { method: "小桶", out: "黑莓酒", price: 60, gain: "+200%" }],
+      "黄水仙": [{ method: "罐头瓶", out: "腌黄水仙", price: 110, gain: "+267%" }],
+      "野山葵": [{ method: "罐头瓶", out: "腌野山葵", price: 110, gain: "+267%" }],
+      "普通蘑菇": [{ method: "罐头瓶", out: "蘑菇酱", price: 130, gain: "+225%" }],
+      "紫蘑菇": [{ method: "罐头瓶", out: "紫蘑菇酱", price: 550, gain: "+120%" }],
+      "红蘑菇": [{ method: "罐头瓶", out: "红蘑菇酱", price: 200, gain: "+167%" }],
+      "松露": [{ method: "产油机", out: "松露油", price: 1065, gain: "+70%" }],
+      // 作物
+      "土豆": [{ method: "罐头瓶", out: "腌土豆", price: 210, gain: "+162%" }],
+      "花椰菜": [{ method: "罐头瓶", out: "腌花椰菜", price: 400, gain: "+128%" }, { method: "小桶", out: "蔬菜汁", price: 218, gain: "+25%" }],
+      "防风草": [{ method: "罐头瓶", out: "腌防风草", price: 120, gain: "+243%" }],
+      "羽衣甘蓝": [{ method: "罐头瓶", out: "腌羽衣甘蓝", price: 270, gain: "+145%" }],
+      "蔓越莓": [{ method: "罐头瓶", out: "蔓越莓果酱", price: 200, gain: "+167%" }, { method: "小桶", out: "蔓越莓酒", price: 225, gain: "+200%" }],
+      "朝鲜蓟": [{ method: "罐头瓶", out: "腌朝鲜蓟", price: 370, gain: "+131%" }],
+      "山药": [{ method: "罐头瓶", out: "腌山药", price: 370, gain: "+131%" }],
+      "茄子": [{ method: "罐头瓶", out: "腌茄子", price: 170, gain: "+183%" }],
+      "苹果": [{ method: "罐头瓶", out: "苹果果酱", price: 250, gain: "+150%" }, { method: "小桶", out: "苹果酒", price: 300, gain: "+200%" }],
+      "桃子": [{ method: "罐头瓶", out: "桃子果酱", price: 330, gain: "+136%" }, { method: "小桶", out: "桃子酒", price: 420, gain: "+200%" }],
+      "石榴": [{ method: "罐头瓶", out: "石榴果酱", price: 330, gain: "+136%" }, { method: "小桶", out: "石榴酒", price: 420, gain: "+200%" }],
+      "橙子": [{ method: "罐头瓶", out: "橙子果酱", price: 250, gain: "+150%" }, { method: "小桶", out: "橙子酒", price: 300, gain: "+200%" }],
+      "樱桃": [{ method: "罐头瓶", out: "樱桃果酱", price: 210, gain: "+162%" }, { method: "小桶", out: "樱桃酒", price: 240, gain: "+200%" }],
+      "杏子": [{ method: "罐头瓶", out: "杏子果酱", price: 150, gain: "+200%" }, { method: "小桶", out: "杏子酒", price: 150, gain: "+200%" }],
     };
 
-    /* ── 售价数据（决策面板用） ── */
+    /* ── 售价数据（决策面板/建议用） ── */
     const SELL_PRICES = {
-      "玉米": 50, "南瓜": 320, "番茄": 60, "甜瓜": 250, "杨桃": 750,
-      "上古水果": 550, "热辣椒": 40, "辣椒": 40, "蓝莓": 50,
-      "铜矿石": 5, "铁矿石": 10, "金矿石": 25, "铱矿石": 100,
-      "小麦": 25, "葡萄": 80, "啤酒花": 25,
-      "木材": 2, "石头": 2, "硬木": 15, "煤炭": 15, "纤维": 1, "粘土": 20,
-      "牛奶": 125, "羊毛": 340, "蜂蜜": 100, "松露": 625,
+      // 作物
+      "玉米":50,"南瓜":320,"番茄":60,"甜瓜":250,"杨桃":750,
+      "上古水果":550,"热辣椒":40,"辣椒":40,"蓝莓":50,
+      "土豆":80,"花椰菜":175,"防风草":35,"青豆":40,"羽衣甘蓝":110,
+      "胡萝卜":35,"郁金香":30,"蓝爵":200,"罂粟":140,
+      "茄子":60,"山药":160,"葡萄":80,"小麦":25,"啤酒花":25,
+      "向日葵":80,"夏南瓜":40,"夏季亮片":90,
+      "蔓越莓":75,"朝鲜蓟":160,"红叶卷心菜":260,"苋菜":150,
+      "甜菜":100,"西兰花":100,"宝石甜莓":350,
+      // 树果
+      "苹果":100,"杏子":50,"橙子":100,"桃子":140,"石榴":140,"樱桃":80,
+      // 采集
+      "野山葵":30,"黄水仙":30,"韭葱":60,"蒲公英":40,"春葱":8,
+      "香味浆果":80,"甜豌豆":50,"美洲大树莓":20,
+      "普通蘑菇":40,"野李子":80,"榛子":90,"黑莓":20,
+      "冬根":70,"水晶果":150,"雪山药":100,"番红花":140,"冬青树":80,
+      "椰子":100,"仙人掌果子":75,"山洞萝卜":25,"红蘑菇":75,"紫蘑菇":250,"龙葵":30,"蕨菜":25,"松露":625,
+      // 矿物
+      "铜矿石":5,"铁矿石":10,"金矿石":25,"铱矿石":100,
+      "铜锭":60,"铁锭":120,"金锭":250,"铱锭":1000,
+      "煤炭":15,"石英":25,"精炼石英":50,
+      "紫水晶":100,"海蓝宝石":180,"翡翠":250,"红宝石":250,"钻石":750,"黄水晶":75,
+      // 原材料
+      "木材":2,"石头":2,"硬木":15,"纤维":1,"粘土":20,"苔藓":3,"干草":50,
+      "树液":2,"橡子":20,"枫树种子":35,
+      // 树脂
+      "枫糖浆":200,"橡树树脂":150,"松焦油":100,
+      // 动物
+      "牛奶":125,"羊毛":340,"蜂蜜":100,"鸭蛋":95,"羽毛":125,"兔子脚":565,
+      "大壶牛奶":190,"大瓶羊奶":345,"大鸡蛋(白)":95,"大鸡蛋(棕)":95,
+      // 鱼
+      "太阳鱼":30,"鲶鱼":200,"西鲱":45,"虎纹鳟鱼":150,"鲢鱼":75,
+      "大嘴鲈鱼":100,"鲤鱼":30,"大头鱼":135,"鲟鱼":200,
+      "沙丁鱼":40,"金枪鱼":100,"红鲫鱼":120,"罗非鱼":30,
+      "鲷鱼":75,"大眼鱼":105,"鳗鱼":85,"河豚":200,
+      "岩浆鳗鱼":700,"虚空鲑鱼":150,"鬼鱼":45,"沙鱼":75,"木跃鱼":50,
+      "蝎鲤鱼":225,"章鱼":150,"水滴鱼":500,
+      // 贝
+      "龙虾":120,"小龙虾":75,"螃蟹":100,"鸟蛤":50,"蚌":30,"虾":60,
+      "蜗牛":65,"玉黍螺":20,"牡蛎":40,"蛤":50,"海胆":160,"白藻":75,
+      // 工匠
+      "山羊奶酪":400,"奶酪":230,"果酒":160,"葡萄酒":240,
+      "鱼籽":30,"陈年鱼籽":150,"鱼子酱":500,
+      "松露油":1065,"布料":470,
+      // 怪物
+      "史莱姆":5,"蝙蝠翅膀":15,"太阳精华":40,"虚空精华":60,
+      // 特殊
+      "古代玩偶":100,"鹦鹉螺化石":120,
     };
 
     /* ── localStorage ── */
@@ -6995,7 +7096,7 @@ h1 {
       const div = document.getElementById("invSummary");
       const entries = Object.entries(appState.inventory).filter(([k, v]) => v > 0);
       if (entries.length === 0) {
-        div.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:6px 0;">背包是空的，点下方按钮录入。</div>`;
+        div.innerHTML = `<div style="color:var(--muted);font-size:12.5px;padding:5px 2px 8px;">背包是空的，点下方按钮录入物品。录入后会自动生成处置建议。</div>`;
         return;
       }
       // Sort by recent / by quantity
@@ -7079,15 +7180,40 @@ h1 {
           sugs.push({ kind: "goal", text: `「${tpl.title}」差 ${need} 就能完成` });
         }
       });
-      // 3. 反推下一步建筑
+      // 3. 反推下一步建筑/设备/工具
       if (appState.buildings.coop && !appState.buildings.silo && !appState.goals.some(g => g.id === "build-silo")) {
-        sugs.push({ kind: "bundle", text: `已有鸡舍但没建筒仓 → 推荐建筒仓以储存干草` });
+        sugs.push({ kind: "bundle", text: `已有鸡舍但没建筒仓 → 推荐先建筒仓以储存干草（鸡舍前建更划算）` });
       }
-      if (appState.tools.pickaxe === "铜" && !appState.goals.some(g => g.id === "upgrade-pickaxe-steel")) {
-        sugs.push({ kind: "bundle", text: `铜镐已有，下一步可升级钢镐（到矿洞40层挖铁）` });
+      if (appState.buildings.coop && !appState.buildings.barn && !appState.goals.some(g => g.id === "build-barn")) {
+        sugs.push({ kind: "bundle", text: `有鸡舍了，可以考虑建牛棚扩展畜牧业` });
+      }
+      const px = appState.tools.pickaxe;
+      if (px === "铜" && !appState.goals.some(g => g.id === "upgrade-pickaxe-steel")) {
+        sugs.push({ kind: "bundle", text: `铜镐已有 → 下一步升级钢镐（到矿洞40层挖铁）` });
+      }
+      if (px === "铁" && !appState.goals.some(g => g.id === "upgrade-pickaxe-gold")) {
+        sugs.push({ kind: "bundle", text: `钢镐已有 → 下一步升级金镐（开矿洞下层岩浆区岩石）` });
+      }
+      const ax = appState.tools.axe;
+      if (ax === "铜" && !appState.goals.some(g => g.id === "upgrade-axe-steel")) {
+        sugs.push({ kind: "bundle", text: `铜斧已有 → 升级钢斧可以砍硬木` });
       }
       if (appState.equipment.preserves_jar > 0 && !appState.equipment.keg && !appState.goals.some(g => g.id === "craft-keg")) {
-        sugs.push({ kind: "bundle", text: `有罐头瓶但没小桶 → 耕种8级后可做小桶（水果做酒收益更高）` });
+        sugs.push({ kind: "bundle", text: `有罐头瓶但没小桶 → 耕种8级后做小桶（水果做酒收益更高）` });
+      }
+      if ((appState.equipment.bee_house || 0) === 0 && !appState.goals.some(g => g.id === "craft-bee-house")) {
+        if (appState.tools.hoe || appState.equipment.preserves_jar > 0) {
+          sugs.push({ kind: "bundle", text: `还没蜂房 → 蜂房性价比极高，旁边种花做花蜜赚钱` });
+        }
+      }
+      if ((appState.buildings.coop || appState.buildings.barn) && !appState.equipment.mayonnaise_machine && !appState.goals.some(g => g.id === "craft-mayo-machine")) {
+        sugs.push({ kind: "bundle", text: `有动物棚但没蛋黄酱机 → 推荐做蛋黄酱机（鸡蛋加工翻倍）` });
+      }
+      if ((appState.inventory["羊毛"] || 0) > 0 && !appState.equipment.loom) {
+        sugs.push({ kind: "bundle", text: `有羊毛但没织布机 → 织布机可把羊毛做成布料（+58%）` });
+      }
+      if ((appState.inventory["小麦"] || 0) >= 10 && !appState.buildings.mill && !appState.goals.some(g => g.id === "build-mill")) {
+        sugs.push({ kind: "bundle", text: `小麦${appState.inventory["小麦"]}个 → 建磨坊可磨成面粉（解锁烹饪配方）` });
       }
       // 4. 提示献祭物品
       const bundleHints = [];
@@ -7103,19 +7229,20 @@ h1 {
       });
 
       const div = document.getElementById("invSuggestions");
+      const countEl = document.getElementById("suggestionsCount");
       if (sugs.length === 0) {
-        div.innerHTML = "";
+        const isEmptyInv = Object.keys(appState.inventory).filter(k => appState.inventory[k] > 0).length === 0;
+        div.innerHTML = `<div class="inv-empty">${isEmptyInv ? "录入物品后这里会显示加工建议、目标推荐和下一步策略。" : "暂时没有建议。继续录入更多物品试试～"}</div>`;
+        if (countEl) countEl.textContent = "";
         return;
       }
-      div.innerHTML = `<div class="inv-suggestions">
-        <div style="font-weight:900;font-size:13px;color:var(--wood-dark);margin-bottom:5px;">💡 建议</div>
-        ${sugs.slice(0, 6).map(s => `
-          <div class="inv-suggestion">
-            <span class="badge ${s.kind}">${s.kind === "recommend" ? "加工" : s.kind === "goal" ? "目标" : "推荐"}</span>
-            <span>${escapeHtml(s.text)}</span>
-          </div>
-        `).join("")}
-      </div>`;
+      if (countEl) countEl.textContent = `${sugs.length} 条`;
+      div.innerHTML = sugs.slice(0, 10).map(s => `
+        <div class="inv-suggestion">
+          <span class="badge ${s.kind}">${s.kind === "recommend" ? "加工" : s.kind === "goal" ? "目标" : "推荐"}</span>
+          <span>${escapeHtml(s.text)}</span>
+        </div>
+      `).join("");
     }
 
     /* ── 物品查询（决策面板） ── */
@@ -7198,7 +7325,7 @@ h1 {
         const lv = appState.tools[t.id] || "初始";
         const levels = t.id === "rod" ? ROD_LEVELS : TOOL_LEVELS;
         return `<div style="margin-bottom:8px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;font-weight:800;">${t.emoji} ${t.name}：当前 <span style="color:var(--gold)">${lv}</span></div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;font-weight:800;font-size:13px;">${t.emoji} ${t.name}：<span style="color:var(--gold)">${lv}</span></div>
           <div class="tool-level-picker">
             ${levels.map(lvName => `<button data-set-tool="${t.id}|${lvName}" class="${lv === lvName ? "active" : ""}">${lvName}</button>`).join("")}
           </div>
@@ -7206,67 +7333,66 @@ h1 {
       }).join("");
       const equipRows = `<div class="equip-grid">${EQUIPMENT.map(e => {
         const qty = appState.equipment[e.id] || 0;
-        return `<button class="equip-tile ${qty > 0 ? "has" : ""}" data-equip-edit="${e.id}" type="button">
+        return `<div class="equip-row ${qty > 0 ? "has" : ""}">
           <span class="tool-icon">${e.emoji}</span>
           <span class="tool-name">${e.name}</span>
-          ${qty > 0 ? `<span class="equip-tile-count">×${qty}</span>` : `<span class="tool-level">+</span>`}
-        </button>`;
+          <button class="equip-mini-btn minus" data-equip-step="${e.id}|-1" type="button">−</button>
+          <span class="equip-count-display">${qty}</span>
+          <button class="equip-mini-btn plus" data-equip-step="${e.id}|+1" type="button">+</button>
+        </div>`;
       }).join("")}</div>`;
       const bldRows = `<div class="equip-grid">${BUILDINGS.map(b => {
         const has = appState.buildings[b.id];
-        return `<button class="equip-tile ${has ? "has" : ""}" data-toggle-bld="${b.id}" type="button">
+        return `<div class="equip-row ${has ? "has" : ""}">
           <span class="tool-icon">${b.emoji}</span>
           <span class="tool-name">${b.name}</span>
-          <span class="tool-level">${has ? "✓" : "□"}</span>
-        </button>`;
+          <button class="equip-mini-btn check ${has ? "has" : ""}" data-toggle-bld="${b.id}" type="button">${has ? "✓" : "□"}</button>
+        </div>`;
       }).join("")}</div>`;
       return `
-        <div style="font-weight:900;font-size:14px;margin:6px 0 8px;color:var(--wood-dark);">🔨 工具等级</div>
+        <div style="font-weight:900;font-size:13px;margin:4px 0 7px;color:var(--wood-dark);">🔨 工具等级</div>
         ${toolsRows}
-        <div style="font-weight:900;font-size:14px;margin:14px 0 8px;color:var(--wood-dark);">🏭 加工设备数量</div>
+        <div style="font-weight:900;font-size:13px;margin:12px 0 7px;color:var(--wood-dark);">🏭 加工设备数量</div>
         ${equipRows}
-        <div style="font-weight:900;font-size:14px;margin:14px 0 8px;color:var(--wood-dark);">🏡 农场建筑</div>
+        <div style="font-weight:900;font-size:13px;margin:12px 0 7px;color:var(--wood-dark);">🏡 农场建筑</div>
         ${bldRows}
       `;
     }
 
-    /* ── 数量编辑弹窗 ── */
+    /* ── 数量编辑弹窗 - 居中紧凑 ── */
     let qtyPop = null;
     function openQtyPopover(name, anchor) {
       closeQtyPopover();
       const current = appState.inventory[name] || 0;
+      // 默认值：当前没有时默认 1
+      const initialValue = current === 0 ? 1 : current;
+      const hint = getItemHint(name);
       qtyPop = document.createElement("div");
-      qtyPop.className = "qty-popover";
+      qtyPop.className = "qty-backdrop";
       qtyPop.innerHTML = `
-        <div class="qty-title">${renderInvIcon(name)}<span>${escapeHtml(name)}</span></div>
-        <div class="qty-row">
-          <button class="qty-btn minus" data-qty="-10">−10</button>
-          <button class="qty-btn minus" data-qty="-1">−</button>
-          <input class="qty-input" id="qtyInput" type="number" min="0" value="${current}" />
-          <button class="qty-btn plus" data-qty="+1">+</button>
-          <button class="qty-btn plus" data-qty="+10">+10</button>
-        </div>
-        <div class="qty-row">
-          <button class="qty-btn plus" data-qty="+50">+50</button>
-          <button class="qty-btn plus" data-qty="+100">+100</button>
-          <button class="qty-btn minus" data-qty="clear">归零</button>
-        </div>
-        <div class="qty-actions">
-          <button class="qty-cancel" data-qty="cancel">取消</button>
-          <button class="qty-confirm" data-qty="confirm">确定</button>
+        <div class="qty-popover">
+          <div class="qty-title">${renderInvIcon(name)}<span>${escapeHtml(name)}</span></div>
+          ${hint ? `<div class="qty-hint">${hint}</div>` : ""}
+          <div class="qty-row">
+            <button class="qty-btn minus" data-qty="-10">−10</button>
+            <button class="qty-btn minus" data-qty="-1">−</button>
+            <input class="qty-input" id="qtyInput" type="number" min="0" value="${initialValue}" />
+            <button class="qty-btn plus" data-qty="+1">+</button>
+            <button class="qty-btn plus" data-qty="+10">+10</button>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn plus" data-qty="+50">+50</button>
+            <button class="qty-btn plus" data-qty="+100">+100</button>
+            <button class="qty-btn minus" data-qty="clear">归零</button>
+          </div>
+          <div class="qty-actions">
+            <button class="qty-cancel" data-qty="cancel">取消</button>
+            <button class="qty-confirm" data-qty="confirm">确定</button>
+          </div>
         </div>
       `;
+      qtyPop.addEventListener("click", e => { if (e.target === qtyPop) closeQtyPopover(); });
       document.body.appendChild(qtyPop);
-      // Position near anchor
-      const rect = anchor.getBoundingClientRect();
-      const popRect = qtyPop.getBoundingClientRect();
-      let top = rect.bottom + 8;
-      let left = rect.left + rect.width / 2 - popRect.width / 2;
-      if (left < 8) left = 8;
-      if (left + popRect.width > window.innerWidth - 8) left = window.innerWidth - popRect.width - 8;
-      if (top + popRect.height > window.innerHeight - 8) top = rect.top - popRect.height - 8;
-      qtyPop.style.left = left + "px";
-      qtyPop.style.top = top + "px";
       qtyPop.dataset.itemName = name;
       const input = qtyPop.querySelector("#qtyInput");
       input.focus();
@@ -7274,6 +7400,24 @@ h1 {
     }
     function closeQtyPopover() {
       if (qtyPop) { qtyPop.remove(); qtyPop = null; }
+    }
+    /* 物品处置提示生成（在数量弹窗里看到） */
+    function getItemHint(name) {
+      const sell = SELL_PRICES[name];
+      const procs = PROCESS_MAP[name];
+      if (!sell && !procs) return null;
+      const parts = [];
+      if (procs && procs.length > 0) {
+        const best = procs[0];
+        if (sell && best.price > sell) {
+          parts.push(`<b>${best.method}</b>加工成 ${best.out} <b>${best.price}g</b>（直卖${sell}g · ${best.gain}）`);
+        } else {
+          parts.push(`${best.method} → ${best.out} <b>${best.price}g</b>`);
+        }
+      } else if (sell) {
+        parts.push(`直接卖 <b>${sell}g</b>`);
+      }
+      return parts.join("");
     }
     function handleQtyAction(act) {
       if (!qtyPop) return;
@@ -7540,20 +7684,16 @@ h1 {
       // 数量编辑按钮
       const qtyBtn = e.target.closest("[data-qty]");
       if (qtyBtn) { handleQtyAction(qtyBtn.dataset.qty); return; }
-      // 设备数量编辑
-      const equipTile = e.target.closest("[data-equip-edit]");
-      if (equipTile) {
-        const id = equipTile.dataset.equipEdit;
-        const eq = EQUIPMENT.find(x => x.id === id);
+      // 设备数量 +/-
+      const equipStep = e.target.closest("[data-equip-step]");
+      if (equipStep) {
+        const [id, delta] = equipStep.dataset.equipStep.split("|");
         const cur = appState.equipment[id] || 0;
-        const val = prompt(`${eq.name} 数量：`, cur);
-        if (val !== null) {
-          const v = Math.max(0, parseInt(val) || 0);
-          if (v === 0) delete appState.equipment[id];
-          else appState.equipment[id] = v;
-          renderApp();
-          renderInvTab();
-        }
+        const v = Math.max(0, cur + parseInt(delta));
+        if (v === 0) delete appState.equipment[id];
+        else appState.equipment[id] = v;
+        renderApp();
+        renderInvTab();
         return;
       }
       // 建筑勾选
