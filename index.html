@@ -1,723 +1,615 @@
-import { useState, useMemo, useCallback } from “react”;
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#FAF5EB" />
+<title>星露谷 · 决策链助手</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+  body { font-family: 'Nunito','Noto Sans SC',system-ui,sans-serif; background: #FAF5EB; color: #3D2B1F; }
+  input::placeholder { color: #9B8E7E; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: #E4DBCC; border-radius: 2px; }
+  button { font-family: inherit; }
+  #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; color: #9B8E7E; font-size: 14px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner { width: 28px; height: 28px; border: 3px solid #E4DBCC; border-top-color: #527A54; border-radius: 50%; animation: spin 0.8s linear infinite; }
+</style>
+</head>
+<body>
+<div id="root"><div id="loading"><div class="spinner"></div><div>正在加载...</div></div></div>
 
-/* ══════════ PALETTE ══════════ */
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useMemo, useCallback, useEffect } = React;
+
 const C = {
-bg: “#FAF5EB”, card: “#FFFDF7”, card2: “#F6F1E6”,
-green: “#527A54”, greenL: “#E5EDE3”, greenD: “#3A5C3B”,
-amber: “#C49035”, amberL: “#FFF8EA”, amberBg: “#FEF3DB”,
-brown: “#3D2B1F”, brownL: “#78685A”,
-red: “#C0534F”, redL: “#FDE8E7”,
-blue: “#4A7B9D”, blueL: “#E3F0F7”,
-border: “#E4DBCC”, muted: “#9B8E7E”,
-shadow: “0 2px 12px rgba(61,43,31,0.07)”,
+  bg: "#FAF5EB", card: "#FFFDF7", card2: "#F6F1E6",
+  green: "#527A54", greenL: "#E5EDE3", greenD: "#3A5C3B",
+  amber: "#C49035", amberL: "#FFF8EA", amberBg: "#FEF3DB",
+  brown: "#3D2B1F", brownL: "#78685A",
+  red: "#C0534F", redL: "#FDE8E7",
+  blue: "#4A7B9D", blueL: "#E3F0F7",
+  border: "#E4DBCC", muted: "#9B8E7E",
+  shadow: "0 2px 12px rgba(61,43,31,0.07)",
 };
 
-/* ══════════ GAME DATA ══════════ */
 const SEASONS = [
-{ id: “spring”, label: “春”, emoji: “🌸” },
-{ id: “summer”, label: “夏”, emoji: “☀️” },
-{ id: “fall”, label: “秋”, emoji: “🍂” },
-{ id: “winter”, label: “冬”, emoji: “❄️” },
+  { id: "spring", label: "春", emoji: "🌸" },
+  { id: "summer", label: "夏", emoji: "☀️" },
+  { id: "fall", label: "秋", emoji: "🍂" },
+  { id: "winter", label: "冬", emoji: "❄️" },
 ];
 
 const CALENDAR_EVENTS = {
-“spring-4”: { birthday: “Kent” },
-“spring-7”: { birthday: “Lewis” },
-“spring-10”: { birthday: “Vincent” },
-“spring-13”: { festival: “蛋蛋节” },
-“spring-14”: { birthday: “Haley” },
-“spring-18”: { birthday: “Pam” },
-“spring-20”: { birthday: “Shane” },
-“spring-24”: { festival: “花舞节” },
-“spring-26”: { birthday: “Pierre” },
-“spring-27”: { birthday: “Emily” },
-“summer-4”: { birthday: “Jas” },
-“summer-8”: { birthday: “Gus” },
-“summer-10”: { birthday: “Maru” },
-“summer-11”: { festival: “荧光水母” },
-“summer-13”: { birthday: “Alex” },
-“summer-17”: { birthday: “Sam” },
-“summer-19”: { birthday: “Demetrius” },
-“summer-22”: { birthday: “Dwarf” },
-“summer-24”: { birthday: “Willy” },
-“summer-28”: { festival: “月光水母” },
-“fall-2”: { birthday: “Penny” },
-“fall-5”: { birthday: “Elliott” },
-“fall-11”: { birthday: “Jodi” },
-“fall-13”: { festival: “星露谷展览会” },
-“fall-15”: { birthday: “Sandy” },
-“fall-18”: { birthday: “Marnie” },
-“fall-21”: { birthday: “Robin” },
-“fall-24”: { birthday: “George” },
-“fall-27”: { festival: “万灵节” },
-“winter-1”: { birthday: “Krobus” },
-“winter-3”: { birthday: “Linus” },
-“winter-7”: { birthday: “Caroline” },
-“winter-8”: { festival: “冰雪节” },
-“winter-10”: { birthday: “Sebastian” },
-“winter-14”: { birthday: “Harvey” },
-“winter-17”: { birthday: “Wizard” },
-“winter-20”: { birthday: “Evelyn” },
-“winter-23”: { birthday: “Leah” },
-“winter-25”: { festival: “冬星节” },
-“winter-26”: { birthday: “Clint” },
+  "spring-4":{birthday:"Kent"},"spring-7":{birthday:"Lewis"},"spring-10":{birthday:"Vincent"},
+  "spring-13":{festival:"蛋蛋节"},"spring-14":{birthday:"Haley"},"spring-18":{birthday:"Pam"},
+  "spring-20":{birthday:"Shane"},"spring-24":{festival:"花舞节"},"spring-26":{birthday:"Pierre"},
+  "spring-27":{birthday:"Emily"},
+  "summer-4":{birthday:"Jas"},"summer-8":{birthday:"Gus"},"summer-10":{birthday:"Maru"},
+  "summer-11":{festival:"荧光水母之夜"},"summer-13":{birthday:"Alex"},"summer-17":{birthday:"Sam"},
+  "summer-19":{birthday:"Demetrius"},"summer-22":{birthday:"Dwarf"},"summer-24":{birthday:"Willy"},
+  "summer-28":{festival:"月光水母舞会"},
+  "fall-2":{birthday:"Penny"},"fall-5":{birthday:"Elliott"},"fall-11":{birthday:"Jodi"},
+  "fall-13":{festival:"星露谷展览会"},"fall-15":{birthday:"Sandy"},"fall-18":{birthday:"Marnie"},
+  "fall-21":{birthday:"Robin"},"fall-24":{birthday:"George"},"fall-27":{festival:"万灵节"},
+  "winter-1":{birthday:"Krobus"},"winter-3":{birthday:"Linus"},"winter-7":{birthday:"Caroline"},
+  "winter-8":{festival:"冰雪节"},"winter-10":{birthday:"Sebastian"},"winter-14":{birthday:"Harvey"},
+  "winter-17":{birthday:"Wizard"},"winter-20":{birthday:"Evelyn"},"winter-23":{birthday:"Leah"},
+  "winter-25":{festival:"冬星节"},"winter-26":{birthday:"Clint"},
 };
 
 const ITEMS = [
-{
-id: “corn”, name: “玉米”, emoji: “🌽”, type: “蔬菜”, season: “夏/秋”, price: 50,
-processing: [
-{ method: “罐头瓶”, product: “腌玉米”, price: 150, gain: “+200%”, equipId: “preserves_jar” },
-{ method: “小桶”, product: “蔬菜汁”, price: 112, gain: “+124%”, equipId: “keg” },
-],
-gifts: [{ npc: “Demetrius”, level: “喜欢” }],
-bundles: [“品质作物包（金星×5）”],
-tags: [“作物”, “蔬菜”, “夏”, “秋”],
-},
-{
-id: “pumpkin”, name: “南瓜”, emoji: “🎃”, type: “蔬菜”, season: “秋”, price: 320,
-processing: [
-{ method: “罐头瓶”, product: “腌南瓜”, price: 690, gain: “+116%”, equipId: “preserves_jar” },
-{ method: “小桶”, product: “南瓜汁”, price: 720, gain: “+125%”, equipId: “keg” },
-],
-gifts: [{ npc: “Abigail”, level: “喜爱” }, { npc: “Krobus”, level: “喜爱” }],
-bundles: [“品质作物包（金星×5）”, “秋季作物包”],
-tags: [“作物”, “蔬菜”, “秋”],
-},
-{
-id: “tomato”, name: “番茄”, emoji: “🍅”, type: “蔬菜”, season: “夏”, price: 60,
-processing: [
-{ method: “罐头瓶”, product: “腌番茄”, price: 170, gain: “+183%”, equipId: “preserves_jar” },
-{ method: “小桶”, product: “番茄汁”, price: 135, gain: “+125%”, equipId: “keg” },
-],
-gifts: [{ npc: “Demetrius”, level: “喜爱” }],
-bundles: [“夏季作物包”],
-tags: [“作物”, “蔬菜”, “夏”],
-},
-{
-id: “melon”, name: “甜瓜”, emoji: “🍈”, type: “水果”, season: “夏”, price: 250,
-processing: [
-{ method: “小桶”, product: “甜瓜酒”, price: 750, gain: “+200%”, equipId: “keg” },
-{ method: “罐头瓶”, product: “甜瓜果酱”, price: 550, gain: “+120%”, equipId: “preserves_jar” },
-],
-gifts: [{ npc: “Penny”, level: “喜爱” }],
-bundles: [“夏季作物包”, “品质作物包（金星×5）”],
-tags: [“作物”, “水果”, “夏”],
-},
-{
-id: “starfruit”, name: “杨桃”, emoji: “⭐”, type: “水果”, season: “夏”, price: 750,
-processing: [
-{ method: “小桶”, product: “杨桃酒”, price: 2250, gain: “+200%”, equipId: “keg” },
-{ method: “罐头瓶”, product: “杨桃果酱”, price: 1550, gain: “+107%”, equipId: “preserves_jar” },
-],
-gifts: [], bundles: [],
-tags: [“作物”, “水果”, “夏”, “高价值”],
-},
-{
-id: “ancient_fruit”, name: “上古水果”, emoji: “🍇”, type: “水果”, season: “春/夏/秋”, price: 550,
-processing: [
-{ method: “小桶”, product: “上古水果酒”, price: 1650, gain: “+200%”, equipId: “keg” },
-{ method: “罐头瓶”, product: “上古果酱”, price: 1150, gain: “+109%”, equipId: “preserves_jar” },
-],
-gifts: [], bundles: [],
-tags: [“作物”, “水果”, “春”, “夏”, “秋”, “高价值”],
-},
-{
-id: “hot_pepper”, name: “热辣椒”, emoji: “🌶️”, type: “水果”, season: “夏”, price: 40,
-processing: [
-{ method: “罐头瓶”, product: “辣椒果酱”, price: 130, gain: “+225%”, equipId: “preserves_jar” },
-{ method: “小桶”, product: “辣椒酒”, price: 120, gain: “+200%”, equipId: “keg” },
-],
-gifts: [{ npc: “Lewis”, level: “喜爱” }, { npc: “Shane”, level: “喜爱” }],
-bundles: [“夏季作物包”],
-tags: [“作物”, “水果”, “夏”],
-},
-{
-id: “copper_ore”, name: “铜矿石”, emoji: “🟤”, type: “矿物”, season: “全年”, price: 5,
-processing: [{ method: “熔炉”, product: “铜锭”, price: 60, gain: “5个矿石→1锭”, equipId: “furnace” }],
-gifts: [], bundles: [“铁匠包”],
-tags: [“矿物”, “矿洞”, “铜”],
-},
-{
-id: “iron_ore”, name: “铁矿石”, emoji: “⚙️”, type: “矿物”, season: “全年”, price: 10,
-processing: [{ method: “熔炉”, product: “铁锭”, price: 120, gain: “5个矿石→1锭”, equipId: “furnace” }],
-gifts: [], bundles: [“铁匠包”],
-tags: [“矿物”, “矿洞”, “铁”],
-},
+  { id:"corn",name:"玉米",emoji:"🌽",type:"蔬菜",season:"夏/秋",price:50,
+    processing:[
+      {method:"罐头瓶",product:"腌玉米",price:150,gain:"+200%",equipId:"preserves_jar"},
+      {method:"小桶",product:"蔬菜汁",price:112,gain:"+124%",equipId:"keg"},
+    ],
+    gifts:[{npc:"Demetrius",level:"喜欢"}],
+    bundles:["品质作物包（金星×5）"],
+    tags:["作物","蔬菜","夏","秋"]},
+  { id:"pumpkin",name:"南瓜",emoji:"🎃",type:"蔬菜",season:"秋",price:320,
+    processing:[
+      {method:"罐头瓶",product:"腌南瓜",price:690,gain:"+116%",equipId:"preserves_jar"},
+      {method:"小桶",product:"南瓜汁",price:720,gain:"+125%",equipId:"keg"},
+    ],
+    gifts:[{npc:"Abigail",level:"喜爱"},{npc:"Krobus",level:"喜爱"}],
+    bundles:["品质作物包（金星×5）","秋季作物包"],
+    tags:["作物","蔬菜","秋"]},
+  { id:"tomato",name:"番茄",emoji:"🍅",type:"蔬菜",season:"夏",price:60,
+    processing:[
+      {method:"罐头瓶",product:"腌番茄",price:170,gain:"+183%",equipId:"preserves_jar"},
+      {method:"小桶",product:"番茄汁",price:135,gain:"+125%",equipId:"keg"},
+    ],
+    gifts:[{npc:"Demetrius",level:"喜爱"}],
+    bundles:["夏季作物包"],
+    tags:["作物","蔬菜","夏"]},
+  { id:"melon",name:"甜瓜",emoji:"🍈",type:"水果",season:"夏",price:250,
+    processing:[
+      {method:"小桶",product:"甜瓜酒",price:750,gain:"+200%",equipId:"keg"},
+      {method:"罐头瓶",product:"甜瓜果酱",price:550,gain:"+120%",equipId:"preserves_jar"},
+    ],
+    gifts:[{npc:"Penny",level:"喜爱"}],
+    bundles:["夏季作物包","品质作物包（金星×5）"],
+    tags:["作物","水果","夏"]},
+  { id:"starfruit",name:"杨桃",emoji:"⭐",type:"水果",season:"夏",price:750,
+    processing:[
+      {method:"小桶",product:"杨桃酒",price:2250,gain:"+200%",equipId:"keg"},
+      {method:"罐头瓶",product:"杨桃果酱",price:1550,gain:"+107%",equipId:"preserves_jar"},
+    ],
+    gifts:[],bundles:[],tags:["作物","水果","夏","高价值"]},
+  { id:"ancient_fruit",name:"上古水果",emoji:"🍇",type:"水果",season:"春/夏/秋",price:550,
+    processing:[
+      {method:"小桶",product:"上古水果酒",price:1650,gain:"+200%",equipId:"keg"},
+      {method:"罐头瓶",product:"上古果酱",price:1150,gain:"+109%",equipId:"preserves_jar"},
+    ],
+    gifts:[],bundles:[],tags:["作物","水果","春","夏","秋","高价值"]},
+  { id:"hot_pepper",name:"热辣椒",emoji:"🌶️",type:"水果",season:"夏",price:40,
+    processing:[
+      {method:"罐头瓶",product:"辣椒果酱",price:130,gain:"+225%",equipId:"preserves_jar"},
+      {method:"小桶",product:"辣椒酒",price:120,gain:"+200%",equipId:"keg"},
+    ],
+    gifts:[{npc:"Lewis",level:"喜爱"},{npc:"Shane",level:"喜爱"}],
+    bundles:["夏季作物包"],
+    tags:["作物","水果","夏"]},
+  { id:"copper_ore",name:"铜矿石",emoji:"🟤",type:"矿物",season:"全年",price:5,
+    processing:[{method:"熔炉",product:"铜锭",price:60,gain:"5矿石→1锭",equipId:"furnace"}],
+    gifts:[],bundles:["铁匠包"],tags:["矿物","矿洞","铜"]},
+  { id:"iron_ore",name:"铁矿石",emoji:"⚙️",type:"矿物",season:"全年",price:10,
+    processing:[{method:"熔炉",product:"铁锭",price:120,gain:"5矿石→1锭",equipId:"furnace"}],
+    gifts:[],bundles:["铁匠包"],tags:["矿物","矿洞","铁"]},
+  { id:"blueberry",name:"蓝莓",emoji:"🫐",type:"水果",season:"夏",price:50,
+    processing:[
+      {method:"罐头瓶",product:"蓝莓果酱",price:150,gain:"+200%",equipId:"preserves_jar"},
+      {method:"小桶",product:"蓝莓酒",price:150,gain:"+200%",equipId:"keg"},
+    ],
+    gifts:[],bundles:[],tags:["作物","水果","夏"]},
 ];
 
 const GOAL_TEMPLATES = [
-{
-category: “工具升级”, emoji: “🔨”, goals: [
-{ id: “t-copper-pickaxe”, title: “升级铜镐”, emoji: “⛏️”, steps: [
-{ label: “铜锭 ×5”, tags: [“铜”, “矿洞”, “熔炼”], sub: “铜矿石25个 + 煤炭5个熔炼” },
-{ label: “2,000g”, tags: [“金币”] },
-{ label: “交给铁匠 Clint”, tags: [“Clint”], sub: “周二至周日营业，升级需2天” },
-]},
-{ id: “t-copper-axe”, title: “升级铜斧”, emoji: “🪓”, steps: [
-{ label: “铜锭 ×5”, tags: [“铜”, “矿洞”, “熔炼”], sub: “铜矿石25个 + 煤炭5个熔炼” },
-{ label: “2,000g”, tags: [“金币”] },
-{ label: “交给铁匠 Clint”, tags: [“Clint”], sub: “周二至周日营业，升级需2天” },
-]},
-{ id: “t-steel-pickaxe”, title: “升级钢镐”, emoji: “⛏️”, steps: [
-{ label: “铁锭 ×5”, tags: [“铁”, “矿洞”, “熔炼”], sub: “铁矿石25个 + 煤炭5个熔炼” },
-{ label: “5,000g”, tags: [“金币”] },
-{ label: “交给铁匠 Clint”, tags: [“Clint”] },
-]},
-{ id: “t-copper-hoe”, title: “升级铜锄”, emoji: “🌱”, steps: [
-{ label: “铜锭 ×5”, tags: [“铜”, “矿洞”, “熔炼”] },
-{ label: “2,000g”, tags: [“金币”] },
-{ label: “交给铁匠 Clint”, tags: [“Clint”] },
-]},
-{ id: “t-copper-can”, title: “升级铜壶”, emoji: “🚿”, steps: [
-{ label: “铜锭 ×5”, tags: [“铜”, “矿洞”, “熔炼”] },
-{ label: “2,000g”, tags: [“金币”] },
-{ label: “交给铁匠 Clint”, tags: [“Clint”], sub: “选雨天前一天交，不耽误浇水” },
-]},
-]
-},
-{
-category: “加工设备”, emoji: “🏭”, goals: [
-{ id: “t-preserves-jar”, title: “制作罐头瓶”, emoji: “🫙”, steps: [
-{ label: “木材 ×50”, tags: [“木材”, “砍树”] },
-{ label: “石头 ×40”, tags: [“石头”, “敲石”] },
-{ label: “煤炭 ×8”, tags: [“煤炭”, “矿洞”] },
-], note: “🔓 需要耕种等级 4” },
-{ id: “t-keg”, title: “制作小桶”, emoji: “🪣”, steps: [
-{ label: “木材 ×30”, tags: [“木材”, “砍树”] },
-{ label: “铜锭 ×1”, tags: [“铜”, “矿洞”, “熔炼”] },
-{ label: “铁锭 ×1”, tags: [“铁”, “矿洞”, “熔炼”] },
-{ label: “橡树树脂 ×1”, tags: [“树脂”, “橡树”], sub: “橡树上装树液采集器” },
-], note: “🔓 需要耕种等级 8” },
-{ id: “t-bee-house”, title: “制作蜂房”, emoji: “🐝”, steps: [
-{ label: “木材 ×40”, tags: [“木材”, “砍树”] },
-{ label: “煤炭 ×8”, tags: [“煤炭”, “矿洞”] },
-{ label: “铁锭 ×1”, tags: [“铁”, “矿洞”, “熔炼”] },
-{ label: “枫糖浆 ×1”, tags: [“树脂”, “枫树”], sub: “枫树上装树液采集器” },
-], note: “🔓 需要耕种等级 3” },
-{ id: “t-furnace”, title: “制作熔炉”, emoji: “🔥”, steps: [
-{ label: “铜矿石 ×20”, tags: [“铜”, “矿洞”] },
-{ label: “石头 ×25”, tags: [“石头”, “敲石”] },
-], note: “Clint在你获得铜矿石后教你” },
-]
-},
-{
-category: “农场建筑”, emoji: “🏠”, goals: [
-{ id: “t-coop”, title: “建鸡舍”, emoji: “🐔”, steps: [
-{ label: “木材 ×300”, tags: [“木材”, “砍树”] },
-{ label: “石头 ×100”, tags: [“石头”, “敲石”] },
-{ label: “4,000g”, tags: [“金币”] },
-{ label: “找 Robin 建造”, tags: [“Robin”], sub: “木匠铺，建造需3天” },
-]},
-{ id: “t-barn”, title: “建牛棚”, emoji: “🐄”, steps: [
-{ label: “木材 ×350”, tags: [“木材”, “砍树”] },
-{ label: “石头 ×150”, tags: [“石头”, “敲石”] },
-{ label: “6,000g”, tags: [“金币”] },
-{ label: “找 Robin 建造”, tags: [“Robin”], sub: “木匠铺，建造需3天” },
-]},
-{ id: “t-silo”, title: “建筒仓”, emoji: “🌾”, steps: [
-{ label: “石头 ×100”, tags: [“石头”, “敲石”] },
-{ label: “粘土 ×10”, tags: [“粘土”, “挖地”] },
-{ label: “铜锭 ×5”, tags: [“铜”, “矿洞”, “熔炼”] },
-{ label: “100g”, tags: [“金币”] },
-], note: “建议在鸡舍之前建，可以储存干草” },
-]
-},
-{
-category: “其他目标”, emoji: “🌟”, goals: [
-{ id: “t-bridge”, title: “修复海滩桥”, emoji: “🌊”, steps: [
-{ label: “木材 ×300”, tags: [“木材”, “砍树”] },
-], note: “修复后可进入潮汐池” },
-{ id: “t-mine-40”, title: “矿洞到40层”, emoji: “💎”, steps: [
-{ label: “准备食物回血”, tags: [] },
-{ label: “带好镐和武器”, tags: [] },
-{ label: “到达40层拿铁矿”, tags: [“矿洞”, “铁”] },
-]},
-]
-},
+  { category:"工具升级",emoji:"🔨",goals:[
+    {id:"t-copper-pickaxe",title:"升级铜镐",emoji:"⛏️",steps:[
+      {label:"铜锭 ×5",tags:["铜","矿洞","熔炼"],sub:"铜矿石25个 + 煤炭5个熔炼"},
+      {label:"2,000g",tags:["金币"]},
+      {label:"交给铁匠 Clint",tags:["Clint"],sub:"周二至周日营业，升级需2天"},
+    ]},
+    {id:"t-copper-axe",title:"升级铜斧",emoji:"🪓",steps:[
+      {label:"铜锭 ×5",tags:["铜","矿洞","熔炼"]},
+      {label:"2,000g",tags:["金币"]},
+      {label:"交给铁匠 Clint",tags:["Clint"]},
+    ]},
+    {id:"t-steel-pickaxe",title:"升级钢镐",emoji:"⛏️",steps:[
+      {label:"铁锭 ×5",tags:["铁","矿洞","熔炼"]},
+      {label:"5,000g",tags:["金币"]},
+      {label:"交给铁匠 Clint",tags:["Clint"]},
+    ]},
+    {id:"t-copper-hoe",title:"升级铜锄",emoji:"🌱",steps:[
+      {label:"铜锭 ×5",tags:["铜","矿洞","熔炼"]},
+      {label:"2,000g",tags:["金币"]},
+      {label:"交给铁匠 Clint",tags:["Clint"]},
+    ]},
+    {id:"t-copper-can",title:"升级铜壶",emoji:"🚿",steps:[
+      {label:"铜锭 ×5",tags:["铜","矿洞","熔炼"]},
+      {label:"2,000g",tags:["金币"]},
+      {label:"交给铁匠 Clint",tags:["Clint"],sub:"选雨天前一天交，不耽误浇水"},
+    ]},
+  ]},
+  { category:"加工设备",emoji:"🏭",goals:[
+    {id:"t-preserves-jar",title:"制作罐头瓶",emoji:"🫙",steps:[
+      {label:"木材 ×50",tags:["木材","砍树"]},
+      {label:"石头 ×40",tags:["石头","敲石"]},
+      {label:"煤炭 ×8",tags:["煤炭","矿洞"]},
+    ],note:"🔓 需要耕种等级 4"},
+    {id:"t-keg",title:"制作小桶",emoji:"🪣",steps:[
+      {label:"木材 ×30",tags:["木材","砍树"]},
+      {label:"铜锭 ×1",tags:["铜","矿洞","熔炼"]},
+      {label:"铁锭 ×1",tags:["铁","矿洞","熔炼"]},
+      {label:"橡树树脂 ×1",tags:["树脂","橡树"],sub:"橡树上装树液采集器"},
+    ],note:"🔓 需要耕种等级 8"},
+    {id:"t-bee-house",title:"制作蜂房",emoji:"🐝",steps:[
+      {label:"木材 ×40",tags:["木材","砍树"]},
+      {label:"煤炭 ×8",tags:["煤炭","矿洞"]},
+      {label:"铁锭 ×1",tags:["铁","矿洞","熔炼"]},
+      {label:"枫糖浆 ×1",tags:["树脂","枫树"],sub:"枫树上装树液采集器"},
+    ],note:"🔓 需要耕种等级 3"},
+    {id:"t-furnace",title:"制作熔炉",emoji:"🔥",steps:[
+      {label:"铜矿石 ×20",tags:["铜","矿洞"]},
+      {label:"石头 ×25",tags:["石头","敲石"]},
+    ],note:"Clint在你获得铜矿石后教你"},
+  ]},
+  { category:"农场建筑",emoji:"🏠",goals:[
+    {id:"t-coop",title:"建鸡舍",emoji:"🐔",steps:[
+      {label:"木材 ×300",tags:["木材","砍树"]},
+      {label:"石头 ×100",tags:["石头","敲石"]},
+      {label:"4,000g",tags:["金币"]},
+      {label:"找 Robin 建造",tags:["Robin"],sub:"木匠铺，建造需3天"},
+    ]},
+    {id:"t-barn",title:"建牛棚",emoji:"🐄",steps:[
+      {label:"木材 ×350",tags:["木材","砍树"]},
+      {label:"石头 ×150",tags:["石头","敲石"]},
+      {label:"6,000g",tags:["金币"]},
+      {label:"找 Robin 建造",tags:["Robin"]},
+    ]},
+    {id:"t-silo",title:"建筒仓",emoji:"🌾",steps:[
+      {label:"石头 ×100",tags:["石头","敲石"]},
+      {label:"粘土 ×10",tags:["粘土","挖地"]},
+      {label:"铜锭 ×5",tags:["铜","矿洞","熔炼"]},
+      {label:"100g",tags:["金币"]},
+    ],note:"建议在鸡舍之前建，可以储存干草"},
+  ]},
+  { category:"其他目标",emoji:"🌟",goals:[
+    {id:"t-bridge",title:"修复海滩桥",emoji:"🌊",steps:[
+      {label:"木材 ×300",tags:["木材","砍树"]},
+    ],note:"修复后可进入潮汐池"},
+    {id:"t-mine-40",title:"矿洞到40层",emoji:"💎",steps:[
+      {label:"准备食物回血",tags:[]},
+      {label:"带好镐和武器",tags:[]},
+      {label:"到达40层拿铁矿",tags:["矿洞","铁"]},
+    ]},
+  ]},
 ];
 
 function getTodayTips(season, day, weather, goals) {
-const tips = [];
-const key = `${season}-${day}`;
-const ev = CALENDAR_EVENTS[key];
-if (ev?.birthday) tips.push({ emoji: “🎂”, text: `${ev.birthday} 的生日`, type: “birthday” });
-if (ev?.festival) tips.push({ emoji: “🎉”, text: ev.festival, type: “festival” });
+  const tips = [];
+  const key = `${season}-${day}`;
+  const ev = CALENDAR_EVENTS[key];
+  if (ev?.birthday) tips.push({ emoji:"🎂", text:`${ev.birthday} 的生日`, type:"birthday" });
+  if (ev?.festival) tips.push({ emoji:"🎉", text:ev.festival, type:"festival" });
 
-const allTags = [];
-goals.forEach(g => g.steps.filter(s => !s.checked).forEach(s => (s.tags || []).forEach(t => allTags.push({ tag: t, goalTitle: g.title }))));
+  const allTags = [];
+  goals.forEach(g => g.steps.filter(s => !s.checked).forEach(s => (s.tags || []).forEach(t => allTags.push({ tag:t, goalTitle:g.title }))));
 
-if (weather === “rainy”) {
-const tip = { emoji: “⛏️”, text: “下雨不用浇水，适合去矿洞”, type: “activity” };
-const match = allTags.find(t => [“矿洞”, “铜”, “铁”, “煤炭”].includes(t.tag));
-if (match) tip.goalLink = match.goalTitle;
-tips.push(tip);
-} else {
-const woodMatch = allTags.find(t => [“木材”, “砍树”].includes(t.tag));
-const stoneMatch = allTags.find(t => [“石头”, “敲石”].includes(t.tag));
-if (woodMatch) tips.push({ emoji: “🪓”, text: “记得砍些木头”, type: “goal”, goalLink: woodMatch.goalTitle });
-if (stoneMatch) tips.push({ emoji: “🪨”, text: “记得敲些石头”, type: “goal”, goalLink: stoneMatch.goalTitle });
+  if (weather === "rainy") {
+    const tip = { emoji:"⛏️", text:"下雨不用浇水，适合去矿洞", type:"activity" };
+    const match = allTags.find(t => ["矿洞","铜","铁","煤炭"].includes(t.tag));
+    if (match) tip.goalLink = match.goalTitle;
+    tips.push(tip);
+  } else {
+    const woodMatch = allTags.find(t => ["木材","砍树"].includes(t.tag));
+    const stoneMatch = allTags.find(t => ["石头","敲石"].includes(t.tag));
+    if (woodMatch) tips.push({ emoji:"🪓", text:"记得砍些木头", type:"goal", goalLink:woodMatch.goalTitle });
+    if (stoneMatch) tips.push({ emoji:"🪨", text:"记得敲些石头", type:"goal", goalLink:stoneMatch.goalTitle });
+  }
+
+  if (["spring","summer","fall"].includes(season) && day >= 25) {
+    tips.push({ emoji:"⚠️", text:"季末将至，注意作物收获时间", type:"warn" });
+  }
+  if (season === "spring" && day <= 3) tips.push({ emoji:"🌱", text:"春季开始，可以种防风草、土豆、花椰菜", type:"tip" });
+  if (season === "summer" && day <= 3) tips.push({ emoji:"🌱", text:"夏季开始，推荐蓝莓、甜瓜、热辣椒", type:"tip" });
+  if (season === "fall" && day <= 3) tips.push({ emoji:"🌱", text:"秋季开始，推荐蔓越莓、南瓜、玉米", type:"tip" });
+  return tips;
 }
 
-if ([“spring”, “summer”, “fall”].includes(season) && day >= 25) {
-tips.push({ emoji: “⚠️”, text: “季末将至，注意作物收获时间”, type: “warn” });
+const STORAGE_KEY = "stardew-helper-v1";
+function loadState() {
+  try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; } catch { return null; }
+}
+function saveState(state) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
 }
 
-if (season === “spring” && day <= 3) tips.push({ emoji: “🌱”, text: “春季开始，可以种防风草、土豆、花椰菜”, type: “tip” });
-if (season === “summer” && day <= 3) tips.push({ emoji: “🌱”, text: “夏季开始，推荐蓝莓、甜瓜、热辣椒”, type: “tip” });
-if (season === “fall” && day <= 3) tips.push({ emoji: “🌱”, text: “秋季开始，推荐蔓越莓、南瓜、玉米”, type: “tip” });
+function StardewHelper() {
+  const persisted = loadState() || {};
+  const [season, setSeason] = useState(persisted.season || "spring");
+  const [day, setDay] = useState(persisted.day || 5);
+  const [weather, setWeather] = useState(persisted.weather || "sunny");
+  const [goals, setGoals] = useState(persisted.goals || []);
+  const [sheet, setSheet] = useState(null);
+  const [searchQ, setSearchQ] = useState("");
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [expandedEquip, setExpandedEquip] = useState({});
+  const [expandedGoal, setExpandedGoal] = useState({});
+  const [addCat, setAddCat] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [toast, setToast] = useState(null);
 
-return tips;
-}
+  useEffect(() => { saveState({ season, day, weather, goals }); }, [season, day, weather, goals]);
 
-/* ══════════ MAIN COMPONENT ══════════ */
-export default function StardewHelper() {
-const [season, setSeason] = useState(“spring”);
-const [day, setDay] = useState(5);
-const [weather, setWeather] = useState(“sunny”);
-const [goals, setGoals] = useState([]);
-const [sheet, setSheet] = useState(null);
-const [searchQ, setSearchQ] = useState(””);
-const [selectedItemId, setSelectedItemId] = useState(null);
-const [expandedEquip, setExpandedEquip] = useState({});
-const [expandedGoal, setExpandedGoal] = useState({});
-const [addCat, setAddCat] = useState(null);
-const [showDatePicker, setShowDatePicker] = useState(false);
-const [toast, setToast] = useState(null);
+  const fire = useCallback((msg) => { setToast(msg); setTimeout(() => setToast(null), 1600); }, []);
 
-const fire = useCallback((msg) => { setToast(msg); setTimeout(() => setToast(null), 1600); }, []);
+  const tips = useMemo(() => getTodayTips(season, day, weather, goals), [season, day, weather, goals]);
+  const seasonLabel = SEASONS.find(s => s.id === season);
 
-const tips = useMemo(() => getTodayTips(season, day, weather, goals), [season, day, weather, goals]);
-const seasonLabel = SEASONS.find(s => s.id === season);
+  const filteredItems = searchQ.trim()
+    ? ITEMS.filter(i => i.name.includes(searchQ) || i.type.includes(searchQ) || i.tags.some(t => t.includes(searchQ)))
+    : [];
 
-const filteredItems = searchQ.trim()
-? ITEMS.filter(i => i.name.includes(searchQ) || i.type.includes(searchQ) || i.tags.some(t => t.includes(searchQ)))
-: [];
+  const selectedItem = ITEMS.find(i => i.id === selectedItemId);
 
-const selectedItem = ITEMS.find(i => i.id === selectedItemId);
+  const addGoalFromTemplate = (tpl) => {
+    if (goals.some(g => g.id === tpl.id)) { fire("这个目标已经在列表里了"); return; }
+    setGoals(p => [...p, { ...tpl, steps: tpl.steps.map(s => ({ ...s, checked: false })) }]);
+    fire("🎯 已添加目标！");
+    setSheet(null); setAddCat(null);
+  };
 
-const addGoalFromTemplate = (tpl) => {
-if (goals.some(g => g.id === tpl.id)) { fire(“这个目标已经在列表里了”); return; }
-setGoals(p => […p, { …tpl, steps: tpl.steps.map(s => ({ …s, checked: false })) }]);
-fire(“🎯 已添加目标！”);
-setSheet(null); setAddCat(null);
-};
+  const addGoalFromEquip = (equipId, contextItem) => {
+    const tpl = GOAL_TEMPLATES.flatMap(c => c.goals).find(g => g.id === `t-${equipId.replace('_','-')}`);
+    if (!tpl) { fire("暂无该设备的目标模板"); return; }
+    if (goals.some(g => g.id === tpl.id)) { fire("已在目标列表中"); return; }
+    const goal = { ...tpl, steps: tpl.steps.map(s => ({ ...s, checked: false })), origin: contextItem ? `为了加工${contextItem.name}` : undefined };
+    setGoals(p => [...p, goal]);
+    fire("🎯 已添加目标！");
+  };
 
-const addGoalFromEquip = (equipId, contextItem) => {
-const tpl = GOAL_TEMPLATES.flatMap(c => c.goals).find(g => g.id === `t-${equipId.replace('_', '-')}`);
-if (!tpl) { fire(“暂无该设备的目标模板”); return; }
-if (goals.some(g => g.id === tpl.id)) { fire(“这个目标已经在列表里了”); return; }
-const goal = {
-…tpl,
-steps: tpl.steps.map(s => ({ …s, checked: false })),
-origin: contextItem ? `为了加工${contextItem.name}` : undefined,
-};
-setGoals(p => […p, goal]);
-fire(“🎯 已添加目标！”);
-};
+  const toggleStep = (goalId, stepIdx) => {
+    setGoals(p => p.map(g => g.id === goalId
+      ? { ...g, steps: g.steps.map((s, i) => i === stepIdx ? { ...s, checked: !s.checked } : s) } : g));
+  };
 
-const toggleStep = (goalId, stepIdx) => {
-setGoals(p => p.map(g => g.id === goalId
-? { …g, steps: g.steps.map((s, i) => i === stepIdx ? { …s, checked: !s.checked } : s) }
-: g
-));
-};
+  const removeGoal = (goalId) => { setGoals(p => p.filter(g => g.id !== goalId)); fire("已移除目标"); };
 
-const removeGoal = (goalId) => {
-setGoals(p => p.filter(g => g.id !== goalId));
-fire(“已移除目标”);
-};
+  const nextDay = () => {
+    if (day >= 28) { const si = SEASONS.findIndex(s => s.id === season); setSeason(SEASONS[(si+1)%4].id); setDay(1); }
+    else setDay(d => d + 1);
+  };
 
-const nextDay = () => {
-if (day >= 28) {
-const si = SEASONS.findIndex(s => s.id === season);
-setSeason(SEASONS[(si + 1) % 4].id);
-setDay(1);
-} else {
-setDay(d => d + 1);
-}
-};
+  return (
+    <div style={{ background: C.bg, minHeight: "100vh", color: C.brown, paddingBottom: 100 }}>
+      {toast && <div style={{ position:"fixed", top:16, left:"50%", transform:"translateX(-50%)", background:C.green, color:"#fff", padding:"8px 22px", borderRadius:20, fontSize:13, fontWeight:700, zIndex:999, boxShadow:"0 4px 16px rgba(0,0,0,.15)" }}>{toast}</div>}
 
-/* ══════ RENDER ══════ */
-return (
-<div style={{ background: C.bg, minHeight: “100vh”, fontFamily: “‘Nunito’,‘Noto Sans SC’,system-ui,sans-serif”, color: C.brown, paddingBottom: 100 }}>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+      <div style={{ padding:"20px 16px 8px", textAlign:"center" }}>
+        <div style={{ fontSize:11, color:C.muted, letterSpacing:3, fontWeight:700 }}>STARDEW VALLEY</div>
+        <h1 style={{ fontSize:20, fontWeight:800, margin:"2px 0 0", color:C.brown }}>🌾 决策链助手</h1>
+      </div>
 
-```
-  {toast && <div style={{ position:"fixed",top:16,left:"50%",transform:"translateX(-50%)",background:C.green,color:"#fff",padding:"8px 22px",borderRadius:20,fontSize:13,fontWeight:700,zIndex:999,boxShadow:"0 4px 16px rgba(0,0,0,.15)" }}>{toast}</div>}
-
-  {/* ── HEADER ── */}
-  <div style={{ padding: "20px 16px 8px", textAlign: "center" }}>
-    <div style={{ fontSize: 11, color: C.muted, letterSpacing: 3, fontWeight: 700 }}>STARDEW VALLEY</div>
-    <h1 style={{ fontSize: 20, fontWeight: 800, margin: "2px 0 0", color: C.brown }}>🌾 决策链助手</h1>
-  </div>
-
-  {/* ── SEARCH BAR ── */}
-  <div style={{ padding: "8px 16px" }}>
-    <div
-      onClick={() => { if (!sheet) setSheet("search"); }}
-      style={{
-        display: "flex", alignItems: "center", gap: 8,
-        background: C.card, borderRadius: 14, padding: "11px 14px",
-        border: `1.5px solid ${C.border}`, boxShadow: C.shadow, cursor: "pointer",
-      }}
-    >
-      <span style={{ fontSize: 15 }}>🔍</span>
-      <span style={{ fontSize: 14, color: C.muted }}>收获了什么？搜一下看所有出路...</span>
-    </div>
-  </div>
-
-  {/* ── TODAY BANNER ── */}
-  <div style={{ padding: "4px 16px 8px" }}>
-    <div style={{ background: C.card, borderRadius: 14, border: `1.5px solid ${C.border}`, boxShadow: C.shadow, overflow: "hidden" }}>
-      {/* Date row */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 14px", borderBottom: tips.length > 0 ? `1px solid ${C.border}` : "none" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 18 }}>{seasonLabel?.emoji}</span>
-          <span style={{ fontSize: 14, fontWeight: 700 }}>{seasonLabel?.label}{day}日</span>
-          <button onClick={() => setWeather(w => w === "sunny" ? "rainy" : "sunny")} style={{ background: weather === "rainy" ? C.blueL : C.amberL, border: "none", borderRadius: 8, padding: "3px 8px", fontSize: 12, cursor: "pointer", fontFamily: "inherit", fontWeight: 600 }}>
-            {weather === "rainy" ? "🌧️ 雨" : "☀️ 晴"}
-          </button>
-        </div>
-        <div style={{ display: "flex", gap: 4 }}>
-          <button onClick={() => setShowDatePicker(!showDatePicker)} style={{ background: "none", border: `1px solid ${C.border}`, borderRadius: 8, padding: "3px 10px", fontSize: 11, cursor: "pointer", color: C.muted, fontFamily: "inherit" }}>
-            选日期
-          </button>
-          <button onClick={nextDay} style={{ background: C.greenL, border: `1px solid ${C.green}33`, borderRadius: 8, padding: "3px 10px", fontSize: 11, cursor: "pointer", color: C.green, fontWeight: 700, fontFamily: "inherit" }}>
-            下一天 →
-          </button>
+      <div style={{ padding:"8px 16px" }}>
+        <div onClick={() => { if (!sheet) setSheet("search"); }}
+          style={{ display:"flex", alignItems:"center", gap:8, background:C.card, borderRadius:14, padding:"11px 14px", border:`1.5px solid ${C.border}`, boxShadow:C.shadow, cursor:"pointer" }}>
+          <span style={{ fontSize:15 }}>🔍</span>
+          <span style={{ fontSize:14, color:C.muted }}>收获了什么？搜一下看所有出路...</span>
         </div>
       </div>
 
-      {showDatePicker && (
-        <div style={{ padding: "10px 14px", borderBottom: `1px solid ${C.border}`, background: C.card2 }}>
-          <div style={{ display: "flex", gap: 6, marginBottom: 8 }}>
-            {SEASONS.map(s => (
-              <button key={s.id} onClick={() => setSeason(s.id)} style={{
-                flex: 1, padding: "6px 0", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
-                background: season === s.id ? C.green : "transparent", color: season === s.id ? "#fff" : C.brownL,
-                border: season === s.id ? "none" : `1px solid ${C.border}`,
-              }}>{s.emoji} {s.label}</button>
-            ))}
+      <div style={{ padding:"4px 16px 8px" }}>
+        <div style={{ background:C.card, borderRadius:14, border:`1.5px solid ${C.border}`, boxShadow:C.shadow, overflow:"hidden" }}>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 14px", borderBottom: tips.length > 0 ? `1px solid ${C.border}` : "none" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+              <span style={{ fontSize:18 }}>{seasonLabel?.emoji}</span>
+              <span style={{ fontSize:14, fontWeight:700 }}>{seasonLabel?.label}{day}日</span>
+              <button onClick={() => setWeather(w => w === "sunny" ? "rainy" : "sunny")}
+                style={{ background: weather === "rainy" ? C.blueL : C.amberL, border:"none", borderRadius:8, padding:"3px 8px", fontSize:12, cursor:"pointer", fontWeight:600 }}>
+                {weather === "rainy" ? "🌧️ 雨" : "☀️ 晴"}
+              </button>
+            </div>
+            <div style={{ display:"flex", gap:4 }}>
+              <button onClick={() => setShowDatePicker(!showDatePicker)} style={{ background:"none", border:`1px solid ${C.border}`, borderRadius:8, padding:"3px 10px", fontSize:11, cursor:"pointer", color:C.muted }}>选日期</button>
+              <button onClick={nextDay} style={{ background:C.greenL, border:`1px solid ${C.green}33`, borderRadius:8, padding:"3px 10px", fontSize:11, cursor:"pointer", color:C.green, fontWeight:700 }}>下一天 →</button>
+            </div>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 4 }}>
-            {Array.from({ length: 28 }, (_, i) => i + 1).map(d => (
-              <button key={d} onClick={() => { setDay(d); setShowDatePicker(false); }} style={{
-                padding: "6px 0", borderRadius: 6, fontSize: 12, fontWeight: day === d ? 800 : 400, cursor: "pointer",
-                background: day === d ? C.green : "transparent", color: day === d ? "#fff" : C.brown,
-                border: day === d ? "none" : `1px solid transparent`, fontFamily: "inherit",
-              }}>{d}</button>
-            ))}
-          </div>
-        </div>
-      )}
 
-      {/* Tips */}
-      {tips.length > 0 && (
-        <div style={{ padding: "8px 14px 10px" }}>
-          {tips.map((tip, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "4px 0", fontSize: 13 }}>
-              <span>{tip.emoji}</span>
-              <div style={{ flex: 1 }}>
-                <span style={{ color: tip.type === "warn" ? C.red : C.brown, fontWeight: tip.type === "warn" ? 700 : 400 }}>{tip.text}</span>
-                {tip.goalLink && (
-                  <span style={{ display: "inline-block", background: C.greenL, color: C.green, fontSize: 11, fontWeight: 700, padding: "1px 7px", borderRadius: 6, marginLeft: 6 }}>
-                    🎯 {tip.goalLink}
-                  </span>
-                )}
+          {showDatePicker && (
+            <div style={{ padding:"10px 14px", borderBottom:`1px solid ${C.border}`, background:C.card2 }}>
+              <div style={{ display:"flex", gap:6, marginBottom:8 }}>
+                {SEASONS.map(s => (
+                  <button key={s.id} onClick={() => setSeason(s.id)} style={{
+                    flex:1, padding:"6px 0", borderRadius:8, fontSize:12, fontWeight:700, cursor:"pointer",
+                    background: season === s.id ? C.green : "transparent", color: season === s.id ? "#fff" : C.brownL,
+                    border: season === s.id ? "none" : `1px solid ${C.border}`,
+                  }}>{s.emoji} {s.label}</button>
+                ))}
+              </div>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:4 }}>
+                {Array.from({length:28},(_,i)=>i+1).map(d => (
+                  <button key={d} onClick={() => { setDay(d); setShowDatePicker(false); }} style={{
+                    padding:"6px 0", borderRadius:6, fontSize:12, fontWeight: day === d ? 800 : 400, cursor:"pointer",
+                    background: day === d ? C.green : "transparent", color: day === d ? "#fff" : C.brown,
+                    border: day === d ? "none" : `1px solid transparent`,
+                  }}>{d}</button>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-      )}
-    </div>
-  </div>
+          )}
 
-  {/* ── GOALS SECTION ── */}
-  <div style={{ padding: "8px 16px" }}>
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-      <h2 style={{ margin: 0, fontSize: 16, fontWeight: 800 }}>🎯 我的目标</h2>
-      <button onClick={() => setSheet("addGoal")} style={{
-        background: C.green, color: "#fff", border: "none", borderRadius: 10, padding: "7px 14px",
-        fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
-      }}>+ 新目标</button>
-    </div>
-
-    {goals.length === 0 && (
-      <div style={{ textAlign: "center", padding: "28px 16px", background: C.card, borderRadius: 14, border: `1.5px dashed ${C.border}` }}>
-        <div style={{ fontSize: 32, marginBottom: 8 }}>🌱</div>
-        <div style={{ fontSize: 13, color: C.muted, lineHeight: 1.7 }}>
-          还没有目标<br />搜索物品发现目标，或直接添加
-        </div>
-      </div>
-    )}
-
-    {goals.map(goal => {
-      const done = goal.steps.filter(s => s.checked).length;
-      const total = goal.steps.length;
-      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-      const isOpen = expandedGoal[goal.id] !== false;
-      return (
-        <div key={goal.id} style={{ background: C.card, borderRadius: 14, border: `1.5px solid ${pct === 100 ? C.green : C.border}`, boxShadow: C.shadow, marginBottom: 10, overflow: "hidden" }}>
-          <button onClick={() => setExpandedGoal(p => ({ ...p, [goal.id]: !isOpen }))} style={{
-            display: "flex", alignItems: "center", gap: 10, width: "100%", padding: "12px 14px",
-            background: pct === 100 ? C.greenL : "transparent", border: "none", cursor: "pointer", textAlign: "left", fontFamily: "inherit",
-          }}>
-            <span style={{ fontSize: 22 }}>{goal.emoji}</span>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: pct === 100 ? C.green : C.brown }}>
-                {pct === 100 ? "✅ " : ""}{goal.title}
-              </div>
-              {goal.origin && <div style={{ fontSize: 11, color: C.muted }}>{goal.origin}</div>}
-              {goal.note && <div style={{ fontSize: 11, color: C.amber, fontWeight: 600, marginTop: 2 }}>{goal.note}</div>}
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: pct === 100 ? C.green : C.amber }}>{done}/{total}</div>
-              <div style={{ width: 48, height: 4, background: C.border, borderRadius: 2, marginTop: 3, overflow: "hidden" }}>
-                <div style={{ height: "100%", width: `${pct}%`, background: pct === 100 ? C.green : C.amber, borderRadius: 2, transition: "width .3s" }} />
-              </div>
-            </div>
-          </button>
-
-          {isOpen && (
-            <div style={{ padding: "0 14px 12px" }}>
-              {goal.steps.map((step, si) => (
-                <button key={si} onClick={() => toggleStep(goal.id, si)} style={{
-                  display: "flex", alignItems: "flex-start", gap: 10, padding: "8px 0", width: "100%",
-                  background: "none", border: "none", cursor: "pointer", textAlign: "left", fontFamily: "inherit",
-                  borderBottom: si < goal.steps.length - 1 ? `1px solid ${C.border}` : "none",
-                }}>
-                  <span style={{
-                    width: 22, height: 22, borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 12, flexShrink: 0, marginTop: 1,
-                    background: step.checked ? C.green : "#fff", border: `2px solid ${step.checked ? C.green : C.border}`, color: "#fff",
-                  }}>{step.checked ? "✓" : ""}</span>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: step.checked ? C.muted : C.brown, textDecoration: step.checked ? "line-through" : "none" }}>
-                      {step.label}
-                    </div>
-                    {step.sub && <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{step.sub}</div>}
+          {tips.length > 0 && (
+            <div style={{ padding:"8px 14px 10px" }}>
+              {tips.map((tip, i) => (
+                <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:8, padding:"4px 0", fontSize:13 }}>
+                  <span>{tip.emoji}</span>
+                  <div style={{ flex:1 }}>
+                    <span style={{ color: tip.type === "warn" ? C.red : C.brown, fontWeight: tip.type === "warn" ? 700 : 400 }}>{tip.text}</span>
+                    {tip.goalLink && <span style={{ display:"inline-block", background:C.greenL, color:C.green, fontSize:11, fontWeight:700, padding:"1px 7px", borderRadius:6, marginLeft:6 }}>🎯 {tip.goalLink}</span>}
                   </div>
-                </button>
+                </div>
               ))}
-              <button onClick={() => removeGoal(goal.id)} style={{
-                marginTop: 8, width: "100%", background: C.redL, border: `1px solid ${C.red}33`, borderRadius: 8,
-                padding: "7px 0", fontSize: 12, color: C.red, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
-              }}>移除目标</button>
             </div>
           )}
         </div>
-      );
-    })}
-  </div>
+      </div>
 
-  {/* ══════ BOTTOM SHEET ══════ */}
-  {sheet && (
-    <div style={{ position: "fixed", inset: 0, zIndex: 80 }}>
-      <div onClick={() => { setSheet(null); setSearchQ(""); setSelectedItemId(null); setExpandedEquip({}); setAddCat(null); }}
-        style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,.35)" }} />
-      <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0,
-        maxHeight: "85vh", overflowY: "auto",
-        background: C.bg, borderRadius: "20px 20px 0 0", boxShadow: "0 -4px 30px rgba(0,0,0,.15)", padding: "12px 16px 32px",
-      }}>
-        <div style={{ width: 40, height: 4, background: C.border, borderRadius: 2, margin: "0 auto 14px" }} />
+      <div style={{ padding:"8px 16px" }}>
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
+          <h2 style={{ margin:0, fontSize:16, fontWeight:800 }}>🎯 我的目标</h2>
+          <button onClick={() => setSheet("addGoal")} style={{ background:C.green, color:"#fff", border:"none", borderRadius:10, padding:"7px 14px", fontSize:12, fontWeight:700, cursor:"pointer" }}>+ 新目标</button>
+        </div>
 
-        {/* ── SEARCH SHEET ── */}
-        {sheet === "search" && !selectedItemId && (
-          <>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, background: C.card, borderRadius: 12, padding: "10px 14px", border: `2px solid ${C.green}`, marginBottom: 12 }}>
-              <span>🔍</span>
-              <input autoFocus value={searchQ} onChange={e => setSearchQ(e.target.value)} placeholder="输入物品名称..." style={{ flex: 1, border: "none", outline: "none", fontSize: 14, background: "transparent", fontFamily: "inherit", color: C.brown }} />
-              {searchQ && <button onClick={() => setSearchQ("")} style={{ background: "none", border: "none", fontSize: 14, color: C.muted, cursor: "pointer" }}>✕</button>}
-            </div>
-            {!searchQ && (
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }}>
-                {["玉米", "南瓜", "铜矿石", "杨桃"].map(t => (
-                  <button key={t} onClick={() => setSearchQ(t)} style={{ background: C.greenL, border: `1px solid ${C.green}33`, borderRadius: 16, padding: "5px 12px", fontSize: 12, color: C.greenD, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{t}</button>
-                ))}
-              </div>
-            )}
-            {searchQ && filteredItems.length === 0 && (
-              <div style={{ textAlign: "center", padding: 24, color: C.muted, fontSize: 13 }}>没找到「{searchQ}」</div>
-            )}
-            {filteredItems.map(item => (
-              <button key={item.id} onClick={() => setSelectedItemId(item.id)} style={{
-                display: "flex", alignItems: "center", gap: 12, width: "100%", background: C.card, borderRadius: 12,
-                padding: "12px 14px", border: `1px solid ${C.border}`, marginBottom: 6, cursor: "pointer", textAlign: "left", fontFamily: "inherit",
+        {goals.length === 0 && (
+          <div style={{ textAlign:"center", padding:"28px 16px", background:C.card, borderRadius:14, border:`1.5px dashed ${C.border}` }}>
+            <div style={{ fontSize:32, marginBottom:8 }}>🌱</div>
+            <div style={{ fontSize:13, color:C.muted, lineHeight:1.7 }}>还没有目标<br/>搜索物品发现目标，或直接添加</div>
+          </div>
+        )}
+
+        {goals.map(goal => {
+          const done = goal.steps.filter(s => s.checked).length;
+          const total = goal.steps.length;
+          const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+          const isOpen = expandedGoal[goal.id] !== false;
+          return (
+            <div key={goal.id} style={{ background:C.card, borderRadius:14, border:`1.5px solid ${pct === 100 ? C.green : C.border}`, boxShadow:C.shadow, marginBottom:10, overflow:"hidden" }}>
+              <button onClick={() => setExpandedGoal(p => ({ ...p, [goal.id]: !isOpen }))} style={{
+                display:"flex", alignItems:"center", gap:10, width:"100%", padding:"12px 14px",
+                background: pct === 100 ? C.greenL : "transparent", border:"none", cursor:"pointer", textAlign:"left",
               }}>
-                <span style={{ fontSize: 26 }}>{item.emoji}</span>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 14, fontWeight: 700 }}>{item.name}</div>
-                  <div style={{ fontSize: 11, color: C.muted }}>{item.type} · {item.season} · 💰{item.price}g</div>
+                <span style={{ fontSize:22 }}>{goal.emoji}</span>
+                <div style={{ flex:1 }}>
+                  <div style={{ fontSize:14, fontWeight:700, color: pct === 100 ? C.green : C.brown }}>{pct === 100 ? "✅ " : ""}{goal.title}</div>
+                  {goal.origin && <div style={{ fontSize:11, color:C.muted }}>{goal.origin}</div>}
+                  {goal.note && <div style={{ fontSize:11, color:C.amber, fontWeight:600, marginTop:2 }}>{goal.note}</div>}
                 </div>
-                <span style={{ color: C.muted }}>→</span>
-              </button>
-            ))}
-          </>
-        )}
-
-        {/* ── ITEM DETAIL ── */}
-        {sheet === "search" && selectedItem && (
-          <>
-            <button onClick={() => { setSelectedItemId(null); setExpandedEquip({}); }} style={{ background: "none", border: "none", fontSize: 12, color: C.green, fontWeight: 700, cursor: "pointer", marginBottom: 10, fontFamily: "inherit" }}>← 返回搜索</button>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <span style={{ fontSize: 32 }}>{selectedItem.emoji}</span>
-              <div>
-                <div style={{ fontSize: 18, fontWeight: 800 }}>{selectedItem.name}</div>
-                <div style={{ fontSize: 12, color: C.muted }}>{selectedItem.type} · {selectedItem.season} · 直卖 {selectedItem.price}g</div>
-              </div>
-            </div>
-
-            {/* Relevant goals hint */}
-            {goals.filter(g => g.steps.some(s => !s.checked && (s.tags || []).some(t => selectedItem.tags.includes(t)))).length > 0 && (
-              <div style={{ background: C.greenL, borderRadius: 10, padding: "8px 12px", marginBottom: 12, border: `1px solid ${C.green}33` }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: C.green }}>
-                  🎯 跟你的目标相关：
-                </div>
-                {goals.filter(g => g.steps.some(s => !s.checked && (s.tags || []).some(t => selectedItem.tags.includes(t)))).map(g => (
-                  <div key={g.id} style={{ fontSize: 12, color: C.greenD, marginTop: 2 }}>{g.emoji} {g.title}</div>
-                ))}
-              </div>
-            )}
-
-            {/* Processing paths */}
-            {selectedItem.processing.length > 0 && (
-              <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: C.brownL }}>🏭 加工路径</div>
-                {[...selectedItem.processing].sort((a, b) => b.price - a.price).map((proc, pi) => {
-                  const isBest = pi === 0;
-                  const eKey = proc.equipId;
-                  const goalExists = goals.some(g => g.id === `t-${eKey.replace('_', '-')}`);
-                  return (
-                    <div key={pi} style={{
-                      background: isBest ? C.greenL : C.card, borderRadius: 12, padding: 12, marginBottom: 6,
-                      border: isBest ? `2px solid ${C.green}` : `1px solid ${C.border}`, position: "relative",
-                    }}>
-                      {isBest && <span style={{ position: "absolute", top: -8, right: 10, background: C.green, color: "#fff", fontSize: 10, fontWeight: 800, padding: "1px 8px", borderRadius: 8 }}>最优</span>}
-                      <div style={{ fontSize: 13, fontWeight: 700 }}>{proc.method} → {proc.product}</div>
-                      <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>
-                        售价 <b style={{ color: C.amber }}>{proc.price}g</b> · {proc.gain}
-                      </div>
-                      <button onClick={() => setExpandedEquip(p => ({ ...p, [eKey]: !p[eKey] }))} style={{
-                        marginTop: 8, background: "none", border: `1px dashed ${C.green}88`, borderRadius: 6,
-                        padding: "5px 10px", fontSize: 11, color: C.green, cursor: "pointer", fontWeight: 600, fontFamily: "inherit",
-                      }}>
-                        {expandedEquip[eKey] ? "▼" : "▶"} {proc.method}怎么获得？
-                      </button>
-                      {expandedEquip[eKey] && (
-                        <div style={{ marginTop: 8, background: C.amberBg, borderRadius: 8, padding: 10, border: `1px solid ${C.amber}33` }}>
-                          {GOAL_TEMPLATES.flatMap(c => c.goals).filter(g => g.id === `t-${eKey.replace('_', '-')}`).map(tpl => (
-                            <div key={tpl.id}>
-                              {tpl.note && <div style={{ fontSize: 11, color: C.red, fontWeight: 600, marginBottom: 6 }}>{tpl.note}</div>}
-                              {tpl.steps.map((s, si) => (
-                                <div key={si} style={{ fontSize: 12, padding: "3px 0", color: C.brownL }}>• {s.label}{s.sub ? ` — ${s.sub}` : ""}</div>
-                              ))}
-                              <button onClick={() => addGoalFromEquip(eKey, selectedItem)} style={{
-                                marginTop: 8, width: "100%", padding: "9px 0", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
-                                background: goalExists ? C.redL : C.green, color: goalExists ? C.red : "#fff",
-                                border: goalExists ? `1px solid ${C.red}33` : "none",
-                              }}>
-                                {goalExists ? "已在目标列表中 ✓" : `🎯 设为目标：制作${proc.method}`}
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {/* Gifts */}
-            {selectedItem.gifts.length > 0 && (
-              <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6, color: C.brownL }}>🎁 送礼</div>
-                {selectedItem.gifts.map((g, gi) => (
-                  <div key={gi} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, padding: "4px 0" }}>
-                    <span>👤 {g.npc}</span>
-                    <span style={{ background: g.level === "喜爱" ? C.redL : C.amberL, color: g.level === "喜爱" ? C.red : C.amber, fontSize: 11, fontWeight: 700, padding: "1px 7px", borderRadius: 5 }}>
-                      {g.level === "喜爱" ? "❤️" : "💛"} {g.level}
-                    </span>
+                <div style={{ textAlign:"right" }}>
+                  <div style={{ fontSize:12, fontWeight:700, color: pct === 100 ? C.green : C.amber }}>{done}/{total}</div>
+                  <div style={{ width:48, height:4, background:C.border, borderRadius:2, marginTop:3, overflow:"hidden" }}>
+                    <div style={{ height:"100%", width:`${pct}%`, background: pct === 100 ? C.green : C.amber, borderRadius:2, transition:"width .3s" }} />
                   </div>
-                ))}
-              </div>
-            )}
+                </div>
+              </button>
 
-            {/* Bundles */}
-            {selectedItem.bundles.length > 0 && (
-              <div>
-                <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6, color: C.brownL }}>📦 献祭</div>
-                {selectedItem.bundles.map((b, bi) => (
-                  <div key={bi} style={{ background: C.greenL, borderRadius: 8, padding: "8px 10px", marginBottom: 4, fontSize: 12, color: C.greenD, fontWeight: 600 }}>{b}</div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
+              {isOpen && (
+                <div style={{ padding:"0 14px 12px" }}>
+                  {goal.steps.map((step, si) => (
+                    <button key={si} onClick={() => toggleStep(goal.id, si)} style={{
+                      display:"flex", alignItems:"flex-start", gap:10, padding:"8px 0", width:"100%",
+                      background:"none", border:"none", cursor:"pointer", textAlign:"left",
+                      borderBottom: si < goal.steps.length - 1 ? `1px solid ${C.border}` : "none",
+                    }}>
+                      <span style={{ width:22, height:22, borderRadius:7, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, flexShrink:0, marginTop:1, background: step.checked ? C.green : "#fff", border:`2px solid ${step.checked ? C.green : C.border}`, color:"#fff" }}>{step.checked ? "✓" : ""}</span>
+                      <div>
+                        <div style={{ fontSize:13, fontWeight:600, color: step.checked ? C.muted : C.brown, textDecoration: step.checked ? "line-through" : "none" }}>{step.label}</div>
+                        {step.sub && <div style={{ fontSize:11, color:C.muted, marginTop:2 }}>{step.sub}</div>}
+                      </div>
+                    </button>
+                  ))}
+                  <button onClick={() => removeGoal(goal.id)} style={{ marginTop:8, width:"100%", background:C.redL, border:`1px solid ${C.red}33`, borderRadius:8, padding:"7px 0", fontSize:12, color:C.red, fontWeight:600, cursor:"pointer" }}>移除目标</button>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
 
-        {/* ── ADD GOAL SHEET ── */}
-        {sheet === "addGoal" && (
-          <>
-            <h3 style={{ margin: "0 0 12px", fontSize: 16, fontWeight: 800 }}>添加目标</h3>
-            {!addCat ? (
-              <div>
-                {GOAL_TEMPLATES.map(cat => (
-                  <button key={cat.category} onClick={() => setAddCat(cat.category)} style={{
-                    display: "flex", alignItems: "center", gap: 10, width: "100%", background: C.card,
-                    borderRadius: 12, padding: "14px 14px", border: `1px solid ${C.border}`, marginBottom: 6,
-                    cursor: "pointer", textAlign: "left", fontFamily: "inherit",
-                  }}>
-                    <span style={{ fontSize: 22 }}>{cat.emoji}</span>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 14, fontWeight: 700 }}>{cat.category}</div>
-                      <div style={{ fontSize: 11, color: C.muted }}>{cat.goals.length} 个目标</div>
+      {sheet && (
+        <div style={{ position:"fixed", inset:0, zIndex:80 }}>
+          <div onClick={() => { setSheet(null); setSearchQ(""); setSelectedItemId(null); setExpandedEquip({}); setAddCat(null); }}
+            style={{ position:"absolute", inset:0, background:"rgba(0,0,0,.35)" }} />
+          <div style={{ position:"absolute", bottom:0, left:0, right:0, maxHeight:"85vh", overflowY:"auto", background:C.bg, borderRadius:"20px 20px 0 0", boxShadow:"0 -4px 30px rgba(0,0,0,.15)", padding:"12px 16px 32px" }}>
+            <div style={{ width:40, height:4, background:C.border, borderRadius:2, margin:"0 auto 14px" }} />
+
+            {sheet === "search" && !selectedItemId && (
+              <>
+                <div style={{ display:"flex", alignItems:"center", gap:8, background:C.card, borderRadius:12, padding:"10px 14px", border:`2px solid ${C.green}`, marginBottom:12 }}>
+                  <span>🔍</span>
+                  <input autoFocus value={searchQ} onChange={e => setSearchQ(e.target.value)} placeholder="输入物品名称..." style={{ flex:1, border:"none", outline:"none", fontSize:14, background:"transparent", color:C.brown }} />
+                  {searchQ && <button onClick={() => setSearchQ("")} style={{ background:"none", border:"none", fontSize:14, color:C.muted, cursor:"pointer" }}>✕</button>}
+                </div>
+                {!searchQ && (
+                  <div style={{ display:"flex", flexWrap:"wrap", gap:6, marginBottom:12 }}>
+                    {["玉米","南瓜","铜矿石","杨桃","蓝莓"].map(t => (
+                      <button key={t} onClick={() => setSearchQ(t)} style={{ background:C.greenL, border:`1px solid ${C.green}33`, borderRadius:16, padding:"5px 12px", fontSize:12, color:C.greenD, fontWeight:600, cursor:"pointer" }}>{t}</button>
+                    ))}
+                  </div>
+                )}
+                {searchQ && filteredItems.length === 0 && <div style={{ textAlign:"center", padding:24, color:C.muted, fontSize:13 }}>没找到「{searchQ}」</div>}
+                {filteredItems.map(item => (
+                  <button key={item.id} onClick={() => setSelectedItemId(item.id)} style={{ display:"flex", alignItems:"center", gap:12, width:"100%", background:C.card, borderRadius:12, padding:"12px 14px", border:`1px solid ${C.border}`, marginBottom:6, cursor:"pointer", textAlign:"left" }}>
+                    <span style={{ fontSize:26 }}>{item.emoji}</span>
+                    <div style={{ flex:1 }}>
+                      <div style={{ fontSize:14, fontWeight:700 }}>{item.name}</div>
+                      <div style={{ fontSize:11, color:C.muted }}>{item.type} · {item.season} · 💰{item.price}g</div>
                     </div>
-                    <span style={{ color: C.muted }}>→</span>
+                    <span style={{ color:C.muted }}>→</span>
                   </button>
                 ))}
-                <div style={{ textAlign: "center", marginTop: 12, fontSize: 12, color: C.muted }}>
-                  也可以通过搜索物品来发现目标
-                </div>
-              </div>
-            ) : (
-              <>
-                <button onClick={() => setAddCat(null)} style={{ background: "none", border: "none", fontSize: 12, color: C.green, fontWeight: 700, cursor: "pointer", marginBottom: 10, fontFamily: "inherit" }}>← 返回分类</button>
-                {GOAL_TEMPLATES.find(c => c.category === addCat)?.goals.map(tpl => {
-                  const exists = goals.some(g => g.id === tpl.id);
-                  return (
-                    <button key={tpl.id} onClick={() => !exists && addGoalFromTemplate(tpl)} style={{
-                      display: "flex", alignItems: "center", gap: 10, width: "100%", background: exists ? C.greenL : C.card,
-                      borderRadius: 12, padding: "12px 14px", border: `1px solid ${exists ? C.green + "55" : C.border}`, marginBottom: 6,
-                      cursor: exists ? "default" : "pointer", textAlign: "left", fontFamily: "inherit", opacity: exists ? 0.7 : 1,
-                    }}>
-                      <span style={{ fontSize: 22 }}>{tpl.emoji}</span>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 14, fontWeight: 700 }}>{tpl.title}</div>
-                        {tpl.note && <div style={{ fontSize: 11, color: C.amber }}>{tpl.note}</div>}
-                        <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{tpl.steps.map(s => s.label).join(" · ")}</div>
-                      </div>
-                      {exists ? <span style={{ fontSize: 11, color: C.green, fontWeight: 700 }}>已添加 ✓</span> : <span style={{ color: C.green, fontWeight: 700 }}>+</span>}
-                    </button>
-                  );
-                })}
               </>
             )}
-          </>
-        )}
-      </div>
+
+            {sheet === "search" && selectedItem && (
+              <>
+                <button onClick={() => { setSelectedItemId(null); setExpandedEquip({}); }} style={{ background:"none", border:"none", fontSize:12, color:C.green, fontWeight:700, cursor:"pointer", marginBottom:10 }}>← 返回搜索</button>
+                <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
+                  <span style={{ fontSize:32 }}>{selectedItem.emoji}</span>
+                  <div>
+                    <div style={{ fontSize:18, fontWeight:800 }}>{selectedItem.name}</div>
+                    <div style={{ fontSize:12, color:C.muted }}>{selectedItem.type} · {selectedItem.season} · 直卖 {selectedItem.price}g</div>
+                  </div>
+                </div>
+
+                {goals.filter(g => g.steps.some(s => !s.checked && (s.tags || []).some(t => selectedItem.tags.includes(t)))).length > 0 && (
+                  <div style={{ background:C.greenL, borderRadius:10, padding:"8px 12px", marginBottom:12, border:`1px solid ${C.green}33` }}>
+                    <div style={{ fontSize:12, fontWeight:700, color:C.green }}>🎯 跟你的目标相关：</div>
+                    {goals.filter(g => g.steps.some(s => !s.checked && (s.tags || []).some(t => selectedItem.tags.includes(t)))).map(g => (
+                      <div key={g.id} style={{ fontSize:12, color:C.greenD, marginTop:2 }}>{g.emoji} {g.title}</div>
+                    ))}
+                  </div>
+                )}
+
+                {selectedItem.processing.length > 0 && (
+                  <div style={{ marginBottom:12 }}>
+                    <div style={{ fontSize:13, fontWeight:700, marginBottom:8, color:C.brownL }}>🏭 加工路径</div>
+                    {[...selectedItem.processing].sort((a,b) => b.price - a.price).map((proc, pi) => {
+                      const isBest = pi === 0;
+                      const eKey = proc.equipId;
+                      const goalExists = goals.some(g => g.id === `t-${eKey.replace('_','-')}`);
+                      return (
+                        <div key={pi} style={{ background: isBest ? C.greenL : C.card, borderRadius:12, padding:12, marginBottom:6, border: isBest ? `2px solid ${C.green}` : `1px solid ${C.border}`, position:"relative" }}>
+                          {isBest && <span style={{ position:"absolute", top:-8, right:10, background:C.green, color:"#fff", fontSize:10, fontWeight:800, padding:"1px 8px", borderRadius:8 }}>最优</span>}
+                          <div style={{ fontSize:13, fontWeight:700 }}>{proc.method} → {proc.product}</div>
+                          <div style={{ fontSize:12, color:C.muted, marginTop:2 }}>售价 <b style={{ color:C.amber }}>{proc.price}g</b> · {proc.gain}</div>
+                          <button onClick={() => setExpandedEquip(p => ({ ...p, [eKey]: !p[eKey] }))} style={{ marginTop:8, background:"none", border:`1px dashed ${C.green}88`, borderRadius:6, padding:"5px 10px", fontSize:11, color:C.green, cursor:"pointer", fontWeight:600 }}>
+                            {expandedEquip[eKey] ? "▼" : "▶"} {proc.method}怎么获得？
+                          </button>
+                          {expandedEquip[eKey] && (
+                            <div style={{ marginTop:8, background:C.amberBg, borderRadius:8, padding:10, border:`1px solid ${C.amber}33` }}>
+                              {GOAL_TEMPLATES.flatMap(c => c.goals).filter(g => g.id === `t-${eKey.replace('_','-')}`).map(tpl => (
+                                <div key={tpl.id}>
+                                  {tpl.note && <div style={{ fontSize:11, color:C.red, fontWeight:600, marginBottom:6 }}>{tpl.note}</div>}
+                                  {tpl.steps.map((s, si) => (
+                                    <div key={si} style={{ fontSize:12, padding:"3px 0", color:C.brownL }}>• {s.label}{s.sub ? ` — ${s.sub}` : ""}</div>
+                                  ))}
+                                  <button onClick={() => addGoalFromEquip(eKey, selectedItem)} style={{ marginTop:8, width:"100%", padding:"9px 0", borderRadius:8, fontSize:12, fontWeight:700, cursor:"pointer", background: goalExists ? C.redL : C.green, color: goalExists ? C.red : "#fff", border: goalExists ? `1px solid ${C.red}33` : "none" }}>
+                                    {goalExists ? "已在目标列表中 ✓" : `🎯 设为目标：制作${proc.method}`}
+                                  </button>
+                                </div>
+                              ))}
+                              {GOAL_TEMPLATES.flatMap(c => c.goals).filter(g => g.id === `t-${eKey.replace('_','-')}`).length === 0 && (
+                                <div style={{ fontSize:12, color:C.muted }}>该设备暂无目标模板</div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {selectedItem.gifts.length > 0 && (
+                  <div style={{ marginBottom:12 }}>
+                    <div style={{ fontSize:13, fontWeight:700, marginBottom:6, color:C.brownL }}>🎁 送礼</div>
+                    {selectedItem.gifts.map((g, gi) => (
+                      <div key={gi} style={{ display:"flex", alignItems:"center", gap:8, fontSize:13, padding:"4px 0" }}>
+                        <span>👤 {g.npc}</span>
+                        <span style={{ background: g.level === "喜爱" ? C.redL : C.amberL, color: g.level === "喜爱" ? C.red : C.amber, fontSize:11, fontWeight:700, padding:"1px 7px", borderRadius:5 }}>
+                          {g.level === "喜爱" ? "❤️" : "💛"} {g.level}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {selectedItem.bundles.length > 0 && (
+                  <div>
+                    <div style={{ fontSize:13, fontWeight:700, marginBottom:6, color:C.brownL }}>📦 献祭</div>
+                    {selectedItem.bundles.map((b, bi) => (
+                      <div key={bi} style={{ background:C.greenL, borderRadius:8, padding:"8px 10px", marginBottom:4, fontSize:12, color:C.greenD, fontWeight:600 }}>{b}</div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+
+            {sheet === "addGoal" && (
+              <>
+                <h3 style={{ margin:"0 0 12px", fontSize:16, fontWeight:800 }}>添加目标</h3>
+                {!addCat ? (
+                  <div>
+                    {GOAL_TEMPLATES.map(cat => (
+                      <button key={cat.category} onClick={() => setAddCat(cat.category)} style={{ display:"flex", alignItems:"center", gap:10, width:"100%", background:C.card, borderRadius:12, padding:"14px 14px", border:`1px solid ${C.border}`, marginBottom:6, cursor:"pointer", textAlign:"left" }}>
+                        <span style={{ fontSize:22 }}>{cat.emoji}</span>
+                        <div style={{ flex:1 }}>
+                          <div style={{ fontSize:14, fontWeight:700 }}>{cat.category}</div>
+                          <div style={{ fontSize:11, color:C.muted }}>{cat.goals.length} 个目标</div>
+                        </div>
+                        <span style={{ color:C.muted }}>→</span>
+                      </button>
+                    ))}
+                    <div style={{ textAlign:"center", marginTop:12, fontSize:12, color:C.muted }}>也可以通过搜索物品来发现目标</div>
+                  </div>
+                ) : (
+                  <>
+                    <button onClick={() => setAddCat(null)} style={{ background:"none", border:"none", fontSize:12, color:C.green, fontWeight:700, cursor:"pointer", marginBottom:10 }}>← 返回分类</button>
+                    {GOAL_TEMPLATES.find(c => c.category === addCat)?.goals.map(tpl => {
+                      const exists = goals.some(g => g.id === tpl.id);
+                      return (
+                        <button key={tpl.id} onClick={() => !exists && addGoalFromTemplate(tpl)} style={{ display:"flex", alignItems:"center", gap:10, width:"100%", background: exists ? C.greenL : C.card, borderRadius:12, padding:"12px 14px", border:`1px solid ${exists ? C.green + "55" : C.border}`, marginBottom:6, cursor: exists ? "default" : "pointer", textAlign:"left", opacity: exists ? 0.7 : 1 }}>
+                          <span style={{ fontSize:22 }}>{tpl.emoji}</span>
+                          <div style={{ flex:1 }}>
+                            <div style={{ fontSize:14, fontWeight:700 }}>{tpl.title}</div>
+                            {tpl.note && <div style={{ fontSize:11, color:C.amber }}>{tpl.note}</div>}
+                            <div style={{ fontSize:11, color:C.muted, marginTop:2 }}>{tpl.steps.map(s => s.label).join(" · ")}</div>
+                          </div>
+                          {exists ? <span style={{ fontSize:11, color:C.green, fontWeight:700 }}>已添加 ✓</span> : <span style={{ color:C.green, fontWeight:700 }}>+</span>}
+                        </button>
+                      );
+                    })}
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
-  )}
-
-  <style>{`
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    input::placeholder { color: ${C.muted}; }
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 2px; }
-  `}</style>
-</div>
-```
-
-);
+  );
 }
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<StardewHelper />);
+</script>
+</body>
+</html>
