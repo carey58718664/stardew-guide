@@ -4631,76 +4631,77 @@ h1 {
 
 .item-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
 }
+@media (min-width: 720px) {
+  .item-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+/* 物品 tile - 扁长条横排，一行 3 个 */
 .item-tile {
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 5px 2px 3px;
+  gap: 3px;
+  padding: 4px 5px;
   border: 1.5px solid #e2d0aa;
-  border-radius: 8px;
+  border-radius: 7px;
   background: #fffdf6;
-  min-height: 86px;
+  min-width: 0;
 }
 .item-tile.has { border-color: var(--green); background: var(--green-soft); }
-.item-tile-icon { display: flex; align-items: center; justify-content: center; height: 32px; }
-.item-tile img, .item-tile .fallback-icon { width: 28px; height: 28px; image-rendering: pixelated; }
+.item-tile-icon { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; }
+.item-tile img, .item-tile .fallback-icon { width: 22px; height: 22px; image-rendering: pixelated; }
 .item-tile-name {
-  font-size: 10px;
+  flex: 1;
+  min-width: 0;
+  font-size: 10.5px;
   font-weight: 700;
   color: var(--ink);
-  text-align: center;
-  line-height: 1.1;
-  margin: 1px 0 3px;
-  max-width: 100%;
+  line-height: 1.15;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
 }
 .item-tile-ctrl {
   display: flex;
-  width: 100%;
   align-items: center;
-  gap: 2px;
-  margin-top: auto;
+  gap: 1px;
+  flex-shrink: 0;
 }
 .item-tile-btn {
-  flex: 1;
+  width: 21px;
   height: 22px;
-  border: 1.5px solid var(--line);
-  border-radius: 5px;
+  border: 1.2px solid var(--line);
+  border-radius: 4px;
   font-size: 12px;
   font-weight: 900;
   cursor: pointer;
   padding: 0;
-  min-width: 0;
+  flex-shrink: 0;
+  line-height: 1;
 }
 .item-tile-btn.minus { background: #fde9e6; border-color: #e6b8b0; color: var(--red); }
 .item-tile-btn.plus { background: #e9f6e6; border-color: #a6cf9a; color: var(--green); }
 .item-tile-num {
-  flex: 1.1;
+  min-width: 18px;
+  max-width: 28px;
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
   color: var(--ink);
-  min-width: 0;
+  padding: 0 1px;
 }
 .item-tile.has .item-tile-num { color: var(--green); }
 .item-tile-check {
-  width: 100%;
-  text-align: center;
-  font-size: 11px;
+  flex-shrink: 0;
+  font-size: 10.5px;
   font-weight: 800;
-  padding: 4px 0;
-  border-radius: 5px;
+  padding: 3px 7px;
+  border-radius: 4px;
   background: var(--paper-deep);
   color: var(--muted);
-  margin-top: auto;
+  white-space: nowrap;
 }
 .item-tile-check.checked { background: var(--green); color: #fff; }
 
@@ -5061,13 +5062,13 @@ h1 {
   .app-panel { padding: 8px; margin-bottom: 6px; }
   .app-panel-title { font-size: 12.5px; margin-bottom: 5px; }
   .quest-card { padding: 5px 7px 5px 11px; }
-  .item-grid { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 4px; }
-  .item-tile { min-height: 80px; padding: 4px 2px 3px; }
-  .item-tile img, .item-tile .fallback-icon { width: 26px; height: 26px; }
-  .item-tile-icon { height: 28px; }
-  .item-tile-name { font-size: 9.5px; }
-  .item-tile-btn { height: 20px; font-size: 11px; }
-  .item-tile-num { font-size: 12px; }
+  .item-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+  .item-tile { padding: 3px 4px; gap: 2px; }
+  .item-tile img, .item-tile .fallback-icon { width: 20px; height: 20px; }
+  .item-tile-icon { width: 22px; height: 22px; }
+  .item-tile-name { font-size: 10px; }
+  .item-tile-btn { width: 19px; height: 21px; font-size: 11px; }
+  .item-tile-num { font-size: 11.5px; min-width: 16px; }
   .goals-empty { padding: 14px 10px; font-size: 12px; }
   .add-item-btn { padding: 8px; font-size: 13px; }
 }
@@ -6574,18 +6575,18 @@ h1 {
     /* ── 物品分类数据（带wiki图标） ── */
     const INV_CATEGORIES = [
       { id: "crop", label: "🌾 作物", items: [
-        "防风草","青豆","花椰菜","土豆","郁金香","蓝爵","羽衣甘蓝","胡萝卜",
+        "防风草","青豆","花椰菜","土豆","郁金香","蓝爵","羽衣甘蓝","胡萝卜","草莓","咖啡豆",
         "番茄","辣椒","蓝莓","甜瓜","玉米","小麦","茄子","葡萄","向日葵","夏南瓜","夏季亮片","啤酒花","杨桃",
         "南瓜","山药","甜菜","苋菜","红叶卷心菜","西兰花","罂粟","玫瑰仙子",
         "上古水果","宝石甜莓"
       ]},
       { id: "fruit", label: "🍎 树果", items: ["苹果","杏子","橙子","桃子","石榴","樱桃"]},
       { id: "forage", label: "🍄 采集", items: [
-        "野山葵","黄水仙","韭葱","蒲公英","春葱",
-        "葡萄","香味浆果","甜豌豆","美洲大树莓",
-        "普通蘑菇","野李子","榛子","黑莓",
+        "野山葵","黄水仙","韭葱","蒲公英","春葱","春之洋葱",
+        "葡萄","香味浆果","甜豌豆","美洲大树莓","蕨菜",
+        "普通蘑菇","野李子","榛子","黑莓","琥珀蘑菇",
         "冬根","水晶果","雪山药","番红花","冬青树",
-        "椰子","仙人掌果子","山洞萝卜","红蘑菇","紫蘑菇","龙葵","蕨菜","松露"
+        "椰子","仙人掌果子","山洞萝卜","红蘑菇","紫蘑菇","龙葵","松露","古卷轴"
       ]},
       { id: "resource", label: "🪵 原材料", items: [
         "木材","石头","硬木","纤维","树液","苔藓","干草","煤炭","粘土","橡子","枫树种子"
@@ -6597,25 +6598,31 @@ h1 {
         "沙丁鱼","金枪鱼","红鲫鱼","罗非鱼",
         "大眼鱼","鲷鱼","鳗鱼",
         "河豚","鬼鱼","沙鱼","木跃鱼",
-        "岩浆鳗鱼","蝎鲤鱼","章鱼","水滴鱼","虚空鲑鱼"
+        "岩浆鳗鱼","蝎鲤鱼","章鱼","水滴鱼","虚空鲑鱼",
+        "草鱼","彩虹鱼","绿松石鱼","玻璃鱼","铁头鱼",
+        "午夜鳗","狮子鱼","蓝铁饼","深海鱼","史莱姆杰克"
       ]},
       { id: "shellfish", label: "🦀 贝类", items: [
-        "龙虾","小龙虾","螃蟹","鸟蛤","蚌","虾","蜗牛","玉黍螺","牡蛎","蛤","海胆","白藻"
+        "龙虾","小龙虾","螃蟹","鸟蛤","蚌","虾","蜗牛","玉黍螺","牡蛎","蛤","海胆","白藻",
+        "海草","海葡萄","海贝","河贝","彩虹贝","珍珠","珊瑚","海星","海绵"
       ]},
       { id: "animal", label: "🥚 动物产物", items: [
-        "大壶牛奶","大鸡蛋(白)","大鸡蛋(棕)","大瓶羊奶","羊毛","鸭蛋","羽毛","兔子脚","松露"
+        "牛奶","大壶牛奶","羊奶","大瓶羊奶",
+        "鸡蛋(白)","鸡蛋(棕)","大鸡蛋(白)","大鸡蛋(棕)",
+        "羊毛","鸭蛋","鸭羽","羽毛","兔子毛","兔子脚","松露",
+        "虚空蛋","龙蛋","恐龙蛋","金色鸡蛋"
       ]},
       { id: "artisan", label: "🍷 工匠加工", items: [
-        "松露油","布料","山羊奶酪","奶酪","蜂蜜","果酱","蜂蜜酒","淡啤酒","葡萄酒","果酒","蔬菜汁","绿茶","鱼籽","陈年鱼籽","鱿鱼墨汁","鱼子酱","恐龙蛋黄酱","南瓜灯"
+        "松露油","布料","山羊奶酪","奶酪","蜂蜜","果酱","蜂蜜酒","淡啤酒","葡萄酒","果酒","蔬菜汁","绿茶","鱼籽","陈年鱼籽","鱿鱼墨汁","鱼子酱","恐龙蛋黄酱","南瓜灯","蛋黄酱","咖啡","枫糖浆","橡树树脂","松焦油"
       ]},
       { id: "mine", label: "⛏️ 矿物锭", items: [
         "铜锭","铁锭","金锭","铱锭","铱矿石","精炼石英","电池组",
         "石英","泪晶","地晶","火水晶","冰封晶球","骨头碎片",
         "紫水晶","海蓝宝石","钻石","翡翠","红宝石","黄水晶","五彩碎片"
       ]},
-      { id: "monster", label: "👾 怪物素材", items: ["史莱姆","蝙蝠翅膀","太阳精华","虚空精华"]},
+      { id: "monster", label: "👾 怪物素材", items: ["史莱姆","蝙蝠翅膀","太阳精华","虚空精华","骨头碎片","菌丝体","空灵之尘","史莱姆蛋（绿）","史莱姆蛋（蓝）","史莱姆蛋（红）","史莱姆蛋（紫）"]},
       { id: "cook", label: "🍳 烹饪", items: ["煎蛋","曲奇","冰淇淋","小麦粉","葡萄布丁","填料","粉瓜","星之果实茶"]},
-      { id: "special", label: "✨ 特殊", items: ["古代玩偶","鹦鹉螺化石","奖券","谜之盒"]},
+      { id: "special", label: "✨ 特殊", items: ["古代玩偶","鹦鹉螺化石","奖券","谜之盒","稜镜碎片","五彩碎片","泥土","沙","虚空之蛋","金香蕉","咖啡豆"]},
     ];
 
     /* 工具升级数据 */
@@ -6934,6 +6941,18 @@ h1 {
       "橙子": [{ method: "罐头瓶", out: "橙子果酱", price: 250, gain: "+150%" }, { method: "小桶", out: "橙子酒", price: 300, gain: "+200%" }],
       "樱桃": [{ method: "罐头瓶", out: "樱桃果酱", price: 210, gain: "+162%" }, { method: "小桶", out: "樱桃酒", price: 240, gain: "+200%" }],
       "杏子": [{ method: "罐头瓶", out: "杏子果酱", price: 150, gain: "+200%" }, { method: "小桶", out: "杏子酒", price: 150, gain: "+200%" }],
+      // 鸡蛋类
+      "鸡蛋(白)": [{ method: "蛋黄酱机", out: "蛋黄酱", price: 190, gain: "+280%" }],
+      "鸡蛋(棕)": [{ method: "蛋黄酱机", out: "蛋黄酱", price: 190, gain: "+280%" }],
+      "大鸡蛋(白)": [{ method: "蛋黄酱机", out: "大蛋黄酱", price: 285, gain: "+200%" }],
+      "大鸡蛋(棕)": [{ method: "蛋黄酱机", out: "大蛋黄酱", price: 285, gain: "+200%" }],
+      "羊奶": [{ method: "奶酪压榨机", out: "山羊奶酪", price: 400, gain: "+77%" }],
+      // 草莓
+      "草莓": [{ method: "罐头瓶", out: "草莓果酱", price: 240, gain: "+200%" }, { method: "小桶", out: "草莓酒", price: 360, gain: "+200%" }],
+      // 咖啡豆
+      "咖啡豆": [{ method: "小桶", out: "咖啡", price: 150, gain: "+1100%" }],
+      // 蜂蜜
+      "蜂蜜": [],
     };
 
     /* ── 售价数据（决策面板/建议用） ── */
@@ -6946,7 +6965,7 @@ h1 {
       "茄子":60,"山药":160,"葡萄":80,"小麦":25,"啤酒花":25,
       "向日葵":80,"夏南瓜":40,"夏季亮片":90,
       "蔓越莓":75,"朝鲜蓟":160,"红叶卷心菜":260,"苋菜":150,
-      "甜菜":100,"西兰花":100,"宝石甜莓":350,
+      "甜菜":100,"西兰花":100,"宝石甜莓":350,"草莓":120,
       // 树果
       "苹果":100,"杏子":50,"橙子":100,"桃子":140,"石榴":140,"樱桃":80,
       // 采集
@@ -6985,7 +7004,22 @@ h1 {
       // 怪物
       "史莱姆":5,"蝙蝠翅膀":15,"太阳精华":40,"虚空精华":60,
       // 特殊
-      "古代玩偶":100,"鹦鹉螺化石":120,
+      "古代玩偶":100,"鹦鹉螺化石":120,"稜镜碎片":2000,"五彩碎片":5,"金香蕉":150,"咖啡豆":15,
+      // 补充贝类
+      "海草":30,"海葡萄":30,"海贝":50,"河贝":40,"彩虹贝":300,"珍珠":2500,"珊瑚":80,"海星":50,"海绵":40,
+      // 补充鱼类
+      "草鱼":150,"彩虹鱼":100,"绿松石鱼":30,"玻璃鱼":75,"铁头鱼":75,
+      "午夜鳗":150,"狮子鱼":100,"蓝铁饼":75,"深海鱼":75,"史莱姆杰克":100,
+      // 补充怪物素材
+      "骨头碎片":15,"菌丝体":15,"空灵之尘":50,
+      "史莱姆蛋（绿）":1000,"史莱姆蛋（蓝）":1750,"史莱姆蛋（红）":2500,"史莱姆蛋（紫）":5000,
+      // 补充采集
+      "春之洋葱":8,"蕨菜":25,"琥珀蘑菇":80,"古卷轴":80,
+      // 补充动物
+      "鸡蛋(白)":50,"鸡蛋(棕)":50,"羊奶":225,"鸭羽":250,"兔子毛":260,
+      "虚空蛋":65,"龙蛋":50,"恐龙蛋":350,"金色鸡蛋":500,
+      // 补充工匠
+      "蛋黄酱":190,"咖啡":150,
     };
 
     /* ── localStorage ── */
@@ -7332,19 +7366,25 @@ h1 {
       `).join("");
     }
 
-    /* ── 物品查询（决策面板） ── */
+    /* ── 物品查询（覆盖所有物品/设备/建筑/加工产物） ── */
     function renderLookup(q) {
       const div = document.getElementById("lookupResult");
       q = (q || "").trim();
       if (!q) { div.innerHTML = ""; return; }
-      const matches = Object.keys(SELL_PRICES).concat(Object.keys(PROCESS_MAP))
-        .filter((v, i, a) => a.indexOf(v) === i)
-        .filter(n => n.includes(q));
+      // 汇总所有候选
+      const all = new Set();
+      INV_CATEGORIES.forEach(c => c.items.forEach(n => all.add(n)));
+      EQUIPMENT.forEach(e => all.add(e.name));
+      BUILDINGS.forEach(b => all.add(b.name));
+      Object.keys(SELL_PRICES).forEach(n => all.add(n));
+      Object.keys(PROCESS_MAP).forEach(n => all.add(n));
+      Object.values(PROCESS_MAP).flat().forEach(p => all.add(p.out));
+      const matches = [...all].filter(n => n.includes(q)).slice(0, 8);
       if (matches.length === 0) {
-        div.innerHTML = `<div style="padding:10px;color:var(--muted);font-size:13px;">没有相关数据</div>`;
+        div.innerHTML = `<div style="padding:10px;color:var(--muted);font-size:13px;">没有「${escapeHtml(q)}」相关物品</div>`;
         return;
       }
-      div.innerHTML = matches.slice(0, 5).map(name => {
+      div.innerHTML = matches.map(name => {
         const sell = SELL_PRICES[name];
         const procs = PROCESS_MAP[name] || [];
         const rows = [];
@@ -7352,7 +7392,10 @@ h1 {
         procs.forEach((p, i) => {
           rows.push(`<div class="decision-row ${i === 0 ? "best" : ""}">${i === 0 ? '<span class="badge">最优</span>' : ""}${p.method} → ${p.out} <span style="color:var(--muted);font-size:11px;">${p.gain}</span><span class="decision-price">${p.price}g</span></div>`);
         });
-        return `<div style="margin-bottom:10px;padding:8px;background:#fffdf6;border:1.5px solid #e2d0aa;border-radius:8px;">
+        if (rows.length === 0) {
+          rows.push(`<div class="decision-row" style="color:var(--muted);">暂无加工/售价数据 — 可作为送礼或献祭物品</div>`);
+        }
+        return `<div style="margin-bottom:8px;padding:8px;background:#fffdf6;border:1.5px solid #e2d0aa;border-radius:8px;">
           <div style="display:flex;align-items:center;gap:8px;font-weight:900;margin-bottom:6px;">${renderInvIcon(name)}${escapeHtml(name)}</div>
           ${rows.join("")}
         </div>`;
@@ -7871,6 +7914,5 @@ h1 {
     renderApp();
     syncBundleChecksFromInventory();
   </script>
-
 </body>
 </html>
