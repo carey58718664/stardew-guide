@@ -7826,21 +7826,53 @@ body.modal-open #app-shell { pointer-events: none; }
     }
 
     /* ── 献祭overlay切换 ── */
+    /* ResizeObserver 监听所有 .room-scene，宽度从 0 → 非 0 时立刻触发原代码 layout */
+    let _bundleResizeObs = null;
+    function ensureBundleResizeObserver() {
+      if (_bundleResizeObs) return;
+      if (typeof ResizeObserver === "undefined") return;
+      _bundleResizeObs = new ResizeObserver((entries) => {
+        let anyHasWidth = false;
+        for (const entry of entries) {
+          if (entry.contentRect.width > 0) { anyHasWidth = true; break; }
+        }
+        if (anyHasWidth && typeof layoutMobileRoomVisuals === "function") {
+          // 触发 reflow 后立刻 layout，再 raf 一次保险
+          layoutMobileRoomVisuals();
+          requestAnimationFrame(() => layoutMobileRoomVisuals());
+        }
+      });
+    }
+    function observeAllRoomScenes() {
+      ensureBundleResizeObserver();
+      if (!_bundleResizeObs) return;
+      document.querySelectorAll(".bundle-overlay .room-scene").forEach((el) => {
+        try { _bundleResizeObs.observe(el); } catch {}
+      });
+    }
+
     function openBundle() {
       const ov = document.getElementById("bundle-overlay");
       ov.hidden = false;
+      // 强制 reflow，让浏览器真正开始计算 layout
+      void ov.offsetHeight;
       window.scrollTo(0, 0);
+      // 触发 window resize 让原代码自己响应（这是最准确的入口）
+      window.dispatchEvent(new Event("resize"));
       // 重渲染献祭页面（背包可能变化了）
       render();
-      // 触发原代码的手机端布局算法（不调用的话节点会飞）
-      // 多次触发以确保 clientWidth 已经稳定
-      if (typeof scheduleLayout === "function") {
-        scheduleLayout();
-        requestAnimationFrame(() => {
-          if (typeof layoutMobileRoomVisuals === "function") layoutMobileRoomVisuals();
+      // 重新 observe 所有 room-scene（render() 会把 DOM 重建）
+      observeAllRoomScenes();
+      // 兜底连续 5 次重试，覆盖 iOS Safari 的奇怪渲染时序
+      if (typeof layoutMobileRoomVisuals === "function") {
+        [16, 80, 200, 500, 1000, 1800].forEach((delay) => {
+          setTimeout(() => {
+            const anyScene = document.querySelector(".bundle-overlay .room-scene");
+            if (anyScene && anyScene.clientWidth > 0) {
+              layoutMobileRoomVisuals();
+            }
+          }, delay);
         });
-        setTimeout(() => { if (typeof layoutMobileRoomVisuals === "function") layoutMobileRoomVisuals(); }, 100);
-        setTimeout(() => { if (typeof layoutMobileRoomVisuals === "function") layoutMobileRoomVisuals(); }, 400);
       }
     }
     function closeBundle() {
