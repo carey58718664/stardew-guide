@@ -4529,6 +4529,21 @@ h1 {
 .inv-suggestion .badge.recommend { background: #fff0d2; color: #9c620e; }
 .inv-suggestion .badge.bundle { background: #e0eef8; color: #2c5d8a; }
 .inv-suggestion .badge.goal { background: var(--green-soft); color: var(--green); }
+.sug-add-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid #d39c5f;
+  border-radius: 8px;
+  background: #f4c77f;
+  color: #5f3a22;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+.sug-add-btn:active { background: #f6d294; }
 .inv-empty {
   padding: 14px 8px;
   text-align: center;
@@ -4573,7 +4588,8 @@ h1 {
   .modal-backdrop { align-items: center; }
   .modal-sheet { border-radius: 16px; height: 80vh; max-height: 720px; border-top: none; border: 2px solid var(--wood); }
 }
-.modal-grip { width: 48px; height: 5px; background: var(--wood); opacity: 0.4; border-radius: 999px; margin: 0 auto 12px; cursor: grab; }
+.modal-grip { width: 100%; max-width: 280px; height: 18px; margin: 0 auto 8px; cursor: grab; position: relative; display: flex; align-items: center; justify-content: center; touch-action: none; }
+.modal-grip::after { content: ""; width: 48px; height: 5px; background: var(--wood); opacity: 0.4; border-radius: 999px; }
 .modal-head {
   display: flex;
   justify-content: space-between;
@@ -4623,16 +4639,14 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 6px 3px 4px;
+  padding: 5px 2px 3px;
   border: 1.5px solid #e2d0aa;
   border-radius: 8px;
   background: #fffdf6;
-  cursor: pointer;
-  min-height: 64px;
+  min-height: 86px;
 }
-.item-tile:active { background: #fff3d6; }
 .item-tile.has { border-color: var(--green); background: var(--green-soft); }
+.item-tile-icon { display: flex; align-items: center; justify-content: center; height: 32px; }
 .item-tile img, .item-tile .fallback-icon { width: 28px; height: 28px; image-rendering: pixelated; }
 .item-tile-name {
   font-size: 10px;
@@ -4640,28 +4654,78 @@ h1 {
   color: var(--ink);
   text-align: center;
   line-height: 1.1;
-  margin-top: 2px;
+  margin: 1px 0 3px;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
-.item-tile-count {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  background: var(--gold);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 900;
-  padding: 1px 6px;
-  border-radius: 999px;
-  border: 2px solid var(--paper);
-  min-width: 22px;
-  text-align: center;
+.item-tile-ctrl {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 2px;
+  margin-top: auto;
 }
+.item-tile-btn {
+  flex: 1;
+  height: 22px;
+  border: 1.5px solid var(--line);
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0;
+  min-width: 0;
+}
+.item-tile-btn.minus { background: #fde9e6; border-color: #e6b8b0; color: var(--red); }
+.item-tile-btn.plus { background: #e9f6e6; border-color: #a6cf9a; color: var(--green); }
+.item-tile-num {
+  flex: 1.1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--ink);
+  min-width: 0;
+}
+.item-tile.has .item-tile-num { color: var(--green); }
+.item-tile-check {
+  width: 100%;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 0;
+  border-radius: 5px;
+  background: var(--paper-deep);
+  color: var(--muted);
+  margin-top: auto;
+}
+.item-tile-check.checked { background: var(--green); color: #fff; }
+
+/* 工具卡片网格 */
+.tool-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+@media (min-width: 720px) {
+  .tool-card-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.tool-card {
+  border: 1.5px solid var(--line);
+  border-radius: 9px;
+  background: var(--paper);
+  padding: 8px;
+}
+.tool-card-head { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+.tool-card-icon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.tool-card-icon img, .tool-card-icon .fallback-icon { width: 32px; height: 32px; image-rendering: pixelated; }
+.tool-card-info { flex: 1; min-width: 0; }
+.tool-card-name { font-size: 13px; font-weight: 900; color: var(--wood-dark); }
+.tool-card-lv { font-size: 11px; color: var(--muted); }
+.tool-card-lv b { color: var(--gold); }
 
 /* 数量编辑浮窗 - 紧凑居中 */
 .qty-backdrop {
@@ -4895,34 +4959,42 @@ h1 {
   cursor: pointer;
 }
 
-/* 目标卡片左滑删除 */
+/* 目标左滑显示删除按钮 */
 .goal-card-container {
   position: relative;
   margin-bottom: 8px;
   border-radius: 12px;
   overflow: hidden;
-  background: var(--red);
 }
-.goal-card-container::before {
-  content: "🗑️  松开删除";
+.goal-card-container .goal-delete-btn {
   position: absolute;
   top: 0; right: 0; bottom: 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 22px;
+  width: 80px;
+  background: var(--red);
   color: #fff;
+  border: none;
   font-weight: 900;
-  font-size: 13.5px;
-  pointer-events: none;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
   letter-spacing: 0.5px;
+  z-index: 1;
 }
 .goal-card-container > .goal-card {
   position: relative;
   margin-bottom: 0;
   will-change: transform;
   touch-action: pan-y;
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+  z-index: 2;
+}
+.goal-card-container > .goal-card.revealed {
+  transform: translateX(-80px);
 }
 
 /* 浮窗固定高度 - 内部滚动 */
@@ -4989,10 +5061,13 @@ h1 {
   .app-panel { padding: 8px; margin-bottom: 6px; }
   .app-panel-title { font-size: 12.5px; margin-bottom: 5px; }
   .quest-card { padding: 5px 7px 5px 11px; }
-  .item-grid { grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 4px; }
-  .item-tile { min-height: 54px; padding: 5px 2px 3px; }
-  .item-tile img, .item-tile .fallback-icon { width: 24px; height: 24px; }
-  .item-tile-name { font-size: 9px; }
+  .item-grid { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 4px; }
+  .item-tile { min-height: 80px; padding: 4px 2px 3px; }
+  .item-tile img, .item-tile .fallback-icon { width: 26px; height: 26px; }
+  .item-tile-icon { height: 28px; }
+  .item-tile-name { font-size: 9.5px; }
+  .item-tile-btn { height: 20px; font-size: 11px; }
+  .item-tile-num { font-size: 12px; }
   .goals-empty { padding: 14px 10px; font-size: 12px; }
   .add-item-btn { padding: 8px; font-size: 13px; }
 }
@@ -5032,13 +5107,6 @@ h1 {
   <div class="quest-grid" id="questGrid"></div>
 </section>
 
-<!-- 我的目标 -->
-<section class="app-panel">
-  <h2 class="app-panel-title">🎯 我的目标 <span class="subtle" id="goalsCount"></span></h2>
-  <div id="goalsList"></div>
-  <button class="add-item-btn" id="openAddGoalBtn" type="button" style="margin-top:8px;">+ 添加目标</button>
-</section>
-
 <!-- 我的背包 -->
 <section class="app-panel">
   <h2 class="app-panel-title">🎒 我的背包 <span class="subtle">实时联动献祭</span></h2>
@@ -5050,6 +5118,13 @@ h1 {
 <section class="app-panel" id="suggestionsPanel">
   <h2 class="app-panel-title">💡 建议 <span class="subtle" id="suggestionsCount"></span></h2>
   <div id="invSuggestions"></div>
+</section>
+
+<!-- 我的目标 -->
+<section class="app-panel">
+  <h2 class="app-panel-title">🎯 我的目标 <span class="subtle" id="goalsCount"></span></h2>
+  <div id="goalsList"></div>
+  <button class="add-item-btn" id="openAddGoalBtn" type="button" style="margin-top:8px;">+ 添加目标</button>
 </section>
 
 <!-- 物品查询 -->
@@ -5334,6 +5409,21 @@ h1 {
     ];
 
     const iconFiles = {
+      // 工具
+      "镐":"Pickaxe.png","斧":"Axe.png","锄":"Hoe.png","壶":"Watering Can.png","渔竿":"Training Rod.png",
+      "铜镐":"Copper Pickaxe.png","铁镐":"Steel Pickaxe.png","金镐":"Gold Pickaxe.png","铱镐":"Iridium Pickaxe.png",
+      "铜斧":"Copper Axe.png","铁斧":"Steel Axe.png","金斧":"Gold Axe.png","铱斧":"Iridium Axe.png",
+      "铜锄":"Copper Hoe.png","铁锄":"Steel Hoe.png","金锄":"Gold Hoe.png","铱锄":"Iridium Hoe.png",
+      "铜壶":"Copper Watering Can.png","铁壶":"Steel Watering Can.png","金壶":"Gold Watering Can.png","铱壶":"Iridium Watering Can.png",
+      "训练渔竿":"Training Rod.png","玻璃纤维渔竿":"Fiberglass Rod.png","铱渔竿":"Iridium Rod.png",
+      // 加工设备
+      "熔炉":"Furnace.png","罐头瓶":"Preserves Jar.png","小桶":"Keg.png","蜂房":"Bee House.png",
+      "产油机":"Oil Maker.png","奶酪压榨机":"Cheese Press.png","织布机":"Loom.png",
+      "蛋黄酱机":"Mayonnaise Machine.png","树液采集器":"Tapper.png","蟹笼":"Crab Pot.png",
+      // 建筑
+      "筒仓":"Silo.png","鸡舍":"Coop.png","大型鸡舍":"Big Coop.png","豪华鸡舍":"Deluxe Coop.png",
+      "牛棚":"Barn.png","大型牛棚":"Big Barn.png","豪华牛棚":"Deluxe Barn.png","水井":"Well.png",
+      "磨坊":"Mill.png","出货箱":"Shipping Bin.png","马厩":"Stable.png","鱼塘":"Fish Pond.png","温室":"Greenhouse.png",
       "野山葵": "Wild Horseradish.png",
       "黄水仙": "Daffodil.png",
       "韭葱": "Leek.png",
@@ -7028,6 +7118,7 @@ h1 {
         const isOpen = goal.expanded !== false;
         return `
           <div class="goal-card-container">
+            <button class="goal-delete-btn" data-delete-goal="${goal.id}" type="button">🗑️<br/>删除</button>
             <div class="goal-card ${complete ? "complete" : ""}" data-swipe-goal="${goal.id}">
               <button type="button" class="goal-head" data-toggle-goal="${goal.id}">
                 <span class="goal-emoji">${tpl.emoji}</span>
@@ -7180,41 +7271,36 @@ h1 {
           sugs.push({ kind: "goal", text: `「${tpl.title}」差 ${need} 就能完成` });
         }
       });
-      // 3. 反推下一步建筑/设备/工具
-      if (appState.buildings.coop && !appState.buildings.silo && !appState.goals.some(g => g.id === "build-silo")) {
-        sugs.push({ kind: "bundle", text: `已有鸡舍但没建筒仓 → 推荐先建筒仓以储存干草（鸡舍前建更划算）` });
+      // 2.5 没在目标里的模板可加入（基于背包反推）
+      function recommendGoal(id) {
+        if (appState.goals.some(g => g.id === id)) return null;
+        const tpl = findGoalTemplate(id);
+        return tpl ? id : null;
       }
-      if (appState.buildings.coop && !appState.buildings.barn && !appState.goals.some(g => g.id === "build-barn")) {
-        sugs.push({ kind: "bundle", text: `有鸡舍了，可以考虑建牛棚扩展畜牧业` });
-      }
+      // 3. 反推下一步建筑/设备/工具（带 goalId 可一键加入）
+      const tryRec = (cond, goalId, text) => {
+        if (!cond) return;
+        const canAdd = goalId && !appState.goals.some(g => g.id === goalId);
+        sugs.push({ kind: "bundle", text, addGoalId: canAdd ? goalId : null });
+      };
+      tryRec(appState.buildings.coop && !appState.buildings.silo, "build-silo",
+        `已有鸡舍但没建筒仓 → 推荐先建筒仓以储存干草（鸡舍前建更划算）`);
+      tryRec(appState.buildings.coop && !appState.buildings.barn, "build-barn",
+        `有鸡舍了，可以考虑建牛棚扩展畜牧业`);
       const px = appState.tools.pickaxe;
-      if (px === "铜" && !appState.goals.some(g => g.id === "upgrade-pickaxe-steel")) {
-        sugs.push({ kind: "bundle", text: `铜镐已有 → 下一步升级钢镐（到矿洞40层挖铁）` });
-      }
-      if (px === "铁" && !appState.goals.some(g => g.id === "upgrade-pickaxe-gold")) {
-        sugs.push({ kind: "bundle", text: `钢镐已有 → 下一步升级金镐（开矿洞下层岩浆区岩石）` });
-      }
+      tryRec(px === "铜", "upgrade-pickaxe-steel", `铜镐已有 → 下一步升级钢镐（到矿洞40层挖铁）`);
       const ax = appState.tools.axe;
-      if (ax === "铜" && !appState.goals.some(g => g.id === "upgrade-axe-steel")) {
-        sugs.push({ kind: "bundle", text: `铜斧已有 → 升级钢斧可以砍硬木` });
-      }
-      if (appState.equipment.preserves_jar > 0 && !appState.equipment.keg && !appState.goals.some(g => g.id === "craft-keg")) {
-        sugs.push({ kind: "bundle", text: `有罐头瓶但没小桶 → 耕种8级后做小桶（水果做酒收益更高）` });
-      }
-      if ((appState.equipment.bee_house || 0) === 0 && !appState.goals.some(g => g.id === "craft-bee-house")) {
-        if (appState.tools.hoe || appState.equipment.preserves_jar > 0) {
-          sugs.push({ kind: "bundle", text: `还没蜂房 → 蜂房性价比极高，旁边种花做花蜜赚钱` });
-        }
-      }
-      if ((appState.buildings.coop || appState.buildings.barn) && !appState.equipment.mayonnaise_machine && !appState.goals.some(g => g.id === "craft-mayo-machine")) {
-        sugs.push({ kind: "bundle", text: `有动物棚但没蛋黄酱机 → 推荐做蛋黄酱机（鸡蛋加工翻倍）` });
-      }
-      if ((appState.inventory["羊毛"] || 0) > 0 && !appState.equipment.loom) {
-        sugs.push({ kind: "bundle", text: `有羊毛但没织布机 → 织布机可把羊毛做成布料（+58%）` });
-      }
-      if ((appState.inventory["小麦"] || 0) >= 10 && !appState.buildings.mill && !appState.goals.some(g => g.id === "build-mill")) {
-        sugs.push({ kind: "bundle", text: `小麦${appState.inventory["小麦"]}个 → 建磨坊可磨成面粉（解锁烹饪配方）` });
-      }
+      tryRec(ax === "铜", "upgrade-axe-steel", `铜斧已有 → 升级钢斧可以砍硬木`);
+      tryRec(appState.equipment.preserves_jar > 0 && !appState.equipment.keg, "craft-keg",
+        `有罐头瓶但没小桶 → 耕种8级后做小桶（水果做酒收益更高）`);
+      tryRec((appState.equipment.bee_house || 0) === 0 && (appState.tools.hoe || appState.equipment.preserves_jar > 0), "craft-bee-house",
+        `还没蜂房 → 蜂房性价比极高，旁边种花做花蜜赚钱`);
+      tryRec((appState.buildings.coop || appState.buildings.barn) && !appState.equipment.mayonnaise_machine, "craft-mayo-machine",
+        `有动物棚但没蛋黄酱机 → 推荐做蛋黄酱机（鸡蛋加工翻倍）`);
+      tryRec((appState.inventory["小麦"] || 0) >= 10 && !appState.buildings.mill, "build-mill",
+        `小麦${appState.inventory["小麦"] || 0}个 → 建磨坊可磨成面粉（解锁烹饪配方）`);
+      tryRec((appState.inventory["羊毛"] || 0) > 0 && !appState.equipment.loom, null,
+        `有羊毛但没织布机 → 织布机可把羊毛做成布料（+58%）`);
       // 4. 提示献祭物品
       const bundleHints = [];
       flatItems.forEach(entry => {
@@ -7240,7 +7326,8 @@ h1 {
       div.innerHTML = sugs.slice(0, 10).map(s => `
         <div class="inv-suggestion">
           <span class="badge ${s.kind}">${s.kind === "recommend" ? "加工" : s.kind === "goal" ? "目标" : "推荐"}</span>
-          <span>${escapeHtml(s.text)}</span>
+          <span style="flex:1;">${escapeHtml(s.text)}</span>
+          ${s.addGoalId ? `<button class="sug-add-btn" data-add-goal-sug="${s.addGoalId}" title="加入目标">+</button>` : ""}
         </div>
       `).join("");
     }
@@ -7287,7 +7374,9 @@ h1 {
           </div>
           <div class="item-cat-tabs" id="invTabs">
             ${INV_CATEGORIES.map(c => `<button class="item-cat-tab ${c.id === currentInvTab ? "active" : ""}" data-cat-tab="${c.id}">${c.label}</button>`).join("")}
-            <button class="item-cat-tab" data-cat-tab="_tools">🔨 工具/设备/建筑</button>
+            <button class="item-cat-tab" data-cat-tab="_tools">🔨 工具</button>
+            <button class="item-cat-tab" data-cat-tab="_equipment">🏭 设备</button>
+            <button class="item-cat-tab" data-cat-tab="_buildings">🏡 建筑</button>
           </div>
           <div id="invModalBody"></div>
         </div>
@@ -7305,58 +7394,70 @@ h1 {
     function renderInvTab() {
       const body = document.getElementById("invModalBody");
       if (!body) return;
-      if (currentInvTab === "_tools") {
-        body.innerHTML = renderToolsTab();
-        return;
-      }
+      if (currentInvTab === "_tools") { body.innerHTML = renderToolsTabOnly(); return; }
+      if (currentInvTab === "_equipment") { body.innerHTML = renderEquipTabOnly(); return; }
+      if (currentInvTab === "_buildings") { body.innerHTML = renderBuildingsTabOnly(); return; }
       const cat = INV_CATEGORIES.find(c => c.id === currentInvTab);
       if (!cat) return;
       body.innerHTML = `<div class="item-grid">${cat.items.map(name => {
         const qty = appState.inventory[name] || 0;
-        return `<button class="item-tile ${qty > 0 ? "has" : ""}" data-add-inv="${escapeAttribute(name)}" type="button">
-          ${renderInvIcon(name)}
+        return `<div class="item-tile ${qty > 0 ? "has" : ""}">
+          <div class="item-tile-icon">${renderInvIcon(name)}</div>
           <span class="item-tile-name">${escapeHtml(name)}</span>
-          ${qty > 0 ? `<span class="item-tile-count">${qty}</span>` : ""}
-        </button>`;
+          <div class="item-tile-ctrl">
+            <button class="item-tile-btn minus" data-inv-step="${escapeAttribute(name)}|-1" type="button">−</button>
+            <span class="item-tile-num">${qty}</span>
+            <button class="item-tile-btn plus" data-inv-step="${escapeAttribute(name)}|+1" type="button">+</button>
+          </div>
+        </div>`;
       }).join("")}</div>`;
     }
-    function renderToolsTab() {
-      const toolsRows = TOOLS.map(t => {
+    /* 工具 - 用真实图标 */
+    function renderToolsTabOnly() {
+      return `<div class="tool-card-grid">${TOOLS.map(t => {
         const lv = appState.tools[t.id] || "初始";
         const levels = t.id === "rod" ? ROD_LEVELS : TOOL_LEVELS;
-        return `<div style="margin-bottom:8px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;font-weight:800;font-size:13px;">${t.emoji} ${t.name}：<span style="color:var(--gold)">${lv}</span></div>
+        // 当前装备的图标：用 lv + 工具名拼接（如"铜镐"），初始用基础名（如"镐"）
+        const iconName = lv === "初始" ? t.name : (t.id === "rod" ? (lv === "训练" ? "训练渔竿" : (lv === "玻璃纤维" ? "玻璃纤维渔竿" : "铱渔竿")) : `${lv}${t.name}`);
+        return `<div class="tool-card">
+          <div class="tool-card-head">
+            <span class="tool-card-icon">${renderInvIcon(iconName)}</span>
+            <div class="tool-card-info">
+              <div class="tool-card-name">${t.name}</div>
+              <div class="tool-card-lv">当前：<b>${lv}</b></div>
+            </div>
+          </div>
           <div class="tool-level-picker">
             ${levels.map(lvName => `<button data-set-tool="${t.id}|${lvName}" class="${lv === lvName ? "active" : ""}">${lvName}</button>`).join("")}
           </div>
         </div>`;
-      }).join("");
-      const equipRows = `<div class="equip-grid">${EQUIPMENT.map(e => {
+      }).join("")}</div>`;
+    }
+    /* 设备 - +/- 加减 */
+    function renderEquipTabOnly() {
+      return `<div class="item-grid">${EQUIPMENT.map(e => {
         const qty = appState.equipment[e.id] || 0;
-        return `<div class="equip-row ${qty > 0 ? "has" : ""}">
-          <span class="tool-icon">${e.emoji}</span>
-          <span class="tool-name">${e.name}</span>
-          <button class="equip-mini-btn minus" data-equip-step="${e.id}|-1" type="button">−</button>
-          <span class="equip-count-display">${qty}</span>
-          <button class="equip-mini-btn plus" data-equip-step="${e.id}|+1" type="button">+</button>
+        return `<div class="item-tile ${qty > 0 ? "has" : ""}">
+          <div class="item-tile-icon">${renderInvIcon(e.name)}</div>
+          <span class="item-tile-name">${escapeHtml(e.name)}</span>
+          <div class="item-tile-ctrl">
+            <button class="item-tile-btn minus" data-equip-step="${e.id}|-1" type="button">−</button>
+            <span class="item-tile-num">${qty}</span>
+            <button class="item-tile-btn plus" data-equip-step="${e.id}|+1" type="button">+</button>
+          </div>
         </div>`;
       }).join("")}</div>`;
-      const bldRows = `<div class="equip-grid">${BUILDINGS.map(b => {
+    }
+    /* 建筑 - 勾选 */
+    function renderBuildingsTabOnly() {
+      return `<div class="item-grid">${BUILDINGS.map(b => {
         const has = appState.buildings[b.id];
-        return `<div class="equip-row ${has ? "has" : ""}">
-          <span class="tool-icon">${b.emoji}</span>
-          <span class="tool-name">${b.name}</span>
-          <button class="equip-mini-btn check ${has ? "has" : ""}" data-toggle-bld="${b.id}" type="button">${has ? "✓" : "□"}</button>
+        return `<div class="item-tile ${has ? "has" : ""}" data-toggle-bld="${b.id}" style="cursor:pointer;">
+          <div class="item-tile-icon">${renderInvIcon(b.name)}</div>
+          <span class="item-tile-name">${escapeHtml(b.name)}</span>
+          <div class="item-tile-check ${has ? "checked" : ""}">${has ? "✓ 已建" : "□ 未建"}</div>
         </div>`;
       }).join("")}</div>`;
-      return `
-        <div style="font-weight:900;font-size:13px;margin:4px 0 7px;color:var(--wood-dark);">🔨 工具等级</div>
-        ${toolsRows}
-        <div style="font-weight:900;font-size:13px;margin:12px 0 7px;color:var(--wood-dark);">🏭 加工设备数量</div>
-        ${equipRows}
-        <div style="font-weight:900;font-size:13px;margin:12px 0 7px;color:var(--wood-dark);">🏡 农场建筑</div>
-        ${bldRows}
-      `;
     }
 
     /* ── 数量编辑弹窗 - 居中紧凑 ── */
@@ -7507,11 +7608,13 @@ h1 {
       if (m) m.remove();
     }
 
-    /* 左滑删除目标卡片 */
+    /* 左滑显示删除按钮，点击按钮才真删 */
+    let _revealedGoalCard = null;
     function attachGoalSwipe(card, goalId) {
       let startX = 0, startY = 0, currentX = 0, currentY = 0;
       let isDragging = false;
       let direction = null;
+      let baseX = 0; // 当前已显示删除按钮的位置：0 或 -80
       card.addEventListener("touchstart", (e) => {
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
@@ -7519,6 +7622,7 @@ h1 {
         currentY = startY;
         isDragging = true;
         direction = null;
+        baseX = card.classList.contains("revealed") ? -80 : 0;
         card.style.transition = "none";
       }, { passive: true });
       card.addEventListener("touchmove", (e) => {
@@ -7530,12 +7634,13 @@ h1 {
         if (direction === null) {
           if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
             direction = (Math.abs(dx) > Math.abs(dy)) ? "horizontal" : "vertical";
-            if (direction === "vertical") { isDragging = false; return; }
+            if (direction === "vertical") { isDragging = false; card.style.transform = baseX === -80 ? "translateX(-80px)" : ""; return; }
           } else { return; }
         }
-        if (direction === "horizontal" && dx < 0) {
+        if (direction === "horizontal") {
           if (e.cancelable) e.preventDefault();
-          card.style.transform = "translateX(" + Math.max(dx, -120) + "px)";
+          const target = Math.max(-80, Math.min(0, baseX + dx));
+          card.style.transform = "translateX(" + target + "px)";
         }
       }, { passive: false });
       const endHandler = () => {
@@ -7543,11 +7648,20 @@ h1 {
         isDragging = false;
         const dx = currentX - startX;
         card.style.transition = "transform 0.2s ease";
-        if (direction === "horizontal" && dx < -60) {
-          card.style.transform = "translateX(-100%)";
-          setTimeout(() => removeGoalSilent(goalId), 200);
-        } else {
-          card.style.transform = "";
+        if (direction === "horizontal") {
+          // 切换到 revealed 状态
+          if (baseX === 0 && dx < -30) {
+            card.classList.add("revealed");
+            card.style.transform = "";
+            if (_revealedGoalCard && _revealedGoalCard !== card) _revealedGoalCard.classList.remove("revealed");
+            _revealedGoalCard = card;
+          } else if (baseX === -80 && dx > 30) {
+            card.classList.remove("revealed");
+            card.style.transform = "";
+            if (_revealedGoalCard === card) _revealedGoalCard = null;
+          } else {
+            card.style.transform = "";
+          }
         }
         direction = null;
       };
@@ -7555,35 +7669,38 @@ h1 {
       card.addEventListener("touchcancel", endHandler);
     }
     function removeGoalSilent(id) {
+      _revealedGoalCard = null;
       appState.goals = appState.goals.filter(g => g.id !== id);
       renderApp();
       toast("已移除目标");
     }
+    /* 点击页面其他地方，收回已展开的删除按钮 */
+    document.addEventListener("touchstart", (e) => {
+      if (_revealedGoalCard && !_revealedGoalCard.closest(".goal-card-container").contains(e.target)) {
+        _revealedGoalCard.classList.remove("revealed");
+        _revealedGoalCard = null;
+      }
+    }, { passive: true });
 
-    /* 浮窗下滑关闭手势 */
+    /* 浮窗下滑关闭手势 - 仅在 grip 触发，避免误触 */
     function attachSheetSwipe(modal, closeFn) {
       const sheet = modal.querySelector(".modal-sheet");
-      if (!sheet) return;
-      let startY = 0, currentY = 0, isDragging = false, allowDrag = false;
-      sheet.addEventListener("touchstart", (e) => {
-        if (sheet.scrollTop > 0) return;
+      const grip = modal.querySelector(".modal-grip");
+      if (!sheet || !grip) return;
+      let startY = 0, currentY = 0, isDragging = false;
+      grip.addEventListener("touchstart", (e) => {
         startY = e.touches[0].clientY;
         currentY = startY;
         isDragging = true;
-        allowDrag = false;
         sheet.style.transition = "none";
       }, { passive: true });
-      sheet.addEventListener("touchmove", (e) => {
+      grip.addEventListener("touchmove", (e) => {
         if (!isDragging) return;
         currentY = e.touches[0].clientY;
         const delta = currentY - startY;
-        if (delta > 0 && sheet.scrollTop === 0) {
-          allowDrag = true;
+        if (delta > 0) {
           if (e.cancelable) e.preventDefault();
           sheet.style.transform = "translateY(" + delta + "px)";
-        } else if (delta < 0) {
-          isDragging = false;
-          sheet.style.transform = "";
         }
       }, { passive: false });
       const onEnd = () => {
@@ -7591,15 +7708,15 @@ h1 {
         isDragging = false;
         const delta = currentY - startY;
         sheet.style.transition = "transform 0.22s ease";
-        if (allowDrag && delta > 80) {
+        if (delta > 60) {
           sheet.style.transform = "translateY(100%)";
           setTimeout(closeFn, 220);
         } else {
           sheet.style.transform = "";
         }
       };
-      sheet.addEventListener("touchend", onEnd);
-      sheet.addEventListener("touchcancel", onEnd);
+      grip.addEventListener("touchend", onEnd);
+      grip.addEventListener("touchcancel", onEnd);
     }
 
     /* ── Toast ── */
@@ -7641,6 +7758,9 @@ h1 {
       // 日期±
       if (e.target.closest("#dayMinus")) { stepDay(-1); return; }
       if (e.target.closest("#dayPlus")) { stepDay(1); return; }
+      // 建议中"+加入目标"按钮
+      const sugAddBtn = e.target.closest("[data-add-goal-sug]");
+      if (sugAddBtn) { addGoal(sugAddBtn.dataset.addGoalSug); return; }
       // 添加目标 tile 展开
       const goalTileToggle = e.target.closest("[data-toggle-goal-tile]");
       if (goalTileToggle) { toggleGoalTileExpand(goalTileToggle.dataset.toggleGoalTile); return; }
@@ -7657,7 +7777,10 @@ h1 {
         toggleGoalStep(gid, parseInt(idx));
         return;
       }
-      // 移除目标
+      // 左滑后点删除
+      const delBtn = e.target.closest("[data-delete-goal]");
+      if (delBtn) { removeGoalSilent(delBtn.dataset.deleteGoal); return; }
+      // (旧)移除目标按钮 - 已移除但保留兜底
       const removeBtn = e.target.closest("[data-remove-goal]");
       if (removeBtn) { removeGoal(removeBtn.dataset.removeGoal); return; }
       // 打开献祭
@@ -7675,7 +7798,17 @@ h1 {
         renderInvTab();
         return;
       }
-      // 物品tile - 打开数量编辑
+      // 物品 +/- 加减
+      const invStep = e.target.closest("[data-inv-step]");
+      if (invStep) {
+        const [name, delta] = invStep.dataset.invStep.split("|");
+        const cur = appState.inventory[name] || 0;
+        const v = Math.max(0, cur + parseInt(delta));
+        setInvQty(name, v);
+        renderInvTab();
+        return;
+      }
+      // 长按物品图标直接编辑（保留旧入口给少数情况）
       const itemTile = e.target.closest("[data-add-inv]");
       if (itemTile) {
         openQtyPopover(itemTile.dataset.addInv, itemTile);
