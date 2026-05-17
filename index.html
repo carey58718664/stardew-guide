@@ -4217,12 +4217,12 @@ h1 {
 }
 
 .app-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 16px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  padding: 14px 18px;
+  gap: 10px;
+  margin-bottom: 7px;
+  padding: 8px 14px;
   border: 2px solid var(--wood-dark);
   border-radius: 10px;
   background: linear-gradient(180deg, #b07a48, var(--wood));
@@ -4230,8 +4230,8 @@ h1 {
   box-shadow: var(--shadow);
 }
 
-.app-hero h1 { margin: 0; font-size: clamp(20px, 4.4vw, 30px); line-height: 1.12; }
-.app-hero p.kicker { margin: 0 0 3px; font-size: 12px; font-weight: 800; color: #ffe0a2; letter-spacing: 0.5px; }
+.app-hero h1 { margin: 0; font-size: 16px; line-height: 1.12; }
+.app-hero p.kicker { display: none; }
 .app-hero-actions { display: flex; gap: 8px; }
 
 .app-hero-actions button {
@@ -4250,22 +4250,22 @@ h1 {
 .app-hero-actions button.primary:hover { background: #f6d294; }
 
 .app-panel {
-  margin-bottom: 10px;
-  padding: 12px;
+  margin-bottom: 7px;
+  padding: 8px 10px 9px;
   border: 1px solid #e2d0aa;
   border-radius: 10px;
   background: rgba(255, 250, 240, 0.94);
-  box-shadow: 0 10px 24px rgba(76, 49, 29, 0.08);
+  box-shadow: 0 6px 16px rgba(76, 49, 29, 0.06);
 }
 
 .app-panel-title {
-  margin: 0 0 10px;
-  font-size: 17px;
+  margin: 0 0 6px;
+  font-size: 13px;
   font-weight: 900;
   color: var(--wood-dark);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .app-panel-title .subtle {
@@ -4277,71 +4277,85 @@ h1 {
 /* 季节天气栏 */
 .season-bar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-wrap: nowrap;
+  gap: 4px;
   align-items: center;
-  padding: 10px 12px;
+  padding: 5px 8px;
   border: 1px solid #e2d0aa;
   border-radius: 10px;
   background: linear-gradient(180deg, #fff7e6, #f9ecc8);
-  margin-bottom: 10px;
+  margin-bottom: 7px;
+  overflow-x: auto;
 }
+.season-bar::-webkit-scrollbar { height: 0; }
 
 .season-current {
-  flex: 1;
-  min-width: 0;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   font-weight: 900;
-  font-size: 15px;
+  font-size: 12px;
   color: var(--wood-dark);
+  margin: 0 3px;
+  white-space: nowrap;
 }
 
-.season-current .day { background: var(--paper-deep); padding: 2px 10px; border-radius: 6px; }
-
 .season-pill {
-  padding: 5px 12px;
+  flex-shrink: 0;
+  padding: 3px 9px;
   border: 1.5px solid var(--line);
   border-radius: 999px;
   background: var(--paper);
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   cursor: pointer;
+  white-space: nowrap;
 }
 .season-pill.active { background: var(--gold); color: #fff; border-color: var(--gold); }
 .weather-toggle {
-  padding: 5px 12px;
+  flex-shrink: 0;
+  padding: 3px 9px;
   border: 1.5px solid var(--line);
   border-radius: 999px;
   background: #fffce0;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   cursor: pointer;
+  white-space: nowrap;
 }
 .weather-toggle.rainy { background: #d8ecf6; border-color: #8db8d6; }
-.day-input { width: 52px; padding: 4px 8px; border: 1.5px solid var(--line); border-radius: 6px; text-align: center; font-weight: 800; }
-.day-step { padding: 5px 10px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--paper); font-weight: 900; cursor: pointer; }
+.day-input { flex-shrink: 0; width: 38px; padding: 2px 4px; border: 1.5px solid var(--line); border-radius: 5px; text-align: center; font-weight: 800; font-size: 12px; }
+.day-step { flex-shrink: 0; padding: 2px 7px; border: 1.5px solid var(--line); border-radius: 5px; background: var(--paper); font-weight: 900; cursor: pointer; font-size: 12px; }
 
 /* 当季主线 */
 .quest-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-wrap: nowrap;
   gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 6px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
 }
-
+.quest-grid::-webkit-scrollbar { height: 0; }
 @media (min-width: 720px) {
-  .quest-grid { grid-template-columns: repeat(2, 1fr); }
+  .quest-grid { flex-wrap: wrap; overflow-x: visible; }
 }
 
 .quest-card {
   position: relative;
-  padding: 10px 12px 10px 16px;
+  flex: 0 0 220px;
+  scroll-snap-align: start;
+  padding: 7px 10px 7px 14px;
   border: 1.5px solid #e2d0aa;
-  border-radius: 10px;
+  border-radius: 9px;
   background: #fffdf6;
-  box-shadow: inset 5px 0 0 var(--gold);
+  box-shadow: inset 4px 0 0 var(--gold);
+}
+@media (min-width: 720px) {
+  .quest-card { flex: 1 1 280px; min-width: 0; }
 }
 .quest-card[data-priority="urgent"] { box-shadow: inset 5px 0 0 var(--red); }
 .quest-card[data-priority="festival"] { box-shadow: inset 5px 0 0 #b884c8; }
@@ -4351,28 +4365,28 @@ h1 {
 .quest-card-head {
   display: flex;
   justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
   align-items: flex-start;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
-.quest-title { font-size: 14px; font-weight: 900; color: var(--ink); }
-.quest-day { font-size: 11px; font-weight: 800; color: var(--muted); white-space: nowrap; }
-.quest-reason { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.quest-title { font-size: 12.5px; font-weight: 900; color: var(--ink); line-height: 1.2; }
+.quest-day { font-size: 10px; font-weight: 800; color: var(--muted); white-space: nowrap; }
+.quest-reason { font-size: 11px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
 
 .quest-actions {
-  margin-top: 7px;
+  margin-top: 4px;
   display: flex;
   gap: 6px;
 }
 
 .quest-add-btn {
-  padding: 5px 12px;
+  padding: 3px 10px;
   border: 1.5px solid #d39c5f;
-  border-radius: 7px;
+  border-radius: 6px;
   background: #f4c77f;
   color: #5f3a22;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 900;
   cursor: pointer;
 }
@@ -4565,7 +4579,7 @@ h1 {
   .modal-backdrop { align-items: center; }
   .modal-sheet { border-radius: 16px; max-height: 88vh; border-top: none; border: 2px solid var(--wood); }
 }
-.modal-grip { width: 40px; height: 4px; background: var(--line); border-radius: 2px; margin: 0 auto 12px; }
+.modal-grip { width: 48px; height: 5px; background: var(--wood); opacity: 0.4; border-radius: 999px; margin: 0 auto 12px; cursor: grab; }
 .modal-head {
   display: flex;
   justify-content: space-between;
@@ -4827,17 +4841,19 @@ h1 {
 .map-item input[type="checkbox"] { pointer-events: none !important; }
 
 @media (max-width: 520px) {
-  .app-shell { width: min(100% - 10px, 430px); padding: 8px 0 24px; }
-  .app-hero { padding: 11px 13px; }
-  .app-hero h1 { font-size: 19px; }
-  .app-hero p.kicker { font-size: 11px; }
-  .app-hero-actions button { min-height: 32px; padding: 0 10px; font-size: 12px; }
-  .app-panel { padding: 9px; }
-  .app-panel-title { font-size: 15px; }
-  .item-grid { grid-template-columns: repeat(auto-fill, minmax(58px, 1fr)); gap: 4px; }
-  .item-tile { min-height: 56px; padding: 5px 2px 3px; }
+  .app-shell { width: min(100% - 10px, 430px); padding: 5px 0 20px; }
+  .app-hero { padding: 6px 11px; }
+  .app-hero h1 { font-size: 14px; }
+  .app-hero-actions button { min-height: 26px; padding: 0 8px; font-size: 11.5px; }
+  .app-panel { padding: 8px; margin-bottom: 6px; }
+  .app-panel-title { font-size: 12.5px; margin-bottom: 5px; }
+  .quest-card { flex: 0 0 200px; padding: 6px 9px 6px 13px; }
+  .item-grid { grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 4px; }
+  .item-tile { min-height: 54px; padding: 5px 2px 3px; }
   .item-tile img, .item-tile .fallback-icon { width: 24px; height: 24px; }
   .item-tile-name { font-size: 9px; }
+  .goals-empty { padding: 14px 10px; font-size: 12px; }
+  .add-item-btn { padding: 8px; font-size: 13px; }
 }
 ```
 
@@ -7019,7 +7035,7 @@ h1 {
       modal.className = "modal-backdrop";
       modal.id = "invModal";
       modal.innerHTML = `
-        <div class="modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-sheet">
           <div class="modal-grip"></div>
           <div class="modal-head">
             <h3 class="modal-title">🎒 录入背包</h3>
@@ -7034,6 +7050,7 @@ h1 {
       `;
       modal.addEventListener("click", e => { if (e.target === modal) closeInvModal(); });
       document.body.appendChild(modal);
+      attachSheetSwipe(modal, closeInvModal);
       renderInvTab();
     }
     function closeInvModal() {
@@ -7167,7 +7184,7 @@ h1 {
       modal.className = "modal-backdrop";
       modal.id = "addGoalModal";
       modal.innerHTML = `
-        <div class="modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-sheet">
           <div class="modal-grip"></div>
           <div class="modal-head">
             <h3 class="modal-title">🎯 添加目标</h3>
@@ -7192,10 +7209,53 @@ h1 {
       `;
       modal.addEventListener("click", e => { if (e.target === modal) closeAddGoalModal(); });
       document.body.appendChild(modal);
+      attachSheetSwipe(modal, closeAddGoalModal);
     }
     function closeAddGoalModal() {
       const m = document.getElementById("addGoalModal");
       if (m) m.remove();
+    }
+
+    /* 浮窗下滑关闭手势 */
+    function attachSheetSwipe(modal, closeFn) {
+      const sheet = modal.querySelector(".modal-sheet");
+      if (!sheet) return;
+      let startY = 0, currentY = 0, isDragging = false, allowDrag = false;
+      sheet.addEventListener("touchstart", (e) => {
+        if (sheet.scrollTop > 0) return;
+        startY = e.touches[0].clientY;
+        currentY = startY;
+        isDragging = true;
+        allowDrag = false;
+        sheet.style.transition = "none";
+      }, { passive: true });
+      sheet.addEventListener("touchmove", (e) => {
+        if (!isDragging) return;
+        currentY = e.touches[0].clientY;
+        const delta = currentY - startY;
+        if (delta > 0 && sheet.scrollTop === 0) {
+          allowDrag = true;
+          if (e.cancelable) e.preventDefault();
+          sheet.style.transform = "translateY(" + delta + "px)";
+        } else if (delta < 0) {
+          isDragging = false;
+          sheet.style.transform = "";
+        }
+      }, { passive: false });
+      const onEnd = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        const delta = currentY - startY;
+        sheet.style.transition = "transform 0.22s ease";
+        if (allowDrag && delta > 80) {
+          sheet.style.transform = "translateY(100%)";
+          setTimeout(closeFn, 220);
+        } else {
+          sheet.style.transform = "";
+        }
+      };
+      sheet.addEventListener("touchend", onEnd);
+      sheet.addEventListener("touchcancel", onEnd);
     }
 
     /* ── Toast ── */
