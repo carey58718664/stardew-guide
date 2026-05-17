@@ -5081,30 +5081,14 @@ body.modal-open #app-shell { pointer-events: none; }
 }
 
 
-/* 献祭页布局优化（覆盖原代码细节） */
-.map-bundle-node {
-  padding: 5px 7px 6px !important;
-  min-height: 0 !important;
+/* 献祭页 - 让节点更紧凑（不动布局算法用的 width/height/transform） */
+@media (max-width: 520px) {
+  .map-bundle-node { min-height: 0 !important; padding: 8px 10px 9px !important; }
+  .map-bundle-node .map-bundle-name { font-size: 12px !important; }
+  .map-bundle-node .map-bundle-meta { font-size: 10.5px !important; }
+  .map-item { min-height: 0 !important; padding: 3px 1px !important; }
+  .map-item .name { font-size: 10px !important; line-height: 1.15 !important; }
 }
-.map-bundle-node .map-bundle-name { font-size: 11.5px !important; line-height: 1.25 !important; }
-.map-bundle-node .map-bundle-meta { font-size: 10.5px !important; padding: 0 !important; }
-.map-item { min-height: 0 !important; padding: 3px 1px !important; }
-.map-item .name { font-size: 10px !important; line-height: 1.15 !important; }
-.room-scene {
-  overflow: hidden;
-}
-/* 锅炉房地质学家/冒险家/铁匠 居中且兜底不溢出 */
-.room[data-room-id="boiler"] .room-scene-inner,
-.room[data-room-id="boiler"] .bundle-cluster {
-  align-items: center;
-  justify-content: center;
-}
-.room[data-room-id="boiler"] .map-bundle-node {
-  margin: 6px auto !important;
-  max-width: calc(100% - 16px);
-}
-/* 兜底防溢出 */
-.map-bundle-node, .map-item-strip { max-width: 100%; }
 
 /* 微瑕修复：禁止地图卡片内勾选 */
 .map-item { cursor: pointer !important; }
@@ -7848,6 +7832,16 @@ body.modal-open #app-shell { pointer-events: none; }
       window.scrollTo(0, 0);
       // 重渲染献祭页面（背包可能变化了）
       render();
+      // 触发原代码的手机端布局算法（不调用的话节点会飞）
+      // 多次触发以确保 clientWidth 已经稳定
+      if (typeof scheduleLayout === "function") {
+        scheduleLayout();
+        requestAnimationFrame(() => {
+          if (typeof layoutMobileRoomVisuals === "function") layoutMobileRoomVisuals();
+        });
+        setTimeout(() => { if (typeof layoutMobileRoomVisuals === "function") layoutMobileRoomVisuals(); }, 100);
+        setTimeout(() => { if (typeof layoutMobileRoomVisuals === "function") layoutMobileRoomVisuals(); }, 400);
+      }
     }
     function closeBundle() {
       document.getElementById("bundle-overlay").hidden = true;
