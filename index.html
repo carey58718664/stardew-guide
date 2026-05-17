@@ -4331,31 +4331,22 @@ h1 {
 
 /* 当季主线 */
 .quest-grid {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 2px 2px 6px;
-  scroll-snap-type: x proximity;
-  -webkit-overflow-scrolling: touch;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
 }
-.quest-grid::-webkit-scrollbar { height: 0; }
 @media (min-width: 720px) {
-  .quest-grid { flex-wrap: wrap; overflow-x: visible; }
+  .quest-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 .quest-card {
   position: relative;
-  flex: 0 0 220px;
-  scroll-snap-align: start;
-  padding: 7px 10px 7px 14px;
+  min-width: 0;
+  padding: 6px 8px 6px 12px;
   border: 1.5px solid #e2d0aa;
   border-radius: 9px;
   background: #fffdf6;
   box-shadow: inset 4px 0 0 var(--gold);
-}
-@media (min-width: 720px) {
-  .quest-card { flex: 1 1 280px; min-width: 0; }
 }
 .quest-card[data-priority="urgent"] { box-shadow: inset 5px 0 0 var(--red); }
 .quest-card[data-priority="festival"] { box-shadow: inset 5px 0 0 #b884c8; }
@@ -4568,16 +4559,15 @@ h1 {
 .modal-sheet {
   width: 100%;
   max-width: 720px;
-  max-height: 92vh;
-  overflow-y: auto;
+  height: 86vh;
   background: var(--paper);
   border-radius: 18px 18px 0 0;
-  padding: 14px 12px 24px;
+  padding: 12px 12px 14px;
   border-top: 3px solid var(--wood);
 }
 @media (min-width: 720px) {
   .modal-backdrop { align-items: center; }
-  .modal-sheet { border-radius: 16px; max-height: 88vh; border-top: none; border: 2px solid var(--wood); }
+  .modal-sheet { border-radius: 16px; height: 80vh; max-height: 720px; border-top: none; border: 2px solid var(--wood); }
 }
 .modal-grip { width: 48px; height: 5px; background: var(--wood); opacity: 0.4; border-radius: 999px; margin: 0 auto 12px; cursor: grab; }
 .modal-head {
@@ -4600,19 +4590,18 @@ h1 {
 /* 物品大网格 - 信息密度优先 */
 .item-cat-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
-  overflow-x: auto;
   padding-bottom: 8px;
   margin-bottom: 8px;
   border-bottom: 1px solid var(--line);
-  scrollbar-width: thin;
 }
 .item-cat-tab {
-  padding: 5px 11px;
+  padding: 4px 9px;
   border: 1.5px solid var(--line);
   border-radius: 999px;
   background: var(--paper);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 800;
   cursor: pointer;
   white-space: nowrap;
@@ -4797,6 +4786,129 @@ h1 {
 }
 .decision-price { color: var(--gold); font-weight: 900; margin-left: auto; }
 
+
+/* 添加目标 - 可展开 tile */
+.goal-tile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+@media (min-width: 720px) {
+  .goal-tile-grid { grid-template-columns: 1fr 1fr; }
+}
+.goal-tile-wrap {
+  border: 1.5px solid var(--line);
+  border-radius: 9px;
+  background: var(--paper);
+  overflow: hidden;
+}
+.goal-tile-wrap.has { background: var(--green-soft); border-color: #88c19a; }
+.goal-tile {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px;
+  border: none;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 700;
+}
+.goal-tile .tool-icon { font-size: 19px; }
+.goal-tile .tool-name { flex: 1; min-width: 0; font-size: 13px; }
+.goal-tile .tool-level {
+  font-size: 10.5px;
+  font-weight: 900;
+  padding: 1.5px 8px;
+  border-radius: 4px;
+  background: var(--paper-deep);
+  color: var(--wood-dark);
+}
+.goal-tile-wrap.has .tool-level { background: var(--green); color: #fff; }
+.goal-tile-detail {
+  padding: 6px 12px 11px;
+  border-top: 1px dashed var(--line);
+  background: rgba(255, 252, 242, 0.6);
+}
+.goal-tile-note {
+  font-size: 11px;
+  color: var(--gold);
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.goal-tile-step {
+  font-size: 12px;
+  padding: 3px 0;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.goal-tile-step.ok { color: var(--green); font-weight: 800; }
+.goal-tile-step .have {
+  font-size: 10.5px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.goal-tile-step.ok .have { color: var(--green); }
+.goal-tile-confirm {
+  margin-top: 9px;
+  width: 100%;
+  padding: 8px 0;
+  border: 1.5px solid var(--gold);
+  border-radius: 7px;
+  background: #f4c77f;
+  color: #5f3a22;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+/* 目标卡片左滑删除 */
+.goal-card-container {
+  position: relative;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--red);
+}
+.goal-card-container::before {
+  content: "🗑️  松开删除";
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 22px;
+  color: #fff;
+  font-weight: 900;
+  font-size: 13.5px;
+  pointer-events: none;
+  letter-spacing: 0.5px;
+}
+.goal-card-container > .goal-card {
+  position: relative;
+  margin-bottom: 0;
+  will-change: transform;
+  touch-action: pan-y;
+}
+
+/* 浮窗固定高度 - 内部滚动 */
+.modal-sheet {
+  display: flex !important;
+  flex-direction: column;
+}
+.modal-grip, .modal-head, .item-cat-tabs { flex-shrink: 0; }
+#invModalBody, #addGoalBody {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 3px;
+  min-height: 0;
+}
+
 /* ===================== 献祭OVERLAY样式 ===================== */
 .bundle-overlay {
   position: fixed;
@@ -4847,7 +4959,7 @@ h1 {
   .app-hero-actions button { min-height: 26px; padding: 0 8px; font-size: 11.5px; }
   .app-panel { padding: 8px; margin-bottom: 6px; }
   .app-panel-title { font-size: 12.5px; margin-bottom: 5px; }
-  .quest-card { flex: 0 0 200px; padding: 6px 9px 6px 13px; }
+  .quest-card { padding: 5px 7px 5px 11px; }
   .item-grid { grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 4px; }
   .item-tile { min-height: 54px; padding: 5px 2px 3px; }
   .item-tile img, .item-tile .fallback-icon { width: 24px; height: 24px; }
@@ -4879,7 +4991,6 @@ h1 {
   <button class="season-pill" data-season="summer">☀️ 夏</button>
   <button class="season-pill" data-season="fall">🍂 秋</button>
   <button class="season-pill" data-season="winter">❄️ 冬</button>
-  <span class="season-current"><span id="seasonDayLabel">第 1 天</span></span>
   <button class="day-step" id="dayMinus" type="button">−</button>
   <input class="day-input" type="number" id="dayInput" min="1" max="28" value="1" />
   <button class="day-step" id="dayPlus" type="button">+</button>
@@ -6724,7 +6835,6 @@ h1 {
       });
       document.getElementById("dayInput").value = appState.day;
       const seasonLabel = { spring: "春", summer: "夏", fall: "秋", winter: "冬" }[appState.season];
-      document.getElementById("seasonDayLabel").textContent = `${seasonLabel}${appState.day}日`;
       document.getElementById("seasonLabel").textContent = `${seasonLabel}季`;
       const wt = document.getElementById("weatherToggle");
       wt.textContent = appState.weather === "rainy" ? "🌧️ 雨" : "☀️ 晴";
@@ -6764,9 +6874,6 @@ h1 {
       const grid = document.getElementById("questGrid");
       grid.innerHTML = list.map(q => {
         const added = q.goal && appState.goals.some(g => g.id === q.goal);
-        const btnLabel = q.goal ? (added ? "✓ 已加入目标" : "+ 加入目标") : "ℹ️ 仅提示";
-        const btnClass = added ? "quest-add-btn added" : "quest-add-btn";
-        const btnAttr = q.goal && !added ? `data-add-goal="${q.goal}"` : 'disabled style="background:#eee;color:#999;border-color:#ddd;cursor:default;"';
         return `
           <div class="quest-card ${added ? "added" : ""}" data-priority="${q.priority}">
             <div class="quest-card-head">
@@ -6774,9 +6881,11 @@ h1 {
               <div class="quest-day">${escapeHtml(q.day)}</div>
             </div>
             <div class="quest-reason">${escapeHtml(q.reason)}</div>
-            <div class="quest-actions">
-              <button class="${btnClass}" ${btnAttr}>${btnLabel}</button>
-            </div>
+            ${q.goal ? `
+              <div class="quest-actions">
+                <button class="quest-add-btn ${added ? "added" : ""}" ${added ? "disabled" : `data-add-goal="${q.goal}"`}>${added ? "✓ 已加入" : "+ 加入目标"}</button>
+              </div>
+            ` : ""}
           </div>
         `;
       }).join("");
@@ -6817,28 +6926,36 @@ h1 {
         const howLabel = { craft: "🔨 合成菜单", build: "🏡 找Robin", upgrade: "⚒️ 找Clint", self: "💪 自行" }[tpl.how] || "";
         const isOpen = goal.expanded !== false;
         return `
-          <div class="goal-card ${complete ? "complete" : ""}">
-            <button type="button" class="goal-head" data-toggle-goal="${goal.id}">
-              <span class="goal-emoji">${tpl.emoji}</span>
-              <div class="goal-info">
-                <div class="goal-title">${complete ? "✅ " : ""}${escapeHtml(tpl.title)}</div>
-                ${tpl.note ? `<div class="goal-meta">${escapeHtml(tpl.note)}</div>` : ""}
-                ${howLabel ? `<span class="goal-how ${tpl.how}">${howLabel}</span>` : ""}
-              </div>
-              <div class="goal-progress">
-                <div class="goal-frac">${done}/${total}</div>
-                <div class="goal-bar"><div class="goal-bar-fill" style="width:${pct}%"></div></div>
-              </div>
-            </button>
-            ${isOpen ? `
-              <div class="goal-body">
-                ${steps}
-                <button class="goal-remove" data-remove-goal="${goal.id}" type="button">移除目标</button>
-              </div>
-            ` : ""}
+          <div class="goal-card-container">
+            <div class="goal-card ${complete ? "complete" : ""}" data-swipe-goal="${goal.id}">
+              <button type="button" class="goal-head" data-toggle-goal="${goal.id}">
+                <span class="goal-emoji">${tpl.emoji}</span>
+                <div class="goal-info">
+                  <div class="goal-title">${complete ? "✅ " : ""}${escapeHtml(tpl.title)}</div>
+                  ${tpl.note ? `<div class="goal-meta">${escapeHtml(tpl.note)}</div>` : ""}
+                  ${howLabel ? `<span class="goal-how ${tpl.how}">${howLabel}</span>` : ""}
+                </div>
+                <div class="goal-progress">
+                  <div class="goal-frac">${done}/${total}</div>
+                  <div class="goal-bar"><div class="goal-bar-fill" style="width:${pct}%"></div></div>
+                </div>
+              </button>
+              ${isOpen ? `
+                <div class="goal-body">
+                  ${steps}
+                </div>
+              ` : ""}
+            </div>
           </div>
         `;
       }).join("");
+      // 绑定左滑删除
+      list.querySelectorAll("[data-swipe-goal]").forEach(card => {
+        if (!card.dataset.swipeBound) {
+          attachGoalSwipe(card, card.dataset.swipeGoal);
+          card.dataset.swipeBound = "1";
+        }
+      });
     }
 
     function findGoalTemplate(id) {
@@ -7179,7 +7296,9 @@ h1 {
     }
 
     /* ── 添加目标浮层 ── */
+    let expandedGoalTileId = null;
     function openAddGoalModal() {
+      expandedGoalTileId = null;
       const modal = document.createElement("div");
       modal.className = "modal-backdrop";
       modal.id = "addGoalModal";
@@ -7187,33 +7306,114 @@ h1 {
         <div class="modal-sheet">
           <div class="modal-grip"></div>
           <div class="modal-head">
-            <h3 class="modal-title">🎯 添加目标</h3>
+            <h3 class="modal-title">🎯 添加目标 <span style="font-weight:600;font-size:11px;color:var(--muted);margin-left:4px;">点击查看材料</span></h3>
             <button class="modal-close" onclick="closeAddGoalModal()">×</button>
           </div>
-          ${GOAL_TEMPLATES.map(cat => `
-            <div style="margin-bottom:12px;">
-              <div style="font-weight:900;font-size:14px;margin-bottom:6px;color:var(--wood-dark);">${escapeHtml(cat.cat)}</div>
-              <div class="equip-grid">
-                ${cat.goals.map(g => {
-                  const exists = appState.goals.some(x => x.id === g.id);
-                  return `<button class="equip-tile ${exists ? "has" : ""}" data-add-goal="${g.id}" type="button" ${exists ? "disabled" : ""}>
-                    <span class="tool-icon">${g.emoji}</span>
-                    <span class="tool-name">${escapeHtml(g.title)}</span>
-                    <span class="tool-level">${exists ? "✓" : "+"}</span>
-                  </button>`;
-                }).join("")}
-              </div>
-            </div>
-          `).join("")}
+          <div id="addGoalBody">${renderAddGoalContent()}</div>
         </div>
       `;
       modal.addEventListener("click", e => { if (e.target === modal) closeAddGoalModal(); });
       document.body.appendChild(modal);
       attachSheetSwipe(modal, closeAddGoalModal);
     }
+    function renderAddGoalContent() {
+      return GOAL_TEMPLATES.map(cat => `
+        <div style="margin-bottom:13px;">
+          <div style="font-weight:900;font-size:13px;margin-bottom:5px;color:var(--wood-dark);">${escapeHtml(cat.cat)}</div>
+          <div class="goal-tile-grid">
+            ${cat.goals.map(g => {
+              const exists = appState.goals.some(x => x.id === g.id);
+              const isExpanded = expandedGoalTileId === g.id;
+              return `
+                <div class="goal-tile-wrap ${exists ? "has" : ""}">
+                  <button class="goal-tile" data-toggle-goal-tile="${g.id}" type="button">
+                    <span class="tool-icon">${g.emoji}</span>
+                    <span class="tool-name">${escapeHtml(g.title)}</span>
+                    <span class="tool-level">${exists ? "✓ 已加" : (isExpanded ? "▼" : "▶")}</span>
+                  </button>
+                  ${isExpanded ? `
+                    <div class="goal-tile-detail">
+                      ${g.note ? `<div class="goal-tile-note">${escapeHtml(g.note)}</div>` : ""}
+                      ${g.steps.map(s => {
+                        const have = s.invKey ? (appState.inventory[s.invKey] || 0) : 0;
+                        const enough = s.invNeed && have >= s.invNeed;
+                        return `<div class="goal-tile-step ${enough ? "ok" : ""}">
+                          <span style="flex-shrink:0;">${enough ? "✓" : "·"}</span>
+                          <span style="flex:1;">${escapeHtml(s.label)}${s.sub ? `<span class="have"> — ${escapeHtml(s.sub)}</span>` : ""}</span>
+                          ${s.invKey && s.invNeed ? `<span class="have">背包${have}/${s.invNeed}</span>` : ""}
+                        </div>`;
+                      }).join("")}
+                      ${exists ? "" : `<button class="goal-tile-confirm" data-add-goal="${g.id}">+ 加入目标</button>`}
+                    </div>
+                  ` : ""}
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `).join("");
+    }
+    function toggleGoalTileExpand(id) {
+      expandedGoalTileId = expandedGoalTileId === id ? null : id;
+      const body = document.getElementById("addGoalBody");
+      if (body) body.innerHTML = renderAddGoalContent();
+    }
     function closeAddGoalModal() {
       const m = document.getElementById("addGoalModal");
       if (m) m.remove();
+    }
+
+    /* 左滑删除目标卡片 */
+    function attachGoalSwipe(card, goalId) {
+      let startX = 0, startY = 0, currentX = 0, currentY = 0;
+      let isDragging = false;
+      let direction = null;
+      card.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        currentX = startX;
+        currentY = startY;
+        isDragging = true;
+        direction = null;
+        card.style.transition = "none";
+      }, { passive: true });
+      card.addEventListener("touchmove", (e) => {
+        if (!isDragging) return;
+        currentX = e.touches[0].clientX;
+        currentY = e.touches[0].clientY;
+        const dx = currentX - startX;
+        const dy = currentY - startY;
+        if (direction === null) {
+          if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+            direction = (Math.abs(dx) > Math.abs(dy)) ? "horizontal" : "vertical";
+            if (direction === "vertical") { isDragging = false; return; }
+          } else { return; }
+        }
+        if (direction === "horizontal" && dx < 0) {
+          if (e.cancelable) e.preventDefault();
+          card.style.transform = "translateX(" + Math.max(dx, -120) + "px)";
+        }
+      }, { passive: false });
+      const endHandler = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        const dx = currentX - startX;
+        card.style.transition = "transform 0.2s ease";
+        if (direction === "horizontal" && dx < -60) {
+          card.style.transform = "translateX(-100%)";
+          setTimeout(() => removeGoalSilent(goalId), 200);
+        } else {
+          card.style.transform = "";
+        }
+        direction = null;
+      };
+      card.addEventListener("touchend", endHandler);
+      card.addEventListener("touchcancel", endHandler);
+    }
+    function removeGoalSilent(id) {
+      appState.goals = appState.goals.filter(g => g.id !== id);
+      renderApp();
+      toast("已移除目标");
     }
 
     /* 浮窗下滑关闭手势 */
@@ -7297,6 +7497,9 @@ h1 {
       // 日期±
       if (e.target.closest("#dayMinus")) { stepDay(-1); return; }
       if (e.target.closest("#dayPlus")) { stepDay(1); return; }
+      // 添加目标 tile 展开
+      const goalTileToggle = e.target.closest("[data-toggle-goal-tile]");
+      if (goalTileToggle) { toggleGoalTileExpand(goalTileToggle.dataset.toggleGoalTile); return; }
       // 当季任务-加入目标
       const addGoalBtn = e.target.closest("[data-add-goal]");
       if (addGoalBtn && !addGoalBtn.disabled) { addGoal(addGoalBtn.dataset.addGoal); closeAddGoalModal(); return; }
