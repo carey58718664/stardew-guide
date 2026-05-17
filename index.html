@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -37,6 +38,7 @@ body {
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   line-height: 1.5;
+  overscroll-behavior-y: none;
 }
 
 button,
@@ -4249,23 +4251,45 @@ h1 {
 .app-hero-actions button.primary:hover { background: #f6d294; }
 
 .app-panel {
-  margin-bottom: 7px;
-  padding: 8px 10px 9px;
-  border: 1px solid #e2d0aa;
-  border-radius: 10px;
-  background: rgba(255, 250, 240, 0.94);
-  box-shadow: 0 6px 16px rgba(76, 49, 29, 0.06);
+  margin-bottom: 8px;
+  padding: 0;
+  border: 2px solid var(--wood);
+  border-radius: 12px;
+  background: var(--paper);
+  box-shadow: 0 6px 16px rgba(76, 49, 29, 0.08), inset 0 0 0 2px var(--paper);
+  overflow: hidden;
 }
 
 .app-panel-title {
-  margin: 0 0 6px;
-  font-size: 13px;
+  margin: 0;
+  padding: 7px 12px 6px;
+  font-size: 13.5px;
   font-weight: 900;
-  color: var(--wood-dark);
+  color: #fff7e8;
   display: flex;
   align-items: center;
   gap: 6px;
+  background: linear-gradient(180deg, #b07a48, var(--wood));
+  letter-spacing: 0.4px;
+  border-bottom: 1.5px solid var(--wood-dark);
 }
+
+.app-panel-title .subtle {
+  color: #ffe0a2 !important;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.app-panel-body { padding: 9px 10px 10px; }
+.app-panel > :not(.app-panel-title) {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.app-panel > :first-child:not(.app-panel-title) { margin-top: 9px; }
+.app-panel > :last-child:not(.app-panel-title) { margin-bottom: 10px; }
+/* 让 title 跟随父级颜色，subtle 不显示标题色 */
+.app-panel-title { border-radius: 9px 9px 0 0; }
 
 .app-panel-title .subtle {
   color: var(--muted);
@@ -4279,12 +4303,13 @@ h1 {
   flex-wrap: nowrap;
   gap: 4px;
   align-items: center;
-  padding: 5px 8px;
-  border: 1px solid #e2d0aa;
-  border-radius: 10px;
+  padding: 6px 9px;
+  border: 2px solid var(--wood);
+  border-radius: 12px;
   background: linear-gradient(180deg, #fff7e6, #f9ecc8);
-  margin-bottom: 7px;
+  margin-bottom: 8px;
   overflow-x: auto;
+  box-shadow: 0 4px 12px rgba(76, 49, 29, 0.06);
 }
 .season-bar::-webkit-scrollbar { height: 0; }
 
@@ -4573,20 +4598,26 @@ h1 {
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  overscroll-behavior: contain;
+  touch-action: none;
 }
+.modal-backdrop > * { touch-action: auto; }
 .modal-sheet {
   width: 100%;
   max-width: 720px;
-  height: 86vh;
+  height: 76vh;
   background: var(--paper);
   border-radius: 18px 18px 0 0;
   padding: 12px 12px 14px;
   border-top: 3px solid var(--wood);
+  overscroll-behavior: contain;
 }
 @media (min-width: 720px) {
   .modal-backdrop { align-items: center; }
-  .modal-sheet { border-radius: 16px; height: 80vh; max-height: 720px; border-top: none; border: 2px solid var(--wood); }
+  .modal-sheet { border-radius: 16px; height: 72vh; max-height: 680px; border-top: none; border: 2px solid var(--wood); }
 }
+body.modal-open { overflow: hidden; touch-action: none; }
+body.modal-open #app-shell { pointer-events: none; }
 .modal-grip { width: 100%; max-width: 280px; height: 18px; margin: 0 auto 8px; cursor: grab; position: relative; display: flex; align-items: center; justify-content: center; touch-action: none; }
 .modal-grip::after { content: ""; width: 48px; height: 5px; background: var(--wood); opacity: 0.4; border-radius: 999px; }
 .modal-head {
@@ -4630,31 +4661,31 @@ h1 {
 
 .item-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 5px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
 }
 @media (min-width: 720px) {
-  .item-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .item-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
-/* 物品 tile - 扁长条横排，一行 3 个 */
+/* 物品 tile - 扁长条横排，一行 2 个，图标加大 */
 .item-tile {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 3px;
-  padding: 4px 5px;
+  gap: 6px;
+  padding: 5px 8px;
   border: 1.5px solid #e2d0aa;
-  border-radius: 7px;
+  border-radius: 8px;
   background: #fffdf6;
   min-width: 0;
 }
 .item-tile.has { border-color: var(--green); background: var(--green-soft); }
-.item-tile-icon { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; }
-.item-tile img, .item-tile .fallback-icon { width: 22px; height: 22px; image-rendering: pixelated; }
+.item-tile-icon { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; }
+.item-tile img, .item-tile .fallback-icon { width: 30px; height: 30px; image-rendering: pixelated; }
 .item-tile-name {
   flex: 1;
   min-width: 0;
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--ink);
   line-height: 1.15;
@@ -4665,15 +4696,15 @@ h1 {
 .item-tile-ctrl {
   display: flex;
   align-items: center;
-  gap: 1px;
+  gap: 2px;
   flex-shrink: 0;
 }
 .item-tile-btn {
-  width: 21px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border: 1.2px solid var(--line);
-  border-radius: 4px;
-  font-size: 12px;
+  border-radius: 5px;
+  font-size: 13px;
   font-weight: 900;
   cursor: pointer;
   padding: 0;
@@ -4683,13 +4714,13 @@ h1 {
 .item-tile-btn.minus { background: #fde9e6; border-color: #e6b8b0; color: var(--red); }
 .item-tile-btn.plus { background: #e9f6e6; border-color: #a6cf9a; color: var(--green); }
 .item-tile-num {
-  min-width: 18px;
-  max-width: 28px;
+  min-width: 22px;
+  max-width: 36px;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 900;
   color: var(--ink);
-  padding: 0 1px;
+  padding: 0 2px;
 }
 .item-tile.has .item-tile-num { color: var(--green); }
 .item-tile-check {
@@ -5049,6 +5080,32 @@ h1 {
   cursor: pointer;
 }
 
+
+/* 献祭页布局优化（覆盖原代码细节） */
+.map-bundle-node {
+  padding: 5px 7px 6px !important;
+  min-height: 0 !important;
+}
+.map-bundle-node .map-bundle-name { font-size: 11.5px !important; line-height: 1.25 !important; }
+.map-bundle-node .map-bundle-meta { font-size: 10.5px !important; padding: 0 !important; }
+.map-item { min-height: 0 !important; padding: 3px 1px !important; }
+.map-item .name { font-size: 10px !important; line-height: 1.15 !important; }
+.room-scene {
+  overflow: hidden;
+}
+/* 锅炉房地质学家/冒险家/铁匠 居中且兜底不溢出 */
+.room[data-room-id="boiler"] .room-scene-inner,
+.room[data-room-id="boiler"] .bundle-cluster {
+  align-items: center;
+  justify-content: center;
+}
+.room[data-room-id="boiler"] .map-bundle-node {
+  margin: 6px auto !important;
+  max-width: calc(100% - 16px);
+}
+/* 兜底防溢出 */
+.map-bundle-node, .map-item-strip { max-width: 100%; }
+
 /* 微瑕修复：禁止地图卡片内勾选 */
 .map-item { cursor: pointer !important; }
 .map-item input[type="checkbox"] { pointer-events: none !important; }
@@ -5058,16 +5115,19 @@ h1 {
   .app-hero { padding: 6px 11px; }
   .app-hero h1 { font-size: 14px; }
   .app-hero-actions button { min-height: 26px; padding: 0 8px; font-size: 11.5px; }
-  .app-panel { padding: 8px; margin-bottom: 6px; }
-  .app-panel-title { font-size: 12.5px; margin-bottom: 5px; }
+  .app-panel { margin-bottom: 7px; }
+  .app-panel-title { font-size: 12.5px; padding: 6px 11px 5px; }
+  .app-panel > :not(.app-panel-title) { margin-left: 8px; margin-right: 8px; }
+  .app-panel > :first-child:not(.app-panel-title) { margin-top: 7px; }
+  .app-panel > :last-child:not(.app-panel-title) { margin-bottom: 8px; }
   .quest-card { padding: 5px 7px 5px 11px; }
-  .item-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
-  .item-tile { padding: 3px 4px; gap: 2px; }
-  .item-tile img, .item-tile .fallback-icon { width: 20px; height: 20px; }
-  .item-tile-icon { width: 22px; height: 22px; }
-  .item-tile-name { font-size: 10px; }
-  .item-tile-btn { width: 19px; height: 21px; font-size: 11px; }
-  .item-tile-num { font-size: 11.5px; min-width: 16px; }
+  .item-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+  .item-tile { padding: 4px 7px; gap: 5px; }
+  .item-tile img, .item-tile .fallback-icon { width: 28px; height: 28px; }
+  .item-tile-icon { width: 28px; height: 28px; }
+  .item-tile-name { font-size: 11.5px; }
+  .item-tile-btn { width: 22px; height: 22px; font-size: 12px; }
+  .item-tile-num { font-size: 13px; min-width: 20px; }
   .goals-empty { padding: 14px 10px; font-size: 12px; }
   .add-item-btn { padding: 8px; font-size: 13px; }
 }
@@ -7404,6 +7464,7 @@ h1 {
     /* ── 录入浮层 ── */
     let currentInvTab = "crop";
     function openInventoryModal() {
+      document.body.classList.add("modal-open");
       const modal = document.createElement("div");
       modal.className = "modal-backdrop";
       modal.id = "invModal";
@@ -7432,6 +7493,7 @@ h1 {
       const m = document.getElementById("invModal");
       if (m) m.remove();
       closeQtyPopover();
+      document.body.classList.remove("modal-open");
     }
     function renderInvTab() {
       const body = document.getElementById("invModalBody");
@@ -7585,6 +7647,7 @@ h1 {
     /* ── 添加目标浮层 ── */
     let expandedGoalTileId = null;
     function openAddGoalModal() {
+      document.body.classList.add("modal-open");
       expandedGoalTileId = null;
       const modal = document.createElement("div");
       modal.className = "modal-backdrop";
@@ -7648,6 +7711,7 @@ h1 {
     function closeAddGoalModal() {
       const m = document.getElementById("addGoalModal");
       if (m) m.remove();
+      document.body.classList.remove("modal-open");
     }
 
     /* 左滑显示删除按钮，点击按钮才真删 */
@@ -7913,5 +7977,6 @@ h1 {
     renderApp();
     syncBundleChecksFromInventory();
   </script>
+
 </body>
 </html>
