@@ -6069,6 +6069,110 @@ body.modal-open #app-shell { pointer-events: none; }
   }
 }
 
+
+
+/* ===== v18 收口细调 ===== */
+/* 去掉标题后面的小尾巴文字，但保留 JS 目标节点 */
+#app-shell #seasonLabel,
+#app-shell #goalsCount,
+#app-shell #suggestionsCount,
+#app-shell #inventoryComboPanel > .app-panel-title .subtle {
+  display: none !important;
+}
+
+/* 标题和下面内容再拉开一点 */
+#app-shell .app-panel-title {
+  margin-bottom: 14px !important;
+}
+
+#app-shell .inventory-subpanel-title {
+  margin-bottom: 14px !important;
+}
+
+#app-shell .app-panel-title + *,
+#app-shell .inventory-subpanel-title + * {
+  margin-top: 0 !important;
+}
+
+/* 背包录入固定四列 */
+#app-shell .inventory-entry-panel .inventory-summary {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 10px 10px !important;
+  align-items: stretch !important;
+}
+
+#app-shell .inventory-entry-panel .inv-chip {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 42px !important;
+  padding: 6px 10px 6px 8px !important;
+  overflow: hidden !important;
+  font-size: 12px !important;
+}
+
+#app-shell .inventory-entry-panel .inv-chip span {
+  min-width: 0;
+}
+
+/* 建议右侧收益框统一大小，文字全部右对齐 */
+#app-shell .sug-metric {
+  width: 126px !important;
+  min-width: 126px !important;
+  min-height: 64px !important;
+  padding: 6px 10px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-end !important;
+  text-align: right !important;
+  line-height: 1.18 !important;
+  white-space: nowrap !important;
+}
+
+#app-shell .sug-metric b {
+  width: 100%;
+  text-align: right;
+}
+
+@media (max-width: 520px) {
+  #app-shell .app-panel-title {
+    margin-bottom: 12px !important;
+  }
+
+  #app-shell .inventory-subpanel-title {
+    margin-bottom: 12px !important;
+  }
+
+  #app-shell .inventory-entry-panel .inventory-summary {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  #app-shell .inventory-entry-panel .inv-chip {
+    min-height: 40px !important;
+    padding: 6px 8px !important;
+    font-size: 11.5px !important;
+  }
+
+  #app-shell .inventory-entry-panel .inv-chip img,
+  #app-shell .inventory-entry-panel .inv-chip .fallback-icon {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  #app-shell .sug-metric {
+    width: 112px !important;
+    min-width: 112px !important;
+    min-height: 60px !important;
+    padding: 6px 8px !important;
+    font-size: 11px !important;
+  }
+}
+
 </style>
 </head>
 <body>
