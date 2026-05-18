@@ -4412,9 +4412,7 @@ white-space: nowrap;
 .quest-grid {
 display: grid;
 grid-template-columns: 1fr 1fr;
-gap: 8px;
-position: relative;
-z-index: 2;
+gap: 5px;
 }
 @media (min-width: 720px) {
 .quest-grid { grid-template-columns: repeat(3, 1fr); }
@@ -5436,92 +5434,60 @@ width: 100%;
 margin-top: 8px;
 }
 
-/* === 当季主线（仿献祭房间风格） === */
 #app-shell #seasonPanel {
 position: relative;
-padding: 0;
-border: 1px solid #e8d8b8;
-border-radius: 8px;
-background: linear-gradient(180deg, #fffaf0, #f7ebd1);
-box-shadow: 0 12px 26px rgba(76, 49, 29, 0.1);
 overflow: hidden;
-}
-
-/* 房间标题栏 - 跟房间一致 */
-#app-shell #seasonPanel .season-header {
-display: flex;
-align-items: center;
-gap: 10px;
-padding: 10px 14px;
-border-bottom: 1px solid #e8d8b8;
-background: rgba(138, 90, 53, 0.1);
+isolation: isolate;
+border: 3px solid #6b4a37;
+border-radius: 14px;
+background: rgba(255, 250, 240, 0.92);
 }
 
 #app-shell #seasonPanel .app-panel-title {
-margin: 0;
-padding: 0;
-border: 0;
-background: transparent;
-box-shadow: none;
-font-size: 19px;
-font-weight: 950;
+display: inline-flex;
+width: auto;
+margin: 10px 0 14px;
+padding: 9px 18px;
+border: 3px solid #d8c89d;
+border-radius: 18px;
+background: linear-gradient(180deg, #fff7d8, #f0d99a);
 color: var(–ink);
-display: flex;
-align-items: center;
-gap: 8px;
-flex: 1;
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 4px 10px rgba(76, 49, 29, 0.08);
+font-size: 20px;
+line-height: 1.1;
 }
 
 #app-shell #seasonPanel .app-panel-title .subtle {
-display: inline;
-color: var(–muted);
-font-size: 13px;
-font-weight: 750;
-margin-left: 6px;
+display: none;
 }
 
-/* 房间内容区 */
-#app-shell #seasonPanel .season-body {
-padding: 10px;
-}
-
-/* 房间场景 - 卡片们漂在背景图上 */
-#app-shell #seasonPanel .quest-scene {
-position: relative;
-border: 1px solid rgba(184, 143, 84, 0.5);
-border-radius: 18px;
-background:
-linear-gradient(rgba(255, 246, 224, 0.22), rgba(255, 246, 224, 0.22)),
-linear-gradient(180deg, rgba(255, 252, 242, 0.58), rgba(244, 226, 190, 0.42));
-box-shadow: inset 0 0 0 1px rgba(255, 252, 242, 0.55), 0 8px 22px rgba(80, 50, 20, 0.1);
-overflow: hidden;
-isolation: isolate;
-padding: 14px 12px;
-}
-
-/* 内层装饰边框 - 跟房间一致 */
-#app-shell #seasonPanel .quest-scene::after {
+#app-shell #seasonPanel::before {
 content: “”;
 position: absolute;
-inset: 8px;
-z-index: 1;
-border: 1px solid rgba(150, 112, 63, 0.24);
-border-radius: 14px;
-pointer-events: none;
-}
-
-/* 背景图 - 跟房间 .room-scene-bg 同款参数 */
-#app-shell #seasonPanel .quest-scene-bg {
-position: absolute;
-inset: 0;
-z-index: -1;
+inset: 12px;
+z-index: -2;
+border-radius: 8px;
 background-image: var(–season-bg);
 background-size: cover;
 background-position: center 42%;
 image-rendering: pixelated;
-opacity: 0.78;
-filter: blur(0.45px) saturate(0.95) brightness(0.96);
+opacity: 0.46;
+filter: blur(0.45px) saturate(0.92) brightness(0.98);
 transform: scale(1.01);
+}
+
+#app-shell #seasonPanel::after {
+content: “”;
+position: absolute;
+inset: 0;
+z-index: -1;
+background: linear-gradient(180deg, rgba(255, 250, 240, 0.55), rgba(255, 246, 224, 0.68));
+pointer-events: none;
+}
+
+#app-shell #seasonPanel > * {
+position: relative;
+z-index: 1;
 }
 
 #app-shell .app-panel-title {
@@ -5572,13 +5538,11 @@ box-shadow: 0 6px 14px rgba(76, 49, 29, 0.06);
 
 #app-shell .quest-card {
 –quest-accent: #d88d32;
-position: relative;
-z-index: 2;
 padding: 9px 10px 9px 13px;
-border: 1px solid rgba(143, 108, 64, 0.24);
+border: 1px solid rgba(143, 108, 64, 0.28);
 border-radius: 14px;
-background: rgba(255, 252, 242, 0.94);
-box-shadow: inset 5px 0 0 var(–quest-accent), 0 6px 16px rgba(80, 50, 20, 0.14);
+background: rgba(255, 252, 242, 0.92);
+box-shadow: inset 5px 0 0 var(–quest-accent), 0 6px 16px rgba(80, 50, 20, 0.12);
 }
 
 #app-shell .quest-card[data-priority=“urgent”] { –quest-accent: #b84532; }
@@ -5586,7 +5550,7 @@ box-shadow: inset 5px 0 0 var(–quest-accent), 0 6px 16px rgba(80, 50, 20, 0.14
 #app-shell .quest-card[data-priority=“info”] { –quest-accent: #2f6fb0; }
 #app-shell .quest-card.added {
 –quest-accent: #389d62;
-background: rgba(248, 254, 242, 0.95);
+background: rgba(248, 254, 242, 0.94);
 border-color: rgba(76, 145, 91, 0.36);
 }
 
@@ -5904,15 +5868,8 @@ font-size: 13px;
 <!-- 当季主线 -->
 
 <section class="app-panel" id="seasonPanel">
-  <div class="season-header">
-    <h2 class="app-panel-title">🗺️ 当季主线 <span class="subtle" id="seasonLabel">春季</span></h2>
-  </div>
-  <div class="season-body">
-    <div class="quest-scene">
-      <div class="quest-scene-bg" id="questSceneBg"></div>
-      <div class="quest-grid" id="questGrid"></div>
-    </div>
-  </div>
+  <h2 class="app-panel-title">🗺️ 当季主线 <span class="subtle" id="seasonLabel">春季</span></h2>
+  <div class="quest-grid" id="questGrid"></div>
 </section>
 
 <!-- 我的背包 -->
@@ -7984,8 +7941,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         const bgFile = APP_SEASON_BACKGROUNDS[appState.season] || APP_SEASON_BACKGROUNDS.spring;
         seasonPanel.dataset.season = appState.season;
         seasonPanel.style.setProperty("--season-bg", `url("${iconUrl(bgFile)}")`);
-        const questSceneBg = document.getElementById("questSceneBg");
-        if (questSceneBg) questSceneBg.style.setProperty("--season-bg", `url("${iconUrl(bgFile)}")`);
       }
       const wt = document.getElementById("weatherToggle");
       wt.textContent = appState.weather === "rainy" ? "🌧️ 雨" : "☀️ 晴";
