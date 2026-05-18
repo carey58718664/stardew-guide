@@ -5636,6 +5636,439 @@ body.modal-open #app-shell { pointer-events: none; }
   }
 }
 
+
+
+/* ===== v15 标题栏呼吸感优化：贴近献祭房间名字 ===== */
+#app-shell .app-panel {
+  border-color: #734728 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 8px 20px rgba(76, 49, 29, 0.08), inset 0 0 0 2px rgba(255, 250, 240, 0.92) !important;
+}
+
+#app-shell .app-panel-title {
+  min-height: 46px !important;
+  padding: 10px 15px 9px !important;
+  border-bottom: 1px solid #d8c295 !important;
+  border-radius: 12px 12px 0 0 !important;
+  background: linear-gradient(180deg, #f2e2bd 0%, #ebd3a0 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.72), inset 0 -1px 0 rgba(138, 90, 53, 0.08) !important;
+  color: #5a3419 !important;
+  font-size: 17px !important;
+  font-weight: 950 !important;
+  letter-spacing: 0 !important;
+}
+
+#app-shell .app-panel-title .subtle {
+  color: #8a6840 !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+}
+
+#app-shell .app-panel > :not(.app-panel-title) {
+  margin-left: 12px !important;
+  margin-right: 12px !important;
+}
+
+#app-shell .app-panel > :first-child:not(.app-panel-title) {
+  margin-top: 12px !important;
+}
+
+#app-shell .app-panel > :last-child:not(.app-panel-title) {
+  margin-bottom: 12px !important;
+}
+
+@media (max-width: 520px) {
+  #app-shell .app-panel-title {
+    min-height: 44px !important;
+    padding: 9px 13px 8px !important;
+    font-size: 15.5px !important;
+  }
+
+  #app-shell .app-panel-title .subtle {
+    font-size: 13px !important;
+  }
+
+  #app-shell .app-panel > :not(.app-panel-title) {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+  }
+
+  #app-shell .app-panel > :first-child:not(.app-panel-title) {
+    margin-top: 10px !important;
+  }
+
+  #app-shell .app-panel > :last-child:not(.app-panel-title) {
+    margin-bottom: 10px !important;
+  }
+}
+
+
+
+/* ===== v16 继续抠细节：标题小牌子 + 卡片留白统一 ===== */
+#app-shell .app-panel {
+  border: 2.5px solid #734728 !important;
+  border-radius: 15px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 240, 0.98), rgba(251, 244, 225, 0.96)) !important;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 252, 242, 0.88),
+    0 8px 18px rgba(76, 49, 29, 0.08) !important;
+  overflow: hidden !important;
+}
+
+/* 把整条标题栏改成献祭房间名那种“小牌子” */
+#app-shell .app-panel-title {
+  display: inline-flex !important;
+  width: auto !important;
+  max-width: calc(100% - 24px) !important;
+  min-height: 38px !important;
+  margin: 12px 12px 0 !important;
+  padding: 6px 16px 7px !important;
+  border: 2px solid #d9bf84 !important;
+  border-radius: 13px !important;
+  background:
+    linear-gradient(180deg, #fff6dc 0%, #f2d99d 100%) !important;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.76),
+    inset 0 -1px 0 rgba(138, 90, 53, 0.12),
+    0 3px 8px rgba(95, 58, 34, 0.12) !important;
+  color: #2b2118 !important;
+  font-size: 18px !important;
+  line-height: 1.12 !important;
+  font-weight: 950 !important;
+  letter-spacing: 0 !important;
+  vertical-align: top;
+}
+
+#app-shell .app-panel-title .subtle {
+  color: #74583b !important;
+  font-size: 14px !important;
+  font-weight: 850 !important;
+  line-height: 1.1 !important;
+}
+
+#app-shell .app-panel > :not(.app-panel-title) {
+  margin-left: 12px !important;
+  margin-right: 12px !important;
+}
+
+#app-shell .app-panel > :first-child:not(.app-panel-title) {
+  margin-top: 14px !important;
+}
+
+#app-shell .app-panel > :last-child:not(.app-panel-title) {
+  margin-bottom: 13px !important;
+}
+
+/* 当季主线保持两列三行，只把卡片呼吸感统一 */
+#app-shell .quest-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 9px !important;
+}
+
+#app-shell .quest-card {
+  min-height: 90px;
+  padding: 10px 10px 10px 13px !important;
+  border-color: #dec99f !important;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.99), rgba(255, 249, 235, 0.98)) !important;
+}
+
+#app-shell .quest-card-head {
+  gap: 8px !important;
+}
+
+#app-shell .quest-title {
+  font-size: 14.5px !important;
+}
+
+#app-shell .quest-reason {
+  font-size: 12.5px !important;
+}
+
+/* 背包 chip 稍微压实，避免像一堆漂浮胶囊 */
+#app-shell .inventory-summary {
+  gap: 8px 7px !important;
+  align-items: start !important;
+}
+
+#app-shell .inv-chip {
+  min-height: 36px !important;
+  padding: 5px 12px 5px 8px !important;
+  border-color: #dec99f !important;
+  background: linear-gradient(180deg, #fffdf8, #fff7e7) !important;
+}
+
+/* 建议卡片：留白收紧一点，右侧收益牌更轻 */
+#app-shell #invSuggestions {
+  gap: 9px !important;
+}
+
+#app-shell .inv-suggestion {
+  min-height: 60px !important;
+  padding: 9px 10px !important;
+  border-color: #dec99f !important;
+  background: linear-gradient(180deg, #fffdf8, #fff8ea) !important;
+}
+
+#app-shell .sug-main strong {
+  font-size: 14.5px !important;
+}
+
+#app-shell .sug-main small {
+  font-size: 12.2px !important;
+}
+
+#app-shell .sug-metric {
+  border-color: #e4cf9c !important;
+  background: #fff4d8 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.62);
+}
+
+/* 目标卡：头部和展开步骤分层，少一点挤和糊 */
+#app-shell .goal-card-container {
+  margin-bottom: 11px !important;
+  border-radius: 15px !important;
+}
+
+#app-shell .goal-card {
+  border-color: #dec99f !important;
+  border-radius: 15px !important;
+  background: linear-gradient(180deg, #fffdf8, #fff8ea) !important;
+}
+
+#app-shell .goal-head {
+  padding: 12px 13px 11px !important;
+  gap: 11px !important;
+}
+
+#app-shell .goal-emoji {
+  background: linear-gradient(180deg, #fff3d8, #f7e2b5) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+#app-shell .goal-title {
+  font-size: 16.5px !important;
+}
+
+#app-shell .goal-meta {
+  font-size: 12.5px !important;
+}
+
+#app-shell .goal-body {
+  margin: 0 12px 12px !important;
+  padding: 8px 0 0 !important;
+  border-top: 1.5px dashed #e2d0aa;
+}
+
+#app-shell .goal-step {
+  padding: 9px 3px !important;
+}
+
+#app-shell .goal-step-text {
+  font-size: 13.5px !important;
+}
+
+#app-shell .goal-step-sub,
+#app-shell .goal-step-have {
+  font-size: 11.5px !important;
+}
+
+#app-shell .goal-card-container .goal-delete-btn {
+  background: linear-gradient(180deg, #c95742, #a83c2d) !important;
+  color: #fff7e8 !important;
+}
+
+/* 查物品输入框也跟整体边框统一 */
+#app-shell #itemSearch {
+  border-color: #dec99f !important;
+  background: #fffdf8 !important;
+}
+
+@media (max-width: 520px) {
+  #app-shell .app-panel {
+    border-radius: 14px !important;
+  }
+
+  #app-shell .app-panel-title {
+    max-width: calc(100% - 20px) !important;
+    min-height: 36px !important;
+    margin: 10px 10px 0 !important;
+    padding: 6px 14px 6px !important;
+    border-radius: 12px !important;
+    font-size: 16px !important;
+  }
+
+  #app-shell .app-panel-title .subtle {
+    font-size: 13px !important;
+  }
+
+  #app-shell .app-panel > :not(.app-panel-title) {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+  }
+
+  #app-shell .app-panel > :first-child:not(.app-panel-title) {
+    margin-top: 11px !important;
+  }
+
+  #app-shell .app-panel > :last-child:not(.app-panel-title) {
+    margin-bottom: 11px !important;
+  }
+
+  #app-shell .quest-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  #app-shell .quest-card {
+    min-height: 92px !important;
+    padding: 8px 8px 8px 11px !important;
+  }
+
+  #app-shell .quest-title {
+    font-size: 13.5px !important;
+  }
+
+  #app-shell .quest-reason {
+    font-size: 11.7px !important;
+  }
+
+  #app-shell .inventory-summary {
+    gap: 7px 6px !important;
+  }
+
+  #app-shell .inv-chip {
+    min-height: 35px !important;
+    padding: 5px 10px 5px 7px !important;
+  }
+
+  #app-shell .inv-suggestion {
+    grid-template-columns: auto 30px minmax(0, 1fr) auto !important;
+    gap: 7px !important;
+    min-height: 58px !important;
+    padding: 8px 8px !important;
+  }
+
+  #app-shell .sug-main strong {
+    font-size: 13.5px !important;
+  }
+
+  #app-shell .sug-main small {
+    font-size: 11.6px !important;
+  }
+
+  #app-shell .sug-metric {
+    min-width: 82px !important;
+    padding: 4px 6px !important;
+    font-size: 11.3px !important;
+  }
+
+  #app-shell .goal-head {
+    padding: 11px 11px 10px !important;
+  }
+
+  #app-shell .goal-title {
+    font-size: 15.5px !important;
+  }
+
+  #app-shell .goal-meta {
+    font-size: 12px !important;
+  }
+
+  #app-shell .goal-body {
+    margin: 0 11px 11px !important;
+    padding-top: 7px !important;
+  }
+}
+
+
+
+/* ===== v17 我的背包 + 建议 合并成一个板块 ===== */
+#app-shell .inventory-combo-wrap {
+  display: grid;
+  gap: 12px;
+}
+
+#app-shell .inventory-subpanel {
+  border: 2px solid #ddc89f !important;
+  border-radius: 14px !important;
+  background: linear-gradient(180deg, #fffdf8 0%, #fff7e8 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.72), 0 2px 8px rgba(76,49,29,0.04);
+  padding: 12px !important;
+}
+
+#app-shell .inventory-subpanel-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  margin: 0 0 10px 0;
+  padding: 5px 12px;
+  border: 1px solid #dbc79f;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f7e7c2 0%, #eed7a7 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
+  color: #5f3a22;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+#app-shell .inventory-subpanel-title .subtle {
+  color: #8a6840 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+}
+
+#app-shell .inventory-entry-panel .inventory-summary {
+  padding: 0 0 2px 0;
+}
+
+#app-shell .inventory-entry-panel .add-item-btn {
+  width: 100%;
+  margin-top: 10px;
+  border-style: dashed !important;
+  border-width: 2px !important;
+  background: linear-gradient(180deg, #fffdf8, #fff8eb) !important;
+}
+
+#app-shell .inventory-suggestions-panel #invSuggestions {
+  gap: 8px !important;
+}
+
+#app-shell .inventory-suggestions-panel .inv-suggestion {
+  border-color: #e1ceaa !important;
+  border-radius: 12px !important;
+  background: linear-gradient(180deg, #fffefb, #fff8ed) !important;
+  box-shadow: 0 2px 6px rgba(76,49,29,0.035);
+}
+
+#app-shell .inventory-suggestions-panel .inv-suggestion + .inv-suggestion {
+  border-top: 2px solid #e1ceaa !important;
+}
+
+@media (max-width: 520px) {
+  #app-shell .inventory-combo-wrap {
+    gap: 10px;
+  }
+
+  #app-shell .inventory-subpanel {
+    padding: 10px !important;
+    border-radius: 12px !important;
+  }
+
+  #app-shell .inventory-subpanel-title {
+    min-height: 30px;
+    margin-bottom: 8px;
+    padding: 4px 10px;
+    font-size: 13.5px;
+  }
+
+  #app-shell .inventory-subpanel-title .subtle {
+    font-size: 12.5px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -5669,17 +6102,21 @@ body.modal-open #app-shell { pointer-events: none; }
   <div class="quest-grid" id="questGrid"></div>
 </section>
 
-<!-- 我的背包 -->
-<section class="app-panel">
-  <h2 class="app-panel-title">🎒 我的背包 <span class="subtle">实时联动献祭</span></h2>
-  <div id="invSummary" class="inventory-summary"></div>
-  <button class="add-item-btn" id="openInventoryBtn" type="button">+ 录入 / 调整库存</button>
-</section>
+<!-- 我的背包：背包录入＋建议 -->
+<section class="app-panel inventory-combo-panel" id="inventoryComboPanel">
+  <h2 class="app-panel-title">🎒 我的背包 <span class="subtle">背包录入＋建议</span></h2>
+  <div class="inventory-combo-wrap">
+    <div class="inventory-subpanel inventory-entry-panel">
+      <div class="inventory-subpanel-title">背包录入</div>
+      <div id="invSummary" class="inventory-summary"></div>
+      <button class="add-item-btn" id="openInventoryBtn" type="button">+ 录入 / 调整库存</button>
+    </div>
 
-<!-- 💡 智能建议 -->
-<section class="app-panel" id="suggestionsPanel">
-  <h2 class="app-panel-title">💡 建议 <span class="subtle" id="suggestionsCount"></span></h2>
-  <div id="invSuggestions"></div>
+    <div class="inventory-subpanel inventory-suggestions-panel" id="suggestionsPanel">
+      <div class="inventory-subpanel-title">建议 <span class="subtle" id="suggestionsCount"></span></div>
+      <div id="invSuggestions"></div>
+    </div>
+  </div>
 </section>
 
 <!-- 我的目标 -->
