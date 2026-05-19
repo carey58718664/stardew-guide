@@ -4634,6 +4634,7 @@
   width: 16px;
   height: 16px;
 }
+.inv-chip img { object-fit: contain; }
 .inv-chip .inv-name {
   flex: 1 1 auto;
   min-width: 0;
@@ -4673,6 +4674,7 @@
   grid-column: 1 / -1;
   color: var(--muted);
   font-size: 12.5px;
+  text-align: center;
   padding: 5px 2px 8px;
 }
 
@@ -4831,6 +4833,7 @@ body.modal-open #app-shell { pointer-events: none; }
 .item-tile.has { border-color: var(--green); background: var(--green-soft); }
 .item-tile-icon { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; }
 .item-tile img, .item-tile .fallback-icon { width: 30px; height: 30px; image-rendering: pixelated; }
+.item-tile img { object-fit: contain; }
 .item-tile-name {
   flex: 1;
   min-width: 0;
@@ -5064,6 +5067,7 @@ body.modal-open #app-shell { pointer-events: none; }
   height: 25px;
   image-rendering: pixelated;
 }
+#lookupResult > div > div:first-child img { object-fit: contain; }
 
 
 /* 添加目标 - 可展开 tile */
@@ -5121,6 +5125,7 @@ body.modal-open #app-shell { pointer-events: none; }
   height: 22px;
   image-rendering: pixelated;
 }
+.goal-tile .tool-icon img { object-fit: contain; }
 .goal-tile .tool-name { flex: 1; min-width: 0; font-size: 13px; }
 .goal-tile .tool-level {
   font-size: 10.5px;
@@ -5385,7 +5390,7 @@ body.modal-open #app-shell { pointer-events: none; }
   align-items: center;
   gap: 6px;
   margin-bottom: 10px;
-  padding: 8px 10px;
+  padding: 6px 10px;
   overflow: hidden;
   border: 1px solid #e8d8b8;
   border-radius: 8px;
@@ -5397,7 +5402,7 @@ body.modal-open #app-shell { pointer-events: none; }
 #app-shell .weather-toggle,
 #app-shell .day-step,
 #app-shell .day-input {
-  min-height: 38px;
+  min-height: 36px;
   border: 2px solid #d8c89d;
   border-radius: 999px;
   background: #fffdf8;
@@ -5833,7 +5838,7 @@ body.modal-open #app-shell { pointer-events: none; }
   #app-shell .season-bar {
     grid-template-columns: repeat(4, minmax(0, 1fr)) 28px 36px 28px 51px;
     margin-bottom: 8px;
-    padding: 8px;
+    padding: 6px 8px;
     gap: 4px;
     border-width: 1px;
     border-radius: 8px;
@@ -5846,7 +5851,7 @@ body.modal-open #app-shell { pointer-events: none; }
   #app-shell .day-input {
     width: 100%;
     min-width: 0;
-    min-height: 34px;
+    min-height: 32px;
     padding: 0 3px;
     font-size: 13px;
     text-align: center;
@@ -5855,8 +5860,8 @@ body.modal-open #app-shell { pointer-events: none; }
 
   #app-shell .day-step,
   #app-shell .day-input {
-    min-height: 34px;
-    height: 34px;
+    min-height: 32px;
+    height: 32px;
     border-radius: 11px;
     font-size: 14px;
   }
@@ -6074,17 +6079,17 @@ body.modal-open #app-shell { pointer-events: none; }
 }
 
 #app-shell #goalsPanel .goal-head {
-  min-height: 64px;
+  min-height: 60px;
   gap: 9px;
-  padding: 8px 12px;
+  padding: 7px 12px;
   border-bottom: 1px solid #e8d8b8;
   background: linear-gradient(90deg, rgba(255,250,240,0.98), rgba(248,236,216,0.82));
 }
 
 #app-shell #goalsPanel .goal-emoji {
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
   border: 1px solid #eadfc9;
   border-radius: 12px;
   background: linear-gradient(180deg, #fff8e8, #f3e3c4);
@@ -6112,7 +6117,7 @@ body.modal-open #app-shell { pointer-events: none; }
 
 #app-shell #goalsPanel .goal-how {
   margin-top: 4px;
-  padding: 3px 9px;
+  padding: 2px 9px;
   border-radius: 999px;
   font-size: 10.8px;
 }
@@ -6125,14 +6130,14 @@ body.modal-open #app-shell { pointer-events: none; }
 
 #app-shell #goalsPanel .goal-frac {
   width: auto;
-  min-width: 48px;
-  min-height: 26px;
-  border: 2px solid #9ebd79;
+  min-width: 46px;
+  min-height: 23px;
+  border: 2px solid #2d8a5f;
   border-radius: 999px;
   background: #e1ecd2;
   color: #1f7549;
-  padding: 0 9px;
-  font-size: 13px;
+  padding: 0 8px;
+  font-size: 12.8px;
   line-height: 1;
 }
 
@@ -6143,7 +6148,19 @@ body.modal-open #app-shell { pointer-events: none; }
 }
 
 #app-shell #goalsPanel .goal-bar {
-  display: none;
+  display: block;
+  width: 46px;
+  height: 7px;
+  margin-top: 4px;
+  border-radius: 999px;
+  background: #eadfc9;
+  overflow: hidden;
+}
+
+#app-shell #goalsPanel .goal-bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gold), var(--green));
 }
 
 #app-shell #goalsPanel .goal-body {
@@ -6822,14 +6839,17 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       "蟹笼": "Crab Pot.png",
       "筒仓": "Silo.png",
       "鸡舍": "Coop.png",
-      "大型鸡舍": "Big Coop.png",
-      "豪华鸡舍": "Deluxe Coop.png",
-      "牛棚": "Barn.png",
-      "大型牛棚": "Big Barn.png",
-      "豪华牛棚": "Deluxe Barn.png",
+      "大鸡舍": "Big Coop.png",
+      "高级鸡舍": "Deluxe Coop.png",
+      "畜棚": "Barn.png",
+      "大畜棚": "Big Barn.png",
+      "高级畜棚": "Deluxe Barn.png",
+      "水井": "Well.png",
       "磨坊": "Mill.png",
-      "马厩": "Stable.png",
-      "鱼塘": "Fish Pond.png"
+      "出货箱": "ShippingBox.png",
+      "马厩": "Horse Stable.png",
+      "鱼塘": "Fish Pond.png",
+      "温室": "Greenhouse.png"
     };
 
     const rooms = [
@@ -7897,11 +7917,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
     const BUILDINGS = [
       { id: "silo", name: "筒仓", emoji: "🌾" },
       { id: "coop", name: "鸡舍", emoji: "🐔" },
-      { id: "big_coop", name: "大型鸡舍", emoji: "🐓" },
-      { id: "deluxe_coop", name: "豪华鸡舍", emoji: "🦢" },
-      { id: "barn", name: "牛棚", emoji: "🐄" },
-      { id: "big_barn", name: "大型牛棚", emoji: "🐂" },
-      { id: "deluxe_barn", name: "豪华牛棚", emoji: "🦄" },
+      { id: "big_coop", name: "大鸡舍", emoji: "🐓" },
+      { id: "deluxe_coop", name: "高级鸡舍", emoji: "🦢" },
+      { id: "barn", name: "畜棚", emoji: "🐄" },
+      { id: "big_barn", name: "大畜棚", emoji: "🐂" },
+      { id: "deluxe_barn", name: "高级畜棚", emoji: "🦄" },
       { id: "well", name: "水井", emoji: "💧" },
       { id: "mill", name: "磨坊", emoji: "🌬️" },
       { id: "shipping_bin", name: "出货箱", emoji: "📦" },
@@ -8058,14 +8078,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
             { label: "4,000g", invKey: "金币", invNeed: 4000 },
             { label: "找 Robin 建造", sub: "建造需3天" },
           ]},
-        { id: "build-coop-big", title: "升级大型鸡舍", emoji: "🐓", how: "build",
+        { id: "build-coop-big", title: "升级大鸡舍", emoji: "🐓", how: "build",
           steps: [
             { label: "木材 ×400", invKey: "木材", invNeed: 400 },
             { label: "石头 ×150", invKey: "石头", invNeed: 150 },
             { label: "10,000g", invKey: "金币", invNeed: 10000 },
             { label: "找 Robin 升级" },
           ]},
-        { id: "build-barn", title: "建牛棚", emoji: "🐄", how: "build",
+        { id: "build-barn", title: "建畜棚", emoji: "🐄", how: "build",
           steps: [
             { label: "木材 ×350", invKey: "木材", invNeed: 350 },
             { label: "石头 ×150", invKey: "石头", invNeed: 150 },
@@ -8397,7 +8417,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       const list = document.getElementById("goalsList");
       document.getElementById("goalsCount").textContent = appState.goals.length ? `${appState.goals.length} 个进行中` : "";
       if (appState.goals.length === 0) {
-        list.innerHTML = `<div class="goals-empty">还没有目标。<br/>从当季主线一键加入，或点下方按钮浏览模板。</div>`;
+        list.innerHTML = `<div class="goals-empty">从当季主线一键加入目标，或点下方按钮浏览模板。</div>`;
         return;
       }
       list.innerHTML = appState.goals.map(goal => {
@@ -8518,7 +8538,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         .map((entry) => ({ type: "building", key: entry.id, name: entry.name, iconName: entry.name, count: "已建" }));
       const entries = [...inventoryEntries, ...toolEntries, ...equipmentEntries, ...buildingEntries];
       if (entries.length === 0) {
-        div.innerHTML = `<div class="inventory-empty">背包是空的，点下方按钮录入物品。录入后会自动生成处置建议。</div>`;
+        div.innerHTML = `<div class="inventory-empty">点下方按钮录入物品，录入后会自动生成处置建议。</div>`;
         return;
       }
       div.innerHTML = entries.map((entry) => {
@@ -8634,7 +8654,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
               kind: "recommend",
               title: `${name} ×${qty}`,
               desc: `${best.method}加工成${best.out}更赚`,
-              value: `${sell}g→${best.price}g\n${best.gain}`
+              value: `${sell}g→${best.price}g, ${best.gain}`
             });
           }
         }
@@ -8672,7 +8692,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       tryRec(appState.buildings.coop && !appState.buildings.silo, "build-silo",
         `已有鸡舍但没建筒仓 → 推荐先建筒仓以储存干草（鸡舍前建更划算）`);
       tryRec(appState.buildings.coop && !appState.buildings.barn, "build-barn",
-        `有鸡舍了，可以考虑建牛棚扩展畜牧业`);
+        `有鸡舍了，可以考虑建畜棚扩展畜牧业`);
       const px = appState.tools.pickaxe;
       tryRec(px === "铜", "upgrade-pickaxe-steel", `铜镐已有 → 下一步升级钢镐（到矿洞40层挖铁）`);
       const ax = appState.tools.axe;
@@ -8704,7 +8724,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       const countEl = document.getElementById("suggestionsCount");
       if (sugs.length === 0) {
         const isEmptyInv = Object.keys(appState.inventory).filter(k => appState.inventory[k] > 0).length === 0;
-        div.innerHTML = `<div class="inv-empty">${isEmptyInv ? "录入物品后这里会显示加工建议、目标推荐和下一步策略。" : "暂时没有建议。继续录入更多物品试试～"}</div>`;
+        div.innerHTML = `<div class="inv-empty">${isEmptyInv ? "录入物品后显示加工建议、目标推荐和下一步策略。" : "暂时没有建议。继续录入更多物品试试～"}</div>`;
         if (countEl) countEl.textContent = "";
         return;
       }
