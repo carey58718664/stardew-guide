@@ -4476,8 +4476,9 @@
   padding: 24px 16px;
   color: var(--muted);
   font-size: 13px;
-  border: 1.5px dashed var(--line);
-  border-radius: 10px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
 }
 
 .goal-card {
@@ -4585,10 +4586,11 @@
   font-size: 12px; color: #fff; font-weight: 900;
 }
 .goal-step.done .goal-step-check { background: var(--green); border-color: var(--green); }
+.goal-step-line { line-height: 1.34; }
 .goal-step-text { font-size: 13px; font-weight: 700; }
 .goal-step.done .goal-step-text { color: var(--muted); text-decoration: line-through; }
-.goal-step-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.goal-step-have { font-size: 11px; font-weight: 800; color: var(--green); margin-top: 2px; }
+.goal-step-sub { display: inline; font-size: 11px; color: var(--muted); }
+.goal-step-have { font-size: 11px; font-weight: 800; color: var(--green); margin-top: 3px; }
 .goal-remove {
   margin-top: 8px;
   width: 100%;
@@ -4628,6 +4630,7 @@
   font-size: 10.5px;
   font-weight: 800;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(122, 31, 27, 0.14);
 }
 .inv-chip img, .inv-chip .fallback-icon {
   flex: 0 0 auto;
@@ -4646,29 +4649,34 @@
   flex: 0 0 auto;
   color: var(--gold);
 }
-.inv-chip.delete-armed {
-  border-color: #a94736;
-  background: linear-gradient(180deg, #fff9f1, #f8eadc);
-  box-shadow: inset 0 0 0 1px rgba(184, 69, 50, 0.16);
-}
-.inv-chip-remove {
+.inv-chip-delete {
   position: absolute;
   top: -7px;
   right: -7px;
   z-index: 3;
-  display: grid;
-  place-items: center;
-  width: 17px;
-  height: 17px;
-  border: 1px solid #7a271d;
-  border-radius: 50%;
-  background: #963125;
-  color: #fffaf0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  min-height: 0;
   padding: 0;
+  border: 2px solid #fff7ec;
+  border-radius: 999px;
+  background: #7b211d;
+  color: #fff7ec;
   font-size: 12px;
-  font-weight: 850;
+  font-weight: 950;
   line-height: 1;
-  box-shadow: 0 2px 5px rgba(76, 49, 29, 0.24);
+  box-shadow: 0 2px 5px rgba(84, 35, 24, 0.24);
+  cursor: pointer;
+}
+.inv-chip.delete-ready {
+  border-color: #9c322d !important;
+  box-shadow: 0 0 0 2px rgba(123, 33, 29, 0.12);
+}
+.inv-chip.delete-ready .inv-chip-delete {
+  display: flex;
 }
 .inventory-empty {
   grid-column: 1 / -1;
@@ -4900,14 +4908,14 @@ body.modal-open #app-shell { pointer-events: none; }
   border: 1.5px solid var(--line);
   border-radius: 9px;
   background: var(--paper);
-  padding: 8px;
+  padding: 6px;
 }
-.tool-card-head { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+.tool-card-head { display: flex; align-items: center; gap: 5px; margin-bottom: 4px; }
 .tool-card-icon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.tool-card-icon img, .tool-card-icon .fallback-icon { width: 32px; height: 32px; image-rendering: pixelated; }
-.tool-card-info { flex: 1; min-width: 0; }
-.tool-card-name { font-size: 13px; font-weight: 900; color: var(--wood-dark); }
-.tool-card-lv { font-size: 11px; color: var(--muted); }
+.tool-card-icon img, .tool-card-icon .fallback-icon { width: 26px; height: 26px; image-rendering: pixelated; }
+.tool-card-info { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; }
+.tool-card-name { font-size: 12.5px; font-weight: 900; color: var(--wood-dark); }
+.tool-card-lv { font-size: 11px; color: var(--muted); line-height: 1; }
 .tool-card-lv b { color: var(--gold); }
 
 /* 数量编辑浮窗 - 紧凑居中 */
@@ -5021,12 +5029,13 @@ body.modal-open #app-shell { pointer-events: none; }
 
 .tool-level-picker {
   display: flex;
-  gap: 4px;
-  margin-top: 4px;
+  gap: 3px;
+  margin-top: 3px;
 }
 .tool-level-picker button {
   flex: 1;
-  padding: 5px 0;
+  min-height: 28px;
+  padding: 2px 0;
   border: 1.5px solid var(--line);
   border-radius: 5px;
   background: var(--paper);
@@ -6066,6 +6075,13 @@ body.modal-open #app-shell { pointer-events: none; }
   border-radius: 14px;
 }
 
+#app-shell #goalsPanel .goals-empty {
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
 #app-shell #goalsPanel .goal-card {
   border: 2px solid #e1cea8;
   border-radius: 14px;
@@ -6108,6 +6124,13 @@ body.modal-open #app-shell { pointer-events: none; }
   line-height: 1.16;
 }
 
+#app-shell #goalsPanel .goal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 #app-shell #goalsPanel .goal-meta {
   margin-top: 2px;
   color: #6f6254;
@@ -6116,7 +6139,7 @@ body.modal-open #app-shell { pointer-events: none; }
 }
 
 #app-shell #goalsPanel .goal-how {
-  margin-top: 4px;
+  margin-top: 0;
   padding: 2px 9px;
   border-radius: 999px;
   font-size: 10.8px;
@@ -6191,15 +6214,19 @@ body.modal-open #app-shell { pointer-events: none; }
 #app-shell #goalsPanel .goal-step-text {
   color: var(--ink);
   font-size: 12.8px;
-  line-height: 1.2;
+  line-height: 1.3;
   font-weight: 900;
 }
 
-#app-shell #goalsPanel .goal-step-sub,
-#app-shell #goalsPanel .goal-step-have {
-  margin-top: 1px;
+#app-shell #goalsPanel .goal-step-sub {
   font-size: 10.8px;
-  line-height: 1.24;
+  line-height: 1.3;
+}
+
+#app-shell #goalsPanel .goal-step-have {
+  margin-top: 3px;
+  font-size: 10.8px;
+  line-height: 1.3;
 }
 
 #app-shell #openInventoryBtn,
@@ -6234,6 +6261,79 @@ body.modal-open #app-shell { pointer-events: none; }
   border-radius: 9px;
   font-size: 12px !important;
   line-height: 1.1;
+}
+
+#center-map-section .center-map-frame {
+  width: calc(100% + 18px);
+  margin: 0 -9px;
+  min-height: 380px !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#center-map-section .center-map-frame::before,
+#center-map-section .center-map-frame::after {
+  display: none !important;
+}
+
+#center-map-section .center-map-stage-ref {
+  min-height: 380px !important;
+  border: none !important;
+  border-radius: 10px;
+  box-shadow: none !important;
+}
+
+#center-map-section .center-map-stage-ref .center-map-image.center-map-image-ref,
+#center-map-section .center-map-stage-ref .image-fallback {
+  left: 0.4% !important;
+  top: 9.2% !important;
+  width: 99.2% !important;
+  height: 80.2% !important;
+  border: none !important;
+}
+
+#center-map-section .center-map-stage-ref .center-ref-title-dom {
+  width: calc(var(--box-w) * 1.18) !important;
+  height: calc(var(--box-h) * 1.02) !important;
+  font-size: clamp(15.2px, 2.9vw, 27px) !important;
+}
+
+#center-map-section .center-map-stage-ref .center-ref-note-dom {
+  font-size: clamp(12px, 2.36vw, 21px) !important;
+}
+
+@media (max-width: 700px) {
+  #center-map-section .center-map-frame {
+    width: calc(100% + 16px);
+    margin: 0 -8px;
+    min-height: 260px !important;
+  }
+
+  #center-map-section .center-map-stage-ref {
+    min-height: 260px !important;
+  }
+
+  #center-map-section .center-map-stage-ref .center-map-image.center-map-image-ref,
+  #center-map-section .center-map-stage-ref .image-fallback {
+    left: 0.6% !important;
+    top: 9.8% !important;
+    width: 98.8% !important;
+    height: 79.2% !important;
+    min-height: 0 !important;
+  }
+
+  #center-map-section .center-map-stage-ref .center-ref-title-dom {
+    width: calc(var(--box-w) * 1.2) !important;
+    height: calc(var(--box-h) * 1.02) !important;
+    font-size: clamp(10.4px, 2.72vw, 13.4px) !important;
+  }
+
+  #center-map-section .center-map-stage-ref .center-ref-note-dom {
+    font-size: clamp(7.8px, 2vw, 10px) !important;
+  }
 }
 
   </style>
@@ -8291,8 +8391,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       try { return JSON.parse(localStorage.getItem(APP_KEY)) || {}; } catch { return {}; }
     }
     function saveApp() {
-      const { pendingInventoryDelete, ...persistedState } = appState;
-      localStorage.setItem(APP_KEY, JSON.stringify(persistedState));
+      localStorage.setItem(APP_KEY, JSON.stringify(appState));
     }
 
     const _appLoaded = loadApp();
@@ -8305,7 +8404,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       tools: _appLoaded.tools || {},           // { pickaxe: "铜", ... }
       equipment: _appLoaded.equipment || {},   // { preserves_jar: 3, ... }
       buildings: _appLoaded.buildings || {},   // { silo: true, ... }
-      pendingInventoryDelete: "",
     };
 
     const APP_SEASON_BACKGROUNDS = {
@@ -8430,8 +8528,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
             <button class="goal-step ${checked ? "done" : ""}" data-toggle-step="${goal.id}|${idx}" type="button">
               <span class="goal-step-check">${checked ? "✓" : ""}</span>
               <div style="flex:1; min-width:0;">
-                <div class="goal-step-text">${escapeHtml(step.label)}</div>
-                ${step.sub ? `<div class="goal-step-sub">${escapeHtml(step.sub)}</div>` : ""}
+                <div class="goal-step-line"><span class="goal-step-text">${escapeHtml(step.label)}</span>${step.sub ? `<span class="goal-step-sub"> ${escapeHtml(step.sub)}</span>` : ""}</div>
                 ${step.invKey && step.invNeed ? `<div class="goal-step-have">背包中：${have} / ${step.invNeed}${auto ? " ✓ 已凑齐" : ""}</div>` : ""}
               </div>
             </button>
@@ -8444,8 +8541,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         }).length;
         const pct = total ? Math.round(done / total * 100) : 0;
         const complete = pct === 100;
-        const howLabel = { craft: "🔨 合成菜单", build: "🏡 找Robin", upgrade: "⚒️ 找Clint", self: "💪 自行" }[tpl.how] || "";
-        const isOpen = goal.expanded !== false;
+        const howLabel = { craft: "📍 合成菜单", build: "📍 去木匠店", upgrade: "📍 去铁匠铺", self: "📍 自行" }[tpl.how] || "";
+        const isOpen = goal.expanded === true;
         return `
           <div class="goal-card-container">
             <button class="goal-delete-btn" data-delete-goal="${goal.id}" type="button">🗑️<br/>删除</button>
@@ -8453,9 +8550,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
               <button type="button" class="goal-head" data-toggle-goal="${goal.id}">
                 <span class="goal-emoji">${renderGoalIcon(tpl)}</span>
                 <div class="goal-info">
-                  <div class="goal-title">${escapeHtml(tpl.title)}</div>
+                  <div class="goal-title-row">
+                    <span class="goal-title">${escapeHtml(tpl.title)}</span>
+                    ${howLabel ? `<span class="goal-how ${tpl.how}">${howLabel}</span>` : ""}
+                  </div>
                   ${tpl.note ? `<div class="goal-meta">${escapeHtml(tpl.note)}</div>` : ""}
-                  ${howLabel ? `<span class="goal-how ${tpl.how}">${howLabel}</span>` : ""}
                 </div>
                 <div class="goal-progress">
                   <div class="goal-frac">${done}/${total}</div>
@@ -8490,13 +8589,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       if (appState.goals.some(g => g.id === id)) { toast("已经在目标列表里"); return; }
       const tpl = findGoalTemplate(id);
       if (!tpl) return;
-      appState.goals.push({ id, steps: tpl.steps.map(s => ({ ...s, checked: false })), expanded: true });
+      appState.goals.push({ id, steps: tpl.steps.map(s => ({ ...s, checked: false })), expanded: false });
       renderApp();
       toast("🎯 已加入目标");
     }
     function toggleGoalExpand(id) {
       const g = appState.goals.find(x => x.id === id);
-      if (g) g.expanded = g.expanded === false;
+      if (g) g.expanded = g.expanded !== true;
       renderGoals();
       saveApp();
     }
@@ -8541,16 +8640,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         div.innerHTML = `<div class="inventory-empty">点下方按钮录入物品，录入后会自动生成处置建议。</div>`;
         return;
       }
-      div.innerHTML = entries.map((entry) => {
-        const token = `${entry.type}:${entry.key}`;
-        const armed = appState.pendingInventoryDelete === token;
-        return `
-          <span class="inv-chip ${entry.count ? "has" : ""} ${armed ? "delete-armed" : ""}" data-inv-chip="${escapeAttribute(token)}" title="${escapeAttribute(entry.name)}">
-            ${renderInvIcon(entry.iconName)}<span class="inv-name">${escapeHtml(entry.name)}</span>${entry.count ? `<span class="inv-count">${escapeHtml(entry.count)}</span>` : ""}
-            ${armed ? `<button class="inv-chip-remove" type="button" data-remove-inv-chip="${escapeAttribute(token)}" aria-label="删除${escapeAttribute(entry.name)}">×</button>` : ""}
-          </span>
-        `;
-      }).join("");
+      div.innerHTML = entries.map((entry) => `
+        <span class="inv-chip" data-inv-chip data-inv-chip-type="${escapeAttribute(entry.type)}" data-inv-chip-key="${escapeAttribute(entry.key)}">
+          ${renderInvIcon(entry.iconName)}
+          <span class="inv-name">${escapeHtml(entry.name)}</span>
+          ${entry.count ? `<span class="inv-count">${escapeHtml(entry.count)}</span>` : ""}
+          <button class="inv-chip-delete" data-remove-inv-chip="${escapeAttribute(entry.type)}|${escapeAttribute(entry.key)}" type="button" aria-label="删除${escapeAttribute(entry.name)}">×</button>
+        </span>
+      `).join("");
     }
 
     function renderInvIcon(name) {
@@ -8588,30 +8685,30 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
 
     function setInvQty(name, qty, options = {}) {
       qty = Math.max(0, parseInt(qty) || 0);
-      if (qty === 0) {
-        delete appState.inventory[name];
-        if (appState.pendingInventoryDelete === `inventory:${name}`) appState.pendingInventoryDelete = "";
-      }
+      if (qty === 0) delete appState.inventory[name];
       else appState.inventory[name] = qty;
       syncBundleChecksFromInventory();
       renderApp();
       if (!options.skipModalRefresh && document.getElementById("invModalBody")) renderInvTab();
     }
 
-    function removeInventorySummaryEntry(token) {
-      const [type, ...rest] = String(token || "").split(":");
-      const key = rest.join(":");
-      if (!type || !key) return;
-
-      if (type === "inventory") delete appState.inventory[key];
-      if (type === "tool") delete appState.tools[key];
-      if (type === "equipment") delete appState.equipment[key];
-      if (type === "building") delete appState.buildings[key];
-
-      appState.pendingInventoryDelete = "";
-      syncBundleChecksFromInventory();
-      renderApp();
-      if (document.getElementById("invModalBody")) renderInvTab();
+    function removeInventoryChip(type, key) {
+      if (type === "inventory") {
+        setInvQty(key, 0);
+      } else if (type === "tool") {
+        delete appState.tools[key];
+        renderApp();
+        if (document.getElementById("invModalBody")) renderInvTab();
+      } else if (type === "equipment") {
+        delete appState.equipment[key];
+        renderApp();
+        if (document.getElementById("invModalBody")) renderInvTab();
+      } else if (type === "building") {
+        delete appState.buildings[key];
+        renderApp();
+        if (document.getElementById("invModalBody")) renderInvTab();
+      }
+      toast("已删除");
     }
 
     /* ── 联动：背包变化 → 自动勾选/取消勾选献祭 ── */
@@ -8938,7 +9035,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
             <span class="tool-card-icon">${renderInvIcon(iconName)}</span>
             <div class="tool-card-info">
               <div class="tool-card-name">${t.name}</div>
-              <div class="tool-card-lv">当前：<b>${lv}</b></div>
+              <div class="tool-card-lv"><b>${lv}</b></div>
             </div>
           </div>
           <div class="tool-level-picker">
@@ -9311,6 +9408,24 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
 
     /* ── 全局事件 ── */
     document.addEventListener("click", (e) => {
+      // 背包小框：点选后显示右上角删除按钮
+      const removeInvChipBtn = e.target.closest("[data-remove-inv-chip]");
+      if (removeInvChipBtn) {
+        const [type, ...keyParts] = removeInvChipBtn.dataset.removeInvChip.split("|");
+        removeInventoryChip(type, keyParts.join("|"));
+        return;
+      }
+      const invChip = e.target.closest("[data-inv-chip]");
+      if (invChip) {
+        document.querySelectorAll("#invSummary .inv-chip.delete-ready").forEach((chip) => {
+          if (chip !== invChip) chip.classList.remove("delete-ready");
+        });
+        invChip.classList.add("delete-ready");
+        return;
+      }
+      if (!e.target.closest("#invSummary")) {
+        document.querySelectorAll("#invSummary .inv-chip.delete-ready").forEach((chip) => chip.classList.remove("delete-ready"));
+      }
       // 季节切换
       const seasonBtn = e.target.closest("[data-season]");
       if (seasonBtn) { setSeason(seasonBtn.dataset.season); return; }
