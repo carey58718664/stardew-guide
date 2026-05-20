@@ -1,3 +1,5 @@
+目标版 codex claude 5.21
+
 <!doctype html>
 
 <html lang="zh-CN">
@@ -8491,43 +8493,152 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         { id: "house-renovate-crib", title: "移除婴儿床", emoji: "🧸", how: "house", duration: "立即", note: "二次升级后可免费装修", steps: [] },
         { id: "house-renovate-room", title: "加南侧房间", emoji: "🚪", how: "house", duration: "立即", note: "二次升级后可免费装修", steps: [] },
       ]},
-      { cat: "料理目标", goals: [
-        { id: "cook-sashimi", title: "做生鱼片", emoji: "🍣", how: "cook", note: "莱纳斯3心寄配方；处理低价鱼很实用",
-          steps: [goalManual("任意鱼 ×1")] },
-        { id: "cook-maki-roll", title: "做寿司卷", emoji: "🍣", how: "cook", note: "电视酱料女皇或星之果实餐吧购买配方",
-          steps: [goalManual("任意鱼 ×1"), goalItem("海草", 1), goalItem("米饭", 1)] },
-        { id: "cook-triple-espresso", title: "做三倍浓缩咖啡", emoji: "☕", how: "cook", note: "速度增益，配方在星之果实餐吧购买",
-          steps: [goalItem("咖啡", 3)] },
-        { id: "cook-spicy-eel", title: "做香辣鳗鱼", emoji: "🌶️", how: "cook", note: "速度+运气，矿洞/骷髅洞常用",
-          steps: [goalItem("鳗鱼", 1), goalItem("辣椒", 1)] },
-        { id: "cook-pumpkin-soup", title: "做南瓜汤", emoji: "🥣", how: "cook", note: "防御+运气",
-          steps: [goalItem("南瓜", 1), goalManual("任意牛奶 ×1", "牛奶或大壶牛奶都可")] },
-        { id: "cook-crab-cakes", title: "做蟹黄糕", emoji: "🦀", how: "cook", note: "长时间速度+防御",
-          steps: [goalItem("螃蟹", 1), goalItem("小麦粉", 1), goalManual("任意鸡蛋 ×1"), goalItem("油", 1)] },
-        { id: "cook-dish-o-sea", title: "做海之菜肴", emoji: "🐟", how: "cook", note: "钓鱼+3",
-          steps: [goalItem("沙丁鱼", 2), goalItem("薯饼", 1)] },
-        { id: "cook-lucky-lunch", title: "做幸运午餐", emoji: "🍀", how: "cook", note: "运气+3",
-          steps: [goalItem("海参", 1), goalItem("玉米饼", 1), goalItem("蓝爵", 1)] },
+      { cat: "料理目标（按 buff 用途）", goals: [
+        // —— 下矿/骷髅洞常备 ——
+        { id: "cook-stock-spicy-eel", title: "下矿常备：香辣鳗鱼 ×10", emoji: "🌶️", how: "cook", note: "速度+1 运气+1 × 7分钟，骷髅洞首选",
+          steps: [
+            goalManual("学会配方", "杂物头 7 心寄信"),
+            goalItem("鳗鱼", 10),
+            goalItem("辣椒", 10),
+            goalItem("香辣鳗鱼", 10, "凑齐后即完成") ] },
+        { id: "cook-stock-crab-cakes", title: "下矿常备：蟹黄糕 ×5", emoji: "🦀", how: "cook", note: "速度+1 防御+1 × 16分40秒，时间最长的速度buff",
+          steps: [
+            goalManual("学会配方", "电视「美食女王」春季 21 年 2 / 渔夫 3 心"),
+            goalItem("螃蟹", 5),
+            goalItem("小麦粉", 5),
+            goalItem("油", 5),
+            goalItem("蟹黄糕", 5, "凑齐后即完成") ] },
+        { id: "cook-stock-pepper-poppers", title: "下矿常备：爆炒青椒 ×10", emoji: "🫑", how: "cook", note: "速度+1 采矿+1，便宜量大，自家辣椒+奶酪即可",
+          steps: [
+            goalManual("学会配方", "谢恩 3 心寄信"),
+            goalItem("辣椒", 10),
+            goalItem("奶酪", 10),
+            goalItem("爆炒青椒", 10, "凑齐后即完成") ] },
+
+        // —— 赶路套装 ——
+        { id: "cook-stock-triple-espresso", title: "赶路套装：三倍浓缩咖啡 ×5", emoji: "☕", how: "cook", note: "速度+1 × 4分11秒，春季抢种/雨天换图利器",
+          steps: [
+            goalManual("学会配方", "星之果实餐吧购买 5000g"),
+            goalItem("咖啡", 15, "需要 15 杯咖啡，或 3 杯做 1 份"),
+            goalItem("三倍浓缩咖啡", 5, "凑齐后即完成") ] },
+
+        // —— 钓鱼 buff ——
+        { id: "cook-stock-dish-o-sea", title: "钓鱼神器：海之菜肴 ×5", emoji: "🐟", how: "cook", note: "钓鱼+3 × 5分35秒，刷传奇鱼必备",
+          steps: [
+            goalManual("学会配方", "柳树 7 心寄信"),
+            goalItem("沙丁鱼", 10),
+            goalItem("薯饼", 5),
+            goalItem("海之菜肴", 5, "凑齐后即完成") ] },
+
+        // —— 运气 buff ——
+        { id: "cook-stock-lucky-lunch", title: "运气神器：幸运午餐 ×5", emoji: "🍀", how: "cook", note: "运气+3 × 3分18秒，开晶球/钓宝箱/挖洞用",
+          steps: [
+            goalManual("学会配方", "电视「美食女王」春季 28 年 2"),
+            goalItem("海参", 5),
+            goalItem("玉米饼", 5),
+            goalItem("蓝爵", 5),
+            goalItem("幸运午餐", 5, "凑齐后即完成") ] },
+        { id: "cook-stock-pumpkin-soup", title: "性价比款：南瓜汤 ×5", emoji: "🥣", how: "cook", note: "防御+2 运气+2 × 4分11秒，秋季南瓜便宜大碗",
+          steps: [
+            goalManual("学会配方", "玛妮 7 心寄信"),
+            goalItem("南瓜", 5),
+            goalManual("任意牛奶 ×5", "牛奶或大壶牛奶都可"),
+            goalItem("南瓜汤", 5, "凑齐后即完成") ] },
+
+        // —— 农作 buff ——
+        { id: "cook-stock-farmers-lunch", title: "种田神器：农夫午餐 ×5", emoji: "🌾", how: "cook", note: "耕作+3 × 5分35秒，秋季抢收期必备",
+          steps: [
+            goalManual("学会配方", "耕作 3 级解锁"),
+            goalManual("煎蛋卷 ×5", "煎蛋卷 = 牛奶+鸡蛋"),
+            goalItem("防风草", 5),
+            goalItem("农夫午餐", 5, "凑齐后即完成") ] },
+
+        // —— 处理低价鱼 ——
+        { id: "cook-fish-handling", title: "低价鱼处理：生鱼片 ×30", emoji: "🍣", how: "cook", note: "任意鱼可做，把鲤鱼/虾虎鱼这种废鱼变 75g+",
+          steps: [
+            goalManual("学会配方", "莱纳斯 3 心寄信"),
+            goalItem("生鱼片", 30, "凑齐后即完成") ] },
+
+        // —— 长线 ——
+        { id: "cook-pokedex", title: "料理图鉴：80 种全集", emoji: "📖", how: "self", note: "完美评定要求；做过 80 种料理（不需要保留）",
+          steps: [
+            goalManual("当前已做 / 80", "查看料理图鉴页面（菜单 → 收藏 → 料理）"),
+            goalManual("还差哪些自己列一下") ] },
       ]},
-      { cat: "送礼目标", goals: [
-        { id: "gift-universal-rabbit-foot", title: "备兔子脚送礼", emoji: "🎁", how: "gift", note: "大多数村民最爱；潘妮例外",
-          steps: [goalItem("兔子脚", 1)] },
-        { id: "gift-universal-prismatic", title: "备五彩碎片送礼", emoji: "💎", how: "gift", note: "大多数村民最爱；海莉例外，通常也要优先留关键用途",
-          steps: [goalItem("五彩碎片", 1)] },
-        { id: "gift-stardrop-tea", title: "备星之果实茶", emoji: "🫖", how: "gift", note: "1.6通用强力礼物，建议生日送",
-          steps: [goalItem("星之果实茶", 1)] },
-        { id: "gift-abigail-amethyst", title: "送阿比盖尔紫水晶", emoji: "💜", how: "gift",
-          steps: [goalItem("紫水晶", 1)] },
-        { id: "gift-harvey-coffee", title: "送哈维咖啡", emoji: "☕", how: "gift",
-          steps: [goalItem("咖啡", 1)] },
-        { id: "gift-shane-pepper", title: "送谢恩辣椒", emoji: "🌶️", how: "gift",
-          steps: [goalItem("辣椒", 1)] },
-        { id: "gift-leah-goat-cheese", title: "送莉亚山羊奶酪", emoji: "🧀", how: "gift",
-          steps: [goalItem("山羊奶酪", 1)] },
-        { id: "gift-elliott-duck-feather", title: "送艾利欧特鸭羽", emoji: "🪶", how: "gift",
-          steps: [goalItem("鸭羽", 1)] },
-        { id: "gift-penny-poppy", title: "送潘妮罂粟", emoji: "🌺", how: "gift",
-          steps: [goalItem("罂粟", 1)] },
+      { cat: "送礼目标（按村民心数里程碑）", goals: [
+        // —— 配方/物品里程碑（友谊解锁实用奖励）——
+        { id: "heart-harvey-6", title: "哈维 → 6 心", emoji: "☕", how: "gift", note: "解锁「超级餐」配方（生命+225 buff），生日春 14",
+          steps: [
+            goalManual("当前心数 → 6 心", "每周 2 次送礼，生日送 ×8 倍"),
+            goalItem("咖啡", 6, "他的最爱，备 6 份够刷 3 周"),
+            goalManual("看完 6 心剧情") ] },
+        { id: "heart-shane-7", title: "谢恩 → 7 心", emoji: "🐔", how: "gift", note: "解锁「蓝鸡」剧情 + 配方「辣椒奶酪」，生日春 20",
+          steps: [
+            goalManual("当前心数 → 7 心"),
+            goalItem("辣椒", 7, "他的最爱（夏季）"),
+            goalItem("啤酒", 7, "他的最爱（廉价替代）"),
+            goalManual("看完蓝鸡剧情") ] },
+        { id: "heart-leah-6", title: "莉亚 → 6 心", emoji: "🧀", how: "gift", note: "解锁「画展邀请」剧情 + 配方「沙拉」，生日冬 23",
+          steps: [
+            goalManual("当前心数 → 6 心"),
+            goalItem("山羊奶酪", 6, "她的最爱"),
+            goalManual("看完画展剧情") ] },
+        { id: "heart-emily-4", title: "艾米丽 → 4 心", emoji: "🪡", how: "gift", note: "解锁「裁缝机」剧情 + 配方「奶酪花椰菜」，生日春 27",
+          steps: [
+            goalManual("当前心数 → 4 心"),
+            goalItem("布料", 4, "她的最爱（织布机加工羊毛）"),
+            goalManual("看完裁缝剧情") ] },
+        { id: "heart-maru-6", title: "玛鲁 → 6 心", emoji: "⚙️", how: "gift", note: "解锁「太阳能板」蓝图 + 配方「矿工餐」，生日夏 10",
+          steps: [
+            goalManual("当前心数 → 6 心"),
+            goalItem("电池组", 6, "她的最爱"),
+            goalItem("钻石", 2, "高价值通用"),
+            goalManual("看完 6 心剧情") ] },
+        { id: "heart-sebastian-8", title: "塞巴斯蒂安 → 8 心", emoji: "🏍️", how: "gift", note: "解锁「飞车看星」约会剧情，生日冬 10",
+          steps: [
+            goalManual("当前心数 → 8 心"),
+            goalItem("冻泪", 4, "他的最爱（冰天雪地区采集）"),
+            goalItem("黑曜石", 4, "他的最爱（矿井深层）"),
+            goalManual("看完飞车剧情") ] },
+        { id: "heart-abigail-8", title: "阿比盖尔 → 8 心", emoji: "🎮", how: "gift", note: "解锁「鬼魂洞」约会剧情，生日秋 13",
+          steps: [
+            goalManual("当前心数 → 8 心"),
+            goalItem("紫水晶", 6, "她的最爱"),
+            goalItem("南瓜", 4, "她的最爱（秋季）"),
+            goalManual("看完 8 心剧情") ] },
+        { id: "heart-penny-6", title: "潘妮 → 6 心", emoji: "📚", how: "gift", note: "解锁「教学课」剧情 + 配方「鹅肝」，生日秋 2",
+          steps: [
+            goalManual("当前心数 → 6 心"),
+            goalItem("罂粟", 4, "她的最爱（夏季作物，别人多半讨厌）"),
+            goalItem("翡翠", 2, "她的最爱（宝石）"),
+            goalManual("看完 6 心剧情") ] },
+
+        // —— 通用礼物常备（库存类）——
+        { id: "gift-stock-rabbit-foot", title: "通用礼物常备：兔子脚 ×5", emoji: "🐇", how: "gift", note: "除潘妮外通用最爱，生日时排队送爽",
+          steps: [
+            goalManual("解锁兔子（豪华鸡舍）"),
+            goalItem("兔子脚", 5) ] },
+        { id: "gift-stock-stardrop-tea", title: "通用礼物常备：星之果实茶 ×3", emoji: "🫖", how: "gift", note: "+250 友谊不算每周次数，生日送暴击",
+          steps: [
+            goalManual("茶树+菊花叶 → 工匠机", "茶叶秋 22 长出，蒸馏成星之果实茶"),
+            goalItem("星之果实茶", 3) ] },
+        { id: "gift-stock-prismatic", title: "通用礼物常备：五彩碎片 ×3", emoji: "💎", how: "gift", note: "海莉除外通用最爱；优先留银河之剑/博物馆首捐",
+          steps: [
+            goalItem("五彩碎片", 3, "晶球/骷髅洞/技能大师/陨石") ] },
+
+        // —— 长线 ——
+        { id: "marry-someone", title: "结婚（任意候选）", emoji: "💍", how: "self", note: "复合长线目标；选好一位主刷",
+          steps: [
+            goalManual("选定结婚对象"),
+            goalManual("升级到房屋 1（含厨房）"),
+            goalManual("对象 → 10 心"),
+            goalManual("旧海岸渔夫处买花束 ×1（5×心数后）"),
+            goalManual("送花束求爱"),
+            goalManual("买美人鱼吊坠 5000g"),
+            goalManual("雨天送美人鱼吊坠") ] },
+        { id: "social-perfection", title: "完美评定·社交：8 人 ≥ 5 心", emoji: "🤝", how: "self", note: "完美评定要求之一",
+          steps: [
+            goalManual("已达 5 心的村民数 / 8") ] },
       ]},
       { cat: "其他", goals: [
         { id: "self-bridge", title: "修复海滩桥", emoji: "🌊", how: "self", note: "通往潮汐池，可挖珊瑚/海胆",
@@ -8791,31 +8902,89 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "鳗鱼": [{ dish: "炒鳗鱼/香辣鳗鱼", note: "香辣鳗鱼是下矿常用增益" }],
       "咖啡": [{ dish: "三倍浓缩咖啡", note: "速度增益，日常赶路好用" }],
       "椰子": [{ dish: "椰汁汤/热带咖喱", note: "部分料理材料" }],
-      "普通蘑菇": [{ dish: "炒蘑菇/椰汁汤", note: "料理材料" }]
+      "普通蘑菇": [{ dish: "炒蘑菇/椰汁汤", note: "料理材料" }],
+      "土豆": [{ dish: "薯饼/土豆汤", note: "薯饼是「海之菜肴/元气早餐」材料" }],
+      "番茄": [{ dish: "比萨/鱼塔可/番茄烤面包", note: "多种料理基础材料" }],
+      "大蒜": [{ dish: "法式田螺/煎蜗牛", note: "1.6 春季可种" }],
+      "防风草": [{ dish: "农夫午餐/防风草汤", note: "农夫午餐 = 煎蛋卷 + 防风草，高品质回复" }],
+      "葡萄": [{ dish: "水果沙拉", note: "也可做果酱/果酒，加工通常更值" }],
+      "樱桃": [{ dish: "樱桃派", note: "春季树果料理" }],
+      "苹果": [{ dish: "果酱", note: "树果常做罐头瓶加工，料理用途少" }],
+      "鲑鱼": [{ dish: "鲑鱼大餐", note: "鲑鱼大餐 = 鲑鱼 + 蓝莓 + 卡布奇诺豆" }],
+      "章鱼": [{ dish: "寿司卷/生鱼片", note: "夏季稀有海鱼" }],
+      "鲷鱼": [{ dish: "鱼塔可", note: "鱼塔可 = 任意鱼 + 番茄 + 玉米饼 + 蓝爵" }],
+      "金枪鱼": [{ dish: "鱼塔可", note: "夏季海鱼，做鱼塔可常用" }],
+      "奶酪": [{ dish: "比萨/爆炒青椒/法式田螺", note: "多种料理基础材料；本身也是回血食物" }],
+      "朝鲜蓟": [{ dish: "朝鲜蓟蘸酱", note: "克林特最爱料理材料" }],
+      "蕨菜": [{ dish: "蕨菜烩饭", note: "春季森林采集" }],
+      "卷心菜": [{ dish: "蔬菜杂烩/农夫午餐替代", note: "1.6 春季作物" }],
+      "甜菜": [{ dish: "蔬菜杂烩", note: "也可磨坊加工成糖" }],
+      "红蘑菇": [{ dish: "（注意）有毒", note: "送礼/染料更合适，料理基本不用" }]
     };
 
     const GIFT_USES = {
-      "五彩碎片": [{ who: "几乎所有村民", note: "通用最爱；海莉例外，不建议送她" }],
-      "稜镜碎片": [{ who: "几乎所有村民", note: "同五彩碎片；建议统一成五彩碎片名称" }],
-      "兔子脚": [{ who: "几乎所有村民", note: "通用最爱；潘妮例外" }],
+      // —— 通用最爱（Universal Loves，6 个）——
+      "金色南瓜": [{ who: "所有村民", note: "通用最爱；万圣节假面舞会奖励/晶球" }],
+      "魔法摇滚糖": [{ who: "所有村民", note: "通用最爱；沙漠商人 3×五彩碎片可换" }],
       "珍珠": [{ who: "所有村民", note: "通用最爱" }],
-      "星之果实茶": [{ who: "所有村民", note: "高价值通用礼物" }],
-      "紫水晶": [{ who: "阿比盖尔", note: "最爱" }],
-      "南瓜": [{ who: "阿比盖尔", note: "最爱之一" }],
-      "河豚": [{ who: "阿比盖尔", note: "最爱之一" }],
-      "椰子": [{ who: "海莉", note: "最爱" }],
-      "向日葵": [{ who: "海莉", note: "最爱" }],
-      "鸭羽": [{ who: "艾利欧特", note: "最爱" }],
+      "星之果实茶": [{ who: "所有村民", note: "通用最爱；+250 友谊，不算每周礼物次数" }],
+      "五彩碎片": [{ who: "几乎所有村民", note: "通用最爱；海莉恨它，别送她" }],
+      "稜镜碎片": [{ who: "几乎所有村民", note: "同五彩碎片（不同译名），统一为「五彩碎片」" }],
+      "兔子脚": [{ who: "几乎所有村民", note: "通用最爱；潘妮恨它，别送她" }],
+
+      // —— 12 位可结婚村民最爱 ——
+      "紫水晶": [{ who: "阿比盖尔/克林特/矮人/艾米丽", note: "多人最爱" }],
+      "南瓜": [{ who: "阿比盖尔", note: "最爱（也是冬星节人气礼物）" }],
+      "河豚": [{ who: "阿比盖尔", note: "最爱（夏季海钓晴天获得）" }],
+      "椰子": [{ who: "海莉/莱纳斯", note: "海莉&莱纳斯最爱" }],
+      "向日葵": [{ who: "海莉/玛鲁/莉亚", note: "多人最爱（莉亚是喜欢）" }],
+      "鸭羽": [{ who: "艾利欧特/利奥", note: "最爱" }],
       "石榴": [{ who: "艾利欧特", note: "最爱" }],
-      "咖啡": [{ who: "哈维", note: "最爱" }],
-      "啤酒": [{ who: "谢恩", note: "最爱" }],
+      "咖啡": [{ who: "哈维", note: "最爱（每天上午邮局会喝）" }],
+      "啤酒": [{ who: "谢恩/帕姆", note: "都是最爱" }],
       "辣椒": [{ who: "谢恩/刘易斯", note: "最爱" }],
-      "钻石": [{ who: "多名村民", note: "高价值礼物，很多人喜欢或最爱" }],
-      "山羊奶酪": [{ who: "莉亚", note: "最爱" }],
-      "电池组": [{ who: "玛鲁", note: "最爱" }],
-      "草莓": [{ who: "玛鲁/德米特里厄斯", note: "常见喜好礼物" }],
-      "橙子": [{ who: "格斯", note: "最爱" }],
-      "罂粟": [{ who: "潘妮", note: "最爱；其他村民多半讨厌，别乱送" }]
+      "山羊奶酪": [{ who: "莉亚/朱迪", note: "最爱" }],
+      "电池组": [{ who: "玛鲁/克罗布斯", note: "最爱" }],
+      "草莓": [{ who: "玛鲁/德米特里厄斯", note: "最爱" }],
+      "罂粟": [{ who: "潘妮", note: "最爱；其他人多半讨厌，别乱送" }],
+      "钻石": [{ who: "几乎所有村民", note: "高价值通用礼物，多数人最爱或喜欢" }],
+      "翡翠": [{ who: "潘妮/克林特/矮人", note: "最爱" }],
+      "红宝石": [{ who: "艾米丽/克林特/矮人", note: "最爱" }],
+      "黄水晶": [{ who: "克林特/矮人", note: "最爱" }],
+      "海蓝宝石": [{ who: "克林特/矮人", note: "最爱（先留献祭/博物馆）" }],
+      "玉": [{ who: "克林特/矮人/克罗布斯", note: "最爱" }],
+      "全能晶球": [{ who: "克林特/矮人/利奥", note: "最爱" }],
+      "黑曜石": [{ who: "塞巴斯蒂安", note: "最爱（矿井下层/晶球）" }],
+      "冻泪": [{ who: "塞巴斯蒂安", note: "最爱（冰天雪地区域采集）" }],
+      "蛙蛋": [{ who: "塞巴斯蒂安", note: "最爱（1.6 新增，雨天池塘）" }],
+      "虚空蛋": [{ who: "克罗布斯/塞巴斯蒂安", note: "都是最爱" }],
+      "虚空蛋黄酱": [{ who: "克罗布斯", note: "最爱；其他人恨，只送克罗布斯" }],
+      "虎眼石": [{ who: "山姆", note: "最爱（晶球开出）" }],
+      "鹦鹉螺壳": [{ who: "艾米丽", note: "最爱（冬季海滩采集）" }],
+      "蜂蜜酒": [{ who: "艾米丽/玛妮", note: "最爱" }],
+      "粉红蛋糕": [{ who: "海莉", note: "最爱（甜瓜+蛋糕+糖）" }],
+
+      // —— 重要 NPC 最爱 ——
+      "橙子": [{ who: "格斯/艾利欧特", note: "格斯最爱；艾利欧特喜欢" }],
+      "桃": [{ who: "罗宾", note: "最爱" }],
+      "葡萄": [{ who: "文森特/帕姆/刘易斯", note: "最爱" }],
+      "防风草": [{ who: "帕姆", note: "最爱（也是春季最早作物）" }],
+      "韭葱": [{ who: "乔治", note: "最爱（春季森林采集）" }],
+      "黄水仙": [{ who: "莱纳斯/帕姆", note: "最爱（春季城镇采集）" }],
+      "郁金香": [{ who: "伊芙琳", note: "最爱（春季花朵）" }],
+      "夏季亮片": [{ who: "卡罗琳", note: "最爱（夏季花朵）" }],
+      "仙女蔷薇": [{ who: "贾斯", note: "最爱（秋季花朵）" }],
+      "仙人掌果子": [{ who: "山姆/莱纳斯/帕姆", note: "最爱（沙漠采集）" }],
+      "蓝莓": [{ who: "莱纳斯", note: "最爱（夏季作物）" }],
+      "山药": [{ who: "潘妮", note: "最爱（秋季作物）" }],
+      "红叶卷心菜": [{ who: "潘妮", note: "最爱（夏季作物，旅行货车可买种子）" }],
+      "鹌鹑蛋": [{ who: "潘妮", note: "最爱（1.6 新增）" }],
+      "芒果": [{ who: "利奥", note: "最爱（姜岛树果）" }],
+      "紫蘑菇": [{ who: "巫师", note: "最爱（矿井深层/秘密森林）" }],
+      "太阳精华": [{ who: "巫师", note: "最爱（怪物掉落）" }],
+      "虚空精华": [{ who: "巫师", note: "最爱（虚空怪掉落）" }],
+      "超级黄瓜": [{ who: "巫师", note: "最爱（夜钓深海稀有鱼）" }],
+      "枫糖浆": [{ who: "刘易斯/罗宾", note: "刘易斯最爱；罗宾喜欢" }]
     };
 
     const SPECIAL_USES = {
@@ -9025,8 +9194,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           build:   { icon: "🏡", label: "木匠商店找 Robin 建造", venue: "周二休 · 9:00–17:00" },
           upgrade: { icon: "⚒️", label: "铁匠铺交给 Clint 升级", venue: "周五休 · 9:00–16:00" },
           house:   { icon: "🏠", label: "木匠商店找 Robin 升级/装修", venue: "周二休 · 9:00–17:00" },
-          cook:    { icon: "🍳", label: "在厨房或野炊工具烹饪", venue: "需要厨房/野炊工具和已学会食谱" },
-          gift:    { icon: "🎁", label: "把礼物送给目标村民", venue: "每周2次 · 生日效果更强" },
           buy:     { icon: "🛒", label: "到对应商店购买", venue: "" }
         };
         const actDef = ACTION_TPL[tpl.how];
