@@ -4839,6 +4839,9 @@
 .inv-suggestion .badge.recommend { background: #fff0d2; color: #9c620e; }
 .inv-suggestion .badge.bundle { background: #e0eef8; color: #2c5d8a; }
 .inv-suggestion .badge.reserve { background: #fff0d2; color: #9c620e; }
+.inv-suggestion .badge.special { background: #efe7ff; color: #6b42a4; }
+.inv-suggestion .badge.cook { background: #ffe9d5; color: #a85c1a; }
+.inv-suggestion .badge.gift { background: #fde8ef; color: #a4345e; }
 .inv-suggestion .badge.goal { background: var(--green-soft); color: var(--green); }
 .sug-add-btn {
   flex-shrink: 0;
@@ -5192,6 +5195,10 @@ body.modal-open #app-shell { pointer-events: none; }
 }
 .decision-row.best { background: var(--green-soft); border-color: #88c19a; }
 .decision-row.reserve { background: #fff4dc; border-color: #e1b96c; color: #6a461f; }
+.decision-row.donated { background: #e8f6e8; border-color: #8bc79c; color: #1f6b44; }
+.decision-row.special { background: #f5efff; border-color: #bca4e8; color: #5f3a8b; }
+.decision-row.cook { background: #fff1e4; border-color: #e7b17a; color: #7d4515; }
+.decision-row.gift { background: #fff0f5; border-color: #e7a5bb; color: #8b294d; }
 .decision-row .badge {
   font-size: 10px;
   font-weight: 900;
@@ -5796,6 +5803,27 @@ body.modal-open #app-shell { pointer-events: none; }
 #app-shell .decision-row.reserve {
   background: #fff4dc;
   border-color: #e1b96c;
+}
+
+#app-shell .decision-row.donated {
+  background: #e8f6e8;
+  border-color: #8bc79c;
+  color: #1f6b44;
+}
+
+#app-shell .decision-row.special {
+  background: #f5efff;
+  border-color: #bca4e8;
+}
+
+#app-shell .decision-row.cook {
+  background: #fff1e4;
+  border-color: #e7b17a;
+}
+
+#app-shell .decision-row.gift {
+  background: #fff0f5;
+  border-color: #e7a5bb;
 }
 
 #app-shell .quest-card {
@@ -6925,6 +6953,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "向日葵": "Sunflower.png",
       "玫瑰仙子": "Fairy Rose.png",
       "蜂蜜酒": "Mead.png",
+      "啤酒": "Beer.png",
       "淡啤酒": "Pale Ale.png",
       "果酒": "Wine.png",
       "蔬菜汁": "Juice.png",
@@ -6992,8 +7021,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "海草": "Seaweed.png",
       "绿藻": "Green Algae.png",
       "海葡萄": "Sea Jelly.png",
+      "海洋果冻": "Sea Jelly.png",
       "海贝": "Clam.png",
       "河贝": "River Jelly.png",
+      "河流果冻": "River Jelly.png",
       "彩虹贝": "Rainbow Shell.png",
       "珍珠": "Pearl.png",
       "珊瑚": "Coral.png",
@@ -7072,7 +7103,33 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "出货箱": "ShippingBox.png",
       "马厩": "Horse Stable.png",
       "鱼塘": "Fish Pond.png",
-      "温室": "Greenhouse.png"
+      "温室": "Greenhouse.png",
+      "棚屋": "Shed.png",
+      "大棚屋": "Big Shed.png",
+      "史莱姆屋": "Slime Hutch.png",
+      "宠物碗": "Pet Bowl.png",
+      "鱼熏机": "Fish Smoker.png",
+      "脱水机": "Dehydrator.png",
+      "鱼饵制造机": "Bait Maker.png",
+      "虫饵盒": "Worm Bin.png",
+      "高级虫饵盒": "Deluxe Worm Bin.png",
+      "蘑菇树桩": "Mushroom Log.png",
+      "木桶": "Cask.png",
+      "油": "Oil.png",
+      "糖": "Sugar.png",
+      "米饭": "Rice.png",
+      "薯饼": "Hashbrowns.png",
+      "玉米饼": "Tortilla.png",
+      "生鱼片": "Sashimi.png",
+      "寿司卷": "Maki Roll.png",
+      "三倍浓缩咖啡": "Triple Shot Espresso.png",
+      "香辣鳗鱼": "Spicy Eel.png",
+      "南瓜汤": "Pumpkin Soup.png",
+      "蟹黄糕": "Crab Cakes.png",
+      "海之菜肴": "Dish O' The Sea.png",
+      "幸运午餐": "Lucky Lunch.png",
+      "海参": "Sea Cucumber.png",
+      "洞穴果冻": "Cave Jelly.png"
     };
 
     const rooms = [
@@ -7583,7 +7640,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
                 <p class="result-title">${escapeHtml(describeItem(entry))}</p>
                 <p class="result-path">${escapeHtml(entry.roomName)} → ${escapeHtml(entry.bundleName)}</p>
               </div>
-              <span class="status ${checked ? "done" : "need"}">${checked ? "已献祭" : "要保留"}</span>
+              <span class="status ${checked ? "done" : "need"}">${checked ? "已献" : getBundleEntryStatus(entry)}</span>
             </div>
           </article>
         `;
@@ -7669,6 +7726,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       updateRoomStats();
       renderProgress();
       renderSearchResults();
+      if (document.getElementById("app-shell")) renderApp();
+      const lookupInput = document.getElementById("itemLookup");
+      if (lookupInput?.value) renderLookup(lookupInput.value);
       markHighlights();
       scheduleLayout();
     }
@@ -7730,6 +7790,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         roomData.bundles.forEach((bundleData) => {
           bundleData.items.forEach((entry, index) => {
             entry.uid = `${roomData.id}:${bundleData.id}:${index}`;
+            entry.roomId = roomData.id;
+            entry.bundleId = bundleData.id;
             entry.roomName = roomData.name;
             entry.bundleName = bundleData.name;
             entries.push(entry);
@@ -7750,6 +7812,85 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const quality = entry.quality === "gold" ? "金星" : entry.quality === "silver" ? "银星" : "";
       if (entry.displayName) return entry.displayName;
       return `${quality}${entry.name}${entry.count > 1 ? ` ×${entry.count}` : ""}`;
+    }
+
+    function getBundleForEntry(entry) {
+      if (!entry) return null;
+      const [roomId, bundleId] = String(entry.uid || "").split(":");
+      const roomData = rooms.find((room) => room.id === roomId);
+      const bundleData = roomData?.bundles.find((bundleData) => bundleData.id === bundleId);
+      return bundleData ? { roomData, bundleData } : null;
+    }
+
+    function isBundleCompleteForEntry(entry) {
+      const found = getBundleForEntry(entry);
+      if (!found) return false;
+      const checked = found.bundleData.items.filter((itemEntry) => isChecked(itemEntry.uid)).length;
+      return checked >= found.bundleData.required;
+    }
+
+    function getBundleEntryStatus(entry) {
+      if (isChecked(entry.uid)) return "已献";
+      return isBundleCompleteForEntry(entry) ? "本包已满" : "要保留";
+    }
+
+    function getBundleEntriesForName(name) {
+      return flatItems.filter((entry) => entry.name === name || entry.displayName === name);
+    }
+
+    function namesInCategory(id) {
+      return INV_CATEGORIES.find((category) => category.id === id)?.items || [];
+    }
+
+    function isFishItem(name) {
+      return namesInCategory("fish").includes(name);
+    }
+
+    function isTreeFruit(name) {
+      return namesInCategory("fruit").includes(name);
+    }
+
+    function isGemItem(name) {
+      return ["紫水晶", "海蓝宝石", "钻石", "翡翠", "红宝石", "黄水晶"].includes(name);
+    }
+
+    function getFoodUses(name) {
+      const uses = [...(FOOD_USES[name] || [])];
+      if (isFishItem(name)) {
+        uses.push({ dish: "生鱼片/生鱼寿司", note: "任意鱼可做；料理不吃鱼的品质" });
+      }
+      return uses;
+    }
+
+    function getGiftUses(name) {
+      const uses = [...(GIFT_USES[name] || [])];
+      if (isTreeFruit(name)) {
+        uses.push({ who: "多数村民", note: "树果通常是稳妥的喜欢礼物" });
+      }
+      if (isGemItem(name) && !uses.length) {
+        uses.push({ who: "多数村民", note: "宝石通常适合送礼，少数村民例外" });
+      }
+      return uses;
+    }
+
+    function getSpecialUses(name) {
+      const uses = [...(SPECIAL_USES[name] || [])];
+      if (isGemItem(name)) {
+        uses.push({ use: "博物馆首捐/送礼", note: "首次获得建议先确认是否已捐" });
+      }
+      return uses;
+    }
+
+    function formatFoodUse(use) {
+      return `${use.dish}${use.note ? ` · ${use.note}` : ""}`;
+    }
+
+    function formatGiftUse(use) {
+      return `${use.who}${use.note ? ` · ${use.note}` : ""}`;
+    }
+
+    function formatSpecialUse(use) {
+      return `${use.use}${use.note ? ` · ${use.note}` : ""}`;
     }
 
     function isChecked(uid) {
@@ -8083,14 +8224,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         "大嘴鲈鱼","鲤鱼","大头鱼","鲟鱼",
         "沙丁鱼","金枪鱼","红鲫鱼","罗非鱼",
         "大眼鱼","鲷鱼","鳗鱼",
-        "河豚","鬼鱼","沙鱼","木跃鱼",
+        "河豚","鬼鱼","沙鱼","木跃鱼","海参",
         "岩浆鳗鱼","蝎鲤鱼","章鱼","水滴鱼","虚空鲑鱼",
         "草鱼","彩虹鱼","绿松石鱼","玻璃鱼","铁头鱼",
         "午夜鳗","狮子鱼","蓝铁饼","深海鱼","史莱姆杰克"
       ]},
       { id: "shellfish", label: "🦀 贝类", items: [
         "龙虾","小龙虾","螃蟹","鸟蛤","蚌","虾","蜗牛","玉黍螺","牡蛎","蛤","海胆","白藻",
-        "海草","绿藻","海葡萄","海贝","河贝","彩虹贝","珍珠","珊瑚","海星","海绵"
+        "海草","绿藻","海葡萄","海洋果冻","海贝","河贝","河流果冻","洞穴果冻","彩虹贝","珍珠","珊瑚","海星","海绵"
       ]},
       { id: "animal", label: "🥚 动物产物", items: [
         "牛奶","大壶牛奶","羊奶","大瓶羊奶",
@@ -8099,7 +8240,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         "虚空蛋","龙蛋","恐龙蛋","金色鸡蛋"
       ]},
       { id: "artisan", label: "🍷 工匠加工", items: [
-        "松露油","布料","山羊奶酪","奶酪","蜂蜜","果酱","蜂蜜酒","淡啤酒","葡萄酒","果酒","蔬菜汁","绿茶","鱼籽","陈年鱼籽","鱿鱼墨汁","鱼子酱","恐龙蛋黄酱","南瓜灯","蛋黄酱","咖啡","枫糖浆","橡树树脂","松焦油"
+        "松露油","布料","山羊奶酪","奶酪","蜂蜜","果酱","蜂蜜酒","啤酒","淡啤酒","葡萄酒","果酒","蔬菜汁","绿茶","鱼籽","陈年鱼籽","鱿鱼墨汁","鱼子酱","恐龙蛋黄酱","南瓜灯","蛋黄酱","咖啡","枫糖浆","橡树树脂","松焦油"
       ]},
       { id: "mine", label: "⛏️ 矿物锭", items: [
         "铜矿石","铁矿石","金矿石","铜锭","铁锭","金锭","铱矿石","铱锭","精炼石英","电池组",
@@ -8107,7 +8248,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         "紫水晶","海蓝宝石","钻石","翡翠","红宝石","黄水晶","五彩碎片"
       ]},
       { id: "monster", label: "👾 怪物素材", items: ["史莱姆","蝙蝠翅膀","太阳精华","虚空精华","骨头碎片","菌丝体","空灵之尘","史莱姆蛋（绿）","史莱姆蛋（蓝）","史莱姆蛋（红）","史莱姆蛋（紫）"]},
-      { id: "cook", label: "🍳 烹饪", items: ["煎蛋","生鱼寿司","曲奇","冰淇淋","小麦粉","葡萄布丁","填料","粉瓜","星之果实茶"]},
+      { id: "cook", label: "🍳 烹饪", items: ["煎蛋","生鱼片","生鱼寿司","寿司卷","曲奇","冰淇淋","小麦粉","油","糖","米饭","薯饼","玉米饼","三倍浓缩咖啡","香辣鳗鱼","南瓜汤","蟹黄糕","海之菜肴","幸运午餐","葡萄布丁","填料","粉瓜","星之果实茶"]},
       { id: "special", label: "✨ 特殊", items: ["金币","古代玩偶","鹦鹉螺壳","鹦鹉螺化石","奖券","谜之盒","稜镜碎片","五彩碎片","泥土","虚空之蛋","金香蕉","咖啡豆"]},
     ];
 
@@ -8134,6 +8275,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       { id: "mayonnaise_machine", name: "蛋黄酱机", emoji: "🥫" },
       { id: "tapper", name: "树液采集器", emoji: "💧" },
       { id: "crab_pot", name: "蟹笼", emoji: "🪤" },
+      { id: "fish_smoker", name: "鱼熏机", emoji: "🔥" },
+      { id: "dehydrator", name: "脱水机", emoji: "🍄" },
+      { id: "bait_maker", name: "鱼饵制造机", emoji: "🪱" },
+      { id: "worm_bin", name: "虫饵盒", emoji: "🪱" },
+      { id: "deluxe_worm_bin", name: "高级虫饵盒", emoji: "🪱" },
+      { id: "mushroom_log", name: "蘑菇树桩", emoji: "🍄" },
+      { id: "cask", name: "木桶", emoji: "🍷" },
     ];
 
     /* 农场建筑 */
@@ -8147,9 +8295,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       { id: "deluxe_barn", name: "高级畜棚", emoji: "🦄" },
       { id: "well", name: "水井", emoji: "💧" },
       { id: "mill", name: "磨坊", emoji: "🌬️" },
+      { id: "shed", name: "棚屋", emoji: "🏚️" },
+      { id: "big_shed", name: "大棚屋", emoji: "🏠" },
       { id: "shipping_bin", name: "出货箱", emoji: "📦" },
       { id: "stable", name: "马厩", emoji: "🐴" },
       { id: "fish_pond", name: "鱼塘", emoji: "🐠" },
+      { id: "slime_hutch", name: "史莱姆屋", emoji: "🟢" },
+      { id: "pet_bowl", name: "宠物碗", emoji: "🐾" },
       { id: "greenhouse", name: "温室", emoji: "🏡" },
     ];
 
@@ -8194,152 +8346,203 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     };
 
     /* ── 目标模板 ── */
+    function goalItem(name, count, sub = "") {
+      return { label: `${name} ×${count}`, invKey: name, invNeed: count, ...(sub ? { sub } : {}) };
+    }
+    function goalMoney(amount) {
+      return { label: `${amount.toLocaleString("en-US")}g`, invKey: "金币", invNeed: amount };
+    }
+    function goalManual(label, sub = "") {
+      return { label, manual: true, ...(sub ? { sub } : {}) };
+    }
+
+    const GOAL_TOOL_LEVELS = [
+      { id: "copper", label: "铜", bar: "铜锭", cost: 2000, ore: "或 铜矿石×25 + 煤炭×5 熔炼" },
+      { id: "steel", label: "钢", bar: "铁锭", cost: 5000, ore: "或 铁矿石×25 + 煤炭×5 熔炼" },
+      { id: "gold", label: "金", bar: "金锭", cost: 10000, ore: "或 金矿石×25 + 煤炭×5 熔炼" },
+      { id: "iridium", label: "铱", bar: "铱锭", cost: 25000, ore: "或 铱矿石×25 + 煤炭×5 熔炼" },
+    ];
+    const GOAL_TOOL_TYPES = [
+      { id: "pickaxe", name: "镐", emoji: "⛏️" },
+      { id: "axe", name: "斧", emoji: "🪓" },
+      { id: "hoe", name: "锄", emoji: "🌱" },
+      { id: "can", name: "壶", emoji: "🚿", note: "建议雨天前一天交，不耽误浇水" },
+    ];
+    const GOAL_TRASH_LEVELS = [
+      { id: "copper", label: "铜", bar: "铜锭", cost: 1000 },
+      { id: "steel", label: "钢", bar: "铁锭", cost: 2500 },
+      { id: "gold", label: "金", bar: "金锭", cost: 5000 },
+      { id: "iridium", label: "铱", bar: "铱锭", cost: 12500 },
+    ];
+    function makeToolUpgradeGoals() {
+      const goals = [];
+      GOAL_TOOL_TYPES.forEach(tool => {
+        GOAL_TOOL_LEVELS.forEach(level => {
+          goals.push({
+            id: `upgrade-${tool.id}-${level.id}`,
+            title: `升级${level.label}${tool.name}`,
+            emoji: tool.emoji,
+            how: "upgrade",
+            duration: "2 天",
+            ...(tool.note ? { note: tool.note } : {}),
+            steps: [goalItem(level.bar, 5, level.ore), goalMoney(level.cost)]
+          });
+        });
+      });
+      GOAL_TRASH_LEVELS.forEach(level => {
+        goals.push({
+          id: `upgrade-trash-${level.id}`,
+          title: `升级${level.label}垃圾桶`,
+          emoji: "🗑️",
+          how: "upgrade",
+          duration: "2 天",
+          note: "丢弃物品时返还部分售价",
+          steps: [goalItem(level.bar, 5), goalMoney(level.cost)]
+        });
+      });
+      return goals;
+    }
+
     const GOAL_TEMPLATES = [
-      { cat: "工具升级", goals: [
-        { id: "upgrade-pickaxe-copper", title: "升级铜镐", emoji: "⛏️", how: "upgrade", duration: "2 天",
-          steps: [
-            { label: "铜锭 ×5", invKey: "铜锭", invNeed: 5, sub: "或 铜矿石×25 + 煤炭×5 熔炼" },
-            { label: "2,000g", invKey: "金币", invNeed: 2000 },
-          ]},
-        { id: "upgrade-axe-copper", title: "升级铜斧", emoji: "🪓", how: "upgrade", duration: "2 天",
-          steps: [
-            { label: "铜锭 ×5", invKey: "铜锭", invNeed: 5 },
-            { label: "2,000g", invKey: "金币", invNeed: 2000 },
-          ]},
-        { id: "upgrade-hoe-copper", title: "升级铜锄", emoji: "🌱", how: "upgrade", duration: "2 天",
-          steps: [
-            { label: "铜锭 ×5", invKey: "铜锭", invNeed: 5 },
-            { label: "2,000g", invKey: "金币", invNeed: 2000 },
-          ]},
-        { id: "upgrade-can-copper", title: "升级铜壶", emoji: "🚿", how: "upgrade", duration: "2 天", note: "选雨天前一天交，不耽误浇水",
-          steps: [
-            { label: "铜锭 ×5", invKey: "铜锭", invNeed: 5 },
-            { label: "2,000g", invKey: "金币", invNeed: 2000 },
-          ]},
-        { id: "upgrade-pickaxe-steel", title: "升级钢镐", emoji: "⛏️", how: "upgrade", duration: "2 天",
-          steps: [
-            { label: "铁锭 ×5", invKey: "铁锭", invNeed: 5 },
-            { label: "5,000g", invKey: "金币", invNeed: 5000 },
-          ]},
-        { id: "upgrade-axe-steel", title: "升级钢斧", emoji: "🪓", how: "upgrade", duration: "2 天",
-          steps: [
-            { label: "铁锭 ×5", invKey: "铁锭", invNeed: 5 },
-            { label: "5,000g", invKey: "金币", invNeed: 5000 },
-          ]},
+      { cat: "工具升级", goals: makeToolUpgradeGoals() },
+      { cat: "背包/商店购买", goals: [
+        { id: "buy-backpack-large", title: "买大背包", emoji: "🎒", how: "buy", note: "背包扩到24格，在皮埃尔柜台购买", steps: [goalMoney(2000)] },
+        { id: "buy-backpack-deluxe", title: "买豪华背包", emoji: "🎒", how: "buy", note: "背包扩到36格，在皮埃尔柜台购买", steps: [goalMoney(10000)] },
+        { id: "buy-fiberglass-rod", title: "买玻璃纤维渔竿", emoji: "🎣", how: "buy", note: "钓鱼等级2后在威利鱼店购买，可使用鱼饵", steps: [goalMoney(1800)] },
+        { id: "buy-iridium-rod", title: "买铱渔竿", emoji: "🎣", how: "buy", note: "钓鱼等级6后在威利鱼店购买，可装鱼饵和钓具", steps: [goalMoney(7500)] },
       ]},
       { cat: "加工设备", goals: [
         { id: "craft-furnace", title: "做熔炉", emoji: "🔥", how: "craft", note: "Clint在你首次获得铜矿石后教你",
-          steps: [
-            { label: "铜矿石 ×20", invKey: "铜矿石", invNeed: 20 },
-            { label: "石头 ×25", invKey: "石头", invNeed: 25 },
-          ]},
+          steps: [goalItem("铜矿石", 20), goalItem("石头", 25)] },
         { id: "craft-preserves-jar", title: "做罐头瓶", emoji: "🫙", how: "craft", note: "🔓 耕种等级 4",
-          steps: [
-            { label: "木材 ×50", invKey: "木材", invNeed: 50 },
-            { label: "石头 ×40", invKey: "石头", invNeed: 40 },
-            { label: "煤炭 ×8", invKey: "煤炭", invNeed: 8 },
-          ]},
+          steps: [goalItem("木材", 50), goalItem("石头", 40), goalItem("煤炭", 8)] },
         { id: "craft-keg", title: "做小桶", emoji: "🪣", how: "craft", note: "🔓 耕种等级 8",
-          steps: [
-            { label: "木材 ×30", invKey: "木材", invNeed: 30 },
-            { label: "铜锭 ×1", invKey: "铜锭", invNeed: 1 },
-            { label: "铁锭 ×1", invKey: "铁锭", invNeed: 1 },
-            { label: "橡树树脂 ×1", invKey: "橡树树脂", invNeed: 1 },
-          ]},
+          steps: [goalItem("木材", 30), goalItem("铜锭", 1), goalItem("铁锭", 1), goalItem("橡树树脂", 1)] },
         { id: "craft-bee-house", title: "做蜂房", emoji: "🐝", how: "craft", note: "🔓 耕种等级 3",
-          steps: [
-            { label: "木材 ×40", invKey: "木材", invNeed: 40 },
-            { label: "煤炭 ×8", invKey: "煤炭", invNeed: 8 },
-            { label: "铁锭 ×1", invKey: "铁锭", invNeed: 1 },
-            { label: "枫糖浆 ×1", invKey: "枫糖浆", invNeed: 1 },
-          ]},
+          steps: [goalItem("木材", 40), goalItem("煤炭", 8), goalItem("铁锭", 1), goalItem("枫糖浆", 1)] },
         { id: "craft-oil-maker", title: "做产油机", emoji: "🛢️", how: "craft", note: "🔓 耕种等级 8",
-          steps: [
-            { label: "硬木 ×20", invKey: "硬木", invNeed: 20 },
-            { label: "粘液 ×50", invKey: "史莱姆", invNeed: 50 },
-            { label: "金锭 ×1", invKey: "金锭", invNeed: 1 },
-          ]},
+          steps: [goalItem("硬木", 20), goalItem("史莱姆", 50), goalItem("金锭", 1)] },
         { id: "craft-mayo-machine", title: "做蛋黄酱机", emoji: "🥫", how: "craft", note: "🔓 畜牧等级 2",
-          steps: [
-            { label: "木材 ×15", invKey: "木材", invNeed: 15 },
-            { label: "石头 ×15", invKey: "石头", invNeed: 15 },
-            { label: "地晶 ×1", invKey: "地晶", invNeed: 1 },
-            { label: "铜锭 ×1", invKey: "铜锭", invNeed: 1 },
-          ]},
+          steps: [goalItem("木材", 15), goalItem("石头", 15), goalItem("地晶", 1), goalItem("铜锭", 1)] },
         { id: "craft-cheese-press", title: "做奶酪压榨机", emoji: "🧀", how: "craft", note: "🔓 畜牧等级 6",
-          steps: [
-            { label: "木材 ×45", invKey: "木材", invNeed: 45 },
-            { label: "石头 ×45", invKey: "石头", invNeed: 45 },
-            { label: "硬木 ×10", invKey: "硬木", invNeed: 10 },
-            { label: "铜锭 ×1", invKey: "铜锭", invNeed: 1 },
-          ]},
+          steps: [goalItem("木材", 45), goalItem("石头", 45), goalItem("硬木", 10), goalItem("铜锭", 1)] },
+        { id: "craft-loom", title: "做织布机", emoji: "🧵", how: "craft", note: "🔓 耕种等级 7",
+          steps: [goalItem("木材", 60), goalItem("纤维", 30), goalItem("松焦油", 1)] },
         { id: "craft-tapper", title: "做树液采集器", emoji: "💧", how: "craft", note: "🔓 觅食等级 3",
-          steps: [
-            { label: "木材 ×40", invKey: "木材", invNeed: 40 },
-            { label: "铜锭 ×2", invKey: "铜锭", invNeed: 2 },
-          ]},
+          steps: [goalItem("木材", 40), goalItem("铜锭", 2)] },
         { id: "craft-crab-pot", title: "做蟹笼", emoji: "🪤", how: "craft", note: "🔓 钓鱼等级 3",
-          steps: [
-            { label: "木材 ×40", invKey: "木材", invNeed: 40 },
-            { label: "铁锭 ×3", invKey: "铁锭", invNeed: 3 },
-          ]},
+          steps: [goalItem("木材", 40), goalItem("铁锭", 3)] },
+        { id: "craft-fish-smoker", title: "做鱼熏机", emoji: "🔥", how: "craft", note: "配方在威利鱼店购买；可把鱼加工成熏鱼",
+          steps: [goalItem("硬木", 10), goalItem("海洋果冻", 1), goalItem("河流果冻", 1), goalItem("洞穴果冻", 1)] },
+        { id: "craft-dehydrator", title: "做脱水机", emoji: "🍄", how: "craft", note: "配方在皮埃尔杂货店购买；蘑菇洞也会自带1台",
+          steps: [goalItem("木材", 30), goalItem("粘土", 2), goalItem("火水晶", 1)] },
+        { id: "craft-bait-maker", title: "做鱼饵制造机", emoji: "🪱", how: "craft", note: "🔓 钓鱼等级 6",
+          steps: [goalItem("铁锭", 3), goalItem("珊瑚", 3), goalItem("海胆", 1)] },
+        { id: "craft-worm-bin", title: "做虫饵盒", emoji: "🪱", how: "craft", note: "🔓 钓鱼等级 8",
+          steps: [goalItem("硬木", 15), goalItem("金锭", 1), goalItem("铁锭", 1), goalItem("纤维", 50)] },
+        { id: "craft-deluxe-worm-bin", title: "做高级虫饵盒", emoji: "🪱", how: "craft", note: "🔓 钓鱼等级 8；需要先有虫饵盒",
+          steps: [goalManual("虫饵盒 ×1", "先制作或保留一个普通虫饵盒"), goalItem("苔藓", 30)] },
+        { id: "craft-mushroom-log", title: "做蘑菇树桩", emoji: "🍄", how: "craft", note: "🔓 觅食等级 4",
+          steps: [goalItem("硬木", 10), goalItem("苔藓", 10)] },
+        { id: "craft-cask", title: "做木桶", emoji: "🍷", how: "craft", note: "房屋三次升级获得地下室后解锁",
+          steps: [goalItem("木材", 20), goalItem("硬木", 1)] },
       ]},
       { cat: "农场建筑", goals: [
         { id: "build-silo", title: "建筒仓", emoji: "🌾", how: "build", duration: "2 天", note: "建议先于鸡舍",
-          steps: [
-            { label: "石头 ×100", invKey: "石头", invNeed: 100 },
-            { label: "粘土 ×10", invKey: "粘土", invNeed: 10 },
-            { label: "铜锭 ×5", invKey: "铜锭", invNeed: 5 },
-            { label: "100g", invKey: "金币", invNeed: 100 },
-          ]},
+          steps: [goalItem("石头", 100), goalItem("粘土", 10), goalItem("铜锭", 5), goalMoney(100)] },
         { id: "build-coop", title: "建鸡舍", emoji: "🐔", how: "build", duration: "3 天",
-          steps: [
-            { label: "木材 ×300", invKey: "木材", invNeed: 300 },
-            { label: "石头 ×100", invKey: "石头", invNeed: 100 },
-            { label: "4,000g", invKey: "金币", invNeed: 4000 },
-          ]},
+          steps: [goalItem("木材", 300), goalItem("石头", 100), goalMoney(4000)] },
         { id: "build-coop-big", title: "升级大鸡舍", emoji: "🐓", how: "build", duration: "2 天",
-          steps: [
-            { label: "木材 ×400", invKey: "木材", invNeed: 400 },
-            { label: "石头 ×150", invKey: "石头", invNeed: 150 },
-            { label: "10,000g", invKey: "金币", invNeed: 10000 },
-          ]},
+          steps: [goalItem("木材", 400), goalItem("石头", 150), goalMoney(10000)] },
+        { id: "build-coop-deluxe", title: "升级高级鸡舍", emoji: "🦢", how: "build", duration: "2 天",
+          steps: [goalItem("木材", 500), goalItem("石头", 200), goalMoney(20000)] },
         { id: "build-barn", title: "建畜棚", emoji: "🐄", how: "build", duration: "3 天",
-          steps: [
-            { label: "木材 ×350", invKey: "木材", invNeed: 350 },
-            { label: "石头 ×150", invKey: "石头", invNeed: 150 },
-            { label: "6,000g", invKey: "金币", invNeed: 6000 },
-          ]},
+          steps: [goalItem("木材", 350), goalItem("石头", 150), goalMoney(6000)] },
+        { id: "build-barn-big", title: "升级大畜棚", emoji: "🐂", how: "build", duration: "2 天",
+          steps: [goalItem("木材", 450), goalItem("石头", 200), goalMoney(12000)] },
+        { id: "build-barn-deluxe", title: "升级高级畜棚", emoji: "🦄", how: "build", duration: "2 天",
+          steps: [goalItem("木材", 550), goalItem("石头", 300), goalMoney(25000)] },
+        { id: "build-well", title: "建水井", emoji: "💧", how: "build", duration: "2 天",
+          steps: [goalItem("石头", 75), goalMoney(1000)] },
         { id: "build-mill", title: "建磨坊", emoji: "🌬️", how: "build", duration: "2 天", note: "可把小麦磨成面粉，甜菜磨成糖",
-          steps: [
-            { label: "木材 ×150", invKey: "木材", invNeed: 150 },
-            { label: "石头 ×50", invKey: "石头", invNeed: 50 },
-            { label: "布料 ×4", invKey: "布料", invNeed: 4 },
-            { label: "2,500g", invKey: "金币", invNeed: 2500 },
-          ]},
+          steps: [goalItem("木材", 150), goalItem("石头", 50), goalItem("布料", 4), goalMoney(2500)] },
+        { id: "build-shed", title: "建棚屋", emoji: "🏚️", how: "build", duration: "2 天",
+          steps: [goalItem("木材", 300), goalMoney(15000)] },
+        { id: "build-shed-big", title: "升级大棚屋", emoji: "🏠", how: "build", duration: "2 天",
+          steps: [goalItem("木材", 550), goalItem("石头", 300), goalMoney(20000)] },
+        { id: "build-shipping-bin", title: "建出货箱", emoji: "📦", how: "build", duration: "立即",
+          steps: [goalItem("木材", 150), goalMoney(250)] },
         { id: "build-stable", title: "建马厩", emoji: "🐴", how: "build", duration: "2 天", note: "建造后会有匹马，加快移动",
-          steps: [
-            { label: "硬木 ×100", invKey: "硬木", invNeed: 100 },
-            { label: "铁锭 ×5", invKey: "铁锭", invNeed: 5 },
-            { label: "10,000g", invKey: "金币", invNeed: 10000 },
-          ]},
+          steps: [goalItem("硬木", 100), goalItem("铁锭", 5), goalMoney(10000)] },
         { id: "build-fish-pond", title: "建鱼塘", emoji: "🐠", how: "build", duration: "2 天", note: "养鱼自动产卵/鱼籽",
-          steps: [
-            { label: "石头 ×200", invKey: "石头", invNeed: 200 },
-            { label: "海草 ×5", invKey: "海草", invNeed: 5 },
-            { label: "绿藻 ×5", invKey: "绿藻", invNeed: 5 },
-            { label: "5,000g", invKey: "金币", invNeed: 5000 },
-          ]},
+          steps: [goalItem("石头", 200), goalItem("海草", 5), goalItem("绿藻", 5), goalMoney(5000)] },
+        { id: "build-slime-hutch", title: "建史莱姆屋", emoji: "🟢", how: "build", duration: "2 天",
+          steps: [goalItem("石头", 500), goalItem("精炼石英", 10), goalItem("铱锭", 1), goalMoney(10000)] },
+        { id: "build-pet-bowl", title: "建宠物碗", emoji: "🐾", how: "build", duration: "立即",
+          steps: [goalItem("硬木", 25), goalMoney(5000)] },
+      ]},
+      { cat: "房屋升级/装修", goals: [
+        { id: "house-kitchen", title: "升级厨房", emoji: "🏠", how: "house", duration: "3 天", note: "第一次房屋升级，解锁厨房和双人床",
+          steps: [goalItem("木材", 450), goalMoney(10000)] },
+        { id: "house-nursery", title: "升级儿童房", emoji: "🏡", how: "house", duration: "3 天", note: "第二次房屋升级，增加儿童房和第二个房间",
+          steps: [goalItem("硬木", 100), goalMoney(65000)] },
+        { id: "house-cellar", title: "升级地下室", emoji: "🍷", how: "house", duration: "3 天", note: "第三次房屋升级，获得地下室和木桶配方",
+          steps: [goalMoney(100000)] },
+        { id: "house-renovate-bedroom", title: "开放卧室", emoji: "🛏️", how: "house", duration: "立即", note: "二次升级后可免费装修", steps: [] },
+        { id: "house-renovate-crib", title: "移除婴儿床", emoji: "🧸", how: "house", duration: "立即", note: "二次升级后可免费装修", steps: [] },
+        { id: "house-renovate-room", title: "加南侧房间", emoji: "🚪", how: "house", duration: "立即", note: "二次升级后可免费装修", steps: [] },
+      ]},
+      { cat: "料理目标", goals: [
+        { id: "cook-sashimi", title: "做生鱼片", emoji: "🍣", how: "cook", note: "莱纳斯3心寄配方；处理低价鱼很实用",
+          steps: [goalManual("任意鱼 ×1")] },
+        { id: "cook-maki-roll", title: "做寿司卷", emoji: "🍣", how: "cook", note: "电视酱料女皇或星之果实餐吧购买配方",
+          steps: [goalManual("任意鱼 ×1"), goalItem("海草", 1), goalItem("米饭", 1)] },
+        { id: "cook-triple-espresso", title: "做三倍浓缩咖啡", emoji: "☕", how: "cook", note: "速度增益，配方在星之果实餐吧购买",
+          steps: [goalItem("咖啡", 3)] },
+        { id: "cook-spicy-eel", title: "做香辣鳗鱼", emoji: "🌶️", how: "cook", note: "速度+运气，矿洞/骷髅洞常用",
+          steps: [goalItem("鳗鱼", 1), goalItem("辣椒", 1)] },
+        { id: "cook-pumpkin-soup", title: "做南瓜汤", emoji: "🥣", how: "cook", note: "防御+运气",
+          steps: [goalItem("南瓜", 1), goalManual("任意牛奶 ×1", "牛奶或大壶牛奶都可")] },
+        { id: "cook-crab-cakes", title: "做蟹黄糕", emoji: "🦀", how: "cook", note: "长时间速度+防御",
+          steps: [goalItem("螃蟹", 1), goalItem("小麦粉", 1), goalManual("任意鸡蛋 ×1"), goalItem("油", 1)] },
+        { id: "cook-dish-o-sea", title: "做海之菜肴", emoji: "🐟", how: "cook", note: "钓鱼+3",
+          steps: [goalItem("沙丁鱼", 2), goalItem("薯饼", 1)] },
+        { id: "cook-lucky-lunch", title: "做幸运午餐", emoji: "🍀", how: "cook", note: "运气+3",
+          steps: [goalItem("海参", 1), goalItem("玉米饼", 1), goalItem("蓝爵", 1)] },
+      ]},
+      { cat: "送礼目标", goals: [
+        { id: "gift-universal-rabbit-foot", title: "备兔子脚送礼", emoji: "🎁", how: "gift", note: "大多数村民最爱；潘妮例外",
+          steps: [goalItem("兔子脚", 1)] },
+        { id: "gift-universal-prismatic", title: "备五彩碎片送礼", emoji: "💎", how: "gift", note: "大多数村民最爱；海莉例外，通常也要优先留关键用途",
+          steps: [goalItem("五彩碎片", 1)] },
+        { id: "gift-stardrop-tea", title: "备星之果实茶", emoji: "🫖", how: "gift", note: "1.6通用强力礼物，建议生日送",
+          steps: [goalItem("星之果实茶", 1)] },
+        { id: "gift-abigail-amethyst", title: "送阿比盖尔紫水晶", emoji: "💜", how: "gift",
+          steps: [goalItem("紫水晶", 1)] },
+        { id: "gift-harvey-coffee", title: "送哈维咖啡", emoji: "☕", how: "gift",
+          steps: [goalItem("咖啡", 1)] },
+        { id: "gift-shane-pepper", title: "送谢恩辣椒", emoji: "🌶️", how: "gift",
+          steps: [goalItem("辣椒", 1)] },
+        { id: "gift-leah-goat-cheese", title: "送莉亚山羊奶酪", emoji: "🧀", how: "gift",
+          steps: [goalItem("山羊奶酪", 1)] },
+        { id: "gift-elliott-duck-feather", title: "送艾利欧特鸭羽", emoji: "🪶", how: "gift",
+          steps: [goalItem("鸭羽", 1)] },
+        { id: "gift-penny-poppy", title: "送潘妮罂粟", emoji: "🌺", how: "gift",
+          steps: [goalItem("罂粟", 1)] },
       ]},
       { cat: "其他", goals: [
         { id: "self-bridge", title: "修复海滩桥", emoji: "🌊", how: "self", note: "通往潮汐池，可挖珊瑚/海胆",
-          steps: [{ label: "木材 ×300", invKey: "木材", invNeed: 300 }]},
+          steps: [goalItem("木材", 300)] },
+        { id: "self-greenhouse", title: "修复温室", emoji: "🏡", how: "self", note: "完成茶水间全部收集包",
+          steps: [goalManual("完成春/夏/秋作物包"), goalManual("完成高品质作物包"), goalManual("完成动物和工匠包")] },
+        { id: "self-bus", title: "修复巴士", emoji: "🚌", how: "self", note: "完成金库全部献祭，解锁沙漠",
+          steps: [goalMoney(42500)] },
+        { id: "self-bridge-quarry", title: "修复采石场桥", emoji: "🪨", how: "self", note: "工艺室全部包完成的奖励",
+          steps: [goalManual("完成社区中心工艺室")] },
         { id: "self-mines-40", title: "矿洞到40层", emoji: "💎", how: "self",
-          steps: [{ label: "准备食物回血" }, { label: "带好武器" }, { label: "拿到第一块铁矿" }]},
+          steps: [goalManual("准备食物回血"), goalManual("带好武器"), goalManual("拿到第一批铁矿")] },
         { id: "self-mines-bottom", title: "矿洞到底层", emoji: "🔥", how: "self", note: "120层，奖励骷髅钥匙",
-          steps: [{ label: "至少钢镐 + 钢剑" }, { label: "准备大量食物" }]},
-        { id: "self-quarry", title: "修复采石场桥", emoji: "🪨", how: "self", note: "工艺室全部包完成的奖励",
-          steps: [{ label: "完成社区中心工艺室" }]},
+          steps: [goalManual("至少钢镐 + 钢剑"), goalManual("准备大量食物")] },
       ]},
     ];
 
@@ -8364,8 +8567,22 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "布料": "织布机加工羊毛，或回收湿报纸/沙漠商人等来源",
       "海草": "海洋钓鱼常见杂物，也可在蟹笼/鱼塘相关来源获得",
       "绿藻": "淡水钓鱼常见杂物，矿井水域也能钓到",
+      "海洋果冻": "海洋钓鱼低概率获得，1.6鱼熏机材料",
+      "海葡萄": "这里按海洋果冻处理：海洋钓鱼低概率获得，1.6鱼熏机材料",
+      "河流果冻": "淡水钓鱼低概率获得，1.6鱼熏机材料",
+      "河贝": "这里按河流果冻处理：淡水钓鱼低概率获得，1.6鱼熏机材料",
+      "洞穴果冻": "矿井/洞穴水域钓鱼低概率获得，1.6鱼熏机材料",
+      "珊瑚": "夏季海滩潮汐池采集，或旅行货车等来源",
+      "海胆": "海滩东侧潮汐池采集，需要先修复海滩桥或雨天可进入",
       "史莱姆": "击杀史莱姆，史莱姆屋也可稳定获得",
       "小麦": "夏/秋种植小麦",
+      "小麦粉": "皮埃尔杂货店购买，或磨坊把小麦磨成小麦粉",
+      "油": "皮埃尔杂货店购买，或产油机加工玉米/向日葵/葵花籽",
+      "糖": "皮埃尔杂货店购买，或磨坊把甜菜磨成糖",
+      "米饭": "皮埃尔杂货店购买",
+      "薯饼": "厨房烹饪：土豆×1 + 油×1；也可星之果实餐吧购买",
+      "玉米饼": "厨房烹饪：玉米×1；也可星之果实餐吧购买",
+      "海参": "秋/冬海洋钓鱼，或旅行货车等来源",
       "干草": "筒仓割草储存，或在玛妮牧场购买",
       "苹果": "秋季苹果树，果蝠洞或旅行货车也可能获得"
     };
@@ -8509,7 +8726,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "龙虾":120,"小龙虾":75,"螃蟹":100,"鸟蛤":50,"蚌":30,"虾":60,
       "蜗牛":65,"玉黍螺":20,"牡蛎":40,"蛤":50,"海胆":160,"白藻":75,
       // 工匠
-      "山羊奶酪":400,"奶酪":230,"果酒":160,"葡萄酒":240,
+      "山羊奶酪":400,"奶酪":230,"果酒":160,"葡萄酒":240,"啤酒":200,
       "鱼籽":30,"陈年鱼籽":150,"鱼子酱":500,
       "松露油":1065,"布料":470,
       // 怪物
@@ -8517,10 +8734,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       // 特殊
       "古代玩偶":100,"鹦鹉螺壳":120,"鹦鹉螺化石":80,"稜镜碎片":2000,"五彩碎片":2000,"金香蕉":150,"咖啡豆":15,
       // 补充贝类
-      "海草":20,"绿藻":15,"海葡萄":30,"海贝":50,"河贝":40,"彩虹贝":300,"珍珠":2500,"珊瑚":80,"海星":50,"海绵":40,
+      "海草":20,"绿藻":15,"海葡萄":200,"海洋果冻":200,"海贝":50,"河贝":125,"河流果冻":125,"洞穴果冻":180,"彩虹贝":300,"珍珠":2500,"珊瑚":80,"海星":50,"海绵":40,
       // 补充鱼类
       "草鱼":150,"彩虹鱼":100,"绿松石鱼":30,"玻璃鱼":75,"铁头鱼":75,
-      "午夜鳗":150,"狮子鱼":100,"蓝铁饼":75,"深海鱼":75,"史莱姆杰克":100,
+      "午夜鳗":150,"狮子鱼":100,"蓝铁饼":75,"深海鱼":75,"海参":75,"史莱姆杰克":100,
       // 补充怪物素材
       "骨头碎片":15,"菌丝体":15,"空灵之尘":50,
       "史莱姆蛋（绿）":1000,"史莱姆蛋（蓝）":1750,"史莱姆蛋（红）":2500,"史莱姆蛋（紫）":5000,
@@ -8530,7 +8747,112 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "鸡蛋(白)":50,"鸡蛋(棕)":50,"羊奶":225,"鸭羽":250,"兔子毛":260,
       "虚空蛋":65,"龙蛋":50,"恐龙蛋":350,"金色鸡蛋":500,
       // 补充工匠
-      "蛋黄酱":190,"生鱼寿司":220,"煎蛋":35,"咖啡":150,
+      "蛋黄酱":190,"生鱼片":75,"生鱼寿司":220,"寿司卷":220,"煎蛋":35,"咖啡":150,
+      "小麦粉":50,"油":100,"糖":50,"米饭":100,"薯饼":120,"玉米饼":50,
+      "三倍浓缩咖啡":450,"香辣鳗鱼":175,"南瓜汤":300,"蟹黄糕":275,"海之菜肴":220,"幸运午餐":250,
+    };
+
+    const FOOD_USES = {
+      "玉米": [{ dish: "玉米饼", note: "基础料理，也可继续做鱼肉卷等菜" }],
+      "小麦粉": [{ dish: "披萨/薄煎饼/蛋糕类", note: "大量料理的基础材料" }],
+      "小麦": [{ dish: "小麦粉", note: "磨坊加工后进入多种料理" }],
+      "鸡蛋(白)": [{ dish: "煎蛋/煎蛋卷", note: "常用基础料理" }],
+      "鸡蛋(棕)": [{ dish: "煎蛋/煎蛋卷", note: "常用基础料理" }],
+      "大鸡蛋(白)": [{ dish: "煎蛋/煎蛋卷", note: "料理不吃品质，通常优先加工蛋黄酱" }],
+      "大鸡蛋(棕)": [{ dish: "煎蛋/煎蛋卷", note: "料理不吃品质，通常优先加工蛋黄酱" }],
+      "牛奶": [{ dish: "煎蛋卷/冰淇淋", note: "部分料理需要牛奶" }],
+      "大壶牛奶": [{ dish: "煎蛋卷/冰淇淋", note: "料理不吃品质，通常优先做奶酪" }],
+      "羊奶": [{ dish: "奶类料理", note: "更常见做法是压成山羊奶酪" }],
+      "花椰菜": [{ dish: "奶酪花椰菜", note: "可作为食物/送礼料理" }],
+      "辣椒": [{ dish: "爆炒青椒/辣椒奶酪", note: "部分料理带速度或实用回复" }],
+      "南瓜": [{ dish: "南瓜汤/南瓜派", note: "南瓜汤有防御和运气增益" }],
+      "山药": [{ dish: "糖渍山药", note: "秋季料理材料" }],
+      "茄子": [{ dish: "茄子干酪", note: "秋季料理材料" }],
+      "蓝莓": [{ dish: "蓝莓千层酥", note: "甜点料理材料" }],
+      "甜瓜": [{ dish: "粉红蛋糕/水果沙拉", note: "甜点与高价值料理材料" }],
+      "杏子": [{ dish: "水果沙拉", note: "与蓝莓、甜瓜组合" }],
+      "黑莓": [{ dish: "黑莓脆皮饼", note: "前期可当体力食物，也可做甜点" }],
+      "山洞萝卜": [{ dish: "块茎拼盘", note: "下矿实用料理材料" }],
+      "冬根": [{ dish: "块茎拼盘", note: "和山洞萝卜组合" }],
+      "绿藻": [{ dish: "海藻汤", note: "低成本回复料理" }],
+      "白藻": [{ dish: "清汤", note: "低成本回复料理" }],
+      "海草": [{ dish: "寿司卷", note: "搭配任意鱼和米饭" }],
+      "米饭": [{ dish: "寿司卷", note: "皮埃尔购买后可做寿司卷" }],
+      "油": [{ dish: "蟹黄糕/薯饼等", note: "多种料理的基础材料" }],
+      "糖": [{ dish: "甜点类料理", note: "多种甜点配方会用到" }],
+      "薯饼": [{ dish: "海之菜肴", note: "需要薯饼作为材料" }],
+      "玉米饼": [{ dish: "幸运午餐", note: "需要玉米饼作为材料" }],
+      "龙虾": [{ dish: "龙虾浓汤", note: "钓鱼增益料理" }],
+      "螃蟹": [{ dish: "蟹黄糕", note: "速度/防御料理，实用性高" }],
+      "虾": [{ dish: "虾鸡尾酒/椰汁汤", note: "料理材料" }],
+      "蛤": [{ dish: "蛤蜊浓汤", note: "料理材料" }],
+      "蜗牛": [{ dish: "法式田螺", note: "料理材料" }],
+      "沙丁鱼": [{ dish: "海之菜肴", note: "钓鱼增益料理" }],
+      "海参": [{ dish: "幸运午餐", note: "运气增益料理" }],
+      "鳗鱼": [{ dish: "炒鳗鱼/香辣鳗鱼", note: "香辣鳗鱼是下矿常用增益" }],
+      "咖啡": [{ dish: "三倍浓缩咖啡", note: "速度增益，日常赶路好用" }],
+      "椰子": [{ dish: "椰汁汤/热带咖喱", note: "部分料理材料" }],
+      "普通蘑菇": [{ dish: "炒蘑菇/椰汁汤", note: "料理材料" }]
+    };
+
+    const GIFT_USES = {
+      "五彩碎片": [{ who: "几乎所有村民", note: "通用最爱；海莉例外，不建议送她" }],
+      "稜镜碎片": [{ who: "几乎所有村民", note: "同五彩碎片；建议统一成五彩碎片名称" }],
+      "兔子脚": [{ who: "几乎所有村民", note: "通用最爱；潘妮例外" }],
+      "珍珠": [{ who: "所有村民", note: "通用最爱" }],
+      "星之果实茶": [{ who: "所有村民", note: "高价值通用礼物" }],
+      "紫水晶": [{ who: "阿比盖尔", note: "最爱" }],
+      "南瓜": [{ who: "阿比盖尔", note: "最爱之一" }],
+      "河豚": [{ who: "阿比盖尔", note: "最爱之一" }],
+      "椰子": [{ who: "海莉", note: "最爱" }],
+      "向日葵": [{ who: "海莉", note: "最爱" }],
+      "鸭羽": [{ who: "艾利欧特", note: "最爱" }],
+      "石榴": [{ who: "艾利欧特", note: "最爱" }],
+      "咖啡": [{ who: "哈维", note: "最爱" }],
+      "啤酒": [{ who: "谢恩", note: "最爱" }],
+      "辣椒": [{ who: "谢恩/刘易斯", note: "最爱" }],
+      "钻石": [{ who: "多名村民", note: "高价值礼物，很多人喜欢或最爱" }],
+      "山羊奶酪": [{ who: "莉亚", note: "最爱" }],
+      "电池组": [{ who: "玛鲁", note: "最爱" }],
+      "草莓": [{ who: "玛鲁/德米特里厄斯", note: "常见喜好礼物" }],
+      "橙子": [{ who: "格斯", note: "最爱" }],
+      "罂粟": [{ who: "潘妮", note: "最爱；其他村民多半讨厌，别乱送" }]
+    };
+
+    const SPECIAL_USES = {
+      "五彩碎片": [{ use: "银河之剑/博物馆/失踪收集包", note: "极稀有，通常不建议卖" }],
+      "稜镜碎片": [{ use: "银河之剑/博物馆/失踪收集包", note: "与五彩碎片同物，建议统一命名" }],
+      "恐龙蛋": [{ use: "博物馆/孵化恐龙/恐龙蛋黄酱", note: "先留至少1个，别急着卖" }],
+      "虚空蛋": [{ use: "孵化虚空鸡/虚空蛋黄酱", note: "可持续产出后再加工" }],
+      "鱼子酱": [{ use: "失踪收集包", note: "由鲟鱼鱼籽在罐头瓶加工获得" }],
+      "海洋果冻": [{ use: "鱼熏机", note: "1.6鱼熏机材料之一，建议至少留1个" }],
+      "海葡萄": [{ use: "鱼熏机", note: "这里按海洋果冻处理，建议至少留1个" }],
+      "河流果冻": [{ use: "鱼熏机", note: "1.6鱼熏机材料之一，建议至少留1个" }],
+      "河贝": [{ use: "鱼熏机", note: "这里按河流果冻处理，建议至少留1个" }],
+      "洞穴果冻": [{ use: "鱼熏机", note: "1.6鱼熏机材料之一，建议至少留1个" }],
+      "鲟鱼": [{ use: "鱼塘", note: "产鲟鱼鱼籽，可做鱼子酱" }],
+      "岩浆鳗鱼": [{ use: "鱼塘", note: "高价值鱼塘候选" }],
+      "水滴鱼": [{ use: "鱼塘", note: "高价值鱼塘候选" }],
+      "木跃鱼": [{ use: "特色鱼类收集包/鱼塘", note: "献祭前先留1条" }],
+      "沙鱼": [{ use: "特色鱼类收集包", note: "沙漠解锁前不易取得" }],
+      "河豚": [{ use: "特色鱼类收集包/送礼", note: "献祭和阿比盖尔礼物都可用" }],
+      "兔子脚": [{ use: "魔法师收集包/秘密事件/送礼", note: "稀有，建议保留" }],
+      "鸭羽": [{ use: "染料收集包/送礼", note: "献祭前先留1个" }],
+      "红叶卷心菜": [{ use: "染料收集包", note: "第一年标准情况下较难获得" }],
+      "海蓝宝石": [{ use: "染料收集包/博物馆/送礼", note: "先留献祭和博物馆首捐" }],
+      "鹦鹉螺壳": [{ use: "土地研究收集包", note: "冬季海滩采集，别和鹦鹉螺化石混淆" }],
+      "古代玩偶": [{ use: "博物馆/特殊彩蛋", note: "首个建议先捐博物馆" }],
+      "鹦鹉螺化石": [{ use: "博物馆", note: "不是土地研究收集包所需物" }],
+      "冰封晶球": [{ use: "土地研究收集包/开晶球", note: "献祭前先留1个" }],
+      "电池组": [{ use: "避雷针产物/高级合成", note: "铱洒水器、水晶复制机等常用" }],
+      "铱锭": [{ use: "高级工具/铱洒水器/戒指合成", note: "优先留给关键升级" }],
+      "硬木": [{ use: "马厩/房屋升级/高级合成", note: "需求量大，前期别随便卖" }],
+      "布料": [{ use: "磨坊/缝纫", note: "建筑和外观系统都会用" }],
+      "海草": [{ use: "鱼塘建造/生鱼寿司", note: "建鱼塘前先留5个" }],
+      "绿藻": [{ use: "鱼塘建造/海藻汤", note: "建鱼塘前先留5个" }],
+      "苔藓": [{ use: "1.6合成材料", note: "多种新机器/物品会用，先别清空" }],
+      "上古水果": [{ use: "种子生产器/温室/失踪收集包", note: "优先扩种，金星留失踪收集包" }],
+      "宝石甜莓": [{ use: "秘密森林老坎诺利", note: "首次建议留1个换星之果实" }]
     };
 
     /* ── localStorage ── */
@@ -8676,6 +8998,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
            - 其他类只保留含 invKey 或 invNeed 的真材料 step */
         const matList = rawList.filter(s => {
           if (tpl.how === "self") return true;
+          if (s.manual) return true;
           return s.invKey || s.invNeed;
         });
         const matSteps = matList.map((step, idx) => {
@@ -8701,7 +9024,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const ACTION_TPL = {
           craft:   { icon: "🔨", label: "在合成菜单制作", venue: "" },
           build:   { icon: "🏡", label: "木匠商店找 Robin 建造", venue: "周一休 · 9:00–17:00" },
-          upgrade: { icon: "⚒️", label: "铁匠铺交给 Clint 升级", venue: "周五休 · 9:00–16:00" }
+          upgrade: { icon: "⚒️", label: "铁匠铺交给 Clint 升级", venue: "周五休 · 9:00–16:00" },
+          house:   { icon: "🏠", label: "木匠商店找 Robin 升级/装修", venue: "周一休 · 9:00–17:00" },
+          cook:    { icon: "🍳", label: "在厨房或野炊工具烹饪", venue: "需要厨房/野炊工具和已学会食谱" },
+          gift:    { icon: "🎁", label: "把礼物送给目标村民", venue: "每周2次 · 生日效果更强" },
+          buy:     { icon: "🛒", label: "到对应商店购买", venue: "" }
         };
         const actDef = ACTION_TPL[tpl.how];
         let actionStep = "";
@@ -8969,6 +9296,30 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           });
           if (qty <= reserve.count) return;
         }
+        const specialUses = getSpecialUses(name);
+        if (specialUses.length) {
+          sugs.push({
+            kind: "special",
+            title: `${name} ×${qty}`,
+            desc: formatSpecialUse(specialUses[0])
+          });
+        }
+        const foodUses = getFoodUses(name);
+        if (foodUses.length) {
+          sugs.push({
+            kind: "cook",
+            title: `${name} ×${qty}`,
+            desc: `可做：${formatFoodUse(foodUses[0])}`
+          });
+        }
+        const giftUses = getGiftUses(name);
+        if (giftUses.length) {
+          sugs.push({
+            kind: "gift",
+            title: `${name} ×${qty}`,
+            desc: `送礼：${formatGiftUse(giftUses[0])}`
+          });
+        }
         const procs = PROCESS_MAP[name];
         if (procs && procs.length > 0) {
           const best = procs[0];
@@ -9054,7 +9405,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       }
       if (countEl) countEl.textContent = `${sugs.length} 条`;
       div.innerHTML = sugs.slice(0, 10).map(s => {
-        const label = s.kind === "recommend" ? "加工" : s.kind === "goal" ? "目标" : s.kind === "reserve" ? "保留" : "推荐";
+        const label = s.kind === "recommend" ? "加工" : s.kind === "goal" ? "目标" : s.kind === "reserve" ? "保留" : s.kind === "special" ? "用途" : s.kind === "cook" ? "料理" : s.kind === "gift" ? "送礼" : "推荐";
         let title = s.title || s.text || "";
         let desc = s.desc || "";
         if (!s.title && !s.desc) {
@@ -9092,13 +9443,25 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       // 汇总所有候选
       const all = new Set();
       INV_CATEGORIES.forEach(c => c.items.forEach(n => all.add(n)));
+      flatItems.forEach(entry => {
+        all.add(entry.name);
+        if (entry.displayName) all.add(entry.displayName);
+      });
       EQUIPMENT.forEach(e => all.add(e.name));
       BUILDINGS.forEach(b => all.add(b.name));
       Object.keys(SELL_PRICES).forEach(n => all.add(n));
       Object.keys(PROCESS_MAP).forEach(n => all.add(n));
+      Object.keys(FOOD_USES).forEach(n => all.add(n));
+      Object.keys(GIFT_USES).forEach(n => all.add(n));
+      Object.keys(SPECIAL_USES).forEach(n => all.add(n));
       const matches = [...all].filter(n => {
         if (!n.includes(q)) return false;
-        return SELL_PRICES[n] != null || (PROCESS_MAP[n] || []).length > 0;
+        return SELL_PRICES[n] != null
+          || (PROCESS_MAP[n] || []).length > 0
+          || getBundleEntriesForName(n).length > 0
+          || getFoodUses(n).length > 0
+          || getGiftUses(n).length > 0
+          || getSpecialUses(n).length > 0;
       }).slice(0, 8);
       if (matches.length === 0) {
         div.innerHTML = `<div style="padding:10px;color:var(--muted);font-size:13px;">没有「${escapeHtml(q)}」的售价或加工建议</div>`;
@@ -9108,12 +9471,28 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const sell = SELL_PRICES[name];
         const procs = PROCESS_MAP[name] || [];
         const rows = [];
+        const bundleEntries = getBundleEntriesForName(name);
+        bundleEntries.forEach(entry => {
+          const checked = isChecked(entry.uid);
+          const status = getBundleEntryStatus(entry);
+          const statusClass = checked ? "donated" : status === "本包已满" ? "" : "reserve";
+          rows.push(`<div class="decision-row ${statusClass}">📦 献祭：${escapeHtml(describeItem(entry))}<span style="color:var(--muted);font-size:11px;">${escapeHtml(entry.roomName)} → ${escapeHtml(entry.bundleName)}</span><span class="badge">${escapeHtml(status)}</span></div>`);
+        });
         const reserve = getReserveAdvice(name);
         if (reserve) rows.push(`<div class="decision-row reserve">📦 先保留 <span style="color:var(--muted);font-size:11px;">${escapeHtml(reserve.text)}</span></div>`);
-        if (sell != null) rows.push(`<div class="decision-row">💰 直接卖 <span class="decision-price">${sell}g</span></div>`);
+        getSpecialUses(name).forEach((use) => {
+          rows.push(`<div class="decision-row special">✨ 特殊用途 <span style="color:var(--muted);font-size:11px;">${escapeHtml(formatSpecialUse(use))}</span></div>`);
+        });
+        getFoodUses(name).forEach((use) => {
+          rows.push(`<div class="decision-row cook">🍳 料理 <span style="color:var(--muted);font-size:11px;">${escapeHtml(formatFoodUse(use))}</span></div>`);
+        });
+        getGiftUses(name).forEach((use) => {
+          rows.push(`<div class="decision-row gift">🎁 送礼 <span style="color:var(--muted);font-size:11px;">${escapeHtml(formatGiftUse(use))}</span></div>`);
+        });
         procs.forEach((p, i) => {
           rows.push(`<div class="decision-row ${i === 0 ? "best" : ""}">${p.method} → ${p.out} <span style="color:var(--muted);font-size:11px;">${p.gain}</span>${i === 0 ? ' <span class="badge">最优</span>' : ""}<span class="decision-price">${p.price}g</span></div>`);
         });
+        if (sell != null) rows.push(`<div class="decision-row">💰 直接卖 <span class="decision-price">${sell}g</span></div>`);
         if (rows.length === 0) return "";
         return `<div style="margin-bottom:8px;padding:8px;background:#fffdf6;border:1.5px solid #e2d0aa;border-radius:8px;">
           <div style="display:flex;align-items:center;gap:8px;font-weight:900;margin-bottom:6px;">${renderInvIcon(name)}${escapeHtml(name)}</div>
@@ -9349,7 +9728,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const parts = [];
       const reserve = getReserveAdvice(name);
       if (reserve) parts.push(`先保留：${escapeHtml(reserve.text)}`);
-      if (sell == null && !procs) return parts.join("");
+      const specialUses = getSpecialUses(name);
+      if (specialUses.length) parts.push(`特殊：${escapeHtml(formatSpecialUse(specialUses[0]))}`);
+      const foodUses = getFoodUses(name);
+      if (foodUses.length) parts.push(`料理：${escapeHtml(formatFoodUse(foodUses[0]))}`);
+      const giftUses = getGiftUses(name);
+      if (giftUses.length) parts.push(`送礼：${escapeHtml(formatGiftUse(giftUses[0]))}`);
+      if (sell == null && !procs) return parts.join(" · ");
       if (procs && procs.length > 0) {
         const best = procs[0];
         if (sell != null && best.price > sell) {
@@ -9360,7 +9745,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       } else if (sell != null) {
         parts.push(`直接卖 <b>${sell}g</b>`);
       }
-      return parts.join("");
+      return parts.join(" · ");
     }
     function handleQtyAction(act) {
       if (!qtyPop) return;
