@@ -1,3 +1,5 @@
+我的目标版 codex美化 半成品
+
 <!doctype html>
 
 <html lang="zh-CN">
@@ -4476,12 +4478,12 @@
   padding: 24px 16px;
   color: var(--muted);
   font-size: 13px;
-  border: none;
-  border-radius: 0;
-  background: transparent;
+  border: 1.5px dashed var(--line);
+  border-radius: 10px;
 }
 
 .goal-card {
+  position: relative;
   border: 1.5px solid #e2d0aa;
   border-radius: 10px;
   background: #fffdf6;
@@ -4536,33 +4538,95 @@
 .goal-how.self    { background: var(--green-soft); color: var(--green); }
 
 .goal-progress {
-  flex: 0 0 58px;
-  display: grid;
-  justify-items: center;
-  text-align: center;
+  position: relative;
+  flex: 0 0 auto;
 }
 .goal-frac {
   display: grid;
   place-items: center;
-  width: 56px;
-  min-height: 22px;
-  padding: 0 6px;
-  box-sizing: border-box;
-  font-size: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  background: #fff8e8;
+  color: #9c620e;
   font-weight: 900;
   line-height: 1;
-  color: var(--gold);
   white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 4px rgba(156, 98, 14, 0.1);
 }
-.goal-card.complete .goal-frac { color: var(--green); }
-.goal-bar { width: 56px; height: 5px; background: #eadfc9; border-radius: 999px; overflow: hidden; margin-top: 4px; }
-.goal-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); transition: width 0.3s ease; }
+.goal-frac-num { font-size: 12px; }
+.goal-frac-sep { margin: 0 1px; opacity: 0.5; font-weight: 700; font-size: 9px; }
+.goal-frac-tot { font-size: 9px; opacity: 0.85; }
+.goal-card.complete .goal-frac { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+
+.goal-stamp {
+  position: absolute;
+  top: -5px;
+  right: -6px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 2px 5px rgba(45, 138, 95, 0.4);
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+
+.goal-progress-bar {
+  width: 100%;
+  height: 3px;
+  background: #eadfc9;
+  overflow: hidden;
+}
+.goal-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--green));
+  transition: width 0.3s ease;
+}
+
+.goal-how-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  margin: 2px 0 10px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.goal-how-hint {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.goal-card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 3px;
+  height: 36%;
+  border-radius: 2px 0 0 2px;
+  background: linear-gradient(180deg, transparent, rgba(184, 69, 50, 0.22), transparent);
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.65;
+}
+.goal-card.complete::after { opacity: 0; }
+.goal-card:not(.expanded) .goal-meta { display: none; }
 
 .goal-body { padding: 4px 12px 12px; }
 .goal-note { font-size: 12px; color: var(--gold); font-weight: 800; margin-bottom: 6px; }
 .goal-step {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   padding: 7px 0;
   border-bottom: 1px solid #f0e3c8;
@@ -4582,15 +4646,87 @@
   border: 2px solid var(--line);
   border-radius: 5px;
   display: flex; align-items: center; justify-content: center;
-  background: #fff; flex-shrink: 0; margin-top: 1px;
+  background: #fff; flex-shrink: 0;
   font-size: 12px; color: #fff; font-weight: 900;
 }
 .goal-step.done .goal-step-check { background: var(--green); border-color: var(--green); }
-.goal-step-line { line-height: 1.34; }
-.goal-step-text { font-size: 13px; font-weight: 700; }
+.goal-step-body { flex: 1; min-width: 0; }
+.goal-step-text { font-size: 14px; font-weight: 700; }
 .goal-step.done .goal-step-text { color: var(--muted); text-decoration: line-through; }
-.goal-step-sub { display: inline; font-size: 11px; color: var(--muted); }
-.goal-step-have { font-size: 11px; font-weight: 800; color: var(--green); margin-top: 3px; }
+.goal-step-sub { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+.goal-step-have {
+  flex-shrink: 0;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: #fff3d6;
+  color: #9c620e;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.goal-step-have.ready {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+/* —— 获取方式动作步骤：左侧金色竖条，无勾选框 —— */
+.goal-step.goal-step--action {
+  position: relative;
+  margin-top: 14px;
+  padding: 10px 12px 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 245, 220, 0.55), rgba(255, 238, 200, 0.4));
+  gap: 0;
+}
+.goal-step.goal-step--action::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 0;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--gold);
+  transition: background 0.2s ease;
+}
+.goal-step.goal-step--action .goal-step-check { display: none; }
+.goal-step.goal-step--action.done {
+  background: linear-gradient(180deg, rgba(232, 247, 227, 0.7), rgba(220, 240, 215, 0.55));
+}
+.goal-step.goal-step--action.done::before {
+  background: var(--green);
+}
+.goal-step.goal-step--action .goal-step-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  color: #5f3a22;
+}
+.goal-step.goal-step--action.done .goal-step-text {
+  color: var(--green);
+  text-decoration: line-through;
+}
+.goal-step.goal-step--action .goal-action-ico {
+  font-size: 16px;
+  line-height: 1;
+}
+.goal-step.goal-step--action .goal-step-sub {
+  color: #8d7a5a;
+}
+
+/* —— 标题后面的小字提示（note） —— */
+.goal-hint {
+  display: inline;
+  margin-left: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--muted);
+  opacity: 0.85;
+}
+
 .goal-remove {
   margin-top: 8px;
   width: 100%;
@@ -4630,7 +4766,6 @@
   font-size: 10.5px;
   font-weight: 800;
   cursor: pointer;
-  -webkit-tap-highlight-color: rgba(122, 31, 27, 0.14);
 }
 .inv-chip img, .inv-chip .fallback-icon {
   flex: 0 0 auto;
@@ -4649,34 +4784,29 @@
   flex: 0 0 auto;
   color: var(--gold);
 }
-.inv-chip-delete {
+.inv-chip.delete-armed {
+  border-color: #a94736;
+  background: linear-gradient(180deg, #fff9f1, #f8eadc);
+  box-shadow: inset 0 0 0 1px rgba(184, 69, 50, 0.16);
+}
+.inv-chip-remove {
   position: absolute;
   top: -7px;
   right: -7px;
   z-index: 3;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  min-height: 0;
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border: 1px solid #7a271d;
+  border-radius: 50%;
+  background: #963125;
+  color: #fffaf0;
   padding: 0;
-  border: 2px solid #fff7ec;
-  border-radius: 999px;
-  background: #7b211d;
-  color: #fff7ec;
   font-size: 12px;
-  font-weight: 950;
+  font-weight: 850;
   line-height: 1;
-  box-shadow: 0 2px 5px rgba(84, 35, 24, 0.24);
-  cursor: pointer;
-}
-.inv-chip.delete-ready {
-  border-color: #9c322d !important;
-  box-shadow: 0 0 0 2px rgba(123, 33, 29, 0.12);
-}
-.inv-chip.delete-ready .inv-chip-delete {
-  display: flex;
+  box-shadow: 0 2px 5px rgba(76, 49, 29, 0.24);
 }
 .inventory-empty {
   grid-column: 1 / -1;
@@ -4708,6 +4838,7 @@
 }
 .inv-suggestion .badge.recommend { background: #fff0d2; color: #9c620e; }
 .inv-suggestion .badge.bundle { background: #e0eef8; color: #2c5d8a; }
+.inv-suggestion .badge.reserve { background: #fff0d2; color: #9c620e; }
 .inv-suggestion .badge.goal { background: var(--green-soft); color: var(--green); }
 .sug-add-btn {
   flex-shrink: 0;
@@ -4908,14 +5039,14 @@ body.modal-open #app-shell { pointer-events: none; }
   border: 1.5px solid var(--line);
   border-radius: 9px;
   background: var(--paper);
-  padding: 6px;
+  padding: 8px;
 }
-.tool-card-head { display: flex; align-items: center; gap: 5px; margin-bottom: 4px; }
+.tool-card-head { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
 .tool-card-icon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.tool-card-icon img, .tool-card-icon .fallback-icon { width: 26px; height: 26px; image-rendering: pixelated; }
-.tool-card-info { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; }
-.tool-card-name { font-size: 12.5px; font-weight: 900; color: var(--wood-dark); }
-.tool-card-lv { font-size: 11px; color: var(--muted); line-height: 1; }
+.tool-card-icon img, .tool-card-icon .fallback-icon { width: 32px; height: 32px; image-rendering: pixelated; }
+.tool-card-info { flex: 1; min-width: 0; }
+.tool-card-name { font-size: 13px; font-weight: 900; color: var(--wood-dark); }
+.tool-card-lv { font-size: 11px; color: var(--muted); }
 .tool-card-lv b { color: var(--gold); }
 
 /* 数量编辑浮窗 - 紧凑居中 */
@@ -5029,13 +5160,12 @@ body.modal-open #app-shell { pointer-events: none; }
 
 .tool-level-picker {
   display: flex;
-  gap: 3px;
-  margin-top: 3px;
+  gap: 4px;
+  margin-top: 4px;
 }
 .tool-level-picker button {
   flex: 1;
-  min-height: 28px;
-  padding: 2px 0;
+  padding: 5px 0;
   border: 1.5px solid var(--line);
   border-radius: 5px;
   background: var(--paper);
@@ -5061,6 +5191,7 @@ body.modal-open #app-shell { pointer-events: none; }
   font-size: 13px;
 }
 .decision-row.best { background: var(--green-soft); border-color: #88c19a; }
+.decision-row.reserve { background: #fff4dc; border-color: #e1b96c; color: #6a461f; }
 .decision-row .badge {
   font-size: 10px;
   font-weight: 900;
@@ -5662,6 +5793,11 @@ body.modal-open #app-shell { pointer-events: none; }
   box-shadow: 0 6px 14px rgba(76, 49, 29, 0.06);
 }
 
+#app-shell .decision-row.reserve {
+  background: #fff4dc;
+  border-color: #e1b96c;
+}
+
 #app-shell .quest-card {
   --quest-accent: #d88d32;
   padding: 8px 9px 8px 12px;
@@ -5721,6 +5857,17 @@ body.modal-open #app-shell { pointer-events: none; }
   background: #f1e2bf;
   color: #6f4b22;
   font-weight: 950;
+}
+
+#app-shell .goal-frac {
+  border-radius: 50%;
+  background: #fff8e8;
+  color: #9c620e;
+  font-weight: 900;
+}
+#app-shell .goal-card.complete .goal-frac {
+  background: var(--green-soft);
+  color: var(--green);
 }
 
 #app-shell .goal-card.complete,
@@ -5967,12 +6114,12 @@ body.modal-open #app-shell { pointer-events: none; }
   }
 
   #app-shell .goal-progress {
-    flex-basis: 54px;
+    flex-basis: auto;
   }
 
-  #app-shell .goal-frac,
-  #app-shell .goal-bar {
-    width: 52px;
+  #app-shell .goal-frac {
+    width: 34px;
+    height: 34px;
   }
 
   #app-shell .goal-body {
@@ -6075,13 +6222,6 @@ body.modal-open #app-shell { pointer-events: none; }
   border-radius: 14px;
 }
 
-#app-shell #goalsPanel .goals-empty {
-  border: none !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
 #app-shell #goalsPanel .goal-card {
   border: 2px solid #e1cea8;
   border-radius: 14px;
@@ -6124,13 +6264,6 @@ body.modal-open #app-shell { pointer-events: none; }
   line-height: 1.16;
 }
 
-#app-shell #goalsPanel .goal-title-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
 #app-shell #goalsPanel .goal-meta {
   margin-top: 2px;
   color: #6f6254;
@@ -6139,51 +6272,38 @@ body.modal-open #app-shell { pointer-events: none; }
 }
 
 #app-shell #goalsPanel .goal-how {
-  margin-top: 0;
+  margin-top: 4px;
   padding: 2px 9px;
   border-radius: 999px;
   font-size: 10.8px;
 }
 
 #app-shell #goalsPanel .goal-progress {
+  position: relative;
   flex: 0 0 auto;
-  min-width: 56px;
-  justify-items: end;
 }
 
 #app-shell #goalsPanel .goal-frac {
-  width: auto;
-  min-width: 46px;
-  min-height: 23px;
-  border: 2px solid #2d8a5f;
-  border-radius: 999px;
-  background: #e1ecd2;
-  color: #1f7549;
-  padding: 0 8px;
-  font-size: 12.8px;
+  width: 34px;
+  height: 34px;
+  min-width: 0;
+  min-height: 0;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  background: #fff8e8;
+  color: #9c620e;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 900;
   line-height: 1;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 4px rgba(156, 98, 14, 0.1);
 }
 
 #app-shell #goalsPanel .goal-card.complete .goal-frac {
-  border-color: #86ad6d;
-  background: #d7e8c6;
-  color: #17643c;
-}
-
-#app-shell #goalsPanel .goal-bar {
-  display: block;
-  width: 46px;
-  height: 7px;
-  margin-top: 4px;
-  border-radius: 999px;
-  background: #eadfc9;
-  overflow: hidden;
-}
-
-#app-shell #goalsPanel .goal-bar-fill {
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--gold), var(--green));
+  border-color: var(--green);
+  background: var(--green-soft);
+  color: var(--green);
 }
 
 #app-shell #goalsPanel .goal-body {
@@ -6213,20 +6333,89 @@ body.modal-open #app-shell { pointer-events: none; }
 
 #app-shell #goalsPanel .goal-step-text {
   color: var(--ink);
-  font-size: 12.8px;
-  line-height: 1.3;
-  font-weight: 900;
+  font-size: 13.5px;
+  line-height: 1.25;
+  font-weight: 800;
 }
 
 #app-shell #goalsPanel .goal-step-sub {
-  font-size: 10.8px;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 10.5px;
   line-height: 1.3;
 }
 
 #app-shell #goalsPanel .goal-step-have {
-  margin-top: 3px;
-  font-size: 10.8px;
+  flex-shrink: 0;
+  margin-top: 0;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: #fff3d6;
+  color: #9c620e;
+  font-size: 11px;
+  font-weight: 800;
   line-height: 1.3;
+  white-space: nowrap;
+}
+#app-shell #goalsPanel .goal-step-have.ready {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+/* 手机端 action step override */
+#app-shell #goalsPanel .goal-step.goal-step--action {
+  position: relative;
+  margin-top: 12px;
+  padding: 10px 12px 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 245, 220, 0.6), rgba(255, 238, 200, 0.45));
+  gap: 0;
+}
+#app-shell #goalsPanel .goal-step.goal-step--action::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 0;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--gold);
+}
+#app-shell #goalsPanel .goal-step.goal-step--action .goal-step-check { display: none; }
+#app-shell #goalsPanel .goal-step.goal-step--action.done {
+  background: linear-gradient(180deg, rgba(232, 247, 227, 0.75), rgba(220, 240, 215, 0.6));
+}
+#app-shell #goalsPanel .goal-step.goal-step--action.done::before {
+  background: var(--green);
+}
+#app-shell #goalsPanel .goal-step.goal-step--action .goal-step-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #5f3a22;
+  font-weight: 800;
+}
+#app-shell #goalsPanel .goal-step.goal-step--action.done .goal-step-text {
+  color: var(--green);
+  text-decoration: line-through;
+}
+#app-shell #goalsPanel .goal-step.goal-step--action .goal-action-ico {
+  font-size: 16px;
+  line-height: 1;
+}
+#app-shell #goalsPanel .goal-step.goal-step--action .goal-step-sub {
+  color: #8d7a5a;
+}
+
+/* 手机端标题后小字 */
+#app-shell #goalsPanel .goal-hint {
+  display: inline;
+  margin-left: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted);
+  opacity: 0.85;
 }
 
 #app-shell #openInventoryBtn,
@@ -6261,79 +6450,6 @@ body.modal-open #app-shell { pointer-events: none; }
   border-radius: 9px;
   font-size: 12px !important;
   line-height: 1.1;
-}
-
-#center-map-section .center-map-frame {
-  width: calc(100% + 18px);
-  margin: 0 -9px;
-  min-height: 380px !important;
-  padding: 0 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-#center-map-section .center-map-frame::before,
-#center-map-section .center-map-frame::after {
-  display: none !important;
-}
-
-#center-map-section .center-map-stage-ref {
-  min-height: 380px !important;
-  border: none !important;
-  border-radius: 10px;
-  box-shadow: none !important;
-}
-
-#center-map-section .center-map-stage-ref .center-map-image.center-map-image-ref,
-#center-map-section .center-map-stage-ref .image-fallback {
-  left: 0.4% !important;
-  top: 9.2% !important;
-  width: 99.2% !important;
-  height: 80.2% !important;
-  border: none !important;
-}
-
-#center-map-section .center-map-stage-ref .center-ref-title-dom {
-  width: calc(var(--box-w) * 1.18) !important;
-  height: calc(var(--box-h) * 1.02) !important;
-  font-size: clamp(15.2px, 2.9vw, 27px) !important;
-}
-
-#center-map-section .center-map-stage-ref .center-ref-note-dom {
-  font-size: clamp(12px, 2.36vw, 21px) !important;
-}
-
-@media (max-width: 700px) {
-  #center-map-section .center-map-frame {
-    width: calc(100% + 16px);
-    margin: 0 -8px;
-    min-height: 260px !important;
-  }
-
-  #center-map-section .center-map-stage-ref {
-    min-height: 260px !important;
-  }
-
-  #center-map-section .center-map-stage-ref .center-map-image.center-map-image-ref,
-  #center-map-section .center-map-stage-ref .image-fallback {
-    left: 0.6% !important;
-    top: 9.8% !important;
-    width: 98.8% !important;
-    height: 79.2% !important;
-    min-height: 0 !important;
-  }
-
-  #center-map-section .center-map-stage-ref .center-ref-title-dom {
-    width: calc(var(--box-w) * 1.2) !important;
-    height: calc(var(--box-h) * 1.02) !important;
-    font-size: clamp(10.4px, 2.72vw, 13.4px) !important;
-  }
-
-  #center-map-section .center-map-stage-ref .center-ref-note-dom {
-    font-size: clamp(7.8px, 2vw, 10px) !important;
-  }
 }
 
   </style>
@@ -6447,7 +6563,7 @@ body.modal-open #app-shell { pointer-events: none; }
   </div>  <!-- /bundle-overlay -->
 
   <script>
-const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
+const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     const WIKI_FILE_BASE = "https://stardewvalleywiki.com/mediawiki/images/";
     const QUALITY_ICON = { gold: "Gold Quality Icon.png", silver: "Silver Quality Icon.png" };
 
@@ -6662,6 +6778,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       ["fish", "鱼类"],
       ["shellfish", "贝类/蟹笼"],
       ["animal", "畜牧/工匠"],
+      ["cooking", "烹饪"],
       ["resource", "木材/资源"],
       ["mine", "矿物/怪物"],
       ["money", "金钱"]
@@ -6691,7 +6808,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       "山洞萝卜": "Cave Carrot.png",
       "红蘑菇": "Red Mushroom.png",
       "紫蘑菇": "Purple Mushroom.png",
-      "龙葵": "Morel.png",
+      "羊肚菌": "Morel.png",
       "枫糖浆": "Maple Syrup.png",
       "松焦油": "Pine Tar.png",
       "橡树树脂": "Oak Resin.png",
@@ -6768,11 +6885,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       "蕨菜": "Fiddlehead Fern.png",
       "松露": "Truffle.png",
       "罂粟": "Poppy.png",
-      "鲭鱼": "Maki Roll.png",
+      "生鱼寿司": "Maki Roll.png",
       "海胆": "Sea Urchin.png",
       "向日葵": "Sunflower.png",
       "羽毛": "Duck Feather.png",
-      "鹦鹉螺化石": "Nautilus Shell.png",
+      "鹦鹉螺壳": "Nautilus Shell.png",
+      "鹦鹉螺化石": "Nautilus Fossil.png",
       "小麦": "Wheat.png",
       "干草": "Hay.png",
       "兔子脚": "Rabbit's Foot.png",
@@ -6823,6 +6941,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       "红宝石": "Ruby.png",
       "黄水晶": "Topaz.png",
       "铱矿石": "Iridium Ore.png",
+      "铜矿石": "Copper Ore.png",
+      "铁矿石": "Iron Ore.png",
+      "金矿石": "Gold Ore.png",
       "电池组": "Battery Pack.png",
       "精炼石英": "Refined Quartz.png",
       "煎蛋": "Fried Egg.png",
@@ -6838,6 +6959,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       "古代玩偶": "Ancient Doll.png",
       "冰淇淋": "Ice Cream.png",
       "小麦粉": "Wheat Flour.png",
+      "生鱼寿司": "Maki Roll.png",
       "奖券": "Prize Ticket.png",
       "谜之盒": "Mystery Box.png",
       "星之果实茶": "Stardrop Tea.png",
@@ -6868,6 +6990,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       "深海鱼": "Sea Cucumber.png",
       "史莱姆杰克": "Slimejack.png",
       "海草": "Seaweed.png",
+      "绿藻": "Green Algae.png",
       "海葡萄": "Sea Jelly.png",
       "海贝": "Clam.png",
       "河贝": "River Jelly.png",
@@ -6969,86 +7092,86 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         bundle("construction", "建筑收集包", "4选4", "煤炭窑", [
           item("木材", "resource", 99), item("木材", "resource", 99), item("石头", "resource", 99), item("硬木", "resource", 10)
         ]),
-        bundle("exotic-forage", "异国情调采集收集包", "9选5", "", [
+        bundle("exotic-forage", "异国情调采集收集包", "9选5", "秋日恩赐×5", [
           item("椰子", "forage"), item("仙人掌果子", "forage"), item("山洞萝卜", "forage"), item("红蘑菇", "forage"), item("紫蘑菇", "forage"),
-          item("龙葵", "forage"), item("枫糖浆", "forage"), item("松焦油", "forage"), item("橡树树脂", "forage")
+          item("羊肚菌", "forage"), item("枫糖浆", "forage"), item("松焦油", "forage"), item("橡树树脂", "forage")
         ])
       ]),
       room("pantry", "🍴", "茶水间", "完成任意工艺室包后解锁", "温室", [
-        bundle("spring-crops", "春季作物收集包", "4选4", "", [
+        bundle("spring-crops", "春季作物收集包", "4选4", "生长激素×20", [
           item("防风草", "crop"), item("青豆", "crop"), item("花椰菜", "crop"), item("土豆", "crop")
         ]),
-        bundle("summer-crops", "夏季作物收集包", "4选4", "", [
+        bundle("summer-crops", "夏季作物收集包", "4选4", "优质洒水器×1", [
           item("番茄", "crop"), item("辣椒", "crop"), item("蓝莓", "crop"), item("甜瓜", "crop")
         ]),
-        bundle("fall-crops", "秋季作物收集包", "4选4", "", [
+        bundle("fall-crops", "秋季作物收集包", "4选4", "蜂房×1", [
           item("玉米", "crop"), item("茄子", "crop"), item("南瓜", "crop"), item("山药", "crop")
         ]),
-        bundle("quality-crops", "优质作物收集包", "4选3", "", [
+        bundle("quality-crops", "优质作物收集包", "4选3", "罐头瓶×1", [
           item("防风草", "crop", 5, "gold"), item("甜瓜", "crop", 5, "gold"), item("南瓜", "crop", 5, "gold"), item("玉米", "crop", 5, "gold")
         ]),
-        bundle("animal", "动物收集包", "6选5", "", [
+        bundle("animal", "动物收集包", "6选5", "奶酪压榨机×1", [
           item("大壶牛奶", "animal"), item("大鸡蛋(白)", "animal", 1, "", "大鸡蛋"), item("大鸡蛋(棕)", "animal", 1, "", "大鸡蛋"), item("大瓶羊奶", "animal"), item("羊毛", "animal"), item("鸭蛋", "animal")
         ]),
-        bundle("artisan", "工匠收集包", "12选6", "", [
+        bundle("artisan", "工匠收集包", "12选6", "小桶×1", [
           item("松露油", "animal"), item("布料", "animal"), item("山羊奶酪", "animal"), item("奶酪", "animal"), item("蜂蜜", "animal"), item("果酱", "animal"),
           item("苹果", "crop"), item("杏子", "crop"), item("橙子", "crop"), item("桃子", "crop"), item("石榴", "crop"), item("樱桃", "crop")
         ])
       ]),
       room("fish", "🐟", "鱼缸", "完成任意工艺室包后解锁", "移除巨大闪石", [
-        bundle("river-fish", "河鱼收集包", "4选4", "", [
+        bundle("river-fish", "河鱼收集包", "4选4", "鱼饵×30", [
           item("太阳鱼", "fish"), item("鲶鱼", "fish"), item("西鲱", "fish"), item("虎纹鳟鱼", "fish")
         ]),
-        bundle("lake-fish", "湖鱼收集包", "4选4", "", [
+        bundle("lake-fish", "湖鱼收集包", "4选4", "旋式鱼饵×1", [
           item("大嘴鲈鱼", "fish"), item("鲤鱼", "fish"), item("大头鱼", "fish"), item("鲟鱼", "fish")
         ]),
-        bundle("ocean-fish", "海鱼收集包", "4选4", "", [
+        bundle("ocean-fish", "海鱼收集包", "4选4", "海滩传送图腾×5", [
           item("沙丁鱼", "fish"), item("金枪鱼", "fish"), item("红鲫鱼", "fish"), item("罗非鱼", "fish")
         ]),
-        bundle("night-fish", "夜间垂钓收集包", "3选3", "", [
+        bundle("night-fish", "夜间垂钓收集包", "3选3", "小型光辉戒指×1", [
           item("大眼鱼", "fish"), item("鲷鱼", "fish"), item("鳗鱼", "fish")
         ]),
-        bundle("crab-pot", "蟹笼收集包", "10选5", "", [
+        bundle("crab-pot", "蟹笼收集包", "10选5", "蟹笼×3", [
           item("龙虾", "shellfish"), item("小龙虾", "shellfish"), item("螃蟹", "shellfish"), item("鸟蛤", "shellfish"), item("蚌", "shellfish"),
           item("虾", "shellfish"), item("蜗牛", "shellfish"), item("玉黍螺", "shellfish"), item("牡蛎", "shellfish"), item("蛤", "shellfish")
         ]),
-        bundle("specialty-fish", "特色鱼类收集包", "4选4", "", [
+        bundle("specialty-fish", "特色鱼类收集包", "4选4", "海之菜肴×5", [
           item("河豚", "fish"), item("鬼鱼", "fish"), item("沙鱼", "fish"), item("木跃鱼", "fish")
         ])
       ]),
-      room("boiler", "⚡", "锅炉房", "完成任意茶水间包后解锁", "修复矿车", [
-        bundle("blacksmith", "铁匠收集包", "3选3", "", [
+      room("boiler", "⚡", "锅炉房", "完成任意2个收集包后解锁", "修复矿车", [
+        bundle("blacksmith", "铁匠收集包", "3选3", "熔炉×1", [
           item("铜锭", "mine"), item("铁锭", "mine"), item("金锭", "mine")
         ]),
-        bundle("geologist", "地理学家收集包", "4选4", "", [
+        bundle("geologist", "地理学家收集包", "4选4", "万象晶球×5", [
           item("石英", "mine"), item("泪晶", "mine"), item("地晶", "mine"), item("火水晶", "mine")
         ]),
-        bundle("adventurer", "冒险家收集包", "4选4", "", [
+        bundle("adventurer", "冒险家收集包", "4选2", "小型磁铁戒指×1", [
           item("史莱姆", "mine", 99), item("蝙蝠翅膀", "mine", 10), item("太阳精华", "mine"), item("虚空精华", "mine")
         ])
       ]),
-      room("board", "📋", "布告栏", "完成任意鱼缸包后解锁", "友谊+2全体村民", [
-        bundle("chef", "厨师收集包", "6选6", "需烹饪/产出", [
-          item("枫糖浆", "forage"), item("蕨菜", "forage"), item("松露", "animal"), item("罂粟", "crop"), item("鲭鱼", "animal"), item("蜗牛", "shellfish")
+      room("board", "📋", "布告栏", "完成任意3个收集包后解锁", "已见过的不可结婚村民+2心", [
+        bundle("chef", "厨师收集包", "6选6", "粉红蛋糕×3", [
+          item("枫糖浆", "forage"), item("蕨菜", "forage"), item("松露", "animal"), item("罂粟", "crop"), item("生鱼寿司", "cooking"), item("煎蛋", "cooking")
         ]),
-        bundle("dye", "染料收集包", "6选6", "", [
-          item("红蘑菇", "forage"), item("海胆", "shellfish"), item("向日葵", "crop"), item("羽毛", "animal"), item("蓝莓", "crop"), item("葡萄", "crop")
+        bundle("dye", "染料收集包", "6选6", "种子生产器×1", [
+          item("红蘑菇", "forage"), item("海胆", "shellfish"), item("向日葵", "crop"), item("鸭羽", "animal"), item("海蓝宝石", "mine"), item("红叶卷心菜", "crop")
         ]),
-        bundle("field-research", "土地研究收集包", "4选4", "", [
-          item("紫蘑菇", "forage"), item("鹦鹉螺化石", "shellfish"), item("山洞萝卜", "forage"), item("石英", "mine")
+        bundle("field-research", "土地研究收集包", "4选4", "回收机×1", [
+          item("紫蘑菇", "forage"), item("鹦鹉螺壳", "shellfish"), item("鲢鱼", "fish"), item("冰封晶球", "mine")
         ]),
-        bundle("fodder", "饲料收集包", "3选3", "", [
+        bundle("fodder", "饲料收集包", "3选3", "加热器×1", [
           item("小麦", "crop", 10), item("干草", "resource", 10), item("苹果", "crop", 3)
         ]),
-        bundle("enchanter", "魔法师收集包", "4选4", "", [
+        bundle("enchanter", "魔法师收集包", "4选4", "金锭×5", [
           item("橡树树脂", "forage"), item("葡萄酒", "animal"), item("兔子脚", "animal"), item("石榴", "crop")
         ])
       ]),
-      room("vault", "💰", "金库", "完成任意鱼缸包后解锁", "修复巴士→沙漠", [
-        bundle("vault-2500", "2,500G 收集包", "1选1", "", [item("金币", "money", 2500, "", "2,500G")]),
-        bundle("vault-5000", "5,000G 收集包", "1选1", "", [item("金币", "money", 5000, "", "5,000G")]),
-        bundle("vault-10000", "10,000G 收集包", "1选1", "", [item("金币", "money", 10000, "", "10,000G")]),
-        bundle("vault-25000", "25,000G 收集包", "1选1", "总计: 42,500G", [item("金币", "money", 25000, "", "25,000G")])
+      room("vault", "💰", "金库", "完成任意4个收集包后解锁", "修复巴士→沙漠", [
+        bundle("vault-2500", "2,500G 收集包", "1选1", "巧克力蛋糕×3", [item("金币", "money", 2500, "", "2,500G")]),
+        bundle("vault-5000", "5,000G 收集包", "1选1", "优质肥料×30", [item("金币", "money", 5000, "", "5,000G")]),
+        bundle("vault-10000", "10,000G 收集包", "1选1", "避雷针×1", [item("金币", "money", 10000, "", "10,000G")]),
+        bundle("vault-25000", "25,000G 收集包", "1选1", "水晶复制机×1 · 总计: 42,500G", [item("金币", "money", 25000, "", "25,000G")])
       ]),
       room("missing", "🎬", "废弃Joja超市", "社区中心全部完成后，首个雨天或雷雨日前夜解锁（Joja路线无）", "电影院", [
         bundle("missing-bundle", "失踪收集包", "6选5", "电影院", [
@@ -7446,7 +7569,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       });
 
       if (!matches.length) {
-        list.innerHTML = `<p class="empty-state">这个物品不在当前献祭清单里，可以放心处理。</p>`;
+        list.innerHTML = `<p class="empty-state">这个物品不在当前献祭清单里；处理前仍建议看目标、加工、任务和礼物需求。</p>`;
         return;
       }
 
@@ -7949,7 +8072,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         "葡萄","香味浆果","甜豌豆","美洲大树莓","蕨菜",
         "普通蘑菇","野李子","榛子","黑莓","琥珀蘑菇",
         "冬根","水晶果","雪山药","番红花","冬青树",
-        "椰子","仙人掌果子","山洞萝卜","红蘑菇","紫蘑菇","龙葵","松露","古卷轴"
+        "椰子","仙人掌果子","山洞萝卜","红蘑菇","紫蘑菇","羊肚菌","松露","古卷轴"
       ]},
       { id: "resource", label: "🪵 原材料", items: [
         "木材","石头","硬木","纤维","树液","苔藓","干草","煤炭","粘土","橡子","枫树种子"
@@ -7967,7 +8090,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       ]},
       { id: "shellfish", label: "🦀 贝类", items: [
         "龙虾","小龙虾","螃蟹","鸟蛤","蚌","虾","蜗牛","玉黍螺","牡蛎","蛤","海胆","白藻",
-        "海草","海葡萄","海贝","河贝","彩虹贝","珍珠","珊瑚","海星","海绵"
+        "海草","绿藻","海葡萄","海贝","河贝","彩虹贝","珍珠","珊瑚","海星","海绵"
       ]},
       { id: "animal", label: "🥚 动物产物", items: [
         "牛奶","大壶牛奶","羊奶","大瓶羊奶",
@@ -7979,13 +8102,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         "松露油","布料","山羊奶酪","奶酪","蜂蜜","果酱","蜂蜜酒","淡啤酒","葡萄酒","果酒","蔬菜汁","绿茶","鱼籽","陈年鱼籽","鱿鱼墨汁","鱼子酱","恐龙蛋黄酱","南瓜灯","蛋黄酱","咖啡","枫糖浆","橡树树脂","松焦油"
       ]},
       { id: "mine", label: "⛏️ 矿物锭", items: [
-        "铜锭","铁锭","金锭","铱锭","铱矿石","精炼石英","电池组",
+        "铜矿石","铁矿石","金矿石","铜锭","铁锭","金锭","铱矿石","铱锭","精炼石英","电池组",
         "石英","泪晶","地晶","火水晶","冰封晶球","骨头碎片",
         "紫水晶","海蓝宝石","钻石","翡翠","红宝石","黄水晶","五彩碎片"
       ]},
       { id: "monster", label: "👾 怪物素材", items: ["史莱姆","蝙蝠翅膀","太阳精华","虚空精华","骨头碎片","菌丝体","空灵之尘","史莱姆蛋（绿）","史莱姆蛋（蓝）","史莱姆蛋（红）","史莱姆蛋（紫）"]},
-      { id: "cook", label: "🍳 烹饪", items: ["煎蛋","曲奇","冰淇淋","小麦粉","葡萄布丁","填料","粉瓜","星之果实茶"]},
-      { id: "special", label: "✨ 特殊", items: ["古代玩偶","鹦鹉螺化石","奖券","谜之盒","稜镜碎片","五彩碎片","泥土","虚空之蛋","金香蕉","咖啡豆"]},
+      { id: "cook", label: "🍳 烹饪", items: ["煎蛋","生鱼寿司","曲奇","冰淇淋","小麦粉","葡萄布丁","填料","粉瓜","星之果实茶"]},
+      { id: "special", label: "✨ 特殊", items: ["金币","古代玩偶","鹦鹉螺壳","鹦鹉螺化石","奖券","谜之盒","稜镜碎片","五彩碎片","泥土","虚空之蛋","金香蕉","咖啡豆"]},
     ];
 
     /* 工具升级数据 */
@@ -7996,7 +8119,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       { id: "can", name: "壶", emoji: "🚿" },
       { id: "rod", name: "渔竿", emoji: "🎣", levels: ["初始", "训练", "玻璃纤维", "铱"] },
     ];
-    const TOOL_LEVELS = ["初始", "铜", "铁", "金", "铱"];
+    const TOOL_LEVELS = ["初始", "铜", "钢", "金", "铱"];
     const ROD_LEVELS = ["初始", "训练", "玻璃纤维", "铱"];
 
     /* 加工设备 */
@@ -8035,74 +8158,73 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       spring: [
         { day: "1-3", title: "种春季作物", reason: "推荐土豆/花椰菜/防风草，性价比最高的开局组合", priority: "info", goal: null },
         { day: "全季", title: "凑齐春季作物收集包", reason: "防风草、青豆、花椰菜、土豆 各1，茶水间用", priority: "info", goal: null },
-        { day: "1-13", title: "春13参加蛋蛋节", reason: "找到金蛋赢奖；纪念品商店出售草莓种子(100g)，是春季最赚的作物", priority: "festival", goal: null },
-        { day: "1-24", title: "春24参加花舞节", reason: "和心仪对象跳舞 +1 友谊；商店有花种和糖", priority: "festival", goal: null },
+        { day: "1-13", title: "春13参加蛋蛋节", reason: "彩蛋狩猎首胜得草帽；商店出售草莓种子(100g)，春季高收益作物", priority: "festival", goal: null },
+        { day: "15-18", title: "采美洲大树莓", reason: "灌木会刷大量浆果，前期最实用的体力食物", priority: "info", goal: null },
+        { day: "1-24", title: "春24参加花舞节", reason: "邀请4心以上舞伴跳舞，舞伴+1心；商店有花盆、稻草人和装饰", priority: "festival", goal: null },
         { day: "15-25", title: "升级铜壶", reason: "选雨天前一天交，第二天不耽误浇水", priority: "urgent", goal: "upgrade-can-copper" },
         { day: "最晚", title: "主要作物最晚播种", reason: "花椰菜春16、青豆18、土豆22、防风草24；草莓春20", priority: "urgent", goal: null },
       ],
       summer: [
-        { day: "1-3", title: "种夏季作物", reason: "蓝莓(回报最高) + 热辣椒(持续收获) + 甜瓜+杨桃", priority: "info", goal: null },
+        { day: "1-3", title: "种夏季作物", reason: "蓝莓稳健高回报，甜瓜冲献祭/高品质；杨桃需沙漠或旅行货车", priority: "info", goal: null },
         { day: "全季", title: "凑齐夏季作物收集包", reason: "番茄、热辣椒、蓝莓、甜瓜 各1", priority: "info", goal: null },
-        { day: "1-11", title: "夏11荧光水母之夜", reason: "夜晚海滩观看水母 +1 友谊；新增钓鱼物品", priority: "festival", goal: null },
-        { day: "1-28", title: "夏28月光水母舞会", reason: "和镇民跳舞 +1 全镇友谊", priority: "festival", goal: null },
-        { day: "全季", title: "升级铁/钢镐准备进矿洞", reason: "夏季矿洞活跃，多挖矿攒锭", priority: "info", goal: null },
+        { day: "1-11", title: "夏11夏威夷宴会", reason: "带高品质可食用未烹饪食材放汤，可影响镇民友谊", priority: "festival", goal: null },
+        { day: "20-21", title: "鳟鱼大赛", reason: "森林河流钓彩虹鳟鱼换奖励，1.6新增活动", priority: "festival", goal: null },
+        { day: "1-28", title: "夏28月光水母", reason: "夜晚海滩观看水母；主要是剧情观赏，不提供跳舞好感", priority: "festival", goal: null },
+        { day: "全季", title: "升级钢镐准备深层矿洞", reason: "夏季适合冲矿井40/80层，攒铁锭、金锭和晶球", priority: "info", goal: null },
         { day: "最晚", title: "主要作物最晚播种", reason: "蓝莓/杨桃夏15、甜瓜16、番茄17、辣椒23", priority: "urgent", goal: null },
       ],
       fall: [
-        { day: "1-3", title: "种秋季作物", reason: "蔓越莓(回报最高) + 南瓜 + 玉米(夏季已种则续命) + 朝鲜蓟", priority: "info", goal: null },
+        { day: "1-3", title: "种秋季作物", reason: "蔓越莓高回报，南瓜冲献祭/高品质；朝鲜蓟第一年通常不能直接买", priority: "info", goal: null },
         { day: "全季", title: "凑齐秋季作物收集包", reason: "玉米、茄子、南瓜、山药 各1", priority: "info", goal: null },
-        { day: "1-16", title: "秋16参加星露谷展览会", reason: "展示9个高品质农产品，800分以上有奖", priority: "festival", goal: null },
-        { day: "1-27", title: "秋27参加万圣夜", reason: "镇广场迷宫探险 +好感", priority: "festival", goal: null },
-        { day: "全季", title: "种上古水果种子", reason: "上古水果是全游戏最赚的作物之一，最后一季能种露地", priority: "info", goal: null },
+        { day: "8-11", title: "采黑莓", reason: "灌木大量刷黑莓，可做食物或卖钱补现金流", priority: "info", goal: null },
+        { day: "1-16", title: "秋16参加星露谷展览会", reason: "农庄展览最多放9件；90分拿第一名和1000星星币", priority: "festival", goal: null },
+        { day: "1-27", title: "秋27参加万灵节", reason: "迷宫拿奖励，节日商店购物；不会直接增加好感", priority: "festival", goal: null },
+        { day: "全季", title: "保留上古种子", reason: "露地应春夏尽早种；秋季通常留给温室、姜岛或花盆", priority: "info", goal: null },
         { day: "最晚", title: "主要作物最晚播种", reason: "南瓜秋15、山药18、朝鲜蓟20、蔓越莓21、茄子23", priority: "urgent", goal: null },
       ],
       winter: [
-        { day: "全季", title: "矿洞速通到底层", reason: "冬季无作物，全力探索矿洞挖铱矿", priority: "info", goal: null },
-        { day: "1-8", title: "冬8冰雪节", reason: "找冰雕、跟村民冰钓", priority: "festival", goal: null },
-        { day: "1-25", title: "冬25冬星节", reason: "类似圣诞节，跟领到的秘密目标村民互送礼物", priority: "festival", goal: null },
+        { day: "全季", title: "矿洞速通到底层", reason: "目标是120层和骷髅钥匙；铱矿主要去沙漠骷髅洞", priority: "info", goal: null },
+        { day: "1-8", title: "冬8冰雪节", reason: "参加冰钓比赛，节日商店可买装饰", priority: "festival", goal: null },
+        { day: "12-13", title: "鱿鱼节", reason: "海边钓鱿鱼换分级奖励，1.6新增活动", priority: "festival", goal: null },
+        { day: "15-17", title: "夜市", reason: "买稀有装饰/种子，坐潜水艇钓深海鱼", priority: "festival", goal: null },
+        { day: "1-25", title: "冬25冬星盛宴", reason: "给秘密礼物对象送礼，并从别人那里收礼物", priority: "festival", goal: null },
         { day: "全季", title: "整理农场&升级所有工具", reason: "趁没作物压力，去铁匠把工具都升级一遍", priority: "info", goal: null },
-        { day: "全季", title: "冬季可种 → 冬季种子组合包", reason: "在工艺室换冬季种子，可在花盆里继续种", priority: "info", goal: null },
+        { day: "全季", title: "冬季可种 → 冬季种子", reason: "冬季种子可露地种；花盆适合室内补种非冬季作物", priority: "info", goal: null },
       ]
     };
 
     /* ── 目标模板 ── */
     const GOAL_TEMPLATES = [
       { cat: "工具升级", goals: [
-        { id: "upgrade-pickaxe-copper", title: "升级铜镐", emoji: "⛏️", how: "upgrade",
+        { id: "upgrade-pickaxe-copper", title: "升级铜镐", emoji: "⛏️", how: "upgrade", duration: "2 天",
           steps: [
             { label: "铜锭 ×5", invKey: "铜锭", invNeed: 5, sub: "或 铜矿石×25 + 煤炭×5 熔炼" },
             { label: "2,000g", invKey: "金币", invNeed: 2000 },
-            { label: "交给铁匠 Clint", sub: "周二至周日营业，升级需2天" },
           ]},
-        { id: "upgrade-axe-copper", title: "升级铜斧", emoji: "🪓", how: "upgrade",
+        { id: "upgrade-axe-copper", title: "升级铜斧", emoji: "🪓", how: "upgrade", duration: "2 天",
           steps: [
             { label: "铜锭 ×5", invKey: "铜锭", invNeed: 5 },
             { label: "2,000g", invKey: "金币", invNeed: 2000 },
-            { label: "交给铁匠 Clint" },
           ]},
-        { id: "upgrade-hoe-copper", title: "升级铜锄", emoji: "🌱", how: "upgrade",
+        { id: "upgrade-hoe-copper", title: "升级铜锄", emoji: "🌱", how: "upgrade", duration: "2 天",
           steps: [
             { label: "铜锭 ×5", invKey: "铜锭", invNeed: 5 },
             { label: "2,000g", invKey: "金币", invNeed: 2000 },
-            { label: "交给铁匠 Clint" },
           ]},
-        { id: "upgrade-can-copper", title: "升级铜壶", emoji: "🚿", how: "upgrade",
+        { id: "upgrade-can-copper", title: "升级铜壶", emoji: "🚿", how: "upgrade", duration: "2 天", note: "选雨天前一天交，不耽误浇水",
           steps: [
             { label: "铜锭 ×5", invKey: "铜锭", invNeed: 5 },
             { label: "2,000g", invKey: "金币", invNeed: 2000 },
-            { label: "交给铁匠 Clint", sub: "选雨天前一天交，不耽误浇水" },
           ]},
-        { id: "upgrade-pickaxe-steel", title: "升级钢镐", emoji: "⛏️", how: "upgrade",
+        { id: "upgrade-pickaxe-steel", title: "升级钢镐", emoji: "⛏️", how: "upgrade", duration: "2 天",
           steps: [
             { label: "铁锭 ×5", invKey: "铁锭", invNeed: 5 },
             { label: "5,000g", invKey: "金币", invNeed: 5000 },
-            { label: "交给铁匠 Clint" },
           ]},
-        { id: "upgrade-axe-steel", title: "升级钢斧", emoji: "🪓", how: "upgrade",
+        { id: "upgrade-axe-steel", title: "升级钢斧", emoji: "🪓", how: "upgrade", duration: "2 天",
           steps: [
             { label: "铁锭 ×5", invKey: "铁锭", invNeed: 5 },
             { label: "5,000g", invKey: "金币", invNeed: 5000 },
-            { label: "交给铁匠 Clint" },
           ]},
       ]},
       { cat: "加工设备", goals: [
@@ -8141,7 +8263,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
           steps: [
             { label: "木材 ×15", invKey: "木材", invNeed: 15 },
             { label: "石头 ×15", invKey: "石头", invNeed: 15 },
-            { label: "土曜石 ×1" },
+            { label: "地晶 ×1", invKey: "地晶", invNeed: 1 },
             { label: "铜锭 ×1", invKey: "铜锭", invNeed: 1 },
           ]},
         { id: "craft-cheese-press", title: "做奶酪压榨机", emoji: "🧀", how: "craft", note: "🔓 畜牧等级 6",
@@ -8163,57 +8285,50 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
           ]},
       ]},
       { cat: "农场建筑", goals: [
-        { id: "build-silo", title: "建筒仓", emoji: "🌾", how: "build", note: "找木匠 Robin，建议先于鸡舍",
+        { id: "build-silo", title: "建筒仓", emoji: "🌾", how: "build", duration: "2 天", note: "建议先于鸡舍",
           steps: [
             { label: "石头 ×100", invKey: "石头", invNeed: 100 },
             { label: "粘土 ×10", invKey: "粘土", invNeed: 10 },
             { label: "铜锭 ×5", invKey: "铜锭", invNeed: 5 },
             { label: "100g", invKey: "金币", invNeed: 100 },
-            { label: "找 Robin 建造", sub: "木匠铺，建造需3天" },
           ]},
-        { id: "build-coop", title: "建鸡舍", emoji: "🐔", how: "build",
+        { id: "build-coop", title: "建鸡舍", emoji: "🐔", how: "build", duration: "3 天",
           steps: [
             { label: "木材 ×300", invKey: "木材", invNeed: 300 },
             { label: "石头 ×100", invKey: "石头", invNeed: 100 },
             { label: "4,000g", invKey: "金币", invNeed: 4000 },
-            { label: "找 Robin 建造", sub: "建造需3天" },
           ]},
-        { id: "build-coop-big", title: "升级大鸡舍", emoji: "🐓", how: "build",
+        { id: "build-coop-big", title: "升级大鸡舍", emoji: "🐓", how: "build", duration: "2 天",
           steps: [
             { label: "木材 ×400", invKey: "木材", invNeed: 400 },
             { label: "石头 ×150", invKey: "石头", invNeed: 150 },
             { label: "10,000g", invKey: "金币", invNeed: 10000 },
-            { label: "找 Robin 升级" },
           ]},
-        { id: "build-barn", title: "建畜棚", emoji: "🐄", how: "build",
+        { id: "build-barn", title: "建畜棚", emoji: "🐄", how: "build", duration: "3 天",
           steps: [
             { label: "木材 ×350", invKey: "木材", invNeed: 350 },
             { label: "石头 ×150", invKey: "石头", invNeed: 150 },
             { label: "6,000g", invKey: "金币", invNeed: 6000 },
-            { label: "找 Robin 建造", sub: "建造需3天" },
           ]},
-        { id: "build-mill", title: "建磨坊", emoji: "🌬️", how: "build", note: "可把小麦磨成面粉，甜菜磨成糖",
+        { id: "build-mill", title: "建磨坊", emoji: "🌬️", how: "build", duration: "2 天", note: "可把小麦磨成面粉，甜菜磨成糖",
           steps: [
             { label: "木材 ×150", invKey: "木材", invNeed: 150 },
             { label: "石头 ×50", invKey: "石头", invNeed: 50 },
             { label: "布料 ×4", invKey: "布料", invNeed: 4 },
             { label: "2,500g", invKey: "金币", invNeed: 2500 },
-            { label: "找 Robin 建造" },
           ]},
-        { id: "build-stable", title: "建马厩", emoji: "🐴", how: "build", note: "建造后会有匹马，加快移动",
+        { id: "build-stable", title: "建马厩", emoji: "🐴", how: "build", duration: "2 天", note: "建造后会有匹马，加快移动",
           steps: [
-            { label: "硬木 ×10", invKey: "硬木", invNeed: 10 },
+            { label: "硬木 ×100", invKey: "硬木", invNeed: 100 },
             { label: "铁锭 ×5", invKey: "铁锭", invNeed: 5 },
             { label: "10,000g", invKey: "金币", invNeed: 10000 },
-            { label: "找 Robin 建造" },
           ]},
-        { id: "build-fish-pond", title: "建鱼塘", emoji: "🐠", how: "build", note: "养鱼自动产卵/鱼籽",
+        { id: "build-fish-pond", title: "建鱼塘", emoji: "🐠", how: "build", duration: "2 天", note: "养鱼自动产卵/鱼籽",
           steps: [
             { label: "石头 ×200", invKey: "石头", invNeed: 200 },
-            { label: "苔藓 ×5", invKey: "苔藓", invNeed: 5 },
-            { label: "海藻 ×5" },
+            { label: "海草 ×5", invKey: "海草", invNeed: 5 },
+            { label: "绿藻 ×5", invKey: "绿藻", invNeed: 5 },
             { label: "5,000g", invKey: "金币", invNeed: 5000 },
-            { label: "找 Robin 建造" },
           ]},
       ]},
       { cat: "其他", goals: [
@@ -8227,6 +8342,33 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
           steps: [{ label: "完成社区中心工艺室" }]},
       ]},
     ];
+
+    const ITEM_SOURCE_HINTS = {
+      "金币": "卖作物/鱼/矿物、完成任务和节日奖励获得",
+      "木材": "砍树、树枝，或在木匠商店购买",
+      "石头": "敲石头、下矿井，或在木匠商店购买",
+      "硬木": "砍大树桩/大圆木、秘密森林树桩、桃花心木",
+      "粘土": "锄地、晶球、冬季采集地点或海滩 artifact 点",
+      "煤炭": "矿井煤车/矿车、煤球怪、煤炭窑或铁匠购买",
+      "铜矿石": "矿井1-39层较多；5矿石+1煤炭熔炼1铜锭",
+      "铁矿石": "矿井40-79层较多；5矿石+1煤炭熔炼1铁锭",
+      "金矿石": "矿井80层以后较多；5矿石+1煤炭熔炼1金锭",
+      "铜锭": "5铜矿石+1煤炭在熔炉熔炼，或少量购买/掉落",
+      "铁锭": "5铁矿石+1煤炭在熔炉熔炼",
+      "金锭": "5金矿石+1煤炭在熔炉熔炼",
+      "铱锭": "5铱矿石+1煤炭在熔炉熔炼，主要来自骷髅洞/晶球",
+      "地晶": "矿井1-39层、晶球、掘地虫掉落",
+      "枫糖浆": "树液采集器挂枫树",
+      "橡树树脂": "树液采集器挂橡树",
+      "松焦油": "树液采集器挂松树",
+      "布料": "织布机加工羊毛，或回收湿报纸/沙漠商人等来源",
+      "海草": "海洋钓鱼常见杂物，也可在蟹笼/鱼塘相关来源获得",
+      "绿藻": "淡水钓鱼常见杂物，矿井水域也能钓到",
+      "史莱姆": "击杀史莱姆，史莱姆屋也可稳定获得",
+      "小麦": "夏/秋种植小麦",
+      "干草": "筒仓割草储存，或在玛妮牧场购买",
+      "苹果": "秋季苹果树，果蝠洞或旅行货车也可能获得"
+    };
 
     /* ── 加工映射（数据来自宝贝的需求） ── */
     const PROCESS_MAP = {
@@ -8267,23 +8409,28 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         { method: "罐头瓶", out: "辣椒果酱", price: 130, gain: "+225%" },
         { method: "小桶", out: "辣椒酒", price: 120, gain: "+200%" },
       ],
-      "铜矿石": [{ method: "熔炉", out: "铜锭", price: 60, gain: "5矿石→1锭" }],
-      "铁矿石": [{ method: "熔炉", out: "铁锭", price: 120, gain: "5矿石→1锭" }],
-      "金矿石": [{ method: "熔炉", out: "金锭", price: 250, gain: "5矿石→1锭" }],
-      "铱矿石": [{ method: "熔炉", out: "铱锭", price: 1000, gain: "5矿石→1锭" }],
+      "铜矿石": [{ method: "熔炉", out: "铜锭", price: 60, gain: "5矿石+1煤炭→1锭" }],
+      "铁矿石": [{ method: "熔炉", out: "铁锭", price: 120, gain: "5矿石+1煤炭→1锭" }],
+      "金矿石": [{ method: "熔炉", out: "金锭", price: 250, gain: "5矿石+1煤炭→1锭" }],
+      "铱矿石": [{ method: "熔炉", out: "铱锭", price: 1000, gain: "5矿石+1煤炭→1锭" }],
       "小麦": [
         { method: "磨坊", out: "小麦粉", price: 50, gain: "1麦→1粉" },
         { method: "小桶", out: "啤酒", price: 200, gain: "+100%" },
       ],
       "啤酒花": [{ method: "小桶", out: "淡啤酒", price: 300, gain: "+233%" }],
-      "葡萄": [{ method: "小桶", out: "葡萄酒", price: 240, gain: "+200%" }],
+      "葡萄": [
+        { method: "小桶", out: "葡萄酒", price: 240, gain: "+200%" },
+        { method: "罐头瓶", out: "葡萄果酱", price: 210, gain: "+163%" },
+      ],
       "牛奶": [{ method: "奶酪压榨机", out: "奶酪", price: 230, gain: "+77%" }],
+      "大壶牛奶": [{ method: "奶酪压榨机", out: "金星奶酪", price: 345, gain: "+82%" }],
       "羊毛": [{ method: "织布机", out: "布料", price: 470, gain: "+58%" }],
       "山羊奶": [{ method: "奶酪压榨机", out: "山羊奶酪", price: 400, gain: "+108%" }],
+      "羊奶": [{ method: "奶酪压榨机", out: "山羊奶酪", price: 400, gain: "+78%" }],
+      "大瓶羊奶": [{ method: "奶酪压榨机", out: "金星山羊奶酪", price: 600, gain: "+74%" }],
       "鸭蛋": [{ method: "蛋黄酱机", out: "鸭蛋黄酱", price: 375, gain: "+295%" }],
       // 采集物可加工
       "黑莓": [{ method: "罐头瓶", out: "黑莓果酱", price: 90, gain: "+350%" }, { method: "小桶", out: "黑莓酒", price: 60, gain: "+200%" }],
-      "黄水仙": [{ method: "罐头瓶", out: "腌黄水仙", price: 110, gain: "+267%" }],
       "野山葵": [{ method: "罐头瓶", out: "腌野山葵", price: 110, gain: "+267%" }],
       "普通蘑菇": [{ method: "罐头瓶", out: "蘑菇酱", price: 130, gain: "+225%" }],
       "紫蘑菇": [{ method: "罐头瓶", out: "紫蘑菇酱", price: 550, gain: "+120%" }],
@@ -8291,7 +8438,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       "松露": [{ method: "产油机", out: "松露油", price: 1065, gain: "+70%" }],
       // 作物
       "土豆": [{ method: "罐头瓶", out: "腌土豆", price: 210, gain: "+162%" }],
-      "花椰菜": [{ method: "罐头瓶", out: "腌花椰菜", price: 400, gain: "+128%" }, { method: "小桶", out: "蔬菜汁", price: 218, gain: "+25%" }],
+      "花椰菜": [{ method: "罐头瓶", out: "腌花椰菜", price: 400, gain: "+128%" }, { method: "小桶", out: "花椰菜汁", price: 393, gain: "+125%" }],
       "防风草": [{ method: "罐头瓶", out: "腌防风草", price: 120, gain: "+243%" }],
       "羽衣甘蓝": [{ method: "罐头瓶", out: "腌羽衣甘蓝", price: 270, gain: "+145%" }],
       "蔓越莓": [{ method: "罐头瓶", out: "蔓越莓果酱", price: 200, gain: "+167%" }, { method: "小桶", out: "蔓越莓酒", price: 225, gain: "+200%" }],
@@ -8309,13 +8456,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       "鸡蛋(棕)": [{ method: "蛋黄酱机", out: "蛋黄酱", price: 190, gain: "+280%" }],
       "大鸡蛋(白)": [{ method: "蛋黄酱机", out: "大蛋黄酱", price: 285, gain: "+200%" }],
       "大鸡蛋(棕)": [{ method: "蛋黄酱机", out: "大蛋黄酱", price: 285, gain: "+200%" }],
-      "羊奶": [{ method: "奶酪压榨机", out: "山羊奶酪", price: 400, gain: "+77%" }],
+      "虚空蛋": [{ method: "蛋黄酱机", out: "虚空蛋黄酱", price: 275, gain: "+323%" }],
+      "恐龙蛋": [{ method: "蛋黄酱机", out: "恐龙蛋黄酱", price: 800, gain: "+129%" }],
       // 草莓
-      "草莓": [{ method: "罐头瓶", out: "草莓果酱", price: 240, gain: "+200%" }, { method: "小桶", out: "草莓酒", price: 360, gain: "+200%" }],
+      "草莓": [{ method: "小桶", out: "草莓酒", price: 360, gain: "+200%" }, { method: "罐头瓶", out: "草莓果酱", price: 290, gain: "+142%" }],
       // 咖啡豆
-      "咖啡豆": [{ method: "小桶", out: "咖啡", price: 150, gain: "+1100%" }],
+      "咖啡豆": [{ method: "小桶", out: "咖啡", price: 150, gain: "5豆→1咖啡" }],
       // 蜂蜜
-      "蜂蜜": [],
+      "蜂蜜": [{ method: "小桶", out: "蜂蜜酒", price: 300, gain: "+200%" }],
     };
 
     /* ── 售价数据（决策面板/建议用） ── */
@@ -8324,11 +8472,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       "玉米":50,"南瓜":320,"番茄":60,"甜瓜":250,"杨桃":750,
       "上古水果":550,"热辣椒":40,"辣椒":40,"蓝莓":50,
       "土豆":80,"花椰菜":175,"防风草":35,"青豆":40,"羽衣甘蓝":110,
-      "胡萝卜":35,"郁金香":30,"蓝爵":200,"罂粟":140,
+      "胡萝卜":35,"郁金香":30,"蓝爵":50,"罂粟":140,
       "茄子":60,"山药":160,"葡萄":80,"小麦":25,"啤酒花":25,
-      "向日葵":80,"夏南瓜":40,"夏季亮片":90,
+      "向日葵":80,"夏南瓜":45,"夏季亮片":90,
       "蔓越莓":75,"朝鲜蓟":160,"红叶卷心菜":260,"苋菜":150,
-      "甜菜":100,"西兰花":100,"宝石甜莓":350,"草莓":120,
+      "甜菜":100,"西兰花":70,"宝石甜莓":3000,"草莓":120,
       // 树果
       "苹果":100,"杏子":50,"橙子":100,"桃子":140,"石榴":140,"樱桃":80,
       // 采集
@@ -8336,19 +8484,19 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       "香味浆果":80,"甜豌豆":50,"美洲大树莓":20,
       "普通蘑菇":40,"野李子":80,"榛子":90,"黑莓":20,
       "冬根":70,"水晶果":150,"雪山药":100,"番红花":140,"冬青树":80,
-      "椰子":100,"仙人掌果子":75,"山洞萝卜":25,"红蘑菇":75,"紫蘑菇":250,"龙葵":30,"蕨菜":25,"松露":625,
+      "椰子":100,"仙人掌果子":75,"山洞萝卜":25,"红蘑菇":75,"紫蘑菇":250,"羊肚菌":150,"蕨菜":90,"松露":625,
       // 矿物
       "铜矿石":5,"铁矿石":10,"金矿石":25,"铱矿石":100,
       "铜锭":60,"铁锭":120,"金锭":250,"铱锭":1000,
       "煤炭":15,"石英":25,"精炼石英":50,
       "紫水晶":100,"海蓝宝石":180,"翡翠":250,"红宝石":250,"钻石":750,"黄水晶":75,
       // 原材料
-      "木材":2,"石头":2,"硬木":15,"纤维":1,"粘土":20,"苔藓":3,"干草":50,
+      "木材":2,"石头":2,"硬木":15,"纤维":1,"粘土":20,"苔藓":3,
       "树液":2,"橡子":20,"枫树种子":35,
       // 树脂
       "枫糖浆":200,"橡树树脂":150,"松焦油":100,
       // 动物
-      "牛奶":125,"羊毛":340,"蜂蜜":100,"鸭蛋":95,"羽毛":125,"兔子脚":565,
+      "牛奶":125,"羊毛":340,"蜂蜜":100,"鸭蛋":95,"羽毛":250,"鸭羽":250,"兔子脚":565,
       "大壶牛奶":190,"大瓶羊奶":345,"大鸡蛋(白)":95,"大鸡蛋(棕)":95,
       // 鱼
       "太阳鱼":30,"鲶鱼":200,"西鲱":45,"虎纹鳟鱼":150,"鲢鱼":75,
@@ -8367,9 +8515,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       // 怪物
       "史莱姆":5,"蝙蝠翅膀":15,"太阳精华":40,"虚空精华":60,
       // 特殊
-      "古代玩偶":100,"鹦鹉螺化石":120,"稜镜碎片":2000,"五彩碎片":5,"金香蕉":150,"咖啡豆":15,
+      "古代玩偶":100,"鹦鹉螺壳":120,"鹦鹉螺化石":80,"稜镜碎片":2000,"五彩碎片":2000,"金香蕉":150,"咖啡豆":15,
       // 补充贝类
-      "海草":30,"海葡萄":30,"海贝":50,"河贝":40,"彩虹贝":300,"珍珠":2500,"珊瑚":80,"海星":50,"海绵":40,
+      "海草":20,"绿藻":15,"海葡萄":30,"海贝":50,"河贝":40,"彩虹贝":300,"珍珠":2500,"珊瑚":80,"海星":50,"海绵":40,
       // 补充鱼类
       "草鱼":150,"彩虹鱼":100,"绿松石鱼":30,"玻璃鱼":75,"铁头鱼":75,
       "午夜鳗":150,"狮子鱼":100,"蓝铁饼":75,"深海鱼":75,"史莱姆杰克":100,
@@ -8377,12 +8525,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       "骨头碎片":15,"菌丝体":15,"空灵之尘":50,
       "史莱姆蛋（绿）":1000,"史莱姆蛋（蓝）":1750,"史莱姆蛋（红）":2500,"史莱姆蛋（紫）":5000,
       // 补充采集
-      "春之洋葱":8,"蕨菜":25,"琥珀蘑菇":80,"古卷轴":80,
+      "春之洋葱":8,"琥珀蘑菇":80,"古卷轴":80,
       // 补充动物
       "鸡蛋(白)":50,"鸡蛋(棕)":50,"羊奶":225,"鸭羽":250,"兔子毛":260,
       "虚空蛋":65,"龙蛋":50,"恐龙蛋":350,"金色鸡蛋":500,
       // 补充工匠
-      "蛋黄酱":190,"咖啡":150,
+      "蛋黄酱":190,"生鱼寿司":220,"煎蛋":35,"咖啡":150,
     };
 
     /* ── localStorage ── */
@@ -8391,7 +8539,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       try { return JSON.parse(localStorage.getItem(APP_KEY)) || {}; } catch { return {}; }
     }
     function saveApp() {
-      localStorage.setItem(APP_KEY, JSON.stringify(appState));
+      const { pendingInventoryDelete, ...persistedState } = appState;
+      localStorage.setItem(APP_KEY, JSON.stringify(persistedState));
     }
 
     const _appLoaded = loadApp();
@@ -8404,6 +8553,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       tools: _appLoaded.tools || {},           // { pickaxe: "铜", ... }
       equipment: _appLoaded.equipment || {},   // { preserves_jar: 3, ... }
       buildings: _appLoaded.buildings || {},   // { silo: true, ... }
+      pendingInventoryDelete: "",
     };
 
     const APP_SEASON_BACKGROUNDS = {
@@ -8520,52 +8670,85 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       }
       list.innerHTML = appState.goals.map(goal => {
         const tpl = findGoalTemplate(goal.id) || goal;
-        const steps = (goal.steps || tpl.steps).map((step, idx) => {
+        const rawList = goal.steps || tpl.steps;
+        /* 过滤掉旧数据里残留的"找 Robin / 找 Clint"等动作 step
+           - self 类全保留（它的 step 本身就是动作描述，如"准备食物回血"）
+           - 其他类只保留含 invKey 或 invNeed 的真材料 step */
+        const matList = rawList.filter(s => {
+          if (tpl.how === "self") return true;
+          return s.invKey || s.invNeed;
+        });
+        const matSteps = matList.map((step, idx) => {
           const have = step.invKey ? (appState.inventory[step.invKey] || 0) : 0;
           const auto = step.invNeed && have >= step.invNeed;
           const checked = step.checked || auto;
+          /* idx 是过滤后的索引，但 toggleGoalStep 需要原始数组里的索引 */
+          const origIdx = rawList.indexOf(step);
           return `
-            <button class="goal-step ${checked ? "done" : ""}" data-toggle-step="${goal.id}|${idx}" type="button">
+            <button class="goal-step ${checked ? "done" : ""}" data-toggle-step="${goal.id}|${origIdx}" type="button">
               <span class="goal-step-check">${checked ? "✓" : ""}</span>
-              <div style="flex:1; min-width:0;">
-                <div class="goal-step-line"><span class="goal-step-text">${escapeHtml(step.label)}</span>${step.sub ? `<span class="goal-step-sub"> ${escapeHtml(step.sub)}</span>` : ""}</div>
-                ${step.invKey && step.invNeed ? `<div class="goal-step-have">背包中：${have} / ${step.invNeed}${auto ? " ✓ 已凑齐" : ""}</div>` : ""}
+              <div class="goal-step-body">
+                <div class="goal-step-text">${escapeHtml(step.label)}</div>
+                ${getStepSub(step) ? `<div class="goal-step-sub">${escapeHtml(getStepSub(step))}</div>` : ""}
               </div>
+              ${step.invKey && step.invNeed ? `<div class="goal-step-have ${auto ? "ready" : ""}">${auto ? "✓ " : ""}${have}/${step.invNeed}</div>` : ""}
             </button>
           `;
         }).join("");
-        const total = (goal.steps || tpl.steps).length;
-        const done = (goal.steps || tpl.steps).filter((s, i) => {
+
+        /* —— 获取方式：合并 how + duration，作为可勾选的最终动作步骤 ——
+           self 类不需要 action step（它的 step 已经是动作描述） */
+        const ACTION_TPL = {
+          craft:   { icon: "🔨", label: "在合成菜单制作", venue: "" },
+          build:   { icon: "🏡", label: "木匠商店找 Robin 建造", venue: "周一休 · 9:00–17:00" },
+          upgrade: { icon: "⚒️", label: "铁匠铺交给 Clint 升级", venue: "周五休 · 9:00–16:00" }
+        };
+        const actDef = ACTION_TPL[tpl.how];
+        let actionStep = "";
+        let hasAction = false;
+        if (actDef) {
+          hasAction = true;
+          const subs = [];
+          if (tpl.duration) subs.push(`用时 ${tpl.duration}`);
+          if (actDef.venue) subs.push(actDef.venue);
+          const subText = subs.map(escapeHtml).join(" · ");
+          const actDone = goal.actionDone === true;
+          actionStep = `
+            <button class="goal-step goal-step--action ${actDone ? "done" : ""}" data-toggle-action="${goal.id}" type="button">
+              <div class="goal-step-body">
+                <div class="goal-step-text"><span class="goal-action-ico">${actDef.icon}</span>${escapeHtml(actDef.label)}</div>
+                ${subText ? `<div class="goal-step-sub">${subText}</div>` : ""}
+              </div>
+            </button>
+          `;
+        }
+        const steps = matSteps + actionStep;
+
+        const total = matList.length + (hasAction ? 1 : 0);
+        const matDone = matList.filter(s => {
           const have = s.invKey ? (appState.inventory[s.invKey] || 0) : 0;
           return s.checked || (s.invNeed && have >= s.invNeed);
         }).length;
+        const done = matDone + (hasAction && goal.actionDone ? 1 : 0);
         const pct = total ? Math.round(done / total * 100) : 0;
         const complete = pct === 100;
-        const howLabel = { craft: "📍 合成菜单", build: "📍 去木匠店", upgrade: "📍 去铁匠铺", self: "📍 自行" }[tpl.how] || "";
-        const isOpen = goal.expanded === true;
+        const isOpen = goal.expanded !== false;
         return `
           <div class="goal-card-container">
             <button class="goal-delete-btn" data-delete-goal="${goal.id}" type="button">🗑️<br/>删除</button>
-            <div class="goal-card ${complete ? "complete" : ""}" data-swipe-goal="${goal.id}">
+            <div class="goal-card ${complete ? "complete" : ""} ${isOpen ? "expanded" : ""}" data-swipe-goal="${goal.id}">
               <button type="button" class="goal-head" data-toggle-goal="${goal.id}">
                 <span class="goal-emoji">${renderGoalIcon(tpl)}</span>
                 <div class="goal-info">
-                  <div class="goal-title-row">
-                    <span class="goal-title">${escapeHtml(tpl.title)}</span>
-                    ${howLabel ? `<span class="goal-how ${tpl.how}">${howLabel}</span>` : ""}
-                  </div>
-                  ${tpl.note ? `<div class="goal-meta">${escapeHtml(tpl.note)}</div>` : ""}
+                  <div class="goal-title">${escapeHtml(tpl.title)}${tpl.note ? `<span class="goal-hint">${escapeHtml(tpl.note)}</span>` : ""}</div>
                 </div>
                 <div class="goal-progress">
-                  <div class="goal-frac">${done}/${total}</div>
-                  <div class="goal-bar"><div class="goal-bar-fill" style="width:${pct}%"></div></div>
+                  <div class="goal-frac"><span class="goal-frac-num">${done}</span><span class="goal-frac-sep">/</span><span class="goal-frac-tot">${total}</span></div>
+                  ${complete ? `<span class="goal-stamp" aria-hidden="true">✓</span>` : ""}
                 </div>
               </button>
-              ${isOpen ? `
-                <div class="goal-body">
-                  ${steps}
-                </div>
-              ` : ""}
+              ${!complete ? `<div class="goal-progress-bar"><div class="goal-progress-bar-fill" style="width:${pct}%"></div></div>` : ""}
+              ${isOpen ? `<div class="goal-body">${steps}</div>` : ""}
             </div>
           </div>
         `;
@@ -8585,17 +8768,22 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       }
       return null;
     }
+
+    function getStepSub(step) {
+      if (!step) return "";
+      return step.source || step.sub || ITEM_SOURCE_HINTS[step.invKey] || "";
+    }
     function addGoal(id) {
       if (appState.goals.some(g => g.id === id)) { toast("已经在目标列表里"); return; }
       const tpl = findGoalTemplate(id);
       if (!tpl) return;
-      appState.goals.push({ id, steps: tpl.steps.map(s => ({ ...s, checked: false })), expanded: false });
+      appState.goals.push({ id, steps: tpl.steps.map(s => ({ ...s, checked: false })), expanded: true });
       renderApp();
       toast("🎯 已加入目标");
     }
     function toggleGoalExpand(id) {
       const g = appState.goals.find(x => x.id === id);
-      if (g) g.expanded = g.expanded !== true;
+      if (g) g.expanded = g.expanded === false;
       renderGoals();
       saveApp();
     }
@@ -8603,6 +8791,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       const g = appState.goals.find(x => x.id === id);
       if (!g) return;
       g.steps[idx].checked = !g.steps[idx].checked;
+      renderApp();
+    }
+    function toggleGoalAction(id) {
+      const g = appState.goals.find(x => x.id === id);
+      if (!g) return;
+      g.actionDone = !g.actionDone;
       renderApp();
     }
     function removeGoal(id) {
@@ -8620,7 +8814,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         .map(([name, qty]) => ({ type: "inventory", key: name, name, iconName: name, count: `×${qty}` }));
       const toolEntries = TOOLS
         .map((tool) => {
-          const level = appState.tools[tool.id] || "初始";
+          const level = normalizeToolLevel(appState.tools[tool.id] || "初始");
           if (level === "初始") return null;
           const name = getToolIconName(tool, level);
           return { type: "tool", key: tool.id, name, iconName: name, count: "" };
@@ -8640,14 +8834,16 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         div.innerHTML = `<div class="inventory-empty">点下方按钮录入物品，录入后会自动生成处置建议。</div>`;
         return;
       }
-      div.innerHTML = entries.map((entry) => `
-        <span class="inv-chip" data-inv-chip data-inv-chip-type="${escapeAttribute(entry.type)}" data-inv-chip-key="${escapeAttribute(entry.key)}">
-          ${renderInvIcon(entry.iconName)}
-          <span class="inv-name">${escapeHtml(entry.name)}</span>
-          ${entry.count ? `<span class="inv-count">${escapeHtml(entry.count)}</span>` : ""}
-          <button class="inv-chip-delete" data-remove-inv-chip="${escapeAttribute(entry.type)}|${escapeAttribute(entry.key)}" type="button" aria-label="删除${escapeAttribute(entry.name)}">×</button>
-        </span>
-      `).join("");
+      div.innerHTML = entries.map((entry) => {
+        const token = `${entry.type}:${entry.key}`;
+        const armed = appState.pendingInventoryDelete === token;
+        return `
+          <span class="inv-chip ${entry.count ? "has" : ""} ${armed ? "delete-armed" : ""}" data-inv-chip="${escapeAttribute(token)}" title="${escapeAttribute(entry.name)}">
+            ${renderInvIcon(entry.iconName)}<span class="inv-name">${escapeHtml(entry.name)}</span>${entry.count ? `<span class="inv-count">${escapeHtml(entry.count)}</span>` : ""}
+            ${armed ? `<button class="inv-chip-remove" type="button" data-remove-inv-chip="${escapeAttribute(token)}" aria-label="删除${escapeAttribute(entry.name)}">×</button>` : ""}
+          </span>
+        `;
+      }).join("");
     }
 
     function renderInvIcon(name) {
@@ -8659,6 +8855,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
     }
 
     function getToolIconName(tool, level) {
+      level = normalizeToolLevel(level);
       if (level === "初始") return tool.name;
       if (tool.id === "rod") {
         if (level === "训练") return "训练渔竿";
@@ -8666,6 +8863,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         return "铱渔竿";
       }
       return `${level}${tool.name}`;
+    }
+
+    function normalizeToolLevel(level) {
+      return level === "铁" ? "钢" : level;
     }
 
     function goalIconName(goal) {
@@ -8685,55 +8886,72 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
 
     function setInvQty(name, qty, options = {}) {
       qty = Math.max(0, parseInt(qty) || 0);
-      if (qty === 0) delete appState.inventory[name];
+      if (qty === 0) {
+        delete appState.inventory[name];
+        if (appState.pendingInventoryDelete === `inventory:${name}`) appState.pendingInventoryDelete = "";
+      }
       else appState.inventory[name] = qty;
       syncBundleChecksFromInventory();
       renderApp();
       if (!options.skipModalRefresh && document.getElementById("invModalBody")) renderInvTab();
     }
 
-    function removeInventoryChip(type, key) {
-      if (type === "inventory") {
-        setInvQty(key, 0);
-      } else if (type === "tool") {
-        delete appState.tools[key];
-        renderApp();
-        if (document.getElementById("invModalBody")) renderInvTab();
-      } else if (type === "equipment") {
-        delete appState.equipment[key];
-        renderApp();
-        if (document.getElementById("invModalBody")) renderInvTab();
-      } else if (type === "building") {
-        delete appState.buildings[key];
-        renderApp();
-        if (document.getElementById("invModalBody")) renderInvTab();
-      }
-      toast("已删除");
+    function removeInventorySummaryEntry(token) {
+      const [type, ...rest] = String(token || "").split(":");
+      const key = rest.join(":");
+      if (!type || !key) return;
+
+      if (type === "inventory") delete appState.inventory[key];
+      if (type === "tool") delete appState.tools[key];
+      if (type === "equipment") delete appState.equipment[key];
+      if (type === "building") delete appState.buildings[key];
+
+      appState.pendingInventoryDelete = "";
+      syncBundleChecksFromInventory();
+      renderApp();
+      if (document.getElementById("invModalBody")) renderInvTab();
     }
 
-    /* ── 联动：背包变化 → 自动勾选/取消勾选献祭 ── */
+    /* ── 联动：背包变化只刷新提示，不把“拥有”冒充“已献祭” ── */
     function syncBundleChecksFromInventory() {
-      let changed = false;
-      flatItems.forEach(entry => {
-        const name = entry.name;
-        const need = entry.count || 1;
-        const have = appState.inventory[name] || 0;
-        const shouldBeChecked = have >= need;
-        const isCheckedNow = isChecked(entry.uid);
-        // 只在背包驱动的情况下自动勾选
-        if (shouldBeChecked && !isCheckedNow) {
-          state.checked.add(entry.uid);
-          changed = true;
-        }
-        // 不主动取消，因为玩家可能已经把物品交给收集包
-      });
-      if (changed) {
-        saveCheckedItems();
-        // 如果献祭overlay开着，刷新它
-        if (!document.getElementById("bundle-overlay").hidden) {
-          render();
-        }
+      const overlay = document.getElementById("bundle-overlay");
+      if (overlay && !overlay.hidden) {
+        render();
       }
+    }
+
+    function getReserveAdvice(name) {
+      const pieces = [];
+      let count = 0;
+
+      rooms.forEach(roomData => {
+        roomData.bundles.forEach(bundleData => {
+          const checkedInBundle = bundleData.items.filter(entry => isChecked(entry.uid)).length;
+          if (checkedInBundle >= bundleData.required) return;
+          bundleData.items.forEach(entry => {
+            if (entry.name !== name || isChecked(entry.uid)) return;
+            count += entry.count || 1;
+            pieces.push(`${describeItem(entry)}：${bundleData.name}`);
+          });
+        });
+      });
+
+      appState.goals.forEach(goal => {
+        const tpl = findGoalTemplate(goal.id);
+        if (!tpl) return;
+        if (goal.actionDone) return;
+        const goalSteps = goal.steps || tpl.steps;
+        goalSteps.forEach(step => {
+          if (step.invKey !== name || !step.invNeed) return;
+          if (step.checked) return;
+          count += step.invNeed;
+          pieces.push(`${name}×${step.invNeed}：${tpl.title}`);
+        });
+      });
+
+      if (!pieces.length) return null;
+      const text = pieces.slice(0, 3).join("；") + (pieces.length > 3 ? `；另${pieces.length - 3}项` : "");
+      return { count, text };
     }
 
     /* ── 智能建议 ── */
@@ -8742,6 +8960,15 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       // 1. 现有作物的加工建议
       Object.entries(appState.inventory).forEach(([name, qty]) => {
         if (qty === 0) return;
+        const reserve = getReserveAdvice(name);
+        if (reserve) {
+          sugs.push({
+            kind: "reserve",
+            title: `${name} ×${qty}`,
+            desc: `先保留：${reserve.text}`
+          });
+          if (qty <= reserve.count) return;
+        }
         const procs = PROCESS_MAP[name];
         if (procs && procs.length > 0) {
           const best = procs[0];
@@ -8827,7 +9054,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       }
       if (countEl) countEl.textContent = `${sugs.length} 条`;
       div.innerHTML = sugs.slice(0, 10).map(s => {
-        const label = s.kind === "recommend" ? "加工" : s.kind === "goal" ? "目标" : "推荐";
+        const label = s.kind === "recommend" ? "加工" : s.kind === "goal" ? "目标" : s.kind === "reserve" ? "保留" : "推荐";
         let title = s.title || s.text || "";
         let desc = s.desc || "";
         if (!s.title && !s.desc) {
@@ -8881,6 +9108,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
         const sell = SELL_PRICES[name];
         const procs = PROCESS_MAP[name] || [];
         const rows = [];
+        const reserve = getReserveAdvice(name);
+        if (reserve) rows.push(`<div class="decision-row reserve">📦 先保留 <span style="color:var(--muted);font-size:11px;">${escapeHtml(reserve.text)}</span></div>`);
         if (sell != null) rows.push(`<div class="decision-row">💰 直接卖 <span class="decision-price">${sell}g</span></div>`);
         procs.forEach((p, i) => {
           rows.push(`<div class="decision-row ${i === 0 ? "best" : ""}">${p.method} → ${p.out} <span style="color:var(--muted);font-size:11px;">${p.gain}</span>${i === 0 ? ' <span class="badge">最优</span>' : ""}<span class="decision-price">${p.price}g</span></div>`);
@@ -9027,7 +9256,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
     /* 工具 - 用真实图标 */
     function renderToolsTabOnly() {
       return `<div class="tool-card-grid">${TOOLS.map(t => {
-        const lv = appState.tools[t.id] || "初始";
+        const lv = normalizeToolLevel(appState.tools[t.id] || "初始");
         const levels = t.id === "rod" ? ROD_LEVELS : TOOL_LEVELS;
         const iconName = getToolIconName(t, lv);
         return `<div class="tool-card">
@@ -9035,7 +9264,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
             <span class="tool-card-icon">${renderInvIcon(iconName)}</span>
             <div class="tool-card-info">
               <div class="tool-card-name">${t.name}</div>
-              <div class="tool-card-lv"><b>${lv}</b></div>
+              <div class="tool-card-lv">当前：<b>${lv}</b></div>
             </div>
           </div>
           <div class="tool-level-picker">
@@ -9117,16 +9346,18 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
     function getItemHint(name) {
       const sell = SELL_PRICES[name];
       const procs = PROCESS_MAP[name];
-      if (!sell && !procs) return null;
       const parts = [];
+      const reserve = getReserveAdvice(name);
+      if (reserve) parts.push(`先保留：${escapeHtml(reserve.text)}`);
+      if (sell == null && !procs) return parts.join("");
       if (procs && procs.length > 0) {
         const best = procs[0];
-        if (sell && best.price > sell) {
+        if (sell != null && best.price > sell) {
           parts.push(`<b>${best.method}</b>加工成 ${best.out} <b>${best.price}g</b>（直卖${sell}g · ${best.gain}）`);
         } else {
           parts.push(`${best.method} → ${best.out} <b>${best.price}g</b>`);
         }
-      } else if (sell) {
+      } else if (sell != null) {
         parts.push(`直接卖 <b>${sell}g</b>`);
       }
       return parts.join("");
@@ -9200,7 +9431,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
                         const enough = s.invNeed && have >= s.invNeed;
                         return `<div class="goal-tile-step ${enough ? "ok" : ""}">
                           <span style="flex-shrink:0;">${enough ? "✓" : "·"}</span>
-                          <span style="flex:1;">${escapeHtml(s.label)}${s.sub ? `<span class="have"> — ${escapeHtml(s.sub)}</span>` : ""}</span>
+                          <span style="flex:1;">${escapeHtml(s.label)}${getStepSub(s) ? `<span class="have"> — ${escapeHtml(getStepSub(s))}</span>` : ""}</span>
                           ${s.invKey && s.invNeed ? `<span class="have">背包${have}/${s.invNeed}</span>` : ""}
                         </div>`;
                       }).join("")}
@@ -9408,24 +9639,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
 
     /* ── 全局事件 ── */
     document.addEventListener("click", (e) => {
-      // 背包小框：点选后显示右上角删除按钮
-      const removeInvChipBtn = e.target.closest("[data-remove-inv-chip]");
-      if (removeInvChipBtn) {
-        const [type, ...keyParts] = removeInvChipBtn.dataset.removeInvChip.split("|");
-        removeInventoryChip(type, keyParts.join("|"));
-        return;
-      }
-      const invChip = e.target.closest("[data-inv-chip]");
-      if (invChip) {
-        document.querySelectorAll("#invSummary .inv-chip.delete-ready").forEach((chip) => {
-          if (chip !== invChip) chip.classList.remove("delete-ready");
-        });
-        invChip.classList.add("delete-ready");
-        return;
-      }
-      if (!e.target.closest("#invSummary")) {
-        document.querySelectorAll("#invSummary .inv-chip.delete-ready").forEach((chip) => chip.classList.remove("delete-ready"));
-      }
       // 季节切换
       const seasonBtn = e.target.closest("[data-season]");
       if (seasonBtn) { setSeason(seasonBtn.dataset.season); return; }
@@ -9452,6 +9665,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v2";
       if (toggleStep) {
         const [gid, idx] = toggleStep.dataset.toggleStep.split("|");
         toggleGoalStep(gid, parseInt(idx));
+        return;
+      }
+      // 目标动作步骤勾选（获取方式）
+      const toggleAction = e.target.closest("[data-toggle-action]");
+      if (toggleAction) {
+        toggleGoalAction(toggleAction.dataset.toggleAction);
         return;
       }
       // 左滑后点删除
