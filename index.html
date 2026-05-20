@@ -1,4 +1,4 @@
-我的目标版 codex美化 半成品
+目标版 codex claude 5.21
 
 <!doctype html>
 
@@ -5199,6 +5199,7 @@ body.modal-open #app-shell { pointer-events: none; }
 .decision-row.special { background: #f5efff; border-color: #bca4e8; color: #5f3a8b; }
 .decision-row.cook { background: #fff1e4; border-color: #e7b17a; color: #7d4515; }
 .decision-row.gift { background: #fff0f5; border-color: #e7a5bb; color: #8b294d; }
+.decision-detail { color: var(--muted); font-size: 11px; }
 .decision-row .badge {
   font-size: 10px;
   font-weight: 900;
@@ -9023,9 +9024,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
            self 类不需要 action step（它的 step 已经是动作描述） */
         const ACTION_TPL = {
           craft:   { icon: "🔨", label: "在合成菜单制作", venue: "" },
-          build:   { icon: "🏡", label: "木匠商店找 Robin 建造", venue: "周一休 · 9:00–17:00" },
+          build:   { icon: "🏡", label: "木匠商店找 Robin 建造", venue: "周二休 · 9:00–17:00" },
           upgrade: { icon: "⚒️", label: "铁匠铺交给 Clint 升级", venue: "周五休 · 9:00–16:00" },
-          house:   { icon: "🏠", label: "木匠商店找 Robin 升级/装修", venue: "周一休 · 9:00–17:00" },
+          house:   { icon: "🏠", label: "木匠商店找 Robin 升级/装修", venue: "周二休 · 9:00–17:00" },
           cook:    { icon: "🍳", label: "在厨房或野炊工具烹饪", venue: "需要厨房/野炊工具和已学会食谱" },
           gift:    { icon: "🎁", label: "把礼物送给目标村民", venue: "每周2次 · 生日效果更强" },
           buy:     { icon: "🛒", label: "到对应商店购买", venue: "" }
@@ -9247,21 +9248,23 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       }
     }
 
-    function getReserveAdvice(name) {
+    function getReserveAdvice(name, excludeBundles = false) {
       const pieces = [];
       let count = 0;
 
-      rooms.forEach(roomData => {
-        roomData.bundles.forEach(bundleData => {
-          const checkedInBundle = bundleData.items.filter(entry => isChecked(entry.uid)).length;
-          if (checkedInBundle >= bundleData.required) return;
-          bundleData.items.forEach(entry => {
-            if (entry.name !== name || isChecked(entry.uid)) return;
-            count += entry.count || 1;
-            pieces.push(`${describeItem(entry)}：${bundleData.name}`);
+      if (!excludeBundles) {
+        rooms.forEach(roomData => {
+          roomData.bundles.forEach(bundleData => {
+            const checkedInBundle = bundleData.items.filter(entry => isChecked(entry.uid)).length;
+            if (checkedInBundle >= bundleData.required) return;
+            bundleData.items.forEach(entry => {
+              if (entry.name !== name || isChecked(entry.uid)) return;
+              count += entry.count || 1;
+              pieces.push(`${describeItem(entry)}：${bundleData.name}`);
+            });
           });
         });
-      });
+      }
 
       appState.goals.forEach(goal => {
         const tpl = findGoalTemplate(goal.id);
@@ -9405,7 +9408,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       }
       if (countEl) countEl.textContent = `${sugs.length} 条`;
       div.innerHTML = sugs.slice(0, 10).map(s => {
-        const label = s.kind === "recommend" ? "加工" : s.kind === "goal" ? "目标" : s.kind === "reserve" ? "保留" : s.kind === "special" ? "用途" : s.kind === "cook" ? "料理" : s.kind === "gift" ? "送礼" : "推荐";
+        const KIND_LABEL = { recommend:"加工", goal:"目标", reserve:"保留", special:"用途", cook:"料理", gift:"送礼" };
+        const label = KIND_LABEL[s.kind] || "推荐";
         let title = s.title || s.text || "";
         let desc = s.desc || "";
         if (!s.title && !s.desc) {
@@ -9476,21 +9480,21 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           const checked = isChecked(entry.uid);
           const status = getBundleEntryStatus(entry);
           const statusClass = checked ? "donated" : status === "本包已满" ? "" : "reserve";
-          rows.push(`<div class="decision-row ${statusClass}">📦 献祭：${escapeHtml(describeItem(entry))}<span style="color:var(--muted);font-size:11px;">${escapeHtml(entry.roomName)} → ${escapeHtml(entry.bundleName)}</span><span class="badge">${escapeHtml(status)}</span></div>`);
+          rows.push(`<div class="decision-row ${statusClass}">📦 献祭：${escapeHtml(describeItem(entry))}<span class="decision-detail">${escapeHtml(entry.roomName)} → ${escapeHtml(entry.bundleName)}</span><span class="badge">${escapeHtml(status)}</span></div>`);
         });
-        const reserve = getReserveAdvice(name);
-        if (reserve) rows.push(`<div class="decision-row reserve">📦 先保留 <span style="color:var(--muted);font-size:11px;">${escapeHtml(reserve.text)}</span></div>`);
+        const reserve = getReserveAdvice(name, true);
+        if (reserve) rows.push(`<div class="decision-row reserve">📦 先保留 <span class="decision-detail">${escapeHtml(reserve.text)}</span></div>`);
         getSpecialUses(name).forEach((use) => {
-          rows.push(`<div class="decision-row special">✨ 特殊用途 <span style="color:var(--muted);font-size:11px;">${escapeHtml(formatSpecialUse(use))}</span></div>`);
-        });
-        getFoodUses(name).forEach((use) => {
-          rows.push(`<div class="decision-row cook">🍳 料理 <span style="color:var(--muted);font-size:11px;">${escapeHtml(formatFoodUse(use))}</span></div>`);
-        });
-        getGiftUses(name).forEach((use) => {
-          rows.push(`<div class="decision-row gift">🎁 送礼 <span style="color:var(--muted);font-size:11px;">${escapeHtml(formatGiftUse(use))}</span></div>`);
+          rows.push(`<div class="decision-row special">✨ 特殊用途 <span class="decision-detail">${escapeHtml(formatSpecialUse(use))}</span></div>`);
         });
         procs.forEach((p, i) => {
-          rows.push(`<div class="decision-row ${i === 0 ? "best" : ""}">${p.method} → ${p.out} <span style="color:var(--muted);font-size:11px;">${p.gain}</span>${i === 0 ? ' <span class="badge">最优</span>' : ""}<span class="decision-price">${p.price}g</span></div>`);
+          rows.push(`<div class="decision-row ${i === 0 ? "best" : ""}">${p.method} → ${p.out} <span class="decision-detail">${p.gain}</span>${i === 0 ? ' <span class="badge">最优</span>' : ""}<span class="decision-price">${p.price}g</span></div>`);
+        });
+        getFoodUses(name).forEach((use) => {
+          rows.push(`<div class="decision-row cook">🍳 料理 <span class="decision-detail">${escapeHtml(formatFoodUse(use))}</span></div>`);
+        });
+        getGiftUses(name).forEach((use) => {
+          rows.push(`<div class="decision-row gift">🎁 送礼 <span class="decision-detail">${escapeHtml(formatGiftUse(use))}</span></div>`);
         });
         if (sell != null) rows.push(`<div class="decision-row">💰 直接卖 <span class="decision-price">${sell}g</span></div>`);
         if (rows.length === 0) return "";
