@@ -5738,6 +5738,164 @@ body.modal-open #app-shell { pointer-events: none; }
 .villager-milestone .ms-icon { flex-shrink: 0; }
 .villager-milestone .ms-desc { flex: 1; }
 
+/* ── 物品库 ── */
+.item-lib-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.item-lib-search {
+  flex: 1;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: #fffdf8;
+  font-size: 13px;
+  outline: none;
+}
+.item-lib-search:focus { border-color: var(--gold); }
+.item-lib-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.item-lib-cat-label {
+  font-size: 12px;
+  font-weight: 900;
+  color: #9c620e;
+  margin-bottom: 4px;
+}
+.item-lib-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.item-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1.5px solid #e2d0aa;
+  border-radius: 999px;
+  background: #fffdf6;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+  white-space: nowrap;
+}
+.item-chip:active { background: #fff3d6; }
+.item-chip.active { border-color: var(--gold); background: #fff3d6; box-shadow: 0 1px 4px rgba(156,98,14,0.15); }
+.item-chip .chip-qty {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--green);
+  background: var(--green-soft);
+  padding: 1px 5px;
+  border-radius: 999px;
+}
+.item-chip.search-miss { opacity: 0.3; }
+
+/* 物品详情卡 */
+.item-detail-card {
+  margin-top: 10px;
+  border: 1.5px solid var(--gold);
+  border-radius: 10px;
+  background: #fffdf6;
+  overflow: hidden;
+  animation: detailSlideIn .15s ease;
+}
+@keyframes detailSlideIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+.item-detail-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, #fff8ee, #fffdf6);
+  border-bottom: 1px solid #f0e3c8;
+}
+.item-detail-head .detail-name { font-size: 15px; font-weight: 900; color: var(--ink); flex:1; }
+.item-detail-head .detail-source { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+.item-detail-qty {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.item-detail-qty button {
+  width: 26px; height: 26px;
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  color: var(--ink);
+}
+.item-detail-qty input {
+  width: 40px;
+  text-align: center;
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
+  background: #fffdf8;
+  font-size: 14px;
+  font-weight: 900;
+  padding: 3px;
+}
+.item-detail-body {
+  padding: 0;
+}
+.item-detail-section {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f5ead5;
+}
+.item-detail-section:last-child { border-bottom: none; }
+.item-detail-section-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: #9c620e;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.item-detail-row {
+  font-size: 12px;
+  color: var(--ink);
+  padding: 3px 0;
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+}
+.item-detail-row .best-tag {
+  font-size: 9px;
+  font-weight: 900;
+  color: var(--green);
+  background: var(--green-soft);
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+.item-detail-row .price-tag {
+  margin-left: auto;
+  font-weight: 800;
+  color: #9c620e;
+  white-space: nowrap;
+}
+.item-detail-footer {
+  padding: 8px 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+.item-detail-remove {
+  font-size: 11px;
+  color: var(--red);
+  background: none;
+  border: 1px solid #e8c4be;
+  border-radius: 6px;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
 /* ── 今日主线场景板块 ── */
 .scene-progress-bar {
   display: flex;
@@ -6769,20 +6927,14 @@ body.modal-open #app-shell { pointer-events: none; }
   <div class="quest-grid" id="questGrid"></div>
 </section>
 
-<!-- 我的背包 -->
-<section class="app-panel" id="inventoryHubPanel">
-  <h2 class="app-panel-title">🎒 我的背包</h2>
-  <div class="inventory-hub-grid">
-    <section class="inventory-subpanel">
-      <h3 class="inventory-subtitle">📜 背包录入 <span class="subtle">实时联动献祭</span></h3>
-      <div id="invSummary" class="inventory-summary"></div>
-      <button class="add-item-btn" id="openInventoryBtn" type="button">+ 录入库存</button>
-    </section>
-    <section class="inventory-subpanel" id="suggestionsPanel">
-      <h3 class="inventory-subtitle">💡 建议 <span class="subtle" id="suggestionsCount"></span></h3>
-      <div id="invSuggestions"></div>
-    </section>
+<!-- 我的物品库 -->
+<section class="app-panel" id="itemLibraryPanel">
+  <h2 class="app-panel-title">🎒 我的物品库 <span class="subtle" id="itemLibCount"></span></h2>
+  <div class="item-lib-toolbar">
+    <input type="search" id="itemLibSearch" class="item-lib-search" placeholder="搜索物品..." autocomplete="off" />
+    <button class="add-item-btn" id="openInventoryBtn" type="button">+ 录入库存</button>
   </div>
+  <div id="itemLibGrid" class="item-lib-grid"></div>
 </section>
 
 <!-- 今日主线 -->
@@ -6805,13 +6957,7 @@ body.modal-open #app-shell { pointer-events: none; }
   <button class="add-item-btn" id="openAddGoalBtn" type="button" style="margin-top:8px;">+ 添加目标</button>
 </section>
 
-<!-- 物品查询 -->
-<section class="app-panel" id="lookupPanel">
-  <h2 class="app-panel-title">🔍 查物品 <span class="subtle">看所有出路</span></h2>
-  <input type="search" id="itemLookup" placeholder="例：玉米、铜矿石、上古水果"
-    style="width:100%;min-height:38px;padding:0 12px;border:2px solid var(--line);border-radius:8px;background:#fffdf8;font-size:14px;outline:none;" />
-  <div id="lookupResult" class="decision-panel"></div>
-</section>
+
 
   </main>
 
@@ -8009,8 +8155,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       renderProgress();
       renderSearchResults();
       if (document.getElementById("app-shell")) renderApp();
-      const lookupInput = document.getElementById("itemLookup");
-      if (lookupInput?.value) renderLookup(lookupInput.value);
       markHighlights();
       scheduleLayout();
     }
@@ -9683,8 +9827,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       renderQuests();
       renderScenes();
       renderGoals();
-      renderInventorySummary();
-      renderSuggestions();
+      renderItemLibrary();
       saveApp();
     }
 
@@ -10360,44 +10503,146 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     }
 
     /* ── 背包 ── */
-    function renderInventorySummary() {
-      const div = document.getElementById("invSummary");
-      const inventoryEntries = Object.entries(appState.inventory)
-        .filter(([, qty]) => qty > 0)
-        .sort((a, b) => b[1] - a[1])
-        .map(([name, qty]) => ({ type: "inventory", key: name, name, iconName: name, count: `×${qty}` }));
-      const toolEntries = TOOLS
-        .map((tool) => {
-          const level = normalizeToolLevel(appState.tools[tool.id] || "初始");
-          if (level === "初始") return null;
-          const name = getToolIconName(tool, level);
-          return { type: "tool", key: tool.id, name, iconName: name, count: "" };
-        })
-        .filter(Boolean);
-      const equipmentEntries = EQUIPMENT
-        .map((entry) => {
-          const qty = appState.equipment[entry.id] || 0;
-          return qty > 0 ? { type: "equipment", key: entry.id, name: entry.name, iconName: entry.name, count: `×${qty}` } : null;
-        })
-        .filter(Boolean);
-      const buildingEntries = BUILDINGS
-        .filter((entry) => appState.buildings[entry.id])
-        .map((entry) => ({ type: "building", key: entry.id, name: entry.name, iconName: entry.name, count: "已建" }));
-      const entries = [...inventoryEntries, ...toolEntries, ...equipmentEntries, ...buildingEntries];
-      if (entries.length === 0) {
-        div.innerHTML = `<div class="inventory-empty">点下方按钮录入物品，录入后会自动生成处置建议。</div>`;
+    function renderItemLibrary() {
+      const grid = document.getElementById("itemLibGrid");
+      const searchQ = (document.getElementById("itemLibSearch")?.value || "").trim().toLowerCase();
+      const inv = appState.inventory;
+      const itemNames = new Set(Object.keys(inv).filter(k => inv[k] > 0));
+      
+      // Count for title
+      document.getElementById("itemLibCount").textContent = itemNames.size ? `${itemNames.size} 种` : "";
+      
+      if (itemNames.size === 0) {
+        grid.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">还没有物品，点击「+ 录入库存」开始添加</div>';
         return;
       }
-      div.innerHTML = entries.map((entry) => {
-        const token = `${entry.type}:${entry.key}`;
-        const armed = appState.pendingInventoryDelete === token;
-        return `
-          <span class="inv-chip ${entry.count ? "has" : ""} ${armed ? "delete-armed" : ""}" data-inv-chip="${escapeAttribute(token)}" title="${escapeAttribute(entry.name)}">
-            ${renderInvIcon(entry.iconName)}<span class="inv-name">${escapeHtml(entry.name)}</span>${entry.count ? `<span class="inv-count">${escapeHtml(entry.count)}</span>` : ""}
-            ${armed ? `<button class="inv-chip-remove" type="button" data-remove-inv-chip="${escapeAttribute(token)}" aria-label="删除${escapeAttribute(entry.name)}">×</button>` : ""}
-          </span>
-        `;
+      
+      // Group by category
+      const catGroups = INV_CATEGORIES.map(cat => {
+        const items = cat.items.filter(name => itemNames.has(name));
+        return { cat, items };
+      }).filter(g => g.items.length > 0);
+      
+      grid.innerHTML = catGroups.map(g => {
+        const chips = g.items.map(name => {
+          const qty = inv[name] || 0;
+          const miss = searchQ && !name.toLowerCase().includes(searchQ);
+          const active = appState._activeDetailItem === name;
+          return `<button class="item-chip ${active ? 'active' : ''} ${miss ? 'search-miss' : ''}" data-item-chip="${escapeHtml(name)}" type="button">${renderInvIcon(name)}<span>${escapeHtml(name)}</span>${qty > 0 ? `<span class="chip-qty">×${qty}</span>` : ''}</button>`;
+        }).join("");
+        // Insert detail card right after the category if active item is in this category
+        let detailHtml = "";
+        if (appState._activeDetailItem && g.items.includes(appState._activeDetailItem)) {
+          detailHtml = renderItemDetailHtml(appState._activeDetailItem);
+        }
+        return `<div class="item-lib-cat-group">
+          <div class="item-lib-cat-label">${g.cat.label}</div>
+          <div class="item-lib-chips">${chips}</div>
+          ${detailHtml}
+        </div>`;
       }).join("");
+    }
+    
+    function renderItemDetailHtml(name) {
+      const inv = appState.inventory;
+      const qty = inv[name] || 0;
+      const sell = SELL_PRICES[name];
+      const procs = PROCESS_MAP[name] || [];
+      const source = ITEM_SOURCE_HINTS[name] || "";
+      
+      // Bundle entries
+      const bundleEntries = getBundleEntriesForName(name);
+      const bundleRows = bundleEntries.map(entry => {
+        const checked = isChecked(entry.uid);
+        const status = getBundleEntryStatus(entry);
+        return `<div class="item-detail-row">${checked ? "✅" : "📦"} ${escapeHtml(describeItem(entry))} <span style="color:var(--muted);font-size:10px;">${escapeHtml(entry.roomName)} → ${escapeHtml(entry.bundleName)}</span> <span class="price-tag">${escapeHtml(status)}</span></div>`;
+      });
+      
+      // Reserve advice
+      const reserve = getReserveAdvice(name, true);
+      
+      // Processing
+      const procRows = procs.map((p, i) => {
+        return `<div class="item-detail-row">${i===0?'<span class="best-tag">★ 最优</span>':''} ${escapeHtml(p.method)} → ${escapeHtml(p.out)} <span style="color:var(--muted)">${escapeHtml(p.gain)}</span> <span class="price-tag">${p.price}g</span></div>`;
+      });
+      
+      // Special uses
+      const specials = getSpecialUses(name).map(u => `<div class="item-detail-row">✨ ${escapeHtml(formatSpecialUse(u))}</div>`);
+      
+      // Gift uses
+      const gifts = getGiftUses(name).map(u => `<div class="item-detail-row">💝 ${escapeHtml(formatGiftUse(u))}</div>`);
+      
+      // Food uses
+      const foods = getFoodUses(name).map(u => `<div class="item-detail-row">🥘 ${escapeHtml(formatFoodUse(u))}</div>`);
+      
+      // Build sections
+      const sections = [];
+      
+      if (bundleRows.length || reserve) {
+        sections.push(`<div class="item-detail-section">
+          <div class="item-detail-section-label">📦 献祭 / 保留</div>
+          ${bundleRows.join("")}
+          ${reserve ? `<div class="item-detail-row" style="color:#6a461f;">⚠️ 建议保留 — ${escapeHtml(reserve.text)}</div>` : ""}
+        </div>`);
+      }
+      
+      if (procRows.length) {
+        sections.push(`<div class="item-detail-section">
+          <div class="item-detail-section-label">⚙️ 加工</div>
+          ${procRows.join("")}
+        </div>`);
+      }
+      
+      if (specials.length) {
+        sections.push(`<div class="item-detail-section">
+          <div class="item-detail-section-label">✨ 特殊用途</div>
+          ${specials.join("")}
+        </div>`);
+      }
+      
+      if (gifts.length) {
+        sections.push(`<div class="item-detail-section">
+          <div class="item-detail-section-label">🎁 送礼</div>
+          ${gifts.join("")}
+        </div>`);
+      }
+      
+      if (foods.length) {
+        sections.push(`<div class="item-detail-section">
+          <div class="item-detail-section-label">🍳 烹饪</div>
+          ${foods.join("")}
+        </div>`);
+      }
+      
+      if (sell != null) {
+        sections.push(`<div class="item-detail-section">
+          <div class="item-detail-row">💰 直接卖 <span class="price-tag">${sell}g</span></div>
+        </div>`);
+      }
+      
+      if (sections.length === 0) {
+        sections.push(`<div class="item-detail-section"><div class="item-detail-row" style="color:var(--muted);">暂无加工/献祭/送礼信息</div></div>`);
+      }
+      
+      return `<div class="item-detail-card">
+        <div class="item-detail-head">
+          <div>
+            <div class="detail-name">${renderInvIcon(name)} ${escapeHtml(name)}</div>
+            ${source ? `<div class="detail-source">${escapeHtml(source)}</div>` : ""}
+          </div>
+          <div class="item-detail-qty">
+            <button type="button" data-detail-minus="${escapeHtml(name)}">−</button>
+            <input type="number" min="0" value="${qty}" data-detail-qty="${escapeHtml(name)}" />
+            <button type="button" data-detail-plus="${escapeHtml(name)}">+</button>
+          </div>
+        </div>
+        <div class="item-detail-body">
+          ${sections.join("")}
+        </div>
+        <div class="item-detail-footer">
+          <button class="item-detail-remove" data-detail-remove="${escapeHtml(name)}">🗑️ 移除</button>
+        </div>
+      </div>`;
     }
 
     function renderInvIcon(name) {
@@ -10511,227 +10756,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (!pieces.length) return null;
       const text = pieces.slice(0, 3).join("；") + (pieces.length > 3 ? `；另${pieces.length - 3}项` : "");
       return { count, text };
-    }
-
-    /* ── 智能建议 ── */
-    function renderSuggestions() {
-      const sugs = [];
-      // 1. 现有作物的加工建议
-      Object.entries(appState.inventory).forEach(([name, qty]) => {
-        if (qty === 0) return;
-        const reserve = getReserveAdvice(name);
-        if (reserve) {
-          sugs.push({
-            kind: "reserve",
-            title: `${name} ×${qty}`,
-            desc: `先保留：${reserve.text}`
-          });
-          if (qty <= reserve.count) return;
-        }
-        const specialUses = getSpecialUses(name);
-        if (specialUses.length) {
-          sugs.push({
-            kind: "special",
-            title: `${name} ×${qty}`,
-            desc: formatSpecialUse(specialUses[0])
-          });
-        }
-        const foodUses = getFoodUses(name);
-        if (foodUses.length) {
-          sugs.push({
-            kind: "cook",
-            title: `${name} ×${qty}`,
-            desc: `可做：${formatFoodUse(foodUses[0])}`
-          });
-        }
-        const giftUses = getGiftUses(name);
-        if (giftUses.length) {
-          sugs.push({
-            kind: "gift",
-            title: `${name} ×${qty}`,
-            desc: `送礼：${formatGiftUse(giftUses[0])}`
-          });
-        }
-        const procs = PROCESS_MAP[name];
-        if (procs && procs.length > 0) {
-          const best = procs[0];
-          const sell = SELL_PRICES[name];
-          if (sell && best.price > sell) {
-            sugs.push({
-              kind: "recommend",
-              title: `${name} ×${qty}`,
-              desc: `${best.method}加工成${best.out}更赚`,
-              value: `${sell}g→${best.price}g, ${best.gain}`
-            });
-          }
-        }
-      });
-      // 2. 接近完成的目标
-      appState.goals.forEach(goal => {
-        const tpl = findGoalTemplate(goal.id);
-        if (!tpl) return;
-        const total = tpl.steps.length;
-        const done = tpl.steps.filter(s => {
-          const have = s.invKey ? (appState.inventory[s.invKey] || 0) : 0;
-          return s.invNeed && have >= s.invNeed;
-        }).length;
-        const remaining = tpl.steps.filter(s => {
-          const have = s.invKey ? (appState.inventory[s.invKey] || 0) : 0;
-          return s.invKey && s.invNeed && have < s.invNeed;
-        });
-        if (done > 0 && remaining.length > 0 && remaining.length <= 2) {
-          const need = remaining.map(s => `${s.invKey}×${s.invNeed - (appState.inventory[s.invKey] || 0)}`).join("、");
-          sugs.push({ kind: "goal", text: `「${tpl.title}」差 ${need} 就能完成` });
-        }
-      });
-      // 2.5 没在目标里的模板可加入（基于背包反推）
-      function recommendGoal(id) {
-        if (appState.goals.some(g => g.id === id)) return null;
-        const tpl = findGoalTemplate(id);
-        return tpl ? id : null;
-      }
-      // 3. 反推下一步建筑/设备/工具（带 goalId 可一键加入）
-      const tryRec = (cond, goalId, text) => {
-        if (!cond) return;
-        const canAdd = goalId && !appState.goals.some(g => g.id === goalId);
-        sugs.push({ kind: "bundle", text, addGoalId: canAdd ? goalId : null });
-      };
-      tryRec(appState.buildings.coop && !appState.buildings.silo, "build-silo",
-        `已有鸡舍但没建筒仓 → 推荐先建筒仓以储存干草（鸡舍前建更划算）`);
-      tryRec(appState.buildings.coop && !appState.buildings.barn, "build-barn",
-        `有鸡舍了，可以考虑建畜棚扩展畜牧业`);
-      const px = appState.tools.pickaxe;
-      tryRec(px === "铜", "upgrade-pickaxe-steel", `铜镐已有 → 下一步升级钢镐（到矿洞40层挖铁）`);
-      const ax = appState.tools.axe;
-      tryRec(ax === "铜", "upgrade-axe-steel", `铜斧已有 → 升级钢斧可以砍硬木`);
-      tryRec(appState.equipment.preserves_jar > 0 && !appState.equipment.keg, "craft-keg",
-        `有罐头瓶但没小桶 → 耕种8级后做小桶（水果做酒收益更高）`);
-      tryRec((appState.equipment.bee_house || 0) === 0 && (appState.tools.hoe || appState.equipment.preserves_jar > 0), "craft-bee-house",
-        `还没蜂房 → 蜂房性价比极高，旁边种花做花蜜赚钱`);
-      tryRec((appState.buildings.coop || appState.buildings.barn) && !appState.equipment.mayonnaise_machine, "craft-mayo-machine",
-        `有动物棚但没蛋黄酱机 → 推荐做蛋黄酱机（鸡蛋加工翻倍）`);
-      tryRec((appState.inventory["小麦"] || 0) >= 10 && !appState.buildings.mill, "build-mill",
-        `小麦${appState.inventory["小麦"] || 0}个 → 建磨坊可磨成面粉（解锁烹饪配方）`);
-      tryRec((appState.inventory["羊毛"] || 0) > 0 && !appState.equipment.loom, null,
-        `有羊毛但没织布机 → 织布机可把羊毛做成布料（+58%）`);
-      // 4. 提示献祭物品
-      const bundleHints = [];
-      flatItems.forEach(entry => {
-        if (isChecked(entry.uid)) return;
-        const have = appState.inventory[entry.name] || 0;
-        const need = entry.count || 1;
-        if (have > 0 && have < need) {
-          // 已经在路上
-        } else if (have >= need) {
-          // 已经够了（会自动勾选）
-        }
-      });
-
-      const div = document.getElementById("invSuggestions");
-      const countEl = document.getElementById("suggestionsCount");
-      if (sugs.length === 0) {
-        const isEmptyInv = Object.keys(appState.inventory).filter(k => appState.inventory[k] > 0).length === 0;
-        div.innerHTML = `<div class="inv-empty">${isEmptyInv ? "录入物品后显示加工建议、目标推荐和下一步策略。" : "暂时没有建议。继续录入更多物品试试～"}</div>`;
-        if (countEl) countEl.textContent = "";
-        return;
-      }
-      if (countEl) countEl.textContent = `${sugs.length} 条`;
-      div.innerHTML = sugs.slice(0, 10).map(s => {
-        const KIND_LABEL = { recommend:"加工", goal:"目标", reserve:"保留", special:"用途", cook:"料理", gift:"送礼" };
-        const label = KIND_LABEL[s.kind] || "推荐";
-        let title = s.title || s.text || "";
-        let desc = s.desc || "";
-        if (!s.title && !s.desc) {
-          const colonIndex = title.indexOf("：");
-          const arrowIndex = title.indexOf(" → ");
-          if (colonIndex > -1) {
-            desc = title.slice(colonIndex + 1);
-            title = title.slice(0, colonIndex);
-          } else if (arrowIndex > -1) {
-            desc = title.slice(arrowIndex + 3);
-            title = title.slice(0, arrowIndex);
-          }
-        }
-        const value = s.value ? `<span class="inv-suggestion-value">${escapeHtml(s.value).replaceAll("\n", " ")}</span>` : "";
-        const descLine = desc || value ? `<span class="inv-suggestion-desc">${escapeHtml(desc)}${value}</span>` : "";
-        const action = s.addGoalId ? `<button class="sug-add-btn" data-add-goal-sug="${s.addGoalId}" title="加入目标">+</button>` : "";
-        return `
-          <div class="inv-suggestion ${s.addGoalId ? "actionable" : ""}">
-            <span class="badge ${s.kind}">${label}</span>
-            <span class="inv-suggestion-copy">
-              <span class="inv-suggestion-title">${escapeHtml(title)}</span>
-              ${descLine}
-            </span>
-            ${action}
-          </div>
-        `;
-      }).join("");
-    }
-
-    /* ── 物品查询（覆盖所有物品/设备/建筑/加工产物） ── */
-    function renderLookup(q) {
-      const div = document.getElementById("lookupResult");
-      q = (q || "").trim();
-      if (!q) { div.innerHTML = ""; return; }
-      // 汇总所有候选
-      const all = new Set();
-      INV_CATEGORIES.forEach(c => c.items.forEach(n => all.add(n)));
-      flatItems.forEach(entry => {
-        all.add(entry.name);
-        if (entry.displayName) all.add(entry.displayName);
-      });
-      EQUIPMENT.forEach(e => all.add(e.name));
-      BUILDINGS.forEach(b => all.add(b.name));
-      Object.keys(SELL_PRICES).forEach(n => all.add(n));
-      Object.keys(PROCESS_MAP).forEach(n => all.add(n));
-      Object.keys(FOOD_USES).forEach(n => all.add(n));
-      Object.keys(GIFT_USES).forEach(n => all.add(n));
-      Object.keys(SPECIAL_USES).forEach(n => all.add(n));
-      const matches = [...all].filter(n => {
-        if (!n.includes(q)) return false;
-        return SELL_PRICES[n] != null
-          || (PROCESS_MAP[n] || []).length > 0
-          || getBundleEntriesForName(n).length > 0
-          || getFoodUses(n).length > 0
-          || getGiftUses(n).length > 0
-          || getSpecialUses(n).length > 0;
-      }).slice(0, 8);
-      if (matches.length === 0) {
-        div.innerHTML = `<div style="padding:10px;color:var(--muted);font-size:13px;">没有「${escapeHtml(q)}」的售价或加工建议</div>`;
-        return;
-      }
-      div.innerHTML = matches.map(name => {
-        const sell = SELL_PRICES[name];
-        const procs = PROCESS_MAP[name] || [];
-        const rows = [];
-        const bundleEntries = getBundleEntriesForName(name);
-        bundleEntries.forEach(entry => {
-          const checked = isChecked(entry.uid);
-          const status = getBundleEntryStatus(entry);
-          const statusClass = checked ? "donated" : status === "本包已满" ? "" : "reserve";
-          rows.push(`<div class="decision-row ${statusClass}">📦 献祭：${escapeHtml(describeItem(entry))}<span class="decision-detail">${escapeHtml(entry.roomName)} → ${escapeHtml(entry.bundleName)}</span><span class="badge">${escapeHtml(status)}</span></div>`);
-        });
-        const reserve = getReserveAdvice(name, true);
-        if (reserve) rows.push(`<div class="decision-row reserve">📦 先保留 <span class="decision-detail">${escapeHtml(reserve.text)}</span></div>`);
-        getSpecialUses(name).forEach((use) => {
-          rows.push(`<div class="decision-row special">✨ 特殊用途 <span class="decision-detail">${escapeHtml(formatSpecialUse(use))}</span></div>`);
-        });
-        procs.forEach((p, i) => {
-          rows.push(`<div class="decision-row ${i === 0 ? "best" : ""}">${p.method} → ${p.out} <span class="decision-detail">${p.gain}</span>${i === 0 ? ' <span class="badge">最优</span>' : ""}<span class="decision-price">${p.price}g</span></div>`);
-        });
-        getFoodUses(name).forEach((use) => {
-          rows.push(`<div class="decision-row cook">🍳 料理 <span class="decision-detail">${escapeHtml(formatFoodUse(use))}</span></div>`);
-        });
-        getGiftUses(name).forEach((use) => {
-          rows.push(`<div class="decision-row gift">🎁 送礼 <span class="decision-detail">${escapeHtml(formatGiftUse(use))}</span></div>`);
-        });
-        if (sell != null) rows.push(`<div class="decision-row">💰 直接卖 <span class="decision-price">${sell}g</span></div>`);
-        if (rows.length === 0) return "";
-        return `<div style="margin-bottom:8px;padding:8px;background:#fffdf6;border:1.5px solid #e2d0aa;border-radius:8px;">
-          <div style="display:flex;align-items:center;gap:8px;font-weight:900;margin-bottom:6px;">${renderInvIcon(name)}${escapeHtml(name)}</div>
-          ${rows.join("")}
-        </div>`;
-      }).join("");
     }
 
     /* ── 录入浮层 ── */
@@ -11401,7 +11425,56 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     });
 
     /* 物品查询 */
-    document.getElementById("itemLookup").addEventListener("input", e => renderLookup(e.target.value));
+    /* 物品库 —— 搜索过滤 */
+    document.getElementById("itemLibSearch").addEventListener("input", () => renderItemLibrary());
+
+    /* 物品库 —— 标签点击展开详情 / 数量加减 / 移除 */
+    document.getElementById("itemLibGrid").addEventListener("click", e => {
+      const chip = e.target.closest("[data-item-chip]");
+      if (chip) {
+        const name = chip.dataset.itemChip;
+        appState._activeDetailItem = appState._activeDetailItem === name ? null : name;
+        renderItemLibrary();
+        // 滚到详情卡
+        setTimeout(() => {
+          const card = document.querySelector(".item-detail-card");
+          if (card) card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }, 50);
+        return;
+      }
+      const minus = e.target.closest("[data-detail-minus]");
+      if (minus) {
+        const name = minus.dataset.detailMinus;
+        appState.inventory[name] = Math.max(0, (appState.inventory[name] || 0) - 1);
+        renderApp();
+        return;
+      }
+      const plus = e.target.closest("[data-detail-plus]");
+      if (plus) {
+        const name = plus.dataset.detailPlus;
+        appState.inventory[name] = (appState.inventory[name] || 0) + 1;
+        renderApp();
+        return;
+      }
+      const remove = e.target.closest("[data-detail-remove]");
+      if (remove) {
+        const name = remove.dataset.detailRemove;
+        delete appState.inventory[name];
+        appState._activeDetailItem = null;
+        renderApp();
+        return;
+      }
+    });
+    document.getElementById("itemLibGrid").addEventListener("change", e => {
+      const qtyInput = e.target.closest("[data-detail-qty]");
+      if (qtyInput) {
+        const name = qtyInput.dataset.detailQty;
+        const val = Math.max(0, parseInt(qtyInput.value) || 0);
+        appState.inventory[name] = val;
+        qtyInput.value = val;
+        renderApp();
+      }
+    });
 
     /* 启动 */
     renderApp();
