@@ -5596,6 +5596,118 @@ body.modal-open #app-shell { pointer-events: none; }
   overflow: visible;
 }
 
+/* ── 今日主线场景板块 ── */
+.scene-progress-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.scene-progress-bar label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.scene-progress-bar input[type="checkbox"] {
+  accent-color: var(--green);
+  width: 14px;
+  height: 14px;
+}
+.scene-progress-bar input[type="number"] {
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
+  background: #fffdf8;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  padding: 2px;
+}
+.scene-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.scene-card {
+  position: relative;
+  padding: 10px 12px;
+  border: 1.5px solid #e2d0aa;
+  border-radius: 10px;
+  background: #fffdf6;
+  overflow: hidden;
+}
+.scene-card.recommended {
+  border-color: var(--green);
+  background: linear-gradient(180deg, #f4faf0, #fffdf6);
+}
+.scene-card.recommended::before {
+  content: "⭐ 推荐";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--green);
+  background: var(--green-soft);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.scene-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.scene-icon {
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.scene-info {
+  flex: 1;
+  min-width: 0;
+}
+.scene-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+}
+.scene-desc {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.scene-details {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #f0e3c8;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.scene-detail-row {
+  display: flex;
+  gap: 6px;
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+.scene-detail-label {
+  flex-shrink: 0;
+  font-weight: 800;
+  color: #9c620e;
+  white-space: nowrap;
+}
+.scene-detail-value {
+  color: var(--ink);
+}
+.scene-empty {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
 #app-shell #goalsPanel {
   border: 3px solid #6b4a37;
   border-radius: 14px;
@@ -6528,6 +6640,19 @@ body.modal-open #app-shell { pointer-events: none; }
       <div id="invSuggestions"></div>
     </section>
   </div>
+</section>
+
+<!-- 今日主线 -->
+<section class="app-panel" id="scenePanel">
+  <h2 class="app-panel-title">🗺️ 今日主线 <span class="subtle" id="sceneDayLabel"></span></h2>
+  <div class="scene-progress-bar">
+    <label><input type="checkbox" id="progDesert" /> 已解锁沙漠</label>
+    <label><input type="checkbox" id="progIsland" /> 已解锁姜岛</label>
+    <label><input type="checkbox" id="progVolcano" /> 已解锁火山</label>
+    <label>矿井 <input type="number" id="progMineLevel" min="0" max="120" value="0" style="width:46px;" /> 层</label>
+  </div>
+  <div id="sceneList" class="scene-list"></div>
+  <div id="sceneEmpty" class="scene-empty" style="display:none;">今天没有特别推荐，可以自由探索 🌾</div>
 </section>
 
 <!-- 我的目标 -->
@@ -9381,10 +9506,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       day: _appLoaded.day || 1,
       weather: _appLoaded.weather || "sunny",
       goals: _appLoaded.goals || [],
-      inventory: _appLoaded.inventory || {},   // { 玉米: 8, 铜矿石: 25, ... }
-      tools: _appLoaded.tools || {},           // { pickaxe: "铜", ... }
-      equipment: _appLoaded.equipment || {},   // { preserves_jar: 3, ... }
-      buildings: _appLoaded.buildings || {},   // { silo: true, ... }
+      inventory: _appLoaded.inventory || {},
+      tools: _appLoaded.tools || {},
+      equipment: _appLoaded.equipment || {},
+      buildings: _appLoaded.buildings || {},
+      progress: _appLoaded.progress || { desertUnlocked: false, islandUnlocked: false, volcanoUnlocked: false, mineLevel: 0 },
       pendingInventoryDelete: "",
     };
 
@@ -9399,6 +9525,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     function renderApp() {
       renderSeasonBar();
       renderQuests();
+      renderScenes();
       renderGoals();
       renderInventorySummary();
       renderSuggestions();
@@ -9490,6 +9617,175 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (/整理农场|农场/.test(text)) return "farm";
       if (/种子|组合包/.test(text)) return "seed";
       return q.priority || "info";
+    }
+
+    /* ── 今日主线（场景推荐系统） ── */
+    function getDayOfWeek(day) { return ((day - 1) % 7) + 1; } // 1=周一 ... 7=周日
+    const DOW_NAMES = ["","周一","周二","周三","周四","周五","周六","周日"];
+    function hasInv(name) { return (appState.inventory[name] || 0) > 0; }
+
+    const SCENE_TEMPLATES = [
+      { id: "rain-fishing", icon: "🌧️", title: "雨天钓鱼日", urgency: 3,
+        desc: "雨天鱼咬钩率↑、雨季限定鱼可捕",
+        trigger(s) { return s.weather === "rain" || s.weather === "storm"; },
+        details(s) {
+          const fish = { spring:"鲶鱼（河流 6-24 点）", summer:"红鲷鱼（海洋全天）· 章鱼（海洋 6-13 点）",
+            fall:"鳗鱼（海洋 16-凌晨 2 点）· 大眼鱼（河流 12-凌晨 2 点）", winter:"虎纹鳟鱼（河流 6-19 点）" };
+          const buff = hasInv("海之菜肴") ? "✅ 海之菜肴已备" : "建议带 海之菜肴（钓鱼+3）";
+          return [ { label: "雨天限定", value: fish[s.season] || "查看季节鱼表" }, { label: "装备", value: buff } ];
+        }
+      },
+      { id: "storm-deep-sea", icon: "⛈️", title: "暴风雨深海鱼", urgency: 3,
+        desc: "暴风雨限定鱼种（如传奇鱼Ⅱ需要暴风雨）",
+        trigger(s) { return s.weather === "storm"; },
+        details(s) {
+          return [ { label: "注意", value: "暴风雨天不能去姜岛" }, { label: "装备", value: "铱鱼竿 + 陷阱浮标/旋转勺" } ];
+        }
+      },
+      { id: "clear-mining", icon: "⛏️", title: "晴天下矿冲层", urgency: 1,
+        desc: "晴天没作物压力，全力推进矿井层数",
+        trigger(s) {
+          if (s.weather !== "sunny") return false;
+          return s.progress.mineLevel < 120;
+        },
+        details(s) {
+          const lv = s.progress.mineLevel;
+          const next = lv < 40 ? "冲 40 层（解锁铁矿石）" : lv < 80 ? "冲 80 层（解锁金矿石）" : "冲 120 层（解锁骷髅钥匙）";
+          const buff = hasInv("香辣鳗鱼") ? "✅ 香辣鳗鱼已备" : hasInv("矿工餐") ? "✅ 矿工餐已备" : "建议带 香辣鳗鱼/矿工餐";
+          return [ { label: "目标", value: `当前 ${lv} 层 → ${next}` }, { label: "装备", value: buff }, { label: "顺带", value: "收铜/铁/金矿石 + 晶球 + 煤炭" } ];
+        }
+      },
+      { id: "skull-cavern", icon: "💀", title: "骷髅洞挑战日", urgency: 1.5,
+        desc: "深入骷髅洞刷铱矿石/五彩碎片",
+        trigger(s) {
+          if (!s.progress.desertUnlocked) return false;
+          if (s.progress.mineLevel < 120) return false;
+          return hasInv("香辣鳗鱼") || hasInv("幸运午餐") || hasInv("蟹黄糕");
+        },
+        details(s) {
+          const buffs = [];
+          if (hasInv("香辣鳗鱼")) buffs.push("✅ 香辣鳗鱼");
+          if (hasInv("幸运午餐")) buffs.push("✅ 幸运午餐");
+          if (hasInv("蟹黄糕")) buffs.push("✅ 蟹黄糕");
+          if (hasInv("三倍浓缩咖啡")) buffs.push("✅ 三倍浓缩咖啡");
+          return [
+            { label: "Buff 储备", value: buffs.join(" · ") || "不足，先准备" },
+            { label: "必带", value: "铱镐 + 铱剑/银河之剑 + 炸弹 + 大量食物" },
+            { label: "预期", value: "铱矿石 ×50+ · 五彩碎片概率 · 星之果实" }
+          ];
+        }
+      },
+      { id: "traveling-cart", icon: "🛒", title: "旅行货车日", urgency: 2,
+        desc: "秘密森林南侧（花 600-3000g 淘稀有好物）",
+        trigger(s) {
+          const dow = getDayOfWeek(s.day);
+          return dow === 5 || dow === 7; // 周五或周日
+        },
+        details(s) {
+          return [
+            { label: "位置", value: "秘密森林（需铁斧砍倒挡路圆木）" },
+            { label: "可能出现", value: "稀有种子 · 季节限定种子 · 配方 · 收集包物品" },
+            { label: "建议", value: "带 3000-5000g 以备万一" }
+          ];
+        }
+      },
+      { id: "island-explore", icon: "🏝️", title: "姜岛探险", urgency: 1,
+        desc: "晴天可坐船去姜岛探索/种植/挖金核桃",
+        trigger(s) {
+          if (!s.progress.islandUnlocked) return false;
+          return s.weather === "sunny";
+        },
+        details(s) {
+          const items = [];
+          if (s.progress.volcanoUnlocked) items.push({ label: "火山洞穴", value: "刷龙牙 + 铱矿 + 锻造宝石" });
+          items.push({ label: "该带", value: "镐/剑/食物 + 空背包位" });
+          items.push({ label: "别忘", value: "最后一班船 17 点前上船" });
+          return items;
+        }
+      },
+      { id: "season-fish", icon: "🐟", title: "当季限定鱼提醒", urgency: 1.5,
+        desc: "这些鱼过季就抓不到了，趁早",
+        trigger(s) {
+          if (s.day < 20) return false; // 季末才提醒
+          return true;
+        },
+        details(s) {
+          const fish = {
+            spring: "鲶鱼（雨天河）· 大眼鱼（河/湖 12-凌晨2点）· 鳗鱼（海 16-凌晨2点）",
+            summer: "河豚（晴天海 12-16点）· 章鱼（海 6-13点）· 超级黄瓜（海 18-凌晨2点）",
+            fall: "鳗鱼（雨天海）· 大眼鱼（河 12-凌晨2点）· 木跃鱼（秘密森林池塘）",
+            winter: "鱿鱼（海 18-凌晨2点）· 虎纹鳟鱼（河 6-19点）· 河豚（不出现）"
+          };
+          return [
+            { label: `${s.day > 25 ? "⚠️ 仅剩 " + (28-s.day) + " 天" : "还剩 " + (28-s.day) + " 天"}`, value: fish[s.season] || "" },
+            { label: "该带", value: hasInv("海之菜肴") ? "✅ 海之菜肴已备" : "海之菜肴（钓鱼+3）" }
+          ];
+        }
+      },
+      { id: "rest-day", icon: "🛋️", title: "休整日", urgency: 0.5,
+        desc: "整理仓库 · 加工产品 · 聊天刷友谊 · 早睡回体力",
+        trigger(s) { return true; }, // 永远兜底
+        details(s) {
+          const tips = [];
+          if (Object.keys(appState.inventory).length > 15) tips.push({ label: "仓库", value: "背包 "+Object.keys(appState.inventory).length+" 种物品，考虑加工/清理" });
+          tips.push({ label: "加工", value: "把积压的作物丢进桶/罐头瓶" });
+          tips.push({ label: "友谊", value: "跟未刷满心数的村民聊天（+20 友谊/天）" });
+          return tips;
+        }
+      }
+    ];
+
+    function getSceneRecommendations() {
+      const s = { season: appState.season, day: appState.day, weather: appState.weather, progress: appState.progress };
+      const matched = SCENE_TEMPLATES
+        .filter(sc => sc.trigger(s))
+        .map(sc => ({ ...sc, score: sc.urgency * (sc.id === "rest-day" ? 0.3 : 1) }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5);
+      // 前 1-2 条标推荐（score >= 2）
+      matched.forEach((sc, i) => { sc.recommended = i < 2 && sc.score >= 2; });
+      return matched;
+    }
+
+    function renderScenes() {
+      const dow = getDayOfWeek(appState.day);
+      document.getElementById("sceneDayLabel").textContent = `${DOW_NAMES[dow]} · ${appState.weather === "sunny" ? "☀️ 晴" : appState.weather === "rain" ? "🌧️ 雨" : "⛈️ 暴风雨"}`;
+      // 同步进度 UI
+      document.getElementById("progDesert").checked = appState.progress.desertUnlocked;
+      document.getElementById("progIsland").checked = appState.progress.islandUnlocked;
+      document.getElementById("progVolcano").checked = appState.progress.volcanoUnlocked;
+      document.getElementById("progMineLevel").value = appState.progress.mineLevel;
+
+      const scenes = getSceneRecommendations();
+      const listEl = document.getElementById("sceneList");
+      const emptyEl = document.getElementById("sceneEmpty");
+      if (scenes.length === 0 || (scenes.length === 1 && scenes[0].id === "rest-day")) {
+        listEl.innerHTML = "";
+        emptyEl.style.display = "";
+        return;
+      }
+      emptyEl.style.display = "none";
+      const s = { season: appState.season, day: appState.day, weather: appState.weather, progress: appState.progress };
+      listEl.innerHTML = scenes.map(sc => {
+        const details = sc.details(s);
+        return `
+          <div class="scene-card ${sc.recommended ? "recommended" : ""}">
+            <div class="scene-head">
+              <span class="scene-icon">${sc.icon}</span>
+              <div class="scene-info">
+                <div class="scene-title">${escapeHtml(sc.title)}</div>
+                <div class="scene-desc">${escapeHtml(sc.desc)}</div>
+              </div>
+            </div>
+            ${details.length ? `<div class="scene-details">${details.map(d => `
+              <div class="scene-detail-row">
+                <span class="scene-detail-label">${escapeHtml(d.label)}</span>
+                <span class="scene-detail-value">${escapeHtml(d.value)}</span>
+              </div>
+            `).join("")}</div>` : ""}
+          </div>
+        `;
+      }).join("");
     }
 
     /* ── 目标 ── */
@@ -10669,6 +10965,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
     /* 日期输入 */
     document.getElementById("dayInput").addEventListener("change", e => setDay(e.target.value));
+
+    /* 今日主线 —— 进度设置 */
+    document.getElementById("progDesert").addEventListener("change", e => { appState.progress.desertUnlocked = e.target.checked; renderApp(); });
+    document.getElementById("progIsland").addEventListener("change", e => { appState.progress.islandUnlocked = e.target.checked; renderApp(); });
+    document.getElementById("progVolcano").addEventListener("change", e => { appState.progress.volcanoUnlocked = e.target.checked; renderApp(); });
+    document.getElementById("progMineLevel").addEventListener("change", e => { appState.progress.mineLevel = Math.max(0, Math.min(120, parseInt(e.target.value) || 0)); renderApp(); });
+
     /* 物品查询 */
     document.getElementById("itemLookup").addEventListener("input", e => renderLookup(e.target.value));
 
