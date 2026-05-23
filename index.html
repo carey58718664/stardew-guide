@@ -1,4 +1,4 @@
-目标版 codex claude 5.21
+目标版 codex claude 5.23
 
 <!doctype html>
 
@@ -9502,7 +9502,16 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       }
       list.innerHTML = appState.goals.map(goal => {
         const tpl = findGoalTemplate(goal.id) || goal;
-        const rawList = goal.steps || tpl.steps;
+        /* 修复：step 定义永远取模板（避免 localStorage 旧数据覆盖更新后的模板）
+           只从 goal.steps 读 checked 状态 */
+        const rawList = (tpl.steps || []).map((tplStep, i) => ({
+          ...tplStep,
+          checked: goal.steps?.[i]?.checked || false
+        }));
+        // 同步 goal.steps 长度（确保 toggleGoalStep 能正确修改）
+        if (!goal.steps || goal.steps.length !== rawList.length) {
+          goal.steps = rawList.map(s => ({ checked: s.checked }));
+        }
         /* 过滤掉旧数据里残留的"找 Robin / 找 Clint"等动作 step
            - self 类全保留（它的 step 本身就是动作描述，如"准备食物回血"）
            - 其他类只保留含 invKey 或 invNeed 的真材料 step */
@@ -9777,7 +9786,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const tpl = findGoalTemplate(goal.id);
         if (!tpl) return;
         if (goal.actionDone) return;
-        const goalSteps = goal.steps || tpl.steps;
+        const goalSteps = (tpl.steps || []).map((s, i) => ({
+          ...s,
+          checked: goal.steps?.[i]?.checked || false
+        }));
         goalSteps.forEach(step => {
           if (step.invKey !== name || !step.invNeed) return;
           if (step.checked) return;
