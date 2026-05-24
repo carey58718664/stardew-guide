@@ -5484,29 +5484,111 @@ body.modal-open #app-shell { pointer-events: none; }
 
 /* ===================== 主界面：对齐献祭页视觉 ===================== */
 #app-shell {
-  width: min(1180px, calc(100% - 18px));
-  padding: 12px 0 28px;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(175deg, #f7f0e1, #faf6eb 40%, #f5efe0);
+  overflow: hidden;
 }
 
-#app-shell .app-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: 14px;
-  margin-bottom: 10px;
-  padding: 14px 16px;
-  border-radius: 8px;
+/* 固定顶栏 */
+.app-top-bar {
+  flex-shrink: 0;
+  padding: 6px 10px;
   background: linear-gradient(180deg, #a66f42, var(--wood));
+  box-shadow: 0 2px 8px rgba(76, 49, 29, 0.15);
+  z-index: 10;
+}
+.app-top-bar .season-bar {
+  margin: 0;
+  padding: 4px 2px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.app-top-bar .season-pill {
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,250,240,0.15);
+  color: #fff7e8;
+}
+.app-top-bar .season-pill.active {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+}
+.app-top-bar .day-step,
+.app-top-bar .day-input,
+.app-top-bar .weather-toggle {
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,250,240,0.15);
+  color: #fff7e8;
 }
 
-#app-shell .app-hero p.kicker {
-  display: block;
-  margin: 0 0 4px;
-  color: #ffe0a2;
-  font-size: 12px;
-  font-weight: 850;
-  letter-spacing: 0;
+/* Tab 内容区（可滚动） */
+.tab-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 10px 16px;
 }
+.tab-page { display: none; }
+.tab-page.active { display: block; }
+
+/* 固定底栏 Tab Bar */
+.app-tab-bar {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 56px;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  background: #fffdf6;
+  border-top: 1px solid #e2d0aa;
+  box-shadow: 0 -2px 8px rgba(76, 49, 29, 0.06);
+  z-index: 10;
+}
+.app-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color .15s ease;
+}
+.app-tab.active { color: var(--wood); }
+.app-tab-icon { font-size: 20px; line-height: 1; }
+.app-tab-label { font-size: 10px; font-weight: 800; }
+
+/* 攻略入口网格 */
+.guide-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.guide-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 8px;
+  border: 1.5px solid #e2d0aa;
+  border-radius: 12px;
+  background: #fffdf6;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+.guide-entry:active { background: #fff3d6; border-color: var(--gold); }
+.guide-entry--wip { opacity: 0.5; cursor: not-allowed; }
+.guide-icon { font-size: 28px; line-height: 1; }
+.guide-label { font-size: 14px; font-weight: 900; color: var(--ink); }
+.guide-desc { font-size: 10px; color: var(--muted); text-align: center; }
 
 #app-shell .app-hero h1 {
   margin: 0;
@@ -6909,66 +6991,127 @@ body.modal-open #app-shell { pointer-events: none; }
 <body>
   <!-- 主工具：牧场决策助手 -->
   <main class="app-shell" id="app-shell">
-    <header class="app-hero">
-      <div>
-        <p class="kicker">STARDEW VALLEY HELPER</p>
-        <h1>🌾 牧场决策助手</h1>
-      </div>
-      <div class="app-hero-actions">
-        <button type="button" id="openBundleBtn">📦 献祭</button>
-        <button type="button" id="openSocialBtn">💞 社交</button>
-      </div>
-    </header>
 
-<!-- 日期天气 -->
-<div class="season-bar">
-  <button class="season-pill" data-season="spring">🌸 春</button>
-  <button class="season-pill" data-season="summer">🌿 夏</button>
-  <button class="season-pill" data-season="fall">🍂 秋</button>
-  <button class="season-pill" data-season="winter">❄️ 冬</button>
-  <button class="day-step" id="dayMinus" type="button">−</button>
-  <input class="day-input" type="number" id="dayInput" min="1" max="28" value="1" />
-  <button class="day-step" id="dayPlus" type="button">+</button>
-  <button class="weather-toggle" id="weatherToggle" type="button">☀️ 晴</button>
+<!-- 固定顶栏：日期天气 -->
+<div class="app-top-bar" id="appTopBar">
+  <div class="season-bar">
+    <button class="season-pill" data-season="spring">🌸 春</button>
+    <button class="season-pill" data-season="summer">🌿 夏</button>
+    <button class="season-pill" data-season="fall">🍂 秋</button>
+    <button class="season-pill" data-season="winter">❄️ 冬</button>
+    <button class="day-step" id="dayMinus" type="button">−</button>
+    <input class="day-input" type="number" id="dayInput" min="1" max="28" value="1" />
+    <button class="day-step" id="dayPlus" type="button">+</button>
+    <button class="weather-toggle" id="weatherToggle" type="button">☀️ 晴</button>
+  </div>
 </div>
 
-<!-- 当季主线 -->
-<section class="app-panel" id="seasonPanel">
-  <h2 class="app-panel-title"><span id="seasonTitleIcon">🌸</span> 当季主线 <span class="subtle" id="seasonLabel">春季</span></h2>
-  <div class="quest-grid" id="questGrid"></div>
-</section>
+<!-- Tab 页面区（可滚动） -->
+<div class="tab-content" id="tabContent">
 
-<!-- 我的物品库 -->
-<section class="app-panel" id="itemLibraryPanel">
-  <h2 class="app-panel-title">🎒 我的物品库 <span class="subtle" id="itemLibCount"></span></h2>
-  <div class="item-lib-toolbar">
-    <input type="search" id="itemLibSearch" class="item-lib-search" placeholder="搜索物品..." autocomplete="off" />
-    <button class="add-item-btn" id="openInventoryBtn" type="button">+ 录入库存</button>
+  <!-- 🏠 主页 -->
+  <div class="tab-page active" id="tabHome" data-tab="home">
+    <section class="app-panel" id="seasonPanel">
+      <h2 class="app-panel-title"><span id="seasonTitleIcon">🌸</span> 当季主线 <span class="subtle" id="seasonLabel">春季</span></h2>
+      <div class="quest-grid" id="questGrid"></div>
+    </section>
+    <section class="app-panel" id="scenePanel">
+      <h2 class="app-panel-title">🗺️ 今日推荐 <span class="subtle" id="sceneDayLabel"></span></h2>
+      <div class="scene-progress-bar">
+        <label><input type="checkbox" id="progDesert" /> 已解锁沙漠</label>
+        <label><input type="checkbox" id="progIsland" /> 已解锁姜岛</label>
+        <label><input type="checkbox" id="progVolcano" /> 已解锁火山</label>
+        <label>矿井 <input type="number" id="progMineLevel" min="0" max="120" value="0" style="width:46px;" /> 层</label>
+      </div>
+      <div id="sceneList" class="scene-list"></div>
+      <div id="sceneEmpty" class="scene-empty" style="display:none;">今天没有特别推荐，可以自由探索 🌾</div>
+    </section>
   </div>
-  <div id="itemLibGrid" class="item-lib-grid"></div>
-</section>
 
-<!-- 今日主线 -->
-<section class="app-panel" id="scenePanel">
-  <h2 class="app-panel-title">🗺️ 今日主线 <span class="subtle" id="sceneDayLabel"></span></h2>
-  <div class="scene-progress-bar">
-    <label><input type="checkbox" id="progDesert" /> 已解锁沙漠</label>
-    <label><input type="checkbox" id="progIsland" /> 已解锁姜岛</label>
-    <label><input type="checkbox" id="progVolcano" /> 已解锁火山</label>
-    <label>矿井 <input type="number" id="progMineLevel" min="0" max="120" value="0" style="width:46px;" /> 层</label>
+  <!-- 🎒 物品 -->
+  <div class="tab-page" id="tabItems" data-tab="items">
+    <section class="app-panel" id="itemLibraryPanel">
+      <h2 class="app-panel-title">🎒 我的物品库 <span class="subtle" id="itemLibCount"></span></h2>
+      <div class="item-lib-toolbar">
+        <input type="search" id="itemLibSearch" class="item-lib-search" placeholder="搜索物品..." autocomplete="off" />
+        <button class="add-item-btn" id="openInventoryBtn" type="button">+ 录入库存</button>
+      </div>
+      <div id="itemLibGrid" class="item-lib-grid"></div>
+    </section>
   </div>
-  <div id="sceneList" class="scene-list"></div>
-  <div id="sceneEmpty" class="scene-empty" style="display:none;">今天没有特别推荐，可以自由探索 🌾</div>
-</section>
 
-<!-- 我的目标 -->
-<section class="app-panel" id="goalsPanel">
-  <h2 class="app-panel-title">🎯 我的目标 <span class="subtle" id="goalsCount"></span></h2>
-  <div id="goalsList"></div>
-  <button class="add-item-btn" id="openAddGoalBtn" type="button" style="margin-top:8px;">+ 添加目标</button>
-</section>
+  <!-- 🎯 目标 -->
+  <div class="tab-page" id="tabGoals" data-tab="goals">
+    <section class="app-panel" id="goalsPanel">
+      <h2 class="app-panel-title">🎯 我的目标 <span class="subtle" id="goalsCount"></span></h2>
+      <div id="goalsList"></div>
+      <button class="add-item-btn" id="openAddGoalBtn" type="button" style="margin-top:8px;">+ 添加目标</button>
+    </section>
+  </div>
 
+  <!-- 📖 攻略 -->
+  <div class="tab-page" id="tabGuide" data-tab="guide">
+    <section class="app-panel">
+      <h2 class="app-panel-title">📖 攻略中心</h2>
+      <div class="guide-grid">
+        <button class="guide-entry" id="openBundleBtn" type="button">
+          <span class="guide-icon">📦</span>
+          <span class="guide-label">献祭</span>
+          <span class="guide-desc">社区中心收集包</span>
+        </button>
+        <button class="guide-entry" id="openSocialBtn" type="button">
+          <span class="guide-icon">💞</span>
+          <span class="guide-label">社交</span>
+          <span class="guide-desc">村民好感·送礼·生日</span>
+        </button>
+        <button class="guide-entry guide-entry--wip" type="button" disabled>
+          <span class="guide-icon">💰</span>
+          <span class="guide-label">流派</span>
+          <span class="guide-desc">盈利路线指南（制作中）</span>
+        </button>
+        <button class="guide-entry guide-entry--wip" type="button" disabled>
+          <span class="guide-icon">🌱</span>
+          <span class="guide-label">种植</span>
+          <span class="guide-desc">作物百科（制作中）</span>
+        </button>
+        <button class="guide-entry guide-entry--wip" type="button" disabled>
+          <span class="guide-icon">🐟</span>
+          <span class="guide-label">钓鱼</span>
+          <span class="guide-desc">鱼类百科（制作中）</span>
+        </button>
+        <button class="guide-entry guide-entry--wip" type="button" disabled>
+          <span class="guide-icon">🍳</span>
+          <span class="guide-label">烹饪</span>
+          <span class="guide-desc">配方·Buff（制作中）</span>
+        </button>
+        <button class="guide-entry guide-entry--wip" type="button" disabled>
+          <span class="guide-icon">⛏️</span>
+          <span class="guide-label">矿洞</span>
+          <span class="guide-desc">普通·骷髅·火山（制作中）</span>
+        </button>
+        <button class="guide-entry guide-entry--wip" type="button" disabled>
+          <span class="guide-icon">🐄</span>
+          <span class="guide-label">养殖</span>
+          <span class="guide-desc">动物百科（制作中）</span>
+        </button>
+        <button class="guide-entry guide-entry--wip" type="button" disabled>
+          <span class="guide-icon">🎉</span>
+          <span class="guide-label">节日</span>
+          <span class="guide-desc">活动·奖励（制作中）</span>
+        </button>
+      </div>
+    </section>
+  </div>
 
+</div>
+
+<!-- 固定底栏：Tab Bar -->
+<nav class="app-tab-bar" id="appTabBar">
+  <button class="app-tab active" data-tab="home"><span class="app-tab-icon">🏠</span><span class="app-tab-label">主页</span></button>
+  <button class="app-tab" data-tab="items"><span class="app-tab-icon">🎒</span><span class="app-tab-label">物品</span></button>
+  <button class="app-tab" data-tab="goals"><span class="app-tab-icon">🎯</span><span class="app-tab-label">目标</span></button>
+  <button class="app-tab" data-tab="guide"><span class="app-tab-icon">📖</span><span class="app-tab-label">攻略</span></button>
+</nav>
 
   </main>
 
@@ -11289,6 +11432,23 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       document.getElementById("bundle-overlay").hidden = true;
       window.scrollTo(0, 0);
     }
+
+    /* ── Tab 切换 ── */
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-page").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".app-tab").forEach(b => b.classList.remove("active"));
+      const page = document.querySelector(`.tab-page[data-tab="${tabId}"]`);
+      const btn = document.querySelector(`.app-tab[data-tab="${tabId}"]`);
+      if (page) page.classList.add("active");
+      if (btn) btn.classList.add("active");
+      // 滚到顶
+      document.getElementById("tabContent").scrollTop = 0;
+      appState._currentTab = tabId;
+    }
+    document.getElementById("appTabBar").addEventListener("click", e => {
+      const tab = e.target.closest("[data-tab]");
+      if (tab) switchTab(tab.dataset.tab);
+    });
 
     /* ── 全局事件 ── */
     document.addEventListener("click", (e) => {
