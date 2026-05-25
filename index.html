@@ -6756,6 +6756,14 @@ body.modal-open { overflow: hidden; touch-action: none; }
   grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
   gap: 10px;
 }
+.planting-detail-wrap {
+  margin-top: 10px;
+  animation: detailSlideIn .15s ease;
+}
+.planting-detail-wrap .planting-card {
+  border-color: var(--gold);
+}
+
 .planting-card {
   --plant-accent: #6fae43;
   overflow: hidden;
@@ -17755,7 +17763,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         </button>
       `).join("");
 
-      const crops = getPlantingVisibleCrops();
       const seasonCrops = getPlantingCropsForSeason(season);
       const available = seasonCrops.filter((entry) => !getPlantingStatus(entry, season).missed && !entry.tags.includes("avoid"));
       const best = available.slice().sort(sortPlantingCrops)[0];
@@ -17766,12 +17773,48 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <span class="planting-stat">还能种 <b>${available.length}</b></span>
         <span class="planting-stat">收集包 <b>${bundleCount}</b></span>
         <span class="planting-stat">最赚 <b>${best ? escapeHtml(best.name) : "无"}</b></span>
-        <span class="planting-stat">当前显示 <b>${crops.length}</b></span>
       `;
 
-      grid.innerHTML = crops.length
-        ? crops.map((entry) => renderPlantingCard(entry, season)).join("")
-        : `<div class="planting-empty">没有匹配的作物，换个关键词或筛选试试。</div>`;
+      /* ── 图标网格：四季铺开，点击展开资料卡 ── */
+      const allSeasons = ["spring", "summer", "fall", "winter"];
+      const query = normalize(plantingQuery);
+
+      grid.innerHTML = allSeasons.map(s => {
+        let crops = getPlantingCropsForSeason(s);
+        /* 应用搜索过滤 */
+        if (query) {
+          crops = crops.filter(entry => {
+            const haystack = normalize([entry.name, entry.seed, entry.source, entry.bundle, ...(entry.notes || [])].join(" "));
+            return haystack.includes(query);
+          });
+        }
+        if (!crops.length) return "";
+
+        const seasonIcon = { spring: "🌸", summer: "🌿", fall: "🍂", winter: "❄️" }[s] || "";
+        const isCurrentSeason = s === appState.season;
+        const chips = crops.map(entry => {
+          const active = appState._activePlantingCrop === entry.id;
+          const status = getPlantingStatus(entry, s);
+          const missClass = status.missed ? "search-miss" : "";
+          return `<button class="item-chip ${active ? 'active' : ''} ${missClass}" data-planting-chip="${entry.id}" type="button">${renderPlantingIcon(entry.name)}<span>${escapeHtml(entry.name)}</span></button>`;
+        }).join("");
+
+        /* 如果当前展开的作物在这个季节组里，渲染资料卡 */
+        let detailHtml = "";
+        if (appState._activePlantingCrop) {
+          const activeEntry = crops.find(c => c.id === appState._activePlantingCrop);
+          if (activeEntry) {
+            detailHtml = `<div class="planting-detail-wrap">${renderPlantingCard(activeEntry, s)}</div>`;
+          }
+        }
+
+        return `<div class="item-lib-cat-group">
+          <div class="item-lib-cat-label">${seasonIcon} ${escapeHtml(SEASON_CN[s])}季作物${isCurrentSeason ? ' <span style="color:var(--green);font-size:10px;">← 当前季</span>' : ''}</div>
+          <div class="item-lib-chips">${chips}</div>
+          ${detailHtml}
+        </div>`;
+      }).join("") || `<div class="planting-empty">没有匹配的作物。</div>`;
+
       greenhouse.innerHTML = renderPlantingGreenhouse();
     }
 
@@ -21863,6 +21906,20 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (plantingFilterBtn) {
         plantingFilter = plantingFilterBtn.dataset.plantingFilter;
         renderPlanting();
+        return;
+      }
+      // 种植图标点击展开
+      const plantingChip = e.target.closest("[data-planting-chip]");
+      if (plantingChip) {
+        const cropId = plantingChip.dataset.plantingChip;
+        appState._activePlantingCrop = appState._activePlantingCrop === cropId ? null : cropId;
+        renderPlanting();
+        if (appState._activePlantingCrop) {
+          setTimeout(() => {
+            const wrap = document.querySelector(".planting-detail-wrap");
+            if (wrap) wrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }, 50);
+        }
         return;
       }
       // 钓鱼筛选
