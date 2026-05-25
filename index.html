@@ -11758,6 +11758,19 @@ body.modal-open { overflow: hidden; touch-action: none; }
   <div class="season-overview" id="seasonOverview"></div>
 </section>
 
+<!-- 今日推荐（场景） -->
+<section class="app-panel" id="scenePanel">
+  <h2 class="app-panel-title">🗺️ 今日推荐 <span class="subtle" id="sceneDayLabel"></span></h2>
+  <div class="scene-progress-bar">
+    <label><input type="checkbox" id="progDesert" /> 已解锁沙漠</label>
+    <label><input type="checkbox" id="progIsland" /> 已解锁姜岛</label>
+    <label><input type="checkbox" id="progVolcano" /> 已解锁火山</label>
+    <label>矿井 <input type="number" id="progMineLevel" min="0" max="120" value="0" style="width:46px;" /> 层</label>
+  </div>
+  <div id="sceneList" class="scene-list"></div>
+  <div id="sceneEmpty" class="scene-empty" style="display:none;">今天没有特别推荐，可以自由探索 🌾</div>
+</section>
+
 </div><!-- /tabHome -->
 
 <!-- 🎒 物品 Tab -->
@@ -15732,6 +15745,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     function renderQuests() {
       const list = SEASON_QUESTS[appState.season] || [];
       const grid = document.getElementById("questGrid");
+      if (!grid) return;
       grid.innerHTML = list.map(q => {
         const added = q.goal && appState.goals.some(g => g.id === q.goal);
         const theme = getQuestTheme(q);
