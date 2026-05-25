@@ -17005,14 +17005,16 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       function classifyCookingRecipe(entry) {
         const fx = (entry.effects || []).join(" ");
         if (!fx || entry.effects.length === 0) return "nobuff";
+        if (/钓鱼/.test(fx) && !/采矿|磁性|速度|防御|攻击/.test(fx)) return "fishing";
+        if (/速度|运气|防御|攻击|采矿|磁性/.test(fx)) return "mining";
+        if (/耕种|采集/.test(fx)) return "farming";
         if (/钓鱼/.test(fx)) return "fishing";
-        if (/耕种|采集|采矿|磁性/.test(fx)) return "farming";
-        return "combat"; // 速度/运气/防御/攻击/体力上限
+        return "mining";
       }
       const cookingGroups = [
-        { key: "combat",  label: "⚔️ 冒险 buff（速度·运气·防御·攻击）", items: [] },
+        { key: "mining",  label: "⛏️ 下矿 buff（速度·运气·防御·攻击·采矿）", items: [] },
         { key: "fishing", label: "🎣 钓鱼 buff", items: [] },
-        { key: "farming", label: "🌾 农耕·采集·采矿 buff", items: [] },
+        { key: "farming", label: "🌾 农耕·采集 buff", items: [] },
         { key: "nobuff",  label: "🍽️ 无增益料理（回复·送礼·图鉴）", items: [] }
       ];
       visible.forEach(entry => {
