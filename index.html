@@ -5519,9 +5519,113 @@ body.modal-open { overflow: hidden; touch-action: none; }
 
 /* ===================== 主界面：对齐献祭页视觉 ===================== */
 #app-shell {
-  width: min(1180px, calc(100% - 18px));
-  padding: 12px 0 28px;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(175deg, #f7f0e1, #faf6eb 40%, #f5efe0);
+  overflow: hidden;
+  width: 100%;
+  padding: 0;
 }
+
+/* 固定顶栏 */
+.app-top-bar {
+  flex-shrink: 0;
+  padding: 6px 10px;
+  background: linear-gradient(180deg, #a66f42, var(--wood));
+  box-shadow: 0 2px 8px rgba(76, 49, 29, 0.15);
+  z-index: 10;
+}
+.app-top-bar .season-bar {
+  margin: 0;
+  padding: 4px 2px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.app-top-bar .season-pill {
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,250,240,0.15);
+  color: #fff7e8;
+}
+.app-top-bar .season-pill.active {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+}
+.app-top-bar .day-step,
+.app-top-bar .day-input,
+.app-top-bar .weather-toggle {
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,250,240,0.15);
+  color: #fff7e8;
+}
+
+/* Tab 内容区 */
+.tab-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 10px 16px;
+}
+.tab-page { display: none; }
+.tab-page.active { display: block; }
+
+/* 固定底栏 Tab Bar */
+.app-tab-bar {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 56px;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  background: #fffdf6;
+  border-top: 1px solid #e2d0aa;
+  box-shadow: 0 -2px 8px rgba(76, 49, 29, 0.06);
+  z-index: 10;
+}
+.app-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color .15s ease;
+}
+.app-tab.active { color: var(--wood); }
+.app-tab-icon { font-size: 20px; line-height: 1; }
+.app-tab-label { font-size: 10px; font-weight: 800; }
+
+/* 攻略入口网格 */
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.guide-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 6px;
+  border: 1.5px solid #e2d0aa;
+  border-radius: 12px;
+  background: #fffdf6;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+.guide-entry:active { background: #fff3d6; border-color: var(--gold); }
+.guide-icon { font-size: 28px; line-height: 1; }
+.guide-icon .official-ui-icon { width: 28px; height: 28px; }
+.guide-label { font-size: 13px; font-weight: 900; color: var(--ink); }
+.guide-desc { font-size: 9px; color: var(--muted); text-align: center; line-height: 1.3; }
 
 #app-shell .app-hero {
   display: grid;
@@ -11611,31 +11715,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <body>
   <!-- 主工具：牧场决策助手 -->
   <main class="app-shell" id="app-shell">
-    <header class="app-hero">
-      <div>
-        <p class="kicker">STARDEW VALLEY HELPER</p>
-        <h1><span class="official-ui-icon" data-official-icon="小麦" data-icon-fallback="牧"></span>牧场决策助手</h1>
-      </div>
-      <div class="app-hero-actions">
-        <button type="button" id="openBundleBtn"><span class="official-ui-icon" data-official-icon="献祭"></span>献祭</button>
-        <button type="button" id="openSocialBtn"><span class="official-ui-icon" data-official-icon="社交"></span>社交</button>
-        <button type="button" id="openCookingBtn"><span class="official-ui-icon" data-official-icon="烹饪"></span>烹饪</button>
-        <button type="button" id="openFestivalBtn"><span class="official-ui-icon" data-official-icon="节日"></span>节日</button>
-        <button type="button" id="openPlantingBtn"><span class="official-ui-icon" data-official-icon="种植"></span>种植</button>
-        <button type="button" id="openFishingBtn"><span class="official-ui-icon" data-official-icon="钓鱼"></span>钓鱼</button>
-        <button type="button" id="openAnimalBtn"><span class="official-ui-icon" data-official-icon="养殖"></span>养殖</button>
-        <button type="button" id="openMineBtn"><span class="official-ui-icon" data-official-icon="普通矿洞"></span>普通矿洞</button>
-        <button type="button" id="openSkullBtn"><span class="official-ui-icon" data-official-icon="沙漠矿洞"></span>沙漠矿洞</button>
-        <button type="button" id="openPondBtn"><span class="official-ui-icon" data-official-icon="鱼塘"></span>鱼塘</button>
-        <button type="button" id="openIslandBtn"><span class="official-ui-icon" data-official-icon="姜岛"></span>姜岛</button>
-        <button type="button" id="openStrategyBtn"><span class="official-ui-icon" data-official-icon="流派"></span>流派</button>
-        <button type="button" id="openResourcePanelBtn"><span class="official-ui-icon" data-official-icon="背包"></span>背包</button>
-        <button type="button" id="openScenePanelBtn"><span class="official-ui-icon" data-official-icon="今日"></span>今日</button>
-        <button type="button" id="openGoalsPanelBtn"><span class="official-ui-icon" data-official-icon="目标"></span>目标</button>
-      </div>
-    </header>
 
-<!-- 日期天气 -->
+<!-- 固定顶栏：日期天气 -->
+<div class="app-top-bar" id="appTopBar">
 <div class="season-bar">
   <button class="season-pill" data-season="spring"><span class="official-ui-icon" data-official-icon="春"></span>春</button>
   <button class="season-pill" data-season="summer"><span class="official-ui-icon" data-official-icon="夏"></span>夏</button>
@@ -11646,6 +11728,13 @@ body.modal-open { overflow: hidden; touch-action: none; }
   <button class="day-step" id="dayPlus" type="button">+</button>
   <button class="weather-toggle" id="weatherToggle" type="button"><span class="official-ui-icon" data-official-icon="晴"></span>晴</button>
 </div>
+</div>
+
+<!-- Tab 内容区 -->
+<div class="tab-content" id="tabContent">
+
+<!-- 🏠 主页 Tab -->
+<div class="tab-page active" id="tabHome" data-tab="home">
 
 <!-- 当季主线 -->
 <section class="app-panel" id="seasonPanel">
@@ -11669,75 +11758,122 @@ body.modal-open { overflow: hidden; touch-action: none; }
   <div class="season-overview" id="seasonOverview"></div>
 </section>
 
-<!-- 背包 + 建议 + 搜索 -->
-<section class="app-panel standalone-panel" id="resourcePanel" hidden>
-  <div class="standalone-panel-close">
-    <span class="standalone-panel-title">
-      <span class="kicker">Farm Toolkit</span>
-      <span class="ttl"><span class="official-ui-icon" data-official-icon="背包"></span>背包 + 建议 + 搜索</span>
-    </span>
-    <button type="button" id="closeResourcePanelBtn">← 返回当季主线</button>
-  </div>
-  <div class="standalone-panel-inner">
-    <h2 class="app-panel-title"><span class="official-ui-icon" data-official-icon="背包"></span>背包 + 建议 + 搜索</h2>
-    <div class="resource-grid">
-      <section class="resource-card" id="inventoryHubPanel">
-        <h3 class="inventory-subtitle"><span class="official-ui-icon" data-official-icon="背包录入"></span>背包录入 <span class="subtle">实时联动献祭</span></h3>
-        <div id="invSummary" class="inventory-summary"></div>
-        <button class="add-item-btn" id="openInventoryBtn" type="button">+ 录入库存</button>
-      </section>
-      <section class="resource-card" id="suggestionsPanel">
-        <h3 class="inventory-subtitle"><span class="official-ui-icon" data-official-icon="建议"></span>建议 <span class="subtle" id="suggestionsCount"></span></h3>
-        <div id="invSuggestions"></div>
-      </section>
-      <section class="resource-card lookup-card" id="lookupPanel">
-        <h3 class="inventory-subtitle"><span class="official-ui-icon" data-official-icon="查物品"></span>查物品 <span class="subtle">看所有出路</span></h3>
-        <input type="search" id="itemLookup" placeholder="例：玉米、铜矿石、上古水果"
-          style="width:100%;min-height:38px;padding:0 12px;border:2px solid var(--line);border-radius:8px;background:#fffdf8;font-size:14px;outline:none;" />
-        <div id="lookupResult" class="decision-panel"></div>
-      </section>
-    </div>
-  </div>
-</section>
+</div><!-- /tabHome -->
 
-<!-- 今日主线（场景） -->
-<section class="app-panel standalone-panel" id="scenePanel" hidden>
-  <div class="standalone-panel-close">
-    <span class="standalone-panel-title">
-      <span class="kicker">Today Route</span>
-      <span class="ttl"><span class="official-ui-icon" data-official-icon="今日"></span>今日主线（场景）</span>
-    </span>
-    <button type="button" id="closeScenePanelBtn">← 返回当季主线</button>
-  </div>
-  <div class="standalone-panel-inner">
-    <h2 class="app-panel-title"><span class="official-ui-icon" data-official-icon="今日"></span>今日主线（场景） <span class="subtle" id="sceneDayLabel"></span></h2>
-    <div class="scene-progress-bar">
-      <label><input type="checkbox" id="progDesert" /> 已解锁沙漠</label>
-      <label><input type="checkbox" id="progIsland" /> 已解锁姜岛</label>
-      <label><input type="checkbox" id="progVolcano" /> 已解锁火山</label>
-      <label>矿井 <input type="number" id="progMineLevel" min="0" max="120" value="0" style="width:46px;" /> 层</label>
-    </div>
-    <div id="sceneList" class="scene-list"></div>
-    <div id="sceneEmpty" class="scene-empty" style="display:none;">今天没有特别推荐，可以自由探索 🌾</div>
+<!-- 🎒 物品 Tab -->
+<div class="tab-page" id="tabItems" data-tab="items">
+<section class="app-panel">
+  <h2 class="app-panel-title"><span class="official-ui-icon" data-official-icon="背包"></span>我的物品库</h2>
+  <div class="resource-grid">
+    <section class="resource-card" id="inventoryHubPanel">
+      <h3 class="inventory-subtitle"><span class="official-ui-icon" data-official-icon="背包录入"></span>背包录入 <span class="subtle">实时联动献祭</span></h3>
+      <div id="invSummary" class="inventory-summary"></div>
+      <button class="add-item-btn" id="openInventoryBtn" type="button">+ 录入库存</button>
+    </section>
+    <section class="resource-card" id="suggestionsPanel">
+      <h3 class="inventory-subtitle"><span class="official-ui-icon" data-official-icon="建议"></span>建议 <span class="subtle" id="suggestionsCount"></span></h3>
+      <div id="invSuggestions"></div>
+    </section>
+    <section class="resource-card lookup-card" id="lookupPanel">
+      <h3 class="inventory-subtitle"><span class="official-ui-icon" data-official-icon="查物品"></span>查物品 <span class="subtle">看所有出路</span></h3>
+      <input type="search" id="itemLookup" placeholder="例：玉米、铜矿石、上古水果"
+        style="width:100%;min-height:38px;padding:0 12px;border:2px solid var(--line);border-radius:8px;background:#fffdf8;font-size:14px;outline:none;" />
+      <div id="lookupResult" class="decision-panel"></div>
+    </section>
   </div>
 </section>
+</div><!-- /tabItems -->
 
-<!-- 我的目标 -->
-<section class="app-panel standalone-panel" id="goalsPanel" hidden>
-  <div class="standalone-panel-close">
-    <span class="standalone-panel-title">
-      <span class="kicker">My Goals</span>
-      <span class="ttl"><span class="official-ui-icon" data-official-icon="目标"></span>我的目标</span>
-    </span>
-    <button type="button" id="closeGoalsPanelBtn">← 返回当季主线</button>
-  </div>
-  <div class="standalone-panel-inner">
-    <h2 class="app-panel-title"><span class="official-ui-icon" data-official-icon="目标"></span>我的目标 <span class="subtle" id="goalsCount"></span></h2>
-    <div id="goalsList"></div>
-    <div id="processingGoalsGuide" class="processing-goals-guide"></div>
-    <button class="add-item-btn" id="openAddGoalBtn" type="button" style="margin-top:8px;">+ 添加目标</button>
+
+
+<!-- 🎯 目标 Tab -->
+<div class="tab-page" id="tabGoals" data-tab="goals">
+<section class="app-panel" id="goalsPanel">
+  <h2 class="app-panel-title"><span class="official-ui-icon" data-official-icon="目标"></span>我的目标 <span class="subtle" id="goalsCount"></span></h2>
+  <div id="goalsList"></div>
+  <div id="processingGoalsGuide" class="processing-goals-guide"></div>
+  <button class="add-item-btn" id="openAddGoalBtn" type="button" style="margin-top:8px;">+ 添加目标</button>
+</section>
+</div><!-- /tabGoals -->
+
+<!-- 📖 攻略 Tab -->
+<div class="tab-page" id="tabGuide" data-tab="guide">
+<section class="app-panel">
+  <h2 class="app-panel-title">📖 攻略中心</h2>
+  <div class="guide-grid">
+    <button class="guide-entry" id="openBundleBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="献祭"></span></span>
+      <span class="guide-label">献祭</span>
+      <span class="guide-desc">社区中心收集包</span>
+    </button>
+    <button class="guide-entry" id="openSocialBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="社交"></span></span>
+      <span class="guide-label">社交</span>
+      <span class="guide-desc">村民好感·送礼·生日</span>
+    </button>
+    <button class="guide-entry" id="openCookingBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="烹饪"></span></span>
+      <span class="guide-label">烹饪</span>
+      <span class="guide-desc">配方·Buff·材料</span>
+    </button>
+    <button class="guide-entry" id="openPlantingBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="种植"></span></span>
+      <span class="guide-label">种植</span>
+      <span class="guide-desc">作物百科·季节·收益</span>
+    </button>
+    <button class="guide-entry" id="openFishingBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="钓鱼"></span></span>
+      <span class="guide-label">钓鱼</span>
+      <span class="guide-desc">鱼类·地点·时间</span>
+    </button>
+    <button class="guide-entry" id="openFestivalBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="节日"></span></span>
+      <span class="guide-label">节日</span>
+      <span class="guide-desc">活动·奖励·准备</span>
+    </button>
+    <button class="guide-entry" id="openAnimalBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="养殖"></span></span>
+      <span class="guide-label">养殖</span>
+      <span class="guide-desc">动物·产品·收益</span>
+    </button>
+    <button class="guide-entry" id="openMineBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="普通矿洞"></span></span>
+      <span class="guide-label">矿洞</span>
+      <span class="guide-desc">0-120层·怪物·掉落</span>
+    </button>
+    <button class="guide-entry" id="openSkullBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="沙漠矿洞"></span></span>
+      <span class="guide-label">骷髅洞</span>
+      <span class="guide-desc">铱矿·五彩·装备</span>
+    </button>
+    <button class="guide-entry" id="openPondBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="鱼塘"></span></span>
+      <span class="guide-label">鱼塘</span>
+      <span class="guide-desc">养鱼·产出·收益</span>
+    </button>
+    <button class="guide-entry" id="openIslandBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="姜岛"></span></span>
+      <span class="guide-label">姜岛</span>
+      <span class="guide-desc">探险·火山·核桃</span>
+    </button>
+    <button class="guide-entry" id="openStrategyBtn" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="流派"></span></span>
+      <span class="guide-label">流派</span>
+      <span class="guide-desc">盈利路线指南</span>
+    </button>
   </div>
 </section>
+</div><!-- /tabGuide -->
+
+</div><!-- /tabContent -->
+
+<!-- 固定底栏 Tab Bar -->
+<nav class="app-tab-bar" id="appTabBar">
+  <button class="app-tab active" data-tab="home"><span class="app-tab-icon">🏠</span><span class="app-tab-label">主页</span></button>
+  <button class="app-tab" data-tab="items"><span class="app-tab-icon">🎒</span><span class="app-tab-label">物品</span></button>
+  <button class="app-tab" data-tab="goals"><span class="app-tab-icon">🎯</span><span class="app-tab-label">目标</span></button>
+  <button class="app-tab" data-tab="guide"><span class="app-tab-icon">📖</span><span class="app-tab-label">攻略</span></button>
+</nav>
 
   </main>
 
@@ -15003,6 +15139,39 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "咖啡豆": [{ method: "小桶", out: "咖啡", price: 150, gain: "5豆→1咖啡" }],
       // 蜂蜜
       "蜂蜜": [{ method: "小桶", out: "蜂蜜酒", price: 300, gain: "+200%" }],
+
+      // ═══ 1.6 新设备：脱水机（5个→5个干货，每个 = 基价×2.5 + 25） ═══
+      // 水果类（补充到已有条目会重复 key，统一用新 key 追加）
+      "杨桃": [{ method: "小桶", out: "杨桃酒", price: 2250, gain: "+200%·最赚" }, { method: "脱水机", out: "干杨桃", price: 1900, gain: "+153%·5个一组" }, { method: "罐头瓶", out: "杨桃果酱", price: 1550, gain: "+107%" }],
+      "上古水果": [{ method: "小桶", out: "上古果酒", price: 4620, gain: "+200%·极品" }, { method: "脱水机", out: "干上古水果", price: 3875, gain: "+152%·5个一组" }, { method: "罐头瓶", out: "上古果酱", price: 3130, gain: "+103%" }],
+
+      // ═══ 1.6 鱼熏机（1鱼→1熏鱼，售价 = 基价×2） ═══
+      "鲤鱼": [{ method: "鱼熏机", out: "熏鲤鱼", price: 60, gain: "+100%·处理废鱼" }],
+      "鲈鱼": [{ method: "鱼熏机", out: "熏鲈鱼", price: 200, gain: "+100%" }, { method: "罐头瓶", out: "腌鲈鱼", price: 150, gain: "+50%" }],
+      "鲶鱼": [{ method: "鱼熏机", out: "熏鲶鱼", price: 400, gain: "+100%" }],
+      "鲑鱼": [{ method: "鱼熏机", out: "熏鲑鱼", price: 150, gain: "+100%" }],
+      "鲟鱼": [{ method: "鱼熏机", out: "熏鲟鱼", price: 400, gain: "+100%·高价值" }],
+      "河豚": [{ method: "鱼熏机", out: "熏河豚", price: 400, gain: "+100%" }],
+      "鳗鱼": [{ method: "鱼熏机", out: "熏鳗鱼", price: 170, gain: "+100%·不如做香辣鳗鱼" }],
+      "大嘴鲈鱼": [{ method: "鱼熏机", out: "熏大嘴鲈鱼", price: 150, gain: "+100%" }],
+      "虎纹鳟鱼": [{ method: "鱼熏机", out: "熏虎纹鳟鱼", price: 300, gain: "+100%" }],
+      "大眼鱼": [{ method: "鱼熏机", out: "熏大眼鱼", price: 210, gain: "+100%" }],
+      "章鱼": [{ method: "鱼熏机", out: "熏章鱼", price: 300, gain: "+100%" }],
+
+      // ═══ 脱水机：蘑菇（5个→5个干蘑菇） ═══
+      "普通蘑菇": [{ method: "脱水机", out: "干蘑菇", price: 100, gain: "+150%·5个一组" }],
+      "紫蘑菇": [{ method: "脱水机", out: "干紫蘑菇", price: 650, gain: "+160%·5个一组" }, { method: "罐头瓶", out: "紫蘑菇酱", price: 550, gain: "+120%" }],
+      "羊肚菌": [{ method: "脱水机", out: "干羊肚菌", price: 400, gain: "+167%·5个一组" }],
+
+      // ═══ 产油机补全 ═══
+      "向日葵": [{ method: "产油机", out: "油", price: 100, gain: "固定·种子也可" }, { method: "小桶", out: "向日葵汁", price: 260, gain: "+233%" }],
+      "松露": [{ method: "产油机", out: "松露油", price: 1491, gain: "+138%·工匠技能后极高" }],
+
+      // ═══ 木炭窑 ═══
+      "木材": [{ method: "木炭窑", out: "煤炭", price: 150, gain: "10木材→1煤炭" }],
+
+      // ═══ 蜂箱（附近花→风味蜂蜜） ═══
+      // 蜂箱产出取决于附近花种，不是加工现有物品，写在 ITEM_SOURCE_HINTS 里更合适
     };
 
     /* ── 售价数据（决策面板/建议用） ── */
@@ -21548,6 +21717,22 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       else openSocial();
     }, true);
 
+    /* ── Tab 切换 ── */
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-page").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".app-tab").forEach(b => b.classList.remove("active"));
+      const page = document.querySelector(`.tab-page[data-tab="${tabId}"]`);
+      const btn = document.querySelector(`.app-tab[data-tab="${tabId}"]`);
+      if (page) page.classList.add("active");
+      if (btn) btn.classList.add("active");
+      document.getElementById("tabContent").scrollTop = 0;
+      appState._currentTab = tabId;
+    }
+    document.getElementById("appTabBar").addEventListener("click", e => {
+      const tab = e.target.closest("[data-tab]");
+      if (tab && tab.closest(".app-tab-bar")) switchTab(tab.dataset.tab);
+    });
+
     /* ── 全局事件 ── */
     document.addEventListener("click", (e) => {
       // 季节切换
@@ -21603,9 +21788,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (e.target.closest("#openPondBtn") || e.target.closest("[data-open-pond]")) { openPond(); return; }
       if (e.target.closest("#openIslandBtn") || e.target.closest("[data-open-island]")) { openIsland(); return; }
       if (e.target.closest("#openStrategyBtn")) { openStrategy(); return; }
-      if (e.target.closest("#openResourcePanelBtn")) { openStandalonePanel("resourcePanel"); return; }
-      if (e.target.closest("#openScenePanelBtn")) { openStandalonePanel("scenePanel"); return; }
-      if (e.target.closest("#openGoalsPanelBtn")) { openStandalonePanel("goalsPanel"); return; }
+      // Tab 快捷跳转（从旧按钮迁移）
+      if (e.target.closest("#openResourcePanelBtn")) { switchTab("items"); return; }
+      if (e.target.closest("#openGoalsPanelBtn")) { switchTab("goals"); return; }
       if (e.target.closest("#closeSocialBtn")) { closeSocial(); return; }
       if (e.target.closest("#closeCookingBtn")) { closeCooking(); return; }
       if (e.target.closest("#closeFestivalBtn")) { closeFestival(); return; }
@@ -21618,9 +21803,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (e.target.closest("#closeIslandBtn")) { closeIsland(); return; }
       if (e.target.closest("#closeStrategyBtn")) { closeStrategy(); return; }
       if (e.target.closest("#closeBundleBtn")) { closeBundle(); return; }
-      if (e.target.closest("#closeResourcePanelBtn")) { closeStandalonePanel("resourcePanel"); return; }
-      if (e.target.closest("#closeScenePanelBtn")) { closeStandalonePanel("scenePanel"); return; }
-      if (e.target.closest("#closeGoalsPanelBtn")) { closeStandalonePanel("goalsPanel"); return; }
+      // 旧 standalone 关闭按钮已移除
       // 烹饪筛选
       const cookingFilterBtn = e.target.closest("[data-cooking-filter]");
       if (cookingFilterBtn) {
