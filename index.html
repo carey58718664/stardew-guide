@@ -5627,6 +5627,79 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .guide-label { font-size: 13px; font-weight: 900; color: var(--ink); }
 .guide-desc { font-size: 9px; color: var(--muted); text-align: center; line-height: 1.3; }
 
+/* ── 购物车商店 ── */
+.shop-section {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e8dcc4;
+}
+.shop-section:last-child { border-bottom: none; }
+.shop-intro-card {
+  padding: 12px;
+  border: 1.5px solid #e2d0aa;
+  border-radius: 10px;
+  background: #fffdf6;
+  margin-bottom: 10px;
+}
+.shop-intro-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.shop-intro-icon img, .shop-intro-icon .fallback-icon { width: 28px !important; height: 28px !important; }
+.shop-intro-name { font-size: 15px; font-weight: 900; color: var(--ink); margin: 0; }
+.shop-intro-line { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.shop-catalog { margin: 10px 0; }
+.shop-cart-section { margin-top: 10px; }
+.shop-product-detail {
+  margin-top: 10px;
+  border: 1.5px solid var(--gold);
+  border-radius: 10px;
+  background: #fffdf6;
+  overflow: hidden;
+  animation: detailSlideIn .15s ease;
+}
+.shop-product-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, #fff8ee, #fffdf6);
+  border-bottom: 1px solid #f0e3c8;
+}
+.shop-product-icon img, .shop-product-icon .fallback-icon { width: 32px !important; height: 32px !important; }
+.shop-product-title { font-size: 14px; font-weight: 900; color: var(--ink); }
+.shop-product-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.shop-product-steps { padding: 8px 12px; }
+.shop-product-step { font-size: 12px; color: var(--ink); padding: 3px 0; }
+.shop-product-sub { font-size: 10.5px; color: var(--muted); }
+.shop-product-actions { padding: 8px 12px; display: flex; gap: 8px; }
+.shop-add-btn {
+  flex: 1;
+  padding: 8px;
+  border: 2px solid var(--green);
+  border-radius: 8px;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.shop-add-btn:active { background: var(--green); color: #fff; }
+.shop-remove-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: #f5f0e5;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.item-chip.in-cart { border-color: var(--green); background: var(--green-soft); }
+
 /* ── 物品库三合一 ── */
 .item-lib-toolbar {
   display: flex;
@@ -11983,10 +12056,8 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <!-- 🎯 目标 Tab -->
 <div class="tab-page" id="tabGoals" data-tab="goals">
 <section class="app-panel" id="goalsPanel">
-  <h2 class="app-panel-title"><span class="official-ui-icon" data-official-icon="目标"></span>我的目标 <span class="subtle" id="goalsCount"></span></h2>
-  <div id="goalsList"></div>
-  <div id="processingGoalsGuide" class="processing-goals-guide"></div>
-  <button class="add-item-btn" id="openAddGoalBtn" type="button" style="margin-top:8px;">+ 添加目标</button>
+  <h2 class="app-panel-title">🛒 购物车</h2>
+  <div id="shoppingCartContent"></div>
 </section>
 </div><!-- /tabGoals -->
 
@@ -12063,10 +12134,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
 
 <!-- 固定底栏 Tab Bar -->
 <nav class="app-tab-bar" id="appTabBar">
-  <button class="app-tab active" data-tab="home"><span class="app-tab-icon">🏠</span><span class="app-tab-label">主页</span></button>
-  <button class="app-tab" data-tab="items"><span class="app-tab-icon">🎒</span><span class="app-tab-label">物品</span></button>
-  <button class="app-tab" data-tab="goals"><span class="app-tab-icon">🎯</span><span class="app-tab-label">目标</span></button>
-  <button class="app-tab" data-tab="guide"><span class="app-tab-icon">📖</span><span class="app-tab-label">攻略</span></button>
+  <button class="app-tab active" data-tab="home"><span class="app-tab-icon">🌿</span><span class="app-tab-label">当季事</span></button>
+  <button class="app-tab" data-tab="items"><span class="app-tab-icon">🎒</span><span class="app-tab-label">物品库</span></button>
+  <button class="app-tab" data-tab="goals"><span class="app-tab-icon">🛒</span><span class="app-tab-label">购物车</span></button>
+  <button class="app-tab" data-tab="guide"><span class="app-tab-icon">📖</span><span class="app-tab-label">场景集</span></button>
 </nav>
 
   </main>
@@ -15178,6 +15249,181 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       ]},
     ];
 
+    /* ── 商店数据（购物车 Tab） ── */
+    const SHOP_DATA = [
+      { id: "pierre", name: "皮埃尔杂货店", icon: "皮埃尔",
+        intro: ["营业 9:00AM–5:00PM；周三不营业（社区中心修复后周三也开）。", "种子、化肥、背包升级、脱水机配方等都在这买。"],
+        goalIds: ["buy-backpack-large", "buy-backpack-deluxe", "craft-dehydrator"] },
+      { id: "robin", name: "木匠商店（罗宾）", icon: "罗宾",
+        intro: ["营业 9:00AM–5:00PM；周二不营业，周五提前一小时关。", "建造农场建筑和房屋升级都找罗宾，通常需要 2–3 天。"],
+        goalIds: [
+          "build-silo","build-coop","build-coop-big","build-coop-deluxe",
+          "build-barn","build-barn-big","build-barn-deluxe",
+          "build-well","build-mill","build-shed","build-shed-big",
+          "build-shipping-bin","build-stable","build-fish-pond","build-slime-hutch","build-pet-bowl",
+          "house-kitchen","house-nursery","house-cellar","house-reno-open","house-reno-corner"
+        ] },
+      { id: "clint", name: "铁匠铺（克林特）", icon: "克林特",
+        intro: ["营业 9:00AM–4:00PM；周五不营业。", "工具升级需要对应锭 ×5 + 金币，升级期间工具不可用（2 天）。", "也可以花 25g 开晶球。"],
+        goalIds: (function() {
+          const ids = [];
+          ["pickaxe","axe","hoe","wateringcan","trashcan"].forEach(t => {
+            ["copper","steel","gold","iridium"].forEach(l => ids.push("upgrade-"+t+"-"+l));
+          });
+          return ids;
+        })() },
+      { id: "willy", name: "渔店（威利）", icon: "威利",
+        intro: ["营业 9:00AM–5:00PM；周六不营业。", "鱼竿、鱼饵、鱼具在这买。鱼熏机配方也在这。"],
+        goalIds: ["buy-fiberglass-rod","buy-iridium-rod","craft-fish-smoker","craft-crab-pot","craft-bait-maker","craft-worm-bin","craft-deluxe-worm-bin"] },
+      { id: "marnie", name: "玛妮牧场", icon: "玛妮",
+        intro: ["营业 9:00AM–4:00PM；周一、周二不营业。秋18日、冬18日也休。", "牧场 9:00AM–6:00PM 可进入，购买动物和动物用品。"],
+        goalIds: [] },
+      { id: "saloon", name: "星之果实餐吧（格斯）", icon: "格斯",
+        intro: ["营业 12:00PM–12:00AM；每天营业。", "购买料理配方和食物。也是村民社交聚集地。"],
+        goalIds: [] },
+      { id: "desert", name: "沙漠绿洲（桑迪）", icon: "桑迪",
+        intro: ["需先解锁沙漠（修巴士或金库捐款）。", "大黄种子（春夏）、杨桃种子（夏）、甜菜种子（秋）在这买。"],
+        goalIds: [] },
+      { id: "cart", name: "旅行货车", icon: "旅行货车",
+        intro: ["每周五、周日出现在秘密森林南侧。", "商品随机，可能有稀有种子、配方和收集包物品。带 3000–5000g 以备万一。"],
+        goalIds: [] },
+      { id: "crafting", name: "配方合成", icon: "合成",
+        intro: ["在合成菜单（ESC → 合成标签）制作。", "需要对应技能等级解锁配方 + 足够材料。加工设备是赚钱的核心。"],
+        goalIds: [
+          "craft-furnace","craft-preserves-jar","craft-keg","craft-bee-house","craft-oil-maker",
+          "craft-mayo-machine","craft-cheese-press","craft-loom","craft-tapper",
+          "craft-mushroom-log","craft-cask"
+        ] },
+    ];
+
+    function getShopGoalTemplates(shop) {
+      return shop.goalIds.map(id => {
+        for (const cat of GOAL_TEMPLATES) {
+          const found = cat.goals.find(g => g.id === id);
+          if (found) return found;
+        }
+        return null;
+      }).filter(Boolean);
+    }
+
+    function getShopCartItems(shop) {
+      return appState.goals.filter(g => shop.goalIds.includes(g.id));
+    }
+
+    function renderShoppingCart() {
+      const container = document.getElementById("shoppingCartContent");
+      if (!container) return;
+
+      container.innerHTML = SHOP_DATA.map(shop => {
+        const templates = getShopGoalTemplates(shop);
+        const cartItems = getShopCartItems(shop);
+
+        const introHtml = `
+          <div class="shop-intro-card">
+            <div class="shop-intro-head">
+              <span class="shop-intro-icon">${renderInvIcon(shop.icon)}</span>
+              <h3 class="shop-intro-name">${escapeHtml(shop.name)}</h3>
+            </div>
+            <div class="shop-intro-body">
+              ${shop.intro.map(line => `<div class="shop-intro-line">• ${escapeHtml(line)}</div>`).join("")}
+            </div>
+          </div>`;
+
+        let catalogHtml = "";
+        if (templates.length) {
+          const chips = templates.map(tpl => {
+            const inCart = appState.goals.some(g => g.id === tpl.id);
+            const active = appState._activeShopItem === tpl.id;
+            return `<button class="item-chip ${active ? 'active' : ''} ${inCart ? 'in-cart' : ''}" data-shop-chip="${tpl.id}" type="button">${renderInvIcon(tpl.emoji || tpl.title)}<span>${escapeHtml(tpl.title)}</span>${inCart ? '<span class="chip-qty">✓</span>' : ''}</button>`;
+          }).join("");
+
+          let detailHtml = "";
+          if (appState._activeShopItem) {
+            const at = templates.find(t => t.id === appState._activeShopItem);
+            if (at) {
+              const inCart = appState.goals.some(g => g.id === at.id);
+              const stepsInfo = (at.steps || []).map(s => {
+                const label = s.label || (s.invKey ? `${s.invKey} ×${s.invNeed}` : "");
+                const sub = s.sub || ITEM_SOURCE_HINTS[s.invKey] || "";
+                return `<div class="shop-product-step">${escapeHtml(label)}${sub ? `<span class="shop-product-sub"> — ${escapeHtml(sub)}</span>` : ""}</div>`;
+              }).join("");
+              detailHtml = `<div class="shop-product-detail">
+                <div class="shop-product-head">
+                  <span class="shop-product-icon">${renderInvIcon(at.emoji || at.title)}</span>
+                  <div>
+                    <div class="shop-product-title">${escapeHtml(at.title)}</div>
+                    ${at.note ? `<div class="shop-product-note">${escapeHtml(at.note)}</div>` : ""}
+                    ${at.duration ? `<div class="shop-product-note">⏱ 用时 ${escapeHtml(at.duration)}</div>` : ""}
+                  </div>
+                </div>
+                <div class="shop-product-steps">${stepsInfo || '<div class="shop-product-step" style="color:var(--muted)">无需材料</div>'}</div>
+                <div class="shop-product-actions">
+                  ${inCart
+                    ? `<button class="shop-remove-btn" data-shop-remove="${at.id}">已在购物车 ✓</button>`
+                    : `<button class="shop-add-btn" data-shop-add="${at.id}">🛒 加入购物车</button>`}
+                </div>
+              </div>`;
+            }
+          }
+          catalogHtml = `<div class="shop-catalog">
+            <div class="item-lib-cat-label">📦 商品目录</div>
+            <div class="item-lib-chips">${chips}</div>
+            ${detailHtml}
+          </div>`;
+        }
+
+        let cartHtml = "";
+        if (cartItems.length) {
+          cartHtml = `<div class="shop-cart-section">
+            <div class="item-lib-cat-label">🛒 购物车（${cartItems.length}）</div>
+            ${renderGoalCards(cartItems)}
+          </div>`;
+        }
+
+        return `<div class="shop-section">${introHtml}${catalogHtml}${cartHtml}</div>`;
+      }).join("");
+    }
+
+    function renderGoalCards(goals) {
+      return goals.map(goal => {
+        const tpl = findGoalTemplate(goal.id) || goal;
+        const rawList = (tpl.steps || []).map((s, i) => ({ ...s, checked: goal.steps?.[i]?.checked || false }));
+        if (!goal.steps || goal.steps.length !== rawList.length) goal.steps = rawList.map(s => ({ checked: s.checked }));
+        const matList = rawList.filter(s => s.manual || s.invKey || s.invNeed);
+        const matSteps = matList.map((step) => {
+          const have = step.invKey ? (appState.inventory[step.invKey] || 0) : 0;
+          const auto = step.invNeed && have >= step.invNeed;
+          const checked = step.checked || auto;
+          const origIdx = rawList.indexOf(step);
+          return `<button class="goal-step ${checked ? "done" : ""}" data-toggle-step="${goal.id}|${origIdx}" type="button">
+            <span class="goal-step-check">${checked ? "✓" : ""}</span>
+            <div class="goal-step-body"><div class="goal-step-text">${escapeHtml(step.label)}</div>${step.sub ? `<div class="goal-step-sub">${escapeHtml(step.sub)}</div>` : ""}</div>
+            ${step.invKey && step.invNeed ? `<div class="goal-step-have ${auto ? "ready" : ""}">${auto ? "✓ " : ""}${have}/${step.invNeed}</div>` : ""}
+          </button>`;
+        }).join("");
+        const done = matList.filter(s => { const h = s.invKey ? (appState.inventory[s.invKey]||0) : 0; return s.checked || (s.invNeed && h >= s.invNeed); }).length;
+        const total = matList.length;
+        const pct = total ? Math.round(done / total * 100) : 0;
+        const complete = pct === 100;
+        const isOpen = goal.expanded !== false;
+        return `<div class="goal-card-container">
+          <button class="goal-delete-btn" data-delete-goal="${goal.id}" type="button">🗑️<br/>删除</button>
+          <div class="goal-card ${complete ? "complete" : ""} ${isOpen ? "expanded" : ""}" data-swipe-goal="${goal.id}">
+            <button type="button" class="goal-head" data-toggle-goal="${goal.id}">
+              <span class="goal-emoji">${renderGoalIcon(tpl)}</span>
+              <div class="goal-info"><div class="goal-title">${escapeHtml(tpl.title)}</div></div>
+              <div class="goal-progress">
+                <div class="goal-frac"><span class="goal-frac-num">${done}</span><span class="goal-frac-sep">/</span><span class="goal-frac-tot">${total}</span></div>
+                ${complete ? '<span class="goal-stamp">✓</span>' : ""}
+              </div>
+            </button>
+            ${!complete ? `<div class="goal-progress-bar"><div class="goal-progress-bar-fill" style="width:${pct}%"></div></div>` : ""}
+            ${isOpen ? `<div class="goal-body">${matSteps}</div>` : ""}
+          </div>
+        </div>`;
+      }).join("");
+    }
+
     const ITEM_SOURCE_HINTS = {
       "金币": "卖作物/鱼/矿物、完成任务和节日奖励获得",
       "木材": "砍树、树枝，或在木匠商店购买",
@@ -15818,6 +16064,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       renderSeasonMainline();
       renderScenes();
       renderGoals();
+      renderShoppingCart();
       renderItemLibrary();
       const plantingOverlay = document.getElementById("planting-overlay");
       if (plantingOverlay && !plantingOverlay.hidden) renderPlanting();
@@ -20941,8 +21188,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     /* ── 目标 ── */
     function renderGoals() {
       const list = document.getElementById("goalsList");
-      renderProcessingGoalsGuide();
-      document.getElementById("goalsCount").textContent = appState.goals.length ? `${appState.goals.length} 个进行中` : "";
+      if (!list) return; // 购物车模式下不再使用旧 goalsList
+      const countEl = document.getElementById("goalsCount");
+      if (typeof renderProcessingGoalsGuide === "function") renderProcessingGoalsGuide();
+      if (countEl) countEl.textContent = appState.goals.length ? `${appState.goals.length} 个进行中` : "";
       if (appState.goals.length === 0) {
         list.innerHTML = `<div class="goals-empty">从当季主线一键加入目标，或点下方按钮浏览模板。</div>`;
         return;
@@ -22035,6 +22284,36 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         return;
       }
       // 种植图标点击展开
+      // 购物车商品目录点击
+      const shopChip = e.target.closest("[data-shop-chip]");
+      if (shopChip) {
+        const id = shopChip.dataset.shopChip;
+        appState._activeShopItem = appState._activeShopItem === id ? null : id;
+        renderShoppingCart();
+        if (appState._activeShopItem) setTimeout(() => { const w = document.querySelector(".shop-product-detail"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
+        return;
+      }
+      // 加入购物车
+      const shopAdd = e.target.closest("[data-shop-add]");
+      if (shopAdd) {
+        const id = shopAdd.dataset.shopAdd;
+        if (!appState.goals.some(g => g.id === id)) {
+          const tpl = findGoalTemplate(id);
+          if (tpl) {
+            appState.goals.push({ id, steps: (tpl.steps || []).map(() => ({ checked: false })), expanded: true });
+            appState._activeShopItem = null;
+            renderApp();
+          }
+        }
+        return;
+      }
+      // 从购物车移除（商品详情里的按钮）
+      const shopRemove = e.target.closest("[data-shop-remove]");
+      if (shopRemove) {
+        appState.goals = appState.goals.filter(g => g.id !== shopRemove.dataset.shopRemove);
+        renderApp();
+        return;
+      }
       const plantingChip = e.target.closest("[data-planting-chip]");
       if (plantingChip) {
         const cropId = plantingChip.dataset.plantingChip;
