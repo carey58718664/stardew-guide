@@ -17001,18 +17001,42 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <span class="cooking-stat">当前显示 <b>${visible.length}</b></span>
       `;
 
-      /* ── 图标网格 ── */
-      grid.innerHTML = visible.length ? `<div class="item-lib-cat-group">
-        <div class="item-lib-cat-label">🍳 料理（${visible.length} 种）</div>
-        <div class="item-lib-chips">${visible.map(entry => {
+      /* ── 图标网格：按 buff 分 4 组 ── */
+      function classifyCookingRecipe(entry) {
+        const fx = (entry.effects || []).join(" ");
+        if (!fx || entry.effects.length === 0) return "nobuff";
+        if (/钓鱼/.test(fx)) return "fishing";
+        if (/耕种|采集|采矿|磁性/.test(fx)) return "farming";
+        return "combat"; // 速度/运气/防御/攻击/体力上限
+      }
+      const cookingGroups = [
+        { key: "combat",  label: "⚔️ 冒险 buff（速度·运气·防御·攻击）", items: [] },
+        { key: "fishing", label: "🎣 钓鱼 buff", items: [] },
+        { key: "farming", label: "🌾 农耕·采集·采矿 buff", items: [] },
+        { key: "nobuff",  label: "🍽️ 无增益料理（回复·送礼·图鉴）", items: [] }
+      ];
+      visible.forEach(entry => {
+        const cat = classifyCookingRecipe(entry);
+        const group = cookingGroups.find(g => g.key === cat);
+        if (group) group.items.push(entry);
+      });
+
+      grid.innerHTML = visible.length ? cookingGroups.filter(g => g.items.length).map(group => {
+        const chips = group.items.map(entry => {
           const active = appState._activeCookingItem === entry.id;
           return `<button class="item-chip ${active ? 'active' : ''}" data-cooking-chip="${entry.id}" type="button">${renderInvIcon(entry.name)}<span>${escapeHtml(entry.name)}</span></button>`;
-        }).join("")}</div>
-        ${appState._activeCookingItem ? (() => {
-          const ae = visible.find(e => e.id === appState._activeCookingItem);
-          return ae ? `<div class="cooking-detail-wrap">${renderCookingCard(ae)}</div>` : "";
-        })() : ""}
-      </div>` : `<div class="cooking-empty">没有匹配的料理，换个关键词或筛选试试。</div>`;
+        }).join("");
+        let detailHtml = "";
+        if (appState._activeCookingItem) {
+          const ae = group.items.find(e => e.id === appState._activeCookingItem);
+          if (ae) detailHtml = `<div class="cooking-detail-wrap">${renderCookingCard(ae)}</div>`;
+        }
+        return `<div class="item-lib-cat-group">
+          <div class="item-lib-cat-label">${group.label}（${group.items.length}）</div>
+          <div class="item-lib-chips">${chips}</div>
+          ${detailHtml}
+        </div>`;
+      }).join("") : `<div class="cooking-empty">没有匹配的料理，换个关键词或筛选试试。</div>`;
     }
 
     function getVisibleCookingRecipes() {
