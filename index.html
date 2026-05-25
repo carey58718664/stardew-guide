@@ -6763,6 +6763,25 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .planting-detail-wrap .planting-card {
   border-color: var(--gold);
 }
+.social-detail-wrap,
+.cooking-detail-wrap,
+.festival-detail-wrap,
+.fishing-detail-wrap,
+.animal-detail-wrap,
+.pond-detail-wrap,
+.strategy-detail-wrap {
+  margin-top: 10px;
+  animation: detailSlideIn .15s ease;
+}
+.birthday-glow {
+  border-color: #e74c6f !important;
+  background: #fff0f5 !important;
+}
+.villager-avatar-mini { display: inline-flex; }
+.villager-avatar-mini img, .villager-avatar-mini .fallback-icon {
+  width: 20px !important;
+  height: 20px !important;
+}
 
 .planting-card {
   --plant-accent: #6fae43;
@@ -16742,51 +16761,62 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <span class="stat">今日生日 <b>${birthdayToday}</b></span>
       `;
 
-      grid.innerHTML = VILLAGER_DATA.map(v => {
-        const hearts = appState.socialHearts[v.id] || 0;
-        const maxH = v.marry ? 14 : 10;
-        const bdSeason = SEASON_CN[v.birthday.season] || "";
-        const isBirthday = v.birthday.season === season && v.birthday.day === day;
-        const bdClass = isBirthday ? "today" : "";
-        const bdText = isBirthday ? "今天生日！×8 效果" : `${bdSeason} ${v.birthday.day} 日`;
-
-        // 里程碑
-        const msHtml = v.milestones.map(ms => {
-          const done = hearts >= ms.h;
-          const isNext = !done && (v.milestones.filter(m => hearts >= m.h).length === v.milestones.indexOf(ms) - (v.milestones.filter(m => hearts >= m.h).length > 0 ? 0 : 0));
-          // 简单判断：第一个未完成的就是 next
-          const allDone = v.milestones.filter(m => hearts < m.h);
-          const nextMs = allDone.length > 0 ? allDone[0] : null;
-          const cls = done ? "done" : (nextMs === ms ? "next" : "");
-          return `<div class="villager-milestone ${cls}">
-            <span class="ms-hearts">${ms.h}♥</span>
-            <span class="ms-icon">${renderMilestoneIcon(ms.icon, ms.d)}</span>
-            <span class="ms-desc">${escapeHtml(ms.d)}</span>
-          </div>`;
+      /* ── 图标网格：分组显示，点击展开资料卡 ── */
+      const groups = [
+        { label: "💍 可结婚", items: VILLAGER_DATA.filter(v => v.marry) },
+        { label: "🏘️ 其他居民", items: VILLAGER_DATA.filter(v => !v.marry) }
+      ];
+      grid.innerHTML = groups.map(group => {
+        if (!group.items.length) return "";
+        const chips = group.items.map(v => {
+          const active = appState._activeSocialItem === v.id;
+          const isBd = v.birthday?.season === season && v.birthday.day === day;
+          return `<button class="item-chip ${active ? 'active' : ''} ${isBd ? 'birthday-glow' : ''}" data-social-chip="${v.id}" type="button"><span class="villager-avatar-mini">${renderSocialAvatar(v)}</span><span>${escapeHtml(v.name)}</span></button>`;
         }).join("");
+        let detailHtml = "";
+        if (appState._activeSocialItem) {
+          const av = group.items.find(v => v.id === appState._activeSocialItem);
+          if (av) detailHtml = `<div class="social-detail-wrap">${renderSocialCard(av, season, day)}</div>`;
+        }
+        return `<div class="item-lib-cat-group"><div class="item-lib-cat-label">${group.label}</div><div class="item-lib-chips">${chips}</div>${detailHtml}</div>`;
+      }).join("");
+    }
 
-        return `
-          <div class="villager-card ${v.marry ? "marriageable" : ""}">
-            <div class="villager-head">
-              <span class="villager-avatar">${renderSocialAvatar(v)}</span>
-              <div class="villager-info">
-                <div class="villager-name">${escapeHtml(v.name)}${v.marry ? `<span class="villager-marriage-tag" title="可结婚">${renderOfficialIconContent("美人鱼吊坠", "婚")}</span>` : ""}</div>
-                <div class="villager-birthday ${bdClass}">${bdText}</div>
-              </div>
-              <div class="villager-hearts">
-                <input type="number" min="0" max="${maxH}" value="${hearts}" data-villager="${v.id}" />
-                <span class="villager-hearts-label">/ ${maxH} ♥</span>
-              </div>
+    function renderSocialCard(v, season, day) {
+      const hearts = appState.socialHearts[v.id] || 0;
+      const maxH = v.marry ? 14 : 10;
+      const bdSeason = SEASON_CN[v.birthday.season] || "";
+      const isBirthday = v.birthday.season === season && v.birthday.day === day;
+      const bdClass = isBirthday ? "today" : "";
+      const bdText = isBirthday ? "今天生日！×8 效果" : `${bdSeason} ${v.birthday.day} 日`;
+      const msHtml = v.milestones.map(ms => {
+        const done = hearts >= ms.h;
+        const allDone = v.milestones.filter(m => hearts < m.h);
+        const nextMs = allDone.length > 0 ? allDone[0] : null;
+        const cls = done ? "done" : (nextMs === ms ? "next" : "");
+        return `<div class="villager-milestone ${cls}"><span class="ms-hearts">${ms.h}♥</span><span class="ms-icon">${renderMilestoneIcon(ms.icon, ms.d)}</span><span class="ms-desc">${escapeHtml(ms.d)}</span></div>`;
+      }).join("");
+      return `
+        <div class="villager-card ${v.marry ? "marriageable" : ""}">
+          <div class="villager-head">
+            <span class="villager-avatar">${renderSocialAvatar(v)}</span>
+            <div class="villager-info">
+              <div class="villager-name">${escapeHtml(v.name)}${v.marry ? `<span class="villager-marriage-tag" title="可结婚">${renderOfficialIconContent("美人鱼吊坠", "婚")}</span>` : ""}</div>
+              <div class="villager-birthday ${bdClass}">${bdText}</div>
             </div>
-            <div class="villager-body">
-              ${renderSocialGiftGroup("最爱礼物", v.loved, "love")}
-              ${renderSocialGiftGroup("喜欢礼物", v.liked, "like")}
-              <div class="villager-section-label">里程碑</div>
-              ${msHtml}
+            <div class="villager-hearts">
+              <input type="number" min="0" max="${maxH}" value="${hearts}" data-villager="${v.id}" />
+              <span class="villager-hearts-label">/ ${maxH} ♥</span>
             </div>
           </div>
-        `;
-      }).join("");
+          <div class="villager-body">
+            ${renderSocialGiftGroup("最爱礼物", v.loved, "love")}
+            ${renderSocialGiftGroup("喜欢礼物", v.liked, "like")}
+            <div class="villager-section-label">里程碑</div>
+            ${msHtml}
+          </div>
+        </div>
+      `;
     }
 
     function openSocial() {
@@ -16971,9 +17001,18 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <span class="cooking-stat">当前显示 <b>${visible.length}</b></span>
       `;
 
-      grid.innerHTML = visible.length
-        ? visible.map(renderCookingCard).join("")
-        : `<div class="cooking-empty">没有匹配的料理，换个关键词或筛选试试。</div>`;
+      /* ── 图标网格 ── */
+      grid.innerHTML = visible.length ? `<div class="item-lib-cat-group">
+        <div class="item-lib-cat-label">🍳 料理（${visible.length} 种）</div>
+        <div class="item-lib-chips">${visible.map(entry => {
+          const active = appState._activeCookingItem === entry.id;
+          return `<button class="item-chip ${active ? 'active' : ''}" data-cooking-chip="${entry.id}" type="button">${renderInvIcon(entry.name)}<span>${escapeHtml(entry.name)}</span></button>`;
+        }).join("")}</div>
+        ${appState._activeCookingItem ? (() => {
+          const ae = visible.find(e => e.id === appState._activeCookingItem);
+          return ae ? `<div class="cooking-detail-wrap">${renderCookingCard(ae)}</div>` : "";
+        })() : ""}
+      </div>` : `<div class="cooking-empty">没有匹配的料理，换个关键词或筛选试试。</div>`;
     }
 
     function getVisibleCookingRecipes() {
@@ -17280,9 +17319,23 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <span class="festival-stat">当前显示 <b>${visible.length}</b></span>
       `;
 
-      grid.innerHTML = visible.length
-        ? visible.map(renderFestivalCard).join("")
-        : `<div class="festival-empty">没有匹配的节日，换个关键词或筛选试试。</div>`;
+      /* ── 图标网格按季节分组 ── */
+      const festSeasons = ["spring","summer","fall","winter"];
+      grid.innerHTML = visible.length ? festSeasons.map(s => {
+        const items = visible.filter(e => e.season === s);
+        if (!items.length) return "";
+        const sIcon = {spring:"🌸",summer:"🌿",fall:"🍂",winter:"❄️"}[s]||"";
+        const chips = items.map(entry => {
+          const active = appState._activeFestivalItem === entry.id;
+          return `<button class="item-chip ${active ? 'active' : ''}" data-festival-chip="${entry.id}" type="button"><span style="font-size:16px">${entry.emoji}</span><span>${escapeHtml(entry.name)}</span></button>`;
+        }).join("");
+        let detailHtml = "";
+        if (appState._activeFestivalItem) {
+          const ae = items.find(e => e.id === appState._activeFestivalItem);
+          if (ae) detailHtml = `<div class="festival-detail-wrap">${renderFestivalCard(ae)}</div>`;
+        }
+        return `<div class="item-lib-cat-group"><div class="item-lib-cat-label">${sIcon} ${SEASON_CN[s]}季</div><div class="item-lib-chips">${chips}</div>${detailHtml}</div>`;
+      }).join("") : `<div class="festival-empty">没有匹配的节日。</div>`;
     }
 
     function getVisibleFestivals() {
@@ -18273,7 +18326,25 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <section>
           <h3 class="fishing-section-title"><span class="fishing-mini-icon">${renderFishingIcon("收集包")}</span>鱼类全图鉴</h3>
           <div class="fishing-fish-grid">
-            ${visible.length ? visible.map(renderFishingFishCard).join("") : `<div class="fishing-empty">没有匹配的鱼类，换个关键词或筛选试试。</div>`}
+            ${(() => {
+              if (!visible.length) return '<div class="fishing-empty">没有匹配的鱼类。</div>';
+              const fSeasons = ["spring","summer","fall","winter","special"];
+              const sLabels = {spring:"🌸 春",summer:"🌿 夏",fall:"🍂 秋",winter:"❄️ 冬",special:"⭐ 特殊"};
+              return fSeasons.map(s => {
+                const items = visible.filter(e => e.season === s);
+                if (!items.length) return "";
+                const chips = items.map(entry => {
+                  const active = appState._activeFishingItem === entry.name;
+                  return `<button class="item-chip ${active ? 'active' : ''}" data-fishing-chip="${escapeAttribute(entry.name)}" type="button">${renderFishingIcon(entry.name)}<span>${escapeHtml(entry.name)}</span></button>`;
+                }).join("");
+                let detailHtml = "";
+                if (appState._activeFishingItem) {
+                  const ae = items.find(e => e.name === appState._activeFishingItem);
+                  if (ae) detailHtml = `<div class="fishing-detail-wrap">${renderFishingFishCard(ae)}</div>`;
+                }
+                return `<div class="item-lib-cat-group"><div class="item-lib-cat-label">${sLabels[s]||s}</div><div class="item-lib-chips">${chips}</div>${detailHtml}</div>`;
+              }).join("");
+            })()}
           </div>
         </section>
       `;
@@ -18562,7 +18633,18 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         ${visibleAnimals.length ? `
           <section>
             <h3 class="animal-section-title"><span class="animal-mini-icon">${renderAnimalIcon("玛妮")}</span>动物养殖</h3>
-            <div class="animal-grid">${visibleAnimals.map(renderAnimalCard).join("")}</div>
+            <div class="animal-grid">
+              <div class="item-lib-cat-group">
+                <div class="item-lib-chips">${visibleAnimals.map(entry => {
+                  const active = appState._activeAnimalItem === (entry.id || entry.name);
+                  return `<button class="item-chip ${active ? 'active' : ''}" data-animal-chip="${escapeAttribute(entry.id || entry.name)}" type="button">${renderAnimalIcon(entry.iconName || entry.name)}<span>${escapeHtml(entry.name)}</span></button>`;
+                }).join("")}</div>
+                ${appState._activeAnimalItem ? (() => {
+                  const ae = visibleAnimals.find(e => (e.id || e.name) === appState._activeAnimalItem);
+                  return ae ? `<div class="animal-detail-wrap">${renderAnimalCard(ae)}</div>` : "";
+                })() : ""}
+              </div>
+            </div>
           </section>
         ` : ""}
         <section class="animal-tips-card">
@@ -19504,7 +19586,16 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <section>
           <h3 class="pond-section-title">${renderOfficialIcon("养殖鱼类推荐", "鱼", "pond-mini-icon")}养殖鱼类推荐</h3>
           <div class="pond-fish-grid">
-            ${visible.length ? visible.map(renderPondFishCard).join("") : `<div class="pond-empty">没有匹配的鱼塘推荐，换个关键词或筛选试试。</div>`}
+            ${visible.length ? `<div class="item-lib-cat-group">
+              <div class="item-lib-chips">${visible.map(entry => {
+                const active = appState._activePondItem === entry.id;
+                return `<button class="item-chip ${active ? 'active' : ''}" data-pond-chip="${entry.id}" type="button">${renderPondIcon(entry.name)}<span>${escapeHtml(entry.name)}</span></button>`;
+              }).join("")}</div>
+              ${appState._activePondItem ? (() => {
+                const ae = visible.find(e => e.id === appState._activePondItem);
+                return ae ? `<div class="pond-detail-wrap">${renderPondFishCard(ae)}</div>` : "";
+              })() : ""}
+            </div>` : `<div class="pond-empty">没有匹配的鱼塘推荐。</div>`}
           </div>
         </section>
         ${renderPondColorCard()}
@@ -20308,9 +20399,18 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <span class="strategy-stat">当前显示 <b>${visible.length}</b></span>
       `;
 
-      grid.innerHTML = visible.length
-        ? visible.map(renderStrategyCard).join("")
-        : `<div class="strategy-empty">没有匹配的赚钱流派，换个关键词或筛选试试。</div>`;
+      /* ── 图标网格 ── */
+      grid.innerHTML = visible.length ? `<div class="item-lib-cat-group">
+        <div class="item-lib-cat-label">💰 流派指南（${visible.length} 种）</div>
+        <div class="item-lib-chips">${visible.map(entry => {
+          const active = appState._activeStrategyItem === entry.id;
+          return `<button class="item-chip ${active ? 'active' : ''}" data-strategy-chip="${entry.id}" type="button"><span style="font-size:16px">${entry.emoji}</span><span>${escapeHtml(entry.name)}</span></button>`;
+        }).join("")}</div>
+        ${appState._activeStrategyItem ? (() => {
+          const ae = visible.find(e => e.id === appState._activeStrategyItem);
+          return ae ? `<div class="strategy-detail-wrap">${renderStrategyCard(ae)}</div>` : "";
+        })() : ""}
+      </div>` : `<div class="strategy-empty">没有匹配的流派。</div>`;
     }
 
     function getVisibleStrategies() {
@@ -21920,6 +22020,62 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             if (wrap) wrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
           }, 50);
         }
+        return;
+      }
+      // 社交图标点击
+      const socialChip = e.target.closest("[data-social-chip]");
+      if (socialChip) {
+        appState._activeSocialItem = appState._activeSocialItem === socialChip.dataset.socialChip ? null : socialChip.dataset.socialChip;
+        renderSocial();
+        if (appState._activeSocialItem) setTimeout(() => { const w = document.querySelector(".social-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
+        return;
+      }
+      // 烹饪图标点击
+      const cookingChip = e.target.closest("[data-cooking-chip]");
+      if (cookingChip) {
+        appState._activeCookingItem = appState._activeCookingItem === cookingChip.dataset.cookingChip ? null : cookingChip.dataset.cookingChip;
+        renderCooking();
+        if (appState._activeCookingItem) setTimeout(() => { const w = document.querySelector(".cooking-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
+        return;
+      }
+      // 节日图标点击
+      const festivalChip = e.target.closest("[data-festival-chip]");
+      if (festivalChip) {
+        appState._activeFestivalItem = appState._activeFestivalItem === festivalChip.dataset.festivalChip ? null : festivalChip.dataset.festivalChip;
+        renderFestivals();
+        if (appState._activeFestivalItem) setTimeout(() => { const w = document.querySelector(".festival-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
+        return;
+      }
+      // 鱼类图标点击
+      const fishingChip = e.target.closest("[data-fishing-chip]");
+      if (fishingChip) {
+        appState._activeFishingItem = appState._activeFishingItem === fishingChip.dataset.fishingChip ? null : fishingChip.dataset.fishingChip;
+        renderFishing();
+        if (appState._activeFishingItem) setTimeout(() => { const w = document.querySelector(".fishing-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
+        return;
+      }
+      // 养殖图标点击
+      const animalChip = e.target.closest("[data-animal-chip]");
+      if (animalChip) {
+        appState._activeAnimalItem = appState._activeAnimalItem === animalChip.dataset.animalChip ? null : animalChip.dataset.animalChip;
+        renderAnimal();
+        if (appState._activeAnimalItem) setTimeout(() => { const w = document.querySelector(".animal-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
+        return;
+      }
+      // 鱼塘图标点击
+      const pondChip = e.target.closest("[data-pond-chip]");
+      if (pondChip) {
+        appState._activePondItem = appState._activePondItem === pondChip.dataset.pondChip ? null : pondChip.dataset.pondChip;
+        renderPond();
+        if (appState._activePondItem) setTimeout(() => { const w = document.querySelector(".pond-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
+        return;
+      }
+      // 流派图标点击
+      const strategyChip = e.target.closest("[data-strategy-chip]");
+      if (strategyChip) {
+        appState._activeStrategyItem = appState._activeStrategyItem === strategyChip.dataset.strategyChip ? null : strategyChip.dataset.strategyChip;
+        renderStrategies();
+        if (appState._activeStrategyItem) setTimeout(() => { const w = document.querySelector(".strategy-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
         return;
       }
       // 钓鱼筛选
