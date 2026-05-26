@@ -7175,6 +7175,203 @@ body.modal-open { overflow: hidden; touch-action: none; }
   margin-top: 10px;
   animation: detailSlideIn .15s ease;
 }
+.planting-detail-container {
+  width: min(1180px, calc(100% - 18px));
+  margin: 0 auto;
+}
+.planting-detail-wrap.planting-detail-fullwidth {
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+.planting-detail-wrap.planting-detail-fullwidth .planting-card {
+  border-width: 2px;
+  border-color: var(--gold);
+  border-radius: 14px;
+  box-shadow: inset 5px 0 0 var(--plant-accent), 0 8px 22px rgba(76, 49, 29, 0.10);
+}
+/* ── 速览条 ── */
+.crop-glance-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.crop-glance-item {
+  border: 1.5px solid #e5d5b6;
+  border-radius: 10px;
+  background: #fffaf0;
+  padding: 8px 10px;
+  text-align: center;
+}
+.crop-glance-item .glance-label {
+  display: block;
+  color: #9c620e;
+  font-size: 10.5px;
+  font-weight: 950;
+  margin-bottom: 3px;
+}
+.crop-glance-item .glance-value {
+  display: block;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.2;
+}
+.crop-glance-item .glance-value img {
+  width: 14px;
+  height: 14px;
+  image-rendering: pixelated;
+  vertical-align: -2px;
+  margin-right: 1px;
+}
+/* ── 来源区 ── */
+.crop-source-card {
+  border: 1.5px solid #e5d5b6;
+  border-radius: 10px;
+  background: #fffaf0;
+  padding: 9px 12px;
+}
+.crop-source-card-title {
+  color: #9c620e;
+  font-size: 11px;
+  font-weight: 950;
+  margin-bottom: 5px;
+}
+/* ── 品质总表 ── */
+.crop-quality-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1.5px solid #e5d5b6;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fffaf0;
+  font-size: 12.5px;
+}
+.crop-quality-table th {
+  background: linear-gradient(180deg, #fff8ee, #f8ecd4);
+  color: #9c620e;
+  font-size: 11px;
+  font-weight: 950;
+  padding: 7px 8px;
+  text-align: center;
+  border-bottom: 1.5px solid #e5d5b6;
+}
+.crop-quality-table th:first-child {
+  text-align: left;
+  padding-left: 12px;
+}
+.crop-quality-table td {
+  padding: 6px 8px;
+  text-align: center;
+  color: var(--ink);
+  font-weight: 800;
+  border-bottom: 1px solid #f0e8d5;
+}
+.crop-quality-table td:first-child {
+  text-align: left;
+  padding-left: 10px;
+  font-weight: 900;
+}
+.crop-quality-table tr:last-child td {
+  border-bottom: none;
+}
+.crop-quality-table .q-row-normal td:first-child { color: #5b4a37; }
+.crop-quality-table .q-row-silver td:first-child { color: #5a6470; }
+.crop-quality-table .q-row-gold td:first-child { color: #8b6516; }
+.crop-quality-table .q-row-iridium td:first-child { color: #5a3aaa; }
+.crop-quality-table .tiller-row td {
+  border-bottom: none;
+  padding-top: 4px;
+  padding-bottom: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-align: right;
+}
+/* ── 加工推荐卡 ── */
+.crop-process-card {
+  border: 2px solid #6fae43;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f4fbe8, #fffdf6);
+  padding: 10px 14px;
+  position: relative;
+}
+.crop-process-card-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #3a7a1a;
+  font-size: 13px;
+  font-weight: 950;
+  margin-bottom: 6px;
+}
+.crop-process-card-body {
+  color: #4a3a2a;
+  font-size: 12.5px;
+  line-height: 1.55;
+  font-weight: 700;
+}
+.crop-process-card-body img {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+  vertical-align: -3px;
+  margin: 0 1px;
+}
+/* ── 折叠区 ── */
+.crop-fold-section {
+  border: 1.5px solid #e5d5b6;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fffaf0;
+}
+.crop-fold-section + .crop-fold-section {
+  margin-top: 6px;
+}
+.crop-fold-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+  background: linear-gradient(180deg, #fffaf0, #fff6e8);
+  -webkit-tap-highlight-color: transparent;
+}
+.crop-fold-header:active {
+  background: #f8ecd4;
+}
+.crop-fold-arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid var(--plant-accent);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+.crop-fold-section.open .crop-fold-arrow {
+  transform: rotate(90deg);
+}
+.crop-fold-title {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 950;
+  flex: 1;
+}
+.crop-fold-badge {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+.crop-fold-body {
+  display: none;
+  padding: 0 12px 10px;
+}
+.crop-fold-section.open .crop-fold-body {
+  display: block;
+}
 .planting-detail-wrap .planting-card {
   border-color: var(--gold);
   border-width: 3px;
@@ -8193,6 +8390,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   .planting-grid,
   .planting-greenhouse {
     width: min(100% - 14px, 430px);
+  }
+  .planting-detail-container {
+    width: calc(100% - 14px);
   }
   .planting-toolbar {
     margin-top: 8px;
@@ -13760,6 +13960,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
       <div class="planting-summary" id="plantingSummary"></div>
     </div>
     <div class="planting-grid" id="plantingGrid"></div>
+    <div class="planting-detail-container" id="plantingDetailContainer"></div>
     <div class="planting-greenhouse" id="plantingGreenhouse"></div>
   </div>
 
@@ -20211,6 +20412,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       `;
 
       const allSeasons = ["spring", "summer", "fall", "winter"];
+      let globalActiveEntry = null;
+      let globalActiveSeason = null;
       grid.innerHTML = allSeasons.map(s => {
         const isCurrentSeason = s === appState.season;
         const catBlocks = PLANTING_CATEGORY_GROUPS.map((group) => {
@@ -20219,6 +20422,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             .filter((entry) => matchesPlantingFilter(entry, s))
             .sort(sortPlantingCrops);
           const activeEntry = entries.find(c => c.id === appState._activePlantingCrop);
+          if (activeEntry) { globalActiveEntry = activeEntry; globalActiveSeason = s; }
           const chips = entries.map(entry => {
             const active = appState._activePlantingCrop === entry.id;
             const status = getPlantingStatus(entry, s);
@@ -20226,11 +20430,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             return `<button class="item-chip ${active ? 'active' : ''} ${missClass}" data-planting-chip="${entry.id}" type="button">${renderPlantingIcon(entry.name)}<span>${escapeHtml(entry.name)}</span></button>`;
           }).join("");
           const empty = !entries.length ? `<div class="planting-empty">${escapeHtml(group.empty)}</div>` : "";
-          const detailHtml = activeEntry ? `<div class="planting-detail-wrap">${renderPlantingCard(activeEntry, s)}</div>` : "";
           return `<div class="item-lib-cat-group planting-subgroup">
             <div class="item-lib-cat-label">${renderOfficialIcon(group.icon, group.label)}${escapeHtml(group.label)}</div>
             ${chips ? `<div class="item-lib-chips">${chips}</div>` : empty}
-            ${detailHtml}
           </div>`;
         }).join("");
         return `<div class="item-lib-cat-group planting-season-group">
@@ -20240,6 +20442,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           ${catBlocks}
         </div>`;
       }).join("") || `<div class="planting-empty">没有匹配的资料。</div>`;
+
+      const detailContainer = document.getElementById("plantingDetailContainer");
+      if (detailContainer) {
+        detailContainer.innerHTML = globalActiveEntry
+          ? `<div class="planting-detail-wrap planting-detail-fullwidth">${renderPlantingCard(globalActiveEntry, globalActiveSeason)}</div>`
+          : "";
+      }
 
       greenhouse.innerHTML = renderPlantingGreenhouse();
     }
@@ -20477,11 +20686,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     function renderCropWikiBody(entry, detail, season, statusTag) {
       const html = [];
       const seasonCn = SEASON_CN[season] || "";
-      const qMap = { "普通": "normal", "银": "silver", "金": "gold", "铱": "iridium" };
       const goldIcon = renderPlantingIcon("金币");
       const priceHtml = (value) =>
         `<span class="crop-price-tight">${goldIcon}<b>${escapeHtml(String(value))}</b></span>`;
 
+      /* ── 种植建议 ── */
       if (entry.notes && entry.notes.length) {
         html.push(`
           <section class="crop-wiki-intro">
@@ -20493,7 +20702,36 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         `);
       }
 
-      const lines = [];
+      /* ── 速览条：周期 / 经验 / 基础售价 ── */
+      const basePrice = detail.pricing && detail.pricing.length ? detail.pricing[0].base : "—";
+      const cycleText = entry.regrow ? `${entry.growDays}+${entry.regrow}天` : `${entry.growDays}天`;
+      const expText = detail.exp ? `${detail.exp.value}` : "—";
+      html.push(`
+        <div class="crop-glance-strip">
+          <div class="crop-glance-item">
+            <span class="glance-label">生长周期</span>
+            <span class="glance-value">${escapeHtml(cycleText)}</span>
+          </div>
+          <div class="crop-glance-item">
+            <span class="glance-label">耕种经验</span>
+            <span class="glance-value">${escapeHtml(String(expText))}</span>
+          </div>
+          <div class="crop-glance-item">
+            <span class="glance-label">基础售价</span>
+            <span class="glance-value">${goldIcon}<b>${escapeHtml(String(basePrice))}</b></span>
+          </div>
+        </div>
+      `);
+
+      /* ── 状态标签行 ── */
+      html.push(`
+        <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;">
+          ${statusTag}
+          <span class="planting-tag" style="background:#f0e2c7;color:#6f4b22;">最晚${escapeHtml(seasonCn)}${entry.latest}日</span>
+        </div>
+      `);
+
+      /* ── 来源区 ── */
       const seedCostText = typeof entry.seedCost === "number" ? `${entry.seedCost}` : entry.seedCost;
       const sourcePiece = (fileName, text) =>
         `<span class="crop-source-piece"><img src="${iconUrl(fileName)}" alt="" loading="lazy" />${escapeHtml(text)}</span>`;
@@ -20501,160 +20739,178 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         `<span class="crop-source-piece">${escapeHtml(text)}</span>`;
       const sourcePricePiece = (value) =>
         `<span class="crop-source-piece">${priceHtml(value)}</span>`;
-      const primarySourceParts = [
+      const cartBonus = detail.bonuses && detail.bonuses.find((b) => b.title.includes("货车") || b.title.includes("旅行"));
+      const primaryParts = [
         sourceTextPiece("耕种"),
         sourcePiece(iconFiles[entry.seed] || "Mixed Seeds.png", entry.seed),
         sourcePricePiece(seedCostText),
         sourceTextPiece(entry.source)
-      ];
-      const cartBonus = detail.bonuses && detail.bonuses.find((b) => b.title.includes("货车") || b.title.includes("旅行"));
-      const primarySource = primarySourceParts.join(`<span class="crop-source-dot">·</span>`);
-      const cartSource = cartBonus ? [
+      ].join(`<span class="crop-source-dot">·</span>`);
+      const cartParts = cartBonus ? [
         sourceTextPiece("购买"),
         sourceTextPiece(`${entry.name}1-5个`),
         sourcePricePiece("150-1000"),
         sourcePiece("Traveling Cart Icon.png", "旅行货车")
       ].join(`<span class="crop-source-dot">·</span>`) : "";
-      lines.push(`
-        <div class="crop-info-line no-icon">
-          <span class="crop-info-label">来源</span>
-          <span class="crop-info-content">
-            <span class="crop-source-rows">
-              <span class="crop-source-row">${primarySource}<span class="crop-source-badge">主要</span></span>
-              ${cartSource ? `<span class="crop-source-row">${cartSource}<span class="crop-source-badge secondary">随机</span></span>` : ""}
-            </span>
-          </span>
+      html.push(`
+        <div class="crop-source-card">
+          <div class="crop-source-card-title">📍 获取来源</div>
+          <div class="crop-source-rows" style="font-size:12.5px;line-height:1.6;">
+            <span class="crop-source-row">${primaryParts}<span class="crop-source-badge">主要</span></span>
+            ${cartParts ? `<span class="crop-source-row">${cartParts}<span class="crop-source-badge secondary">随机</span></span>` : ""}
+          </div>
         </div>
       `);
 
-      lines.push(`
-        <div class="crop-info-line no-icon">
-          <span class="crop-info-label">周期</span>
-          <span class="crop-info-content">${entry.regrow ? `${entry.growDays}天+${entry.regrow}天` : `${entry.growDays}天`} · 最晚${escapeHtml(seasonCn)}${entry.latest}日 ${statusTag}</span>
-        </div>
-      `);
+      /* ── 品质总表：合并能量+生命+售价 ── */
+      if ((detail.energy && detail.energy.length) || (detail.pricing && detail.pricing.length)) {
+        const qLabels = ["普通", "银", "金", "铱"];
+        const qClasses = ["normal", "silver", "gold", "iridium"];
+        const energyMap = {};
+        if (detail.energy) detail.energy.forEach(e => { energyMap[e.q] = e; });
+        const priceMap = {};
+        if (detail.pricing) detail.pricing.forEach(p => { priceMap[p.q] = p; });
 
-      if (detail.exp) {
-        const expIcon = `<img class="crop-exp-icon" src="${iconUrl("Farming.png")}" alt="" loading="lazy" />`;
-        lines.push(`
-          <div class="crop-info-line no-icon">
-            <span class="crop-info-label">经验</span>
-            <span class="crop-info-content">${expIcon}${escapeHtml(detail.exp.type)} ${detail.exp.value}</span>
-          </div>
+        const rows = qLabels.map((q, i) => {
+          const e = energyMap[q];
+          const p = priceMap[q];
+          return `<tr class="q-row-${qClasses[i]}">
+            <td>${renderCropWikiQualityChip(q, entry.name)} ${escapeHtml(q)}</td>
+            <td>${e ? e.energy : "—"}</td>
+            <td>${e ? e.health : "—"}</td>
+            <td>${p ? `${goldIcon} ${p.base}` : "—"}</td>
+          </tr>`;
+        }).join("");
+
+        const tillerNote = renderCropWikiProfessionNote("Tiller.png", "农耕人（+10%）");
+        html.push(`
+          <table class="crop-quality-table">
+            <thead><tr><th>品质</th><th>⚡ 能量</th><th>❤️ 生命</th><th>💰 售价</th></tr></thead>
+            <tbody>
+              ${rows}
+              <tr class="tiller-row"><td colspan="4">${tillerNote}</td></tr>
+            </tbody>
+          </table>
         `);
       }
 
-      if (detail.energy && detail.energy.length) {
-        const energyPills = detail.energy.map((e) =>
-          `<span class="crop-q-pill energy-pill">${renderCropWikiQualityIcon(e.q, "Energy.png", "能量")}<b>${e.energy}</b>${renderCropWikiQualityIcon(e.q, "Health.png", "生命")}<b>${e.health}</b></span>`
-        ).join("");
-        lines.push(`
-          <div class="crop-info-line no-icon wide">
-            <span class="crop-info-label crop-info-label-stack"><span>能量</span><span>生命</span></span>
-            <span class="crop-info-content">${energyPills}</span>
-          </div>
-        `);
-      }
-
-      if (detail.pricing && detail.pricing.length) {
-        const tillerNote = renderCropWikiProfessionNote("Tiller.png", "农耕人（+10%）").replace("crop-info-note", "crop-info-note tiller-note");
-        const pricePills = detail.pricing.map((p) =>
-          `<span class="crop-q-pill sell-pill">${renderCropWikiQualityChip(p.q, entry.name)}${priceHtml(p.base)}</span>`
-        ).join("");
-        lines.push(`
-          <div class="crop-info-line no-icon wide">
-            <span class="crop-info-label">直售</span>
-            <span class="crop-info-content">${pricePills}${tillerNote}</span>
-          </div>
-        `);
-      }
-
+      /* ── 加工推荐卡 ── */
       if (detail.products && detail.products.length) {
         const artisanNote = renderCropWikiProfessionNote("Artisan.png", "工匠（+40%）");
         const productsHtml = detail.products.map((p) =>
-          `种植在<b>${escapeHtml(p.device)}</b>的作用范围内（水平方向 5 格，竖直方向 5 格），产生${escapeHtml(p.produce)}，${priceHtml(p.base)}${artisanNote}<span class="crop-source-badge">推荐</span>`
+          `种植在<b>${escapeHtml(p.device)}</b>的作用范围内（水平方向 5 格，竖直方向 5 格），产生${escapeHtml(p.produce)}，${priceHtml(p.base)} ${artisanNote}`
         ).join("<br>");
-        lines.push(`
-          <div class="crop-info-line no-icon">
-            <span class="crop-info-label">加工</span>
-            <span class="crop-info-content">${productsHtml}</span>
+        html.push(`
+          <div class="crop-process-card">
+            <div class="crop-process-card-title">⭐ 加工推荐</div>
+            <div class="crop-process-card-body">${productsHtml}</div>
           </div>
         `);
       }
 
-      html.push(`<div class="crop-info-list">${lines.join("")}</div>`);
+      /* ── 折叠区：收集包 / 烹饪 / 裁制 / 送礼 ── */
+      const folds = [];
 
-      const tailoringHtml = detail.tailoring && detail.tailoring.length ? `
-          <section class="crop-wiki-section">
-            <h4 class="crop-wiki-h4"><span class="crop-wiki-h4-bar"></span>✂️ 裁制</h4>
-            <div class="crop-wiki-mini-list crop-wiki-tailoring-box">
-              ${detail.tailoring.map((t) => `
-                <div class="crop-wiki-mini-row">
-                  <span class="crop-wiki-mini-tag">${escapeHtml(t.label)}</span>
-                  <span>${escapeHtml(t.text)}</span>
-                </div>
-              `).join("")}
+      if (detail.bundle) {
+        folds.push(`
+          <div class="crop-fold-section">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span>
+              <span class="crop-fold-title">📦 收集包</span>
             </div>
-          </section>
-        ` : "";
-
-      const bundleHtml = detail.bundle ? `
-        <section class="crop-wiki-section">
-          <h4 class="crop-wiki-h4"><span class="crop-wiki-h4-bar"></span>📦 收集包</h4>
-          <div class="crop-wiki-bundle">${renderCropWikiBundleText(detail.bundle)}</div>
-        </section>
-      ` : "";
-
-      const recipeHtml = detail.recipes && detail.recipes.length ? `
-        <section class="crop-wiki-section">
-          <h4 class="crop-wiki-h4"><span class="crop-wiki-h4-bar"></span>🍳 烹饪</h4>
-          <div class="crop-wiki-recipe-grid">
-            ${detail.recipes.map((r) => `
-              <div class="crop-wiki-recipe-card">
-                <b>${escapeHtml(r.name)}</b>
-                <div class="crop-wiki-recipe-ing">
-                  ${r.ingredients.map((ing, i) =>
-                    `<span class="crop-wiki-ing-chip">${renderPlantingIcon(ing)}${escapeHtml(ing)}<span class="crop-wiki-ing-qty">×1</span></span>${i < r.ingredients.length - 1 ? '<span class="ing-plus">+</span>' : ''}`
-                  ).join("")}
-                </div>
-              </div>
-            `).join("")}
+            <div class="crop-fold-body">
+              <div class="crop-wiki-bundle">${renderCropWikiBundleText(detail.bundle)}</div>
+            </div>
           </div>
-        </section>
-      ` : "";
+        `);
+      }
 
-      if (bundleHtml || recipeHtml || tailoringHtml) {
-        html.push(`<div class="crop-wiki-stack">${bundleHtml}${recipeHtml}${tailoringHtml}</div>`);
+      if (detail.recipes && detail.recipes.length) {
+        folds.push(`
+          <div class="crop-fold-section">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span>
+              <span class="crop-fold-title">🍳 烹饪</span>
+              <span class="crop-fold-badge">${detail.recipes.length} 道</span>
+            </div>
+            <div class="crop-fold-body">
+              <div class="crop-wiki-recipe-grid">
+                ${detail.recipes.map((r) => `
+                  <div class="crop-wiki-recipe-card">
+                    <b>${escapeHtml(r.name)}</b>
+                    <div class="crop-wiki-recipe-ing">
+                      ${r.ingredients.map((ing, i) =>
+                        `<span class="crop-wiki-ing-chip">${renderPlantingIcon(ing)}${escapeHtml(ing)}<span class="crop-wiki-ing-qty">×1</span></span>${i < r.ingredients.length - 1 ? '<span class="ing-plus">+</span>' : ''}`
+                      ).join("")}
+                    </div>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          </div>
+        `);
+      }
+
+      if (detail.tailoring && detail.tailoring.length) {
+        folds.push(`
+          <div class="crop-fold-section">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span>
+              <span class="crop-fold-title">✂️ 裁制</span>
+            </div>
+            <div class="crop-fold-body">
+              <div class="crop-wiki-mini-list crop-wiki-tailoring-box">
+                ${detail.tailoring.map((t) => `
+                  <div class="crop-wiki-mini-row">
+                    <span class="crop-wiki-mini-tag">${escapeHtml(t.label)}</span>
+                    <span>${escapeHtml(t.text)}</span>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          </div>
+        `);
       }
 
       if (detail.gifting) {
         const love = detail.gifting.love;
         const dislike = detail.gifting.dislike;
-        html.push(`
-          <section class="crop-wiki-section">
-            <h4 class="crop-wiki-h4"><span class="crop-wiki-h4-bar"></span>🎁 送礼</h4>
-            <div class="crop-wiki-gift-stack">
-              ${love ? `
-                <div class="crop-wiki-gift love">
-                  <div class="crop-wiki-gift-head">
-                    <span class="crop-wiki-gift-label love">喜欢 <b>+${love.value}</b></span>
-                    <small>${love.villagers.length} 人</small>
-                  </div>
-                  <div class="crop-wiki-villager-grid">${love.villagers.map(renderCropWikiVillagerChip).join("")}</div>
-                </div>
-              ` : ""}
-              ${dislike ? `
-                <div class="crop-wiki-gift dislike">
-                  <div class="crop-wiki-gift-head">
-                    <span class="crop-wiki-gift-label dislike">不喜欢 <b>${dislike.value}</b></span>
-                    <small>${dislike.villagers.length} 人</small>
-                  </div>
-                  <div class="crop-wiki-villager-grid">${dislike.villagers.map(renderCropWikiVillagerChip).join("")}</div>
-                </div>
-              ` : ""}
+        const giftCount = (love ? love.villagers.length : 0) + (dislike ? dislike.villagers.length : 0);
+        folds.push(`
+          <div class="crop-fold-section">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span>
+              <span class="crop-fold-title">🎁 送礼</span>
+              <span class="crop-fold-badge">${giftCount} 人</span>
             </div>
-          </section>
+            <div class="crop-fold-body">
+              <div class="crop-wiki-gift-stack">
+                ${love ? `
+                  <div class="crop-wiki-gift love">
+                    <div class="crop-wiki-gift-head">
+                      <span class="crop-wiki-gift-label love">喜欢 <b>+${love.value}</b></span>
+                      <small>${love.villagers.length} 人</small>
+                    </div>
+                    <div class="crop-wiki-villager-grid">${love.villagers.map(renderCropWikiVillagerChip).join("")}</div>
+                  </div>
+                ` : ""}
+                ${dislike ? `
+                  <div class="crop-wiki-gift dislike">
+                    <div class="crop-wiki-gift-head">
+                      <span class="crop-wiki-gift-label dislike">不喜欢 <b>${dislike.value}</b></span>
+                      <small>${dislike.villagers.length} 人</small>
+                    </div>
+                    <div class="crop-wiki-villager-grid">${dislike.villagers.map(renderCropWikiVillagerChip).join("")}</div>
+                  </div>
+                ` : ""}
+              </div>
+            </div>
+          </div>
         `);
+      }
+
+      if (folds.length) {
+        html.push(`<div class="crop-fold-stack">${folds.join("")}</div>`);
       }
 
       return html.join("");
