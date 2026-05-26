@@ -7416,14 +7416,14 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .crop-info-list {
   display: grid;
   gap: 2px;
-  border: 1px solid #e5d5b6;
+  border: 2px solid #e5d5b6;
   border-radius: 10px;
   background: #fffaf0;
   padding: 5px;
 }
 .crop-info-line {
   display: grid;
-  grid-template-columns: 22px 62px minmax(0, 1fr);
+  grid-template-columns: 22px 50px minmax(0, 1fr);
   gap: 8px;
   align-items: start;
   padding: 4px 6px;
@@ -7433,14 +7433,14 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border-radius: 6px;
 }
 .crop-info-line.no-icon {
-  grid-template-columns: 62px minmax(0, 1fr);
+  grid-template-columns: 50px minmax(0, 1fr);
 }
 .crop-info-line .crop-info-icon,
 .crop-info-line .crop-info-label {
   padding-top: 2px;
 }
 .crop-info-line + .crop-info-line {
-  border-top: 1px dashed #f0e3c8;
+  border-top: 2px dashed #f0e3c8;
 }
 .crop-info-line.wide {
   align-items: center;
@@ -7469,6 +7469,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-size: 11px;
   font-weight: 950;
   letter-spacing: 0.3px;
+}
+.crop-info-label-stack {
+  display: inline-grid;
+  gap: 1px;
+  line-height: 1.12;
 }
 .crop-info-content {
   color: #4a3a2a;
@@ -7510,20 +7515,31 @@ body.modal-open { overflow: hidden; touch-action: none; }
   background: #f6e6d5;
   border-radius: 999px;
 }
+.crop-info-note.tiller-note {
+  margin-left: 0;
+}
 .crop-price-tight {
   display: inline-flex;
   align-items: center;
-  gap: 1px;
-  vertical-align: -3px;
+  justify-content: center;
+  gap: 2px;
+  min-height: 20px;
+  line-height: 1;
+  vertical-align: middle;
   white-space: nowrap;
 }
 .crop-price-tight img {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
   margin: 0 !important;
+  image-rendering: pixelated;
   vertical-align: middle;
 }
 .crop-price-tight b {
   font-weight: 950;
   color: var(--ink);
+  line-height: 1;
 }
 .crop-source-piece {
   display: inline-flex;
@@ -7550,9 +7566,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border-radius: 999px;
   background: var(--green-soft);
   color: #27835f;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 950;
-  line-height: 1.3;
+  line-height: 1.35;
+  min-height: 20px;
 }
 .crop-source-badge.secondary {
   background: #fff5dc;
@@ -7581,6 +7598,62 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .crop-q-pill b {
   color: var(--ink);
   font-weight: 950;
+}
+.crop-q-pill.energy-pill {
+  gap: 1px;
+  padding: 1px 5px 1px 1px;
+  font-size: 11px;
+}
+.crop-info-content .crop-q-pill.energy-pill {
+  margin-right: 2px;
+}
+.crop-q-pill.energy-pill .crop-quality-chip.has-official-icon {
+  min-width: 16px;
+  min-height: 16px;
+}
+.crop-q-pill.energy-pill .crop-quality-icon-wrap {
+  width: 16px;
+  height: 16px;
+}
+.crop-q-pill.energy-pill .crop-quality-item-icon {
+  width: 15px;
+  height: 15px;
+}
+.crop-q-pill.energy-pill .crop-quality-star-icon {
+  left: 2px;
+  bottom: 1px;
+  width: 10px;
+  height: 10px;
+}
+.crop-q-pill.energy-pill b {
+  font-size: 11px;
+}
+.crop-q-pill.sell-pill {
+  gap: 3px;
+  padding: 1px 8px 1px 2px;
+  font-size: 11px;
+}
+.crop-q-pill.sell-pill .crop-quality-chip.has-official-icon {
+  min-width: 16px;
+  min-height: 16px;
+}
+.crop-q-pill.sell-pill .crop-quality-icon-wrap {
+  width: 16px;
+  height: 16px;
+  overflow: visible;
+}
+.crop-q-pill.sell-pill .crop-quality-item-icon {
+  width: 16px;
+  height: 16px;
+}
+.crop-q-pill.sell-pill .crop-quality-star-icon {
+  left: -1px;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+}
+.crop-q-pill.sell-pill .crop-price-tight {
+  min-height: 16px;
 }
 .crop-q-pill b i {
   color: #b09a7a;
@@ -7620,8 +7693,8 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-quality-star-icon {
   position: absolute;
-  left: 1px;
-  bottom: 0;
+  left: 3px;
+  bottom: 2px;
   width: 13px;
   height: 13px;
   image-rendering: pixelated;
@@ -7682,7 +7755,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   display: grid;
   gap: 0;
   overflow: hidden;
-  border: 1px solid #e5d5b6;
+  border: 2px solid #e5d5b6;
   border-radius: 8px;
   background: #fffaf0;
 }
@@ -7697,14 +7770,14 @@ body.modal-open { overflow: hidden; touch-action: none; }
   color: #5b4a37;
 }
 .crop-wiki-mini-row + .crop-wiki-mini-row {
-  border-top: 1px dashed #ead8b1;
+  border-top: 2px dashed #ead8b1;
 }
 .crop-wiki-tailoring-box {
   display: block;
   gap: 0;
   padding: 0;
   overflow: hidden;
-  border: 1px solid #e5d5b6;
+  border: 2px solid #e5d5b6;
   border-radius: 8px;
   background: #fffaf0;
 }
@@ -7715,7 +7788,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   margin: 0;
 }
 .crop-wiki-tailoring-box .crop-wiki-mini-row + .crop-wiki-mini-row {
-  border-top: 1px dashed #ead8b1;
+  border-top: 2px dashed #ead8b1;
 }
 .crop-wiki-mini-tag {
   display: inline-flex;
@@ -7740,8 +7813,8 @@ body.modal-open { overflow: hidden; touch-action: none; }
   gap: 8px;
 }
 .crop-wiki-bundle {
-  border: 1px solid #e5d5b6;
-  border-left: 3px solid #2f6fb0;
+  border: 2px solid #e5d5b6;
+  border-left: 4px solid #2f6fb0;
   border-radius: 0 8px 8px 0;
   background: #fffaf0;
   padding: 6px 9px;
@@ -7757,8 +7830,8 @@ body.modal-open { overflow: hidden; touch-action: none; }
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #e5d5b6;
-  border-left: 3px solid #d9a420;
+  border: 2px solid #e5d5b6;
+  border-left: 4px solid #d9a420;
   border-radius: 0 8px 8px 0;
   background: #fffaf0;
   padding: 6px 9px;
@@ -7810,7 +7883,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   gap: 5px;
 }
 .crop-wiki-gift {
-  border: 1px solid #e5d5b6;
+  border: 2px solid #e5d5b6;
   border-radius: 8px;
   background: #fffaf0;
   padding: 6px 8px;
@@ -7873,11 +7946,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 @media (max-width: 520px) {
   .crop-info-line {
-    grid-template-columns: 22px 60px minmax(0, 1fr);
+    grid-template-columns: 22px 50px minmax(0, 1fr);
     gap: 6px;
   }
   .crop-info-line.no-icon {
-    grid-template-columns: 60px minmax(0, 1fr);
+    grid-template-columns: 50px minmax(0, 1fr);
   }
   .crop-wiki-2col {
     grid-template-columns: 1fr;
@@ -20405,6 +20478,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const seasonCn = SEASON_CN[season] || "";
       const qMap = { "普通": "normal", "银": "silver", "金": "gold", "铱": "iridium" };
       const goldIcon = renderPlantingIcon("金币");
+      const priceHtml = (value) =>
+        `<span class="crop-price-tight">${goldIcon}<b>${escapeHtml(String(value))}</b></span>`;
 
       if (entry.notes && entry.notes.length) {
         html.push(`
@@ -20423,18 +20498,21 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         `<span class="crop-source-piece"><img src="${iconUrl(fileName)}" alt="" loading="lazy" />${escapeHtml(text)}</span>`;
       const sourceTextPiece = (text) =>
         `<span class="crop-source-piece">${escapeHtml(text)}</span>`;
+      const sourcePricePiece = (value) =>
+        `<span class="crop-source-piece">${priceHtml(value)}</span>`;
       const primarySourceParts = [
         sourceTextPiece("耕种"),
         sourcePiece(iconFiles[entry.seed] || "Mixed Seeds.png", entry.seed),
-        sourcePiece("Gold.png", seedCostText),
+        sourcePricePiece(seedCostText),
         sourceTextPiece(entry.source)
       ];
       const cartBonus = detail.bonuses && detail.bonuses.find((b) => b.title.includes("货车") || b.title.includes("旅行"));
       const primarySource = primarySourceParts.join(`<span class="crop-source-dot">·</span>`);
       const cartSource = cartBonus ? [
-        sourcePiece("Traveling Cart Icon.png", "旅行货车"),
-        `<span class="crop-source-piece"><span class="crop-price-tight">${goldIcon}<b>150</b></span> ~ <span class="crop-price-tight">${goldIcon}<b>1,000</b></span> 随机</span>`,
-        `<span class="crop-source-piece">出售 1 个或 5 个${escapeHtml(entry.name)}</span>`
+        sourceTextPiece("购买"),
+        sourceTextPiece(`${entry.name}1-5个`),
+        sourcePricePiece("150-1000"),
+        sourcePiece("Traveling Cart Icon.png", "旅行货车")
       ].join(`<span class="crop-source-dot">·</span>`) : "";
       lines.push(`
         <div class="crop-info-line no-icon">
@@ -20459,32 +20537,32 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const expIcon = `<img class="crop-exp-icon" src="${iconUrl("Farming.png")}" alt="" loading="lazy" />`;
         lines.push(`
           <div class="crop-info-line no-icon">
-            <span class="crop-info-label">经验值</span>
-            <span class="crop-info-content">${expIcon}+${detail.exp.value} ${escapeHtml(detail.exp.type)}</span>
+            <span class="crop-info-label">经验</span>
+            <span class="crop-info-content">${expIcon}${escapeHtml(detail.exp.type)} ${detail.exp.value}</span>
           </div>
         `);
       }
 
       if (detail.energy && detail.energy.length) {
         const energyPills = detail.energy.map((e) =>
-          `<span class="crop-q-pill">${renderCropWikiQualityIcon(e.q, "Energy.png", "能量")}<b>${e.energy}</b>${renderCropWikiQualityIcon(e.q, "Health.png", "生命")}<b>${e.health}</b></span>`
+          `<span class="crop-q-pill energy-pill">${renderCropWikiQualityIcon(e.q, "Energy.png", "能量")}<b>${e.energy}</b>${renderCropWikiQualityIcon(e.q, "Health.png", "生命")}<b>${e.health}</b></span>`
         ).join("");
         lines.push(`
           <div class="crop-info-line no-icon wide">
-            <span class="crop-info-label">能量/生命</span>
+            <span class="crop-info-label crop-info-label-stack"><span>能量</span><span>生命</span></span>
             <span class="crop-info-content">${energyPills}</span>
           </div>
         `);
       }
 
       if (detail.pricing && detail.pricing.length) {
-        const tillerNote = renderCropWikiProfessionNote("Tiller.png", "农耕人（+10%）");
+        const tillerNote = renderCropWikiProfessionNote("Tiller.png", "农耕人（+10%）").replace("crop-info-note", "crop-info-note tiller-note");
         const pricePills = detail.pricing.map((p) =>
-          `<span class="crop-q-pill">${renderCropWikiQualityChip(p.q, entry.name)}<span class="crop-price-tight">${goldIcon}<b>${p.base}</b></span></span>`
+          `<span class="crop-q-pill sell-pill">${renderCropWikiQualityChip(p.q, entry.name)}${priceHtml(p.base)}</span>`
         ).join("");
         lines.push(`
           <div class="crop-info-line no-icon wide">
-            <span class="crop-info-label">直接售出</span>
+            <span class="crop-info-label">直售</span>
             <span class="crop-info-content">${pricePills}${tillerNote}</span>
           </div>
         `);
@@ -20492,13 +20570,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
       if (detail.products && detail.products.length) {
         const artisanNote = renderCropWikiProfessionNote("Artisan.png", "工匠（+40%）");
-        const honeyIcon = renderPlantingIcon("蜂蜜");
         const productsHtml = detail.products.map((p) =>
-          `种植在<b>${escapeHtml(p.device)}</b>的作用范围内（水平方向 5 格，竖直方向 5 格），产生<b>${escapeHtml(p.produce)}</b>${honeyIcon}，<span class="crop-price-tight">${goldIcon}<b>${p.base}</b></span>${artisanNote}<span class="crop-source-badge">推荐</span>`
+          `种植在<b>${escapeHtml(p.device)}</b>的作用范围内（水平方向 5 格，竖直方向 5 格），产生${escapeHtml(p.produce)}，${priceHtml(p.base)}${artisanNote}<span class="crop-source-badge">推荐</span>`
         ).join("<br>");
         lines.push(`
           <div class="crop-info-line no-icon">
-            <span class="crop-info-label">加工售出</span>
+            <span class="crop-info-label">加工</span>
             <span class="crop-info-content">${productsHtml}</span>
           </div>
         `);
