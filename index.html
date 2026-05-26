@@ -12743,6 +12743,46 @@ body.modal-open { overflow: hidden; touch-action: none; }
   }
 }
 
+
+/* v31：修复购物车目标卡片展开与左滑删除 */
+#app-shell #shoppingCartContent .goal-card-container {
+  position: relative !important;
+  margin: 0 0 8px !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  touch-action: pan-y !important;
+}
+
+#app-shell #shoppingCartContent .goal-card-container:last-child {
+  margin-bottom: 0 !important;
+}
+
+#app-shell #shoppingCartContent .goal-card-container > .goal-delete-btn {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 1 !important;
+}
+
+#app-shell #shoppingCartContent .goal-card-container > .goal-card {
+  position: relative !important;
+  z-index: 2 !important;
+  margin-bottom: 0 !important;
+  touch-action: pan-y !important;
+  will-change: transform !important;
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+}
+
+#app-shell #shoppingCartContent .goal-card-container > .goal-card.revealed {
+  transform: translateX(-80px);
+}
+
+#app-shell #shoppingCartContent .shop-intro-card .shop-metric-grid {
+  display: none !important;
+}
+
 </style>
 </head>
 <body>
@@ -16201,10 +16241,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             <div class="shop-intro-body">
               ${shop.intro.map(line => `<div class="shop-intro-line">${escapeHtml(line)}</div>`).join("")}
             </div>
-            <div class="shop-metric-grid">
-              <div class="shop-metric"><span>营业时间</span><b>${escapeHtml(shop.hours || "查看详情")}</b></div>
-              <div class="shop-metric"><span>休息/出现</span><b>${escapeHtml(shop.closed || "全年")}</b></div>
-            </div>
             ${(shop.chips || []).length ? `<div class="shop-chip-row">${shop.chips.map(chip => `<span class="shop-chip">${escapeHtml(chip)}</span>`).join("")}</div>` : ""}
           </article>`;
 
@@ -16240,6 +16276,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
         return `<section class="shop-section" style="--shop-accent:${escapeAttribute(shop.accent || "#9a5a2f")}">${introHtml}${catalogHtml}${cartHtml}</section>`;
       }).join("");
+
+      // 购物车里的目标卡片也要重新绑定左滑删除手势
+      container.querySelectorAll("[data-swipe-goal]").forEach(card => {
+        if (!card.dataset.swipeBound) {
+          attachGoalSwipe(card, card.dataset.swipeGoal);
+          card.dataset.swipeBound = "1";
+        }
+      });
     }
 
     function getShopCatalogEntries(shop) {
@@ -22703,6 +22747,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const g = appState.goals.find(x => x.id === id);
       if (g) g.expanded = g.expanded === false;
       renderGoals();
+      renderShoppingCart();
       saveApp();
     }
     function toggleGoalStep(id, idx) {
