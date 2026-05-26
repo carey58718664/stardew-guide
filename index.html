@@ -21367,6 +21367,228 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       return rows;
     }
 
+    const CROP_STAGE_PHASES = {
+      "蓝爵": [1,2,2,2],
+      "胡萝卜": [1,1,1],
+      "花椰菜": [1,2,4,4,1],
+      "咖啡豆": [1,2,2,3,2],
+      "蒜": [1,1,1,1],
+      "青豆": [1,1,1,3,4],
+      "甘蓝菜": [1,2,2,1],
+      "防风草": [1,1,1,1],
+      "土豆": [1,1,1,2,1],
+      "大黄": [2,2,2,3,4],
+      "草莓": [1,1,2,2,2],
+      "郁金香": [1,1,2,2],
+      "稻苗": [1,2,2,3],
+      "蓝莓": [1,3,3,4,2],
+      "玉米": [2,3,3,3,3],
+      "啤酒花": [1,1,2,3,4],
+      "辣椒": [1,1,1,1,1],
+      "甜瓜": [1,2,3,3,3],
+      "罂粟": [1,2,2,2],
+      "萝卜": [2,1,2,1],
+      "红叶卷心菜": [2,1,2,2,2],
+      "杨桃": [2,3,2,3,3],
+      "夏季亮片": [1,2,3,2],
+      "夏南瓜": [1,1,1,1,2],
+      "向日葵": [1,2,3,2],
+      "番茄": [2,2,2,2,3],
+      "小麦": [1,1,1,1],
+      "苋菜": [1,2,2,2],
+      "洋蓟": [2,2,1,2,1],
+      "甜菜": [1,1,2,2],
+      "小白菜": [1,1,1,1],
+      "西兰花": [1,2,2,3],
+      "蔓越莓": [1,2,1,1,2],
+      "茄子": [1,1,1,1,1],
+      "玫瑰仙子": [1,4,4,3],
+      "葡萄": [1,1,2,3,3],
+      "南瓜": [1,2,3,4,3],
+      "山药": [1,3,3,3],
+      "霜瓜": [1,2,1,1,2],
+      "水晶果": [7],
+      "雪山药": [7],
+      "冬根": [7],
+      "番红花": [7]
+    };
+
+    const CROP_SOURCE_DETAILS = {
+      "防风草": [
+        { tag: "初始", text: "刘易斯开局赠送防风草种子 ×15", icon: "Parsnip Seeds.png" },
+        { tag: "购买", text: "皮埃尔杂货店 20g；Joja超市 25g；冬15夜市魔法船 20g", icon: "Parsnip Seeds.png" },
+        { tag: "其他", text: "种子生产器、混合种子、旅行货车、头骨山洞宝箱；无尽财富之雕像会在潘姆生日产出防风草", icon: "Parsnip.png" }
+      ],
+      "蓝爵": [
+        { tag: "购买", text: "皮埃尔杂货店 30g；Joja超市 37g；冬15夜市魔法船 30g", icon: "Jazz Seeds.png" },
+        { tag: "其他", text: "种子生产器、混合种子、旅行货车；成熟花可影响蜂房产出蓝爵蜂蜜", icon: "Blue Jazz.png" }
+      ],
+      "花椰菜": [
+        { tag: "购买", text: "皮埃尔杂货店 80g；Joja超市 100g；冬15夜市魔法船 80g", icon: "Cauliflower Seeds.png" },
+        { tag: "其他", text: "种子生产器、混合种子、旅行货车；3×3 成熟作物可生成巨大花椰菜", icon: "Cauliflower.png" }
+      ],
+      "青豆": [{ tag: "购买", text: "皮埃尔杂货店 60g；Joja超市 75g；冬15夜市魔法船 60g", icon: "Bean Starter.png" }, { tag: "其他", text: "架子作物，成熟后每 3 天再收获；种子生产器、旅行货车可获取", icon: "Green Bean.png" }],
+      "甘蓝菜": [{ tag: "购买", text: "皮埃尔杂货店 70g；Joja超市 87g；冬15夜市魔法船 70g", icon: "Kale Seeds.png" }, { tag: "其他", text: "镰刀收获；种子生产器、旅行货车可获取", icon: "Kale.png" }],
+      "蒜": [{ tag: "购买", text: "第 2 年起皮埃尔杂货店 40g；冬15夜市魔法船 40g", icon: "Garlic Seeds.png" }, { tag: "其他", text: "种子生产器、旅行货车可获取", icon: "Garlic.png" }],
+      "土豆": [{ tag: "购买", text: "皮埃尔杂货店 50g；Joja超市 62g；冬15夜市魔法船 50g", icon: "Potato Seeds.png" }, { tag: "其他", text: "每株至少 1 个，平均额外 0.25 个；种子生产器、旅行货车可获取", icon: "Potato.png" }],
+      "大黄": [{ tag: "购买", text: "沙漠绿洲 100g", icon: "Rhubarb Seeds.png" }, { tag: "其他", text: "种子生产器、旅行货车可获取", icon: "Rhubarb.png" }],
+      "草莓": [{ tag: "购买", text: "春13蛋蛋节 100g", icon: "Strawberry Seeds.png" }, { tag: "其他", text: "成熟后每 4 天再收获；种子生产器、旅行货车可获取", icon: "Strawberry.png" }],
+      "郁金香": [{ tag: "购买", text: "皮埃尔杂货店 20g；Joja超市 25g；冬15夜市魔法船 20g", icon: "Tulip Bulb.png" }, { tag: "其他", text: "种子生产器、混合种子、旅行货车；成熟花可影响蜂房产出郁金香蜂蜜", icon: "Tulip.png" }],
+      "稻苗": [{ tag: "购买", text: "皮埃尔杂货店可购买稻苗 40g", icon: "Rice Shoot.png" }, { tag: "水田", text: "靠近水源时自动浇水并缩短生长周期；镰刀收获未碾米", icon: "Unmilled Rice.png" }],
+      "咖啡豆": [{ tag: "掉落", text: "煤球怪有概率掉落咖啡豆", icon: "Coffee Bean.png" }, { tag: "购买", text: "旅行货车可随机出售；咖啡豆可直接当种子种植", icon: "Traveling Cart Icon.png" }],
+      "杨桃": [{ tag: "购买", text: "沙漠绿洲 400g", icon: "Starfruit Seeds.png" }, { tag: "其他", text: "种子生产器、旅行货车可获取；后期常用于小桶酿酒", icon: "Starfruit.png" }],
+      "蓝莓": [{ tag: "购买", text: "皮埃尔杂货店 80g；Joja超市 100g；冬16夜市魔法船 80g", icon: "Blueberry Seeds.png" }, { tag: "其他", text: "每次收获 3 个，另有额外产出概率；成熟后每 4 天再收获", icon: "Blueberry.png" }],
+      "红叶卷心菜": [{ tag: "购买", text: "第 2 年起皮埃尔杂货店 100g；冬16夜市魔法船 100g", icon: "Red Cabbage Seeds.png" }, { tag: "其他", text: "第 1 年可通过旅行货车随机获取；种子生产器可获取", icon: "Red Cabbage.png" }],
+      "甜瓜": [{ tag: "购买", text: "皮埃尔杂货店 80g；Joja超市 100g；冬16夜市魔法船 80g", icon: "Melon Seeds.png" }, { tag: "其他", text: "种子生产器、旅行货车可获取；3×3 成熟作物可生成巨大甜瓜", icon: "Melon.png" }],
+      "啤酒花": [{ tag: "购买", text: "皮埃尔杂货店 60g；Joja超市 75g；冬16夜市魔法船 60g", icon: "Hops Starter.png" }, { tag: "其他", text: "架子作物，成熟后每日收获；小桶加工为淡啤酒价值很高", icon: "Hops.png" }],
+      "夏南瓜": [{ tag: "获取", text: "夏季种子点/特殊种子来源获得夏南瓜种子", icon: "Summer Squash Seeds.png" }, { tag: "其他", text: "成熟后每 3 天再收获；种子生产器可获取", icon: "Summer Squash.png" }],
+      "辣椒": [{ tag: "购买", text: "皮埃尔杂货店 40g；Joja超市 50g；冬16夜市魔法船 40g", icon: "Pepper Seeds.png" }, { tag: "其他", text: "成熟后每 3 天再收获；种子生产器、旅行货车可获取", icon: "Hot Pepper.png" }],
+      "番茄": [{ tag: "购买", text: "皮埃尔杂货店 50g；Joja超市 62g；冬16夜市魔法船 50g", icon: "Tomato Seeds.png" }, { tag: "其他", text: "成熟后每 4 天再收获，且有额外产出概率；种子生产器可获取", icon: "Tomato.png" }],
+      "萝卜": [{ tag: "购买", text: "皮埃尔杂货店 40g；Joja超市 50g；冬16夜市魔法船 40g", icon: "Radish Seeds.png" }, { tag: "其他", text: "种子生产器、旅行货车可获取", icon: "Radish.png" }],
+      "罂粟": [{ tag: "购买", text: "皮埃尔杂货店 100g；Joja超市 125g；冬16夜市魔法船 100g", icon: "Poppy Seeds.png" }, { tag: "其他", text: "成熟花可影响蜂房产出罂粟蜂蜜；注意送礼偏特殊", icon: "Poppy.png" }],
+      "夏季亮片": [{ tag: "购买", text: "皮埃尔杂货店 50g；Joja超市 62g；冬16夜市魔法船 50g", icon: "Spangle Seeds.png" }, { tag: "其他", text: "成熟花可影响蜂房产出夏季亮片蜂蜜", icon: "Summer Spangle.png" }],
+      "小麦": [{ tag: "购买", text: "皮埃尔杂货店 10g；Joja超市 12g；冬16/17夜市魔法船 10g", icon: "Wheat Seeds.png" }, { tag: "其他", text: "夏秋两季作物，镰刀收获；可进小桶或磨坊", icon: "Wheat.png" }],
+      "玉米": [{ tag: "购买", text: "皮埃尔杂货店 150g；Joja超市 187g；冬16/17夜市魔法船 150g", icon: "Corn Seeds.png" }, { tag: "其他", text: "夏秋两季作物，成熟后每 4 天再收获", icon: "Corn.png" }],
+      "向日葵": [{ tag: "购买", text: "皮埃尔杂货店 200g；Joja超市 125g；冬16/17夜市魔法船 200g", icon: "Sunflower Seeds.png" }, { tag: "其他", text: "夏秋两季作物，收获时可掉落葵花籽；成熟花可影响蜂房产出向日葵蜂蜜", icon: "Sunflower.png" }],
+      "蔓越莓": [{ tag: "购买", text: "皮埃尔杂货店 240g；Joja超市 300g；冬17夜市魔法船 240g", icon: "Cranberry Seeds.png" }, { tag: "其他", text: "每次收获 2 个，另有额外产出概率；成熟后每 5 天再收获", icon: "Cranberries.png" }],
+      "南瓜": [{ tag: "购买", text: "皮埃尔杂货店 100g；Joja超市 125g；冬17夜市魔法船 100g", icon: "Pumpkin Seeds.png" }, { tag: "其他", text: "种子生产器、旅行货车可获取；3×3 成熟作物可生成巨大南瓜", icon: "Pumpkin.png" }],
+      "葡萄": [{ tag: "购买", text: "皮埃尔杂货店 60g；Joja超市 75g；冬17夜市魔法船 60g", icon: "Grape Starter.png" }, { tag: "其他", text: "架子作物，成熟后每 3 天再收获；夏季也可采集葡萄", icon: "Grape.png" }],
+      "洋蓟": [{ tag: "购买", text: "第 2 年起皮埃尔杂货店 30g；冬17夜市魔法船 30g", icon: "Artichoke Seeds.png" }, { tag: "其他", text: "种子生产器、旅行货车可获取", icon: "Artichoke.png" }],
+      "甜菜": [{ tag: "购买", text: "沙漠绿洲 20g", icon: "Beet Seeds.png" }, { tag: "其他", text: "种子生产器、旅行货车可获取；磨坊可加工为糖", icon: "Beet.png" }],
+      "苋菜": [{ tag: "购买", text: "皮埃尔杂货店 70g；Joja超市 87g；冬17夜市魔法船 70g", icon: "Amaranth Seeds.png" }, { tag: "其他", text: "镰刀收获；种子生产器、旅行货车可获取", icon: "Amaranth.png" }],
+      "茄子": [{ tag: "购买", text: "皮埃尔杂货店 20g；Joja超市 25g；冬17夜市魔法船 20g", icon: "Eggplant Seeds.png" }, { tag: "其他", text: "成熟后每 5 天再收获；种子生产器可获取", icon: "Eggplant.png" }],
+      "山药": [{ tag: "购买", text: "皮埃尔杂货店 60g；Joja超市 75g；冬17夜市魔法船 60g", icon: "Yam Seeds.png" }, { tag: "其他", text: "种子生产器、旅行货车可获取", icon: "Yam.png" }],
+      "西兰花": [{ tag: "获取", text: "秋季种子点/特殊种子来源获得西兰花种子", icon: "Broccoli Seeds.png" }, { tag: "其他", text: "成熟后每 4 天再收获；种子生产器可获取", icon: "Broccoli.png" }],
+      "玫瑰仙子": [{ tag: "购买", text: "皮埃尔杂货店 200g；Joja超市 250g；冬17夜市魔法船 200g", icon: "Fairy Seeds.png" }, { tag: "其他", text: "成熟花可影响蜂房产出玫瑰仙子蜂蜜", icon: "Fairy Rose.png" }],
+      "小白菜": [{ tag: "购买", text: "皮埃尔杂货店 50g；Joja超市 62g；冬17夜市魔法船 50g", icon: "Bok Choy Seeds.png" }, { tag: "其他", text: "种子生产器、旅行货车可获取", icon: "Bok Choy.png" }],
+      "霜瓜": [{ tag: "获取", text: "冬季种子点/特殊种子来源获得霜瓜种子", icon: "Powdermelon Seeds.png" }, { tag: "其他", text: "冬季可露地种植；3×3 成熟作物可生成巨大霜瓜", icon: "Powdermelon.png" }]
+    };
+
+    const CROP_RECIPE_DETAILS = {
+      "蓝爵": [{ name: "幸运午餐", ingredients: ["海参", "墨西哥薄饼", "蓝爵"] }],
+      "花椰菜": [{ name: "乳酪花椰菜", ingredients: ["花椰菜", "奶酪"] }],
+      "青豆": [{ name: "豆类火锅", ingredients: ["青豆", "青豆"] }],
+      "甘蓝菜": [{ name: "清炒蔬菜", ingredients: ["山洞萝卜", "普通蘑菇", "甘蓝菜", "油"] }, { name: "鲑鱼晚餐", ingredients: ["鲑鱼", "苋菜", "甘蓝菜"] }],
+      "土豆": [{ name: "薯饼", ingredients: ["土豆", "油"] }],
+      "防风草": [{ name: "农夫午餐", ingredients: ["煎蛋卷", "防风草"] }, { name: "防风草汤", ingredients: ["防风草", "牛奶", "醋"] }],
+      "大黄": [{ name: "大黄派", ingredients: ["大黄", "小麦粉", "糖"] }],
+      "蓝莓": [{ name: "蓝莓千层酥", ingredients: ["蓝莓", "小麦粉", "糖", "蛋"] }, { name: "水果沙拉", ingredients: ["蓝莓", "甜瓜", "杏子"] }],
+      "辣椒": [{ name: "香辣鳗鱼", ingredients: ["鳗鱼", "辣椒"] }, { name: "爆炒青椒", ingredients: ["辣椒", "奶酪"] }],
+      "甜瓜": [{ name: "粉红蛋糕", ingredients: ["甜瓜", "小麦粉", "糖", "蛋"] }, { name: "水果沙拉", ingredients: ["蓝莓", "甜瓜", "杏子"] }],
+      "罂粟": [{ name: "虞美人籽松糕", ingredients: ["罂粟", "小麦粉", "糖"] }],
+      "萝卜": [{ name: "萝卜沙拉", ingredients: ["油", "醋", "萝卜"] }, { name: "红之盛宴", ingredients: ["红叶卷心菜", "萝卜"] }],
+      "红叶卷心菜": [{ name: "凉拌卷心菜", ingredients: ["红叶卷心菜", "醋", "蛋黄酱"] }, { name: "鱼肉卷", ingredients: ["金枪鱼", "墨西哥薄饼", "红叶卷心菜", "蛋黄酱"] }, { name: "红之盛宴", ingredients: ["红叶卷心菜", "萝卜"] }],
+      "番茄": [{ name: "意大利面", ingredients: ["小麦粉", "番茄"] }, { name: "披萨", ingredients: ["小麦粉", "番茄", "奶酪"] }, { name: "意式烤面包", ingredients: ["面包", "油", "番茄"] }, { name: "蔬菜杂烩", ingredients: ["番茄", "甜菜"] }, { name: "茄子干酪", ingredients: ["茄子", "番茄"] }],
+      "小麦": [{ name: "小麦粉", ingredients: ["小麦"] }, { name: "啤酒", ingredients: ["小麦"] }],
+      "玉米": [{ name: "墨西哥薄饼", ingredients: ["玉米"] }],
+      "苋菜": [{ name: "鲑鱼晚餐", ingredients: ["鲑鱼", "苋菜", "甘蓝菜"] }],
+      "洋蓟": [{ name: "洋蓟蘸酱", ingredients: ["洋蓟", "牛奶"] }, { name: "超级大餐", ingredients: ["小白菜", "蔓越莓", "洋蓟"] }],
+      "甜菜": [{ name: "蔬菜杂烩", ingredients: ["番茄", "甜菜"] }],
+      "小白菜": [{ name: "超级大餐", ingredients: ["小白菜", "蔓越莓", "洋蓟"] }],
+      "蔓越莓": [{ name: "蔓越莓糖果", ingredients: ["蔓越莓", "苹果", "糖"] }, { name: "蔓越莓酱", ingredients: ["蔓越莓", "糖"] }, { name: "塞料面包", ingredients: ["面包", "蔓越莓", "榛子"] }, { name: "超级大餐", ingredients: ["小白菜", "蔓越莓", "洋蓟"] }],
+      "茄子": [{ name: "茄子干酪", ingredients: ["茄子", "番茄"] }, { name: "生存汉堡", ingredients: ["面包", "山洞萝卜", "茄子"] }],
+      "南瓜": [{ name: "秋日恩赐", ingredients: ["山药", "南瓜"] }, { name: "南瓜派", ingredients: ["南瓜", "小麦粉", "牛奶", "糖"] }, { name: "南瓜汤", ingredients: ["南瓜", "牛奶"] }],
+      "山药": [{ name: "秋日恩赐", ingredients: ["山药", "南瓜"] }, { name: "琉璃山药", ingredients: ["山药", "糖"] }]
+    };
+
+    const CROP_TAILORING_DETAILS = {
+      "防风草": [{ label: "缝纫机", text: "搭配布料可制成衬衫和腰带。" }, { label: "染料罐", text: "可作为黄色染料使用。" }],
+      "蓝爵": [{ label: "缝纫机", text: "搭配布料可制成可染色短裙。" }, { label: "染料罐", text: "可作为蓝色染料使用。" }],
+      "南瓜": [{ label: "缝纫机", text: "搭配布料可制成南瓜面具。" }, { label: "染料罐", text: "可作为橙色染料使用。" }]
+    };
+
+    const CROP_QUEST_DETAILS = {
+      "防风草": [{ title: "开始游戏", text: "“开始游戏”任务要求种植并收获一株防风草。" }, { title: "随机求助", text: "皮埃尔店外布告栏可能随机索要；奖励为基础售价 3 倍金币和友谊值。" }],
+      "花椰菜": [{ title: "乔迪的请求", text: "春19日乔迪来信索要 1 个花椰菜。" }, { title: "随机求助", text: "布告栏可能随机索要。" }],
+      "苋菜": [{ title: "玛妮的请求", text: "秋3日玛妮来信索要 1 个苋菜。" }, { title: "随机求助", text: "布告栏可能随机索要。" }],
+      "南瓜": [{ title: "雕刻南瓜", text: "秋19日卡洛琳来信索要 1 个南瓜。" }, { title: "随机求助", text: "布告栏可能随机索要。" }]
+    };
+
+    const CROP_GIFT_DETAILS = {
+      "防风草": {
+        love: { label: "最爱", value: 80, villagers: ["潘姆"] },
+        like: { label: "喜欢", value: 45, villagers: ["哈维","谢恩","亚历克斯","艾利欧特","莉亚","玛鲁","潘妮","艾米丽","卡洛琳","克林特","德米特里厄斯","矮人","艾芙琳","乔治","格斯","乔迪","肯特","科罗布斯","刘易斯","莱纳斯","玛妮","皮埃尔","罗宾","桑迪","威利","法师","雷欧"] },
+        dislike: { label: "不喜欢", value: -20, villagers: ["阿比盖尔","海莉","贾斯","山姆","文森特"] }
+      },
+      "蓝爵": {
+        love: { label: "喜欢", value: 45, villagers: ["哈维","山姆","谢恩","亚历克斯","艾利欧特","海莉","莉亚","玛鲁","潘妮","艾米丽","阿比盖尔","皮埃尔","卡洛琳","刘易斯","玛妮","罗宾","德米特里厄斯","艾芙琳","贾斯","文森特","乔迪","肯特","威利","格斯","潘姆","莱纳斯","法师","矮人","科罗布斯","桑迪","雷欧"] },
+        dislike: { label: "不喜欢", value: -20, villagers: ["塞巴斯蒂安","乔治","克林特"] }
+      },
+      "花椰菜": { love: { label: "最爱", value: 80, villagers: ["玛鲁"] } },
+      "草莓": { love: { label: "最爱", value: 80, villagers: ["玛鲁","德米特里厄斯"] } },
+      "辣椒": { love: { label: "最爱", value: 80, villagers: ["谢恩","刘易斯"] } },
+      "甜瓜": { love: { label: "最爱", value: 80, villagers: ["潘妮"] } },
+      "罂粟": { love: { label: "最爱", value: 80, villagers: ["潘妮"] }, dislike: { label: "讨厌", value: -40, villagers: ["大多数村民"] } },
+      "向日葵": { love: { label: "喜欢", value: 45, villagers: ["大多数村民"] }, dislike: { label: "不喜欢", value: -20, villagers: ["塞巴斯蒂安"] } },
+      "葡萄": { love: { label: "最爱", value: 80, villagers: ["文森特"] } },
+      "南瓜": { love: { label: "最爱", value: 80, villagers: ["阿比盖尔","科罗布斯","威利"] } },
+      "甜菜": { love: { label: "最爱", value: 80, villagers: ["艾芙琳"] } },
+      "玫瑰仙子": { love: { label: "最爱", value: 80, villagers: ["艾芙琳","贾斯"] } },
+      "番红花": { love: { label: "最爱", value: 80, villagers: ["桑迪"] } }
+    };
+
+    function buildCropWikiStages(entry, meta) {
+      const phases = CROP_STAGE_PHASES[entry.name];
+      if (!phases || !phases.length) return [];
+      const total = phases.reduce((sum, n) => sum + Number(n || 0), 0);
+      const notes = [];
+      if (entry.name === "稻苗") notes.push("靠近水源时可缩短为 6 天。");
+      if (entry.regrow) notes.push(`首次成熟后每 ${entry.regrow} 天再收获。`);
+      if (entry.name === "水晶果" || entry.name === "雪山药" || entry.name === "冬根" || entry.name === "番红花") notes.push("冬季种子固定 7 天成熟，产物从冬季采集物中随机出现。位置在作物区展示是为了方便管理冬季种子收益。");
+      return [{ phases, total, regrow: entry.regrow || 0, raised: entry.name === "青豆" || entry.name === "啤酒花" || entry.name === "葡萄", notes }];
+    }
+
+    function buildCropWikiSources(entry) {
+      if (CROP_SOURCE_DETAILS[entry.name]) return CROP_SOURCE_DETAILS[entry.name];
+      if (entry.seed === "冬季种子") {
+        return [
+          { tag: "合成", text: "冬根 + 水晶果 + 雪山药 + 番红花可合成冬季种子 ×10", icon: "Winter Seeds.png" },
+          { tag: "收集包", text: "完成冬季采集收集包可获得冬季种子 ×30", icon: "Bundle Blue.png" }
+        ];
+      }
+      return [
+        { tag: "耕种", text: `${entry.seed || entry.name} · ${typeof entry.seedCost === "number" ? `${entry.seedCost}g` : entry.seedCost || "特殊来源"} · ${entry.source || "主要商店/特殊来源"}`, icon: iconFiles[entry.seed] || iconFiles[entry.name] || "Mixed Seeds.png" },
+        { tag: "其他", text: "多数作物可通过种子生产器和旅行货车补充来源。", icon: iconFiles[entry.name] || "Traveling Cart Icon.png" }
+      ];
+    }
+
+    function buildCropWikiRecipesDetailed(name) {
+      if (CROP_RECIPE_DETAILS[name]) return CROP_RECIPE_DETAILS[name];
+      return buildCropWikiRecipes(name);
+    }
+
+    function buildCropWikiTailoringDetailed(name, meta) {
+      if (CROP_TAILORING_DETAILS[name]) return CROP_TAILORING_DETAILS[name];
+      const rows = buildCropWikiTailoring(name, meta);
+      if (rows.length) return rows;
+      return [{ label: "裁制", text: "可与布料放入缝纫机尝试制作服装，部分作物也可用于染料罐。" }];
+    }
+
+    function buildCropWikiQuests(name) {
+      const rows = CROP_QUEST_DETAILS[name] ? [...CROP_QUEST_DETAILS[name]] : [];
+      if (!rows.length) rows.push({ title: "随机求助", text: "当季可获得后，布告栏可能随机索要该物品；奖励通常为基础售价 3 倍金币和友谊值。" });
+      return rows;
+    }
+
+    function buildCropWikiGiftingDetailed(name, meta) {
+      if (CROP_GIFT_DETAILS[name]) return CROP_GIFT_DETAILS[name];
+      const specific = buildCropWikiGifting(name);
+      if (specific) return specific;
+      if (meta.category === "蔬菜") {
+        return {
+          like: { label: "喜欢", value: 45, villagers: ["多数村民"] },
+          dislike: { label: "不喜欢", value: -20, villagers: ["阿比盖尔","海莉","贾斯","山姆","文森特"] }
+        };
+      }
+      if (meta.category === "水果") {
+        return { like: { label: "喜欢", value: 45, villagers: ["多数村民"] } };
+      }
+      if (meta.category === "花") {
+        return { like: { label: "喜欢", value: 45, villagers: ["多数村民"] } };
+      }
+      return null;
+    }
+
     function buildOfficialCropWikiDetails() {
       const details = {};
       PLANTING_CROPS.forEach((entry) => {
@@ -21376,14 +21598,17 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           enName: meta.enName || "",
           category: meta.category || "作物",
           exp: { value: expValue, type: "耕种经验值" },
+          stages: buildCropWikiStages(entry, meta),
+          sources: buildCropWikiSources(entry),
           energy: buildCropWikiEnergyRows(meta.energy, meta.inedible),
           pricing: buildCropWikiPricingRows(entry),
           products: buildCropWikiProducts(entry, meta),
           bonuses: buildCropWikiBonuses(entry, meta),
-          tailoring: buildCropWikiTailoring(entry.name, meta),
-          gifting: buildCropWikiGifting(entry.name),
+          tailoring: buildCropWikiTailoringDetailed(entry.name, meta),
+          gifting: buildCropWikiGiftingDetailed(entry.name, meta),
+          quests: buildCropWikiQuests(entry.name),
           bundle: entry.bundle || "",
-          recipes: buildCropWikiRecipes(entry.name)
+          recipes: buildCropWikiRecipesDetailed(entry.name)
         };
         details[entry.name] = detail;
       });
@@ -21489,13 +21714,25 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const cropIconSmall = `<img class="crop-source-seed-icon" src="${iconUrl(iconFiles[entry.name] || "Mixed Seeds.png")}" alt="" loading="lazy" />`;
       const cartIcon = `<img class="crop-source-seed-icon" src="${iconUrl("Traveling Cart Icon.png")}" alt="" loading="lazy" />`;
 
-      let sourceRows = `
-        <div class="crop-source-method-row">
-          <span class="crop-wiki-mini-tag">耕种</span>
-          <span class="crop-source-method-content">${seedIcon} ${escapeHtml(entry.seed)} · ${seedCostHtml} · ${escapeHtml(entry.source)} <span class="crop-source-badge">主要</span></span>
-        </div>
-      `;
-      if (cartBonus) {
+      let sourceRows = "";
+      if (detail.sources && detail.sources.length) {
+        sourceRows = detail.sources.map((src, index) => {
+          const srcIconFile = src.icon || iconFiles[entry.seed] || iconFiles[entry.name] || "Mixed Seeds.png";
+          const srcIcon = `<img class="crop-source-seed-icon" src="${iconUrl(srcIconFile)}" alt="" loading="lazy" />`;
+          return `<div class="crop-source-method-row">
+            <span class="crop-wiki-mini-tag">${escapeHtml(src.tag || (index === 0 ? "主要" : "其他"))}</span>
+            <span class="crop-source-method-content">${srcIcon} ${escapeHtml(src.text || "")} ${index === 0 ? '<span class="crop-source-badge">主要</span>' : '<span class="crop-source-badge secondary">补充</span>'}</span>
+          </div>`;
+        }).join("");
+      } else {
+        sourceRows = `
+          <div class="crop-source-method-row">
+            <span class="crop-wiki-mini-tag">耕种</span>
+            <span class="crop-source-method-content">${seedIcon} ${escapeHtml(entry.seed)} · ${seedCostHtml} · ${escapeHtml(entry.source)} <span class="crop-source-badge">主要</span></span>
+          </div>
+        `;
+      }
+      if (cartBonus && !(detail.sources && detail.sources.some((src) => String(src.text || "").includes("旅行货车")))) {
         sourceRows += `
           <div class="crop-source-method-row">
             <span class="crop-wiki-mini-tag">购买</span>
@@ -21552,6 +21789,40 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
       /* ── 折叠区 ── */
       const folds = [];
+
+      /* 生长阶段 */
+      if (detail.stages && detail.stages.length) {
+        const stage = detail.stages[0];
+        const stageRows = stage.phases.map((days, index) => `
+          <div class="crop-wiki-mini-row">
+            <span class="crop-wiki-mini-tag">阶段${index + 1}</span>
+            <span>${escapeHtml(String(days))} 天</span>
+          </div>
+        `).join("");
+        const stageNotes = (stage.notes || []).map((note) => `
+          <div class="crop-wiki-mini-row">
+            <span class="crop-wiki-mini-tag">说明</span>
+            <span>${escapeHtml(note)}</span>
+          </div>
+        `).join("");
+        folds.push(`
+          <div class="crop-fold-section">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span>
+              <span class="crop-fold-title">🌱 生长阶段</span>
+              <span class="crop-fold-badge">总计 ${escapeHtml(String(stage.total))} 天</span>
+            </div>
+            <div class="crop-fold-body">
+              <div class="crop-wiki-mini-list">
+                ${stageRows}
+                ${stage.regrow ? `<div class="crop-wiki-mini-row"><span class="crop-wiki-mini-tag">再生</span><span>${escapeHtml(String(stage.regrow))} 天</span></div>` : ""}
+                ${stage.raised ? `<div class="crop-wiki-mini-row"><span class="crop-wiki-mini-tag">架子</span><span>不可穿行，种植时要留走道。</span></div>` : ""}
+                ${stageNotes}
+              </div>
+            </div>
+          </div>
+        `);
+      }
 
       /* 加工 */
       if (detail.products && detail.products.length) {
@@ -21678,11 +21949,35 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         `);
       }
 
+      /* 任务 */
+      if (detail.quests && detail.quests.length) {
+        folds.push(`
+          <div class="crop-fold-section">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span>
+              <span class="crop-fold-title">📜 任务</span>
+              <span class="crop-fold-badge">${detail.quests.length} 条</span>
+            </div>
+            <div class="crop-fold-body">
+              <div class="crop-wiki-mini-list">
+                ${detail.quests.map((q) => `
+                  <div class="crop-wiki-mini-row">
+                    <span class="crop-wiki-mini-tag">${escapeHtml(q.title || "任务")}</span>
+                    <span>${escapeHtml(q.text || "")}</span>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          </div>
+        `);
+      }
+
       /* 送礼 */
       if (detail.gifting) {
         const love = detail.gifting.love;
+        const like = detail.gifting.like;
         const dislike = detail.gifting.dislike;
-        const giftCount = (love ? love.villagers.length : 0) + (dislike ? dislike.villagers.length : 0);
+        const giftCount = (love ? love.villagers.length : 0) + (like ? like.villagers.length : 0) + (dislike ? dislike.villagers.length : 0);
         folds.push(`
           <div class="crop-fold-section">
             <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
@@ -21699,6 +21994,15 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
                       <small>${love.villagers.length} 人</small>
                     </div>
                     <div class="crop-wiki-villager-grid">${love.villagers.map(renderCropWikiVillagerChip).join("")}</div>
+                  </div>
+                ` : ""}
+                ${like ? `
+                  <div class="crop-wiki-gift love">
+                    <div class="crop-wiki-gift-head">
+                      <span class="crop-wiki-gift-label love">${escapeHtml(like.label || "喜欢")} <b>+${like.value}</b></span>
+                      <small>${like.villagers.length} 人</small>
+                    </div>
+                    <div class="crop-wiki-villager-grid">${like.villagers.map(renderCropWikiVillagerChip).join("")}</div>
                   </div>
                 ` : ""}
                 ${dislike ? `
