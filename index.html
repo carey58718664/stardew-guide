@@ -12022,10 +12022,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   padding: 7px;
   box-shadow: inset 4px 0 0 var(--mini-accent, #d8b96a);
 }
-#app-shell .season-main-card.planting .season-mini-item { --mini-accent: #389d62; }
-#app-shell .season-main-card.fishing .fish-row { --mini-accent: #308bd9; }
-#app-shell .season-main-card.festival .festival-row { --mini-accent: #d28a28; }
-#app-shell .season-main-card.birthday .birthday-row { --mini-accent: #cf6aa6; }
+/* 当季事小卡片色条现在由 JS 按图标/条目单独写入 --mini-accent；这里不再按大卡片统一上色。 */
 
 #app-shell .season-mini-item {
   display: grid;
@@ -17542,7 +17539,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
               const deadline = status.missed ? "已过最晚" : `最晚${SEASON_CN[season]}${status.latest}日`;
               const reasons = getSeasonCropReasonTags(entry);
               return `
-                <div class="season-mini-item">
+                <div class="season-mini-item"${seasonMiniAccentStyle(entry.name, "crop")}>
                   <span class="season-mini-icon">${renderPlantingIcon(entry.name)}</span>
                   <div class="season-mini-body">
                     <div class="season-mini-name">${escapeHtml(entry.name)}</div>
@@ -17595,6 +17592,54 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       return reasons.slice(0, 3);
     }
 
+    function seasonMiniAccentStyle(name, type = "item") {
+      const accent = getSeasonMiniAccent(name, type);
+      return ` style="--mini-accent: ${escapeAttribute(accent)};"`;
+    }
+
+    function getSeasonMiniAccent(name, type = "item") {
+      const key = String(name || "").trim();
+      const direct = {
+        // 作物：按图标主色取色，尽量压低饱和度，避免小卡片太花。
+        "防风草": "#d7bd68", "青豆": "#5a9d57", "花椰菜": "#efe0bc", "土豆": "#b8844d", "郁金香": "#d86d5f", "甘蓝菜": "#638d55",
+        "蓝爵士": "#5b8fcf", "大蒜": "#d8d0b2", "绿豆": "#5a9d57", "草莓": "#d84f61", "大黄": "#c85b68", "咖啡豆": "#8b5a36",
+        "甜瓜": "#d99b5a", "番茄": "#c74f3d", "蓝莓": "#4b72ba", "辣椒": "#d44735", "小麦": "#d8ad43", "萝卜": "#d4e3ef",
+        "虞美人": "#d45b4b", "夏季亮片": "#f0b95a", "啤酒花": "#78a553", "玉米": "#d6ad3d", "向日葵": "#d8a42f", "红叶卷心菜": "#8051a8", "杨桃": "#d7a137",
+        "南瓜": "#d27a28", "山药": "#b46c33", "蔓越莓": "#b94758", "茄子": "#694990", "苋菜": "#b14b52", "葡萄": "#724ea2",
+        "甜菜": "#8f3f45", "洋蓟": "#6d8c59", "小白菜": "#75a859", "玫瑰仙子": "#d87aa2", "宝石甜莓": "#c74554", "稀有种子": "#8f4d6d",
+        "仙人掌果子": "#c85f8e", "茶叶": "#578b4c", "菠萝": "#d19a35", "芋头": "#9a6a43", "水稻": "#bfd575", "未碾米": "#bfd575",
+        // 鱼类：取鱼身或图标最显眼的颜色。
+        "鲶鱼": "#596d7d", "西鲱": "#6c8a95", "鳗鱼": "#4f6d72", "沙丁鱼": "#6e8fb3", "太阳鱼": "#e08b38", "鲤鱼": "#bd9a4a",
+        "大嘴鲈鱼": "#5f8d61", "鲷鱼": "#c75a4f", "大比目鱼": "#5e7f9c", "鲟鱼": "#677889", "金枪鱼": "#4f78aa", "红鲻鱼": "#c75f4a",
+        "鱿鱼": "#8f6da8", "狗鱼": "#63875d", "河鲈": "#c8a44d", "蛇齿单线鱼": "#777c57", "鲱鱼": "#6d8faf", "虎纹鳟鱼": "#c07338",
+        "午夜鲤鱼": "#5b5a8d", "冰川鱼": "#6faed1", "幽灵鱼": "#9ab0c4", "水滴鱼": "#c98fa0", "午夜鱿鱼": "#7c6fa8", "章鱼": "#c16c62",
+        "河豚": "#d6a447", "红鲷鱼": "#c5544a", "虹鳟鱼": "#d18b5c", "木跃鱼": "#6f8b57", "沙鱼": "#c1a067", "绯红鱼": "#ce3f3f",
+        // 节日与事件：跟图标或活动氛围走。
+        "复活节": "#d895b6", "花舞节": "#d87aa2", "夏威夷宴会": "#d59632", "月光水母起舞": "#4b9ab2", "星露谷展览会": "#c08133",
+        "万灵节": "#8f67cf", "冰雪节": "#6faed1", "夜市": "#3a6f9a", "冬日星盛宴": "#b84532", "沙漠节": "#d49b41",
+        "鱿鱼节": "#7c6fa8", "鳟鱼大赛": "#c07338", "绿色的雨": "#5d9b5a",
+        // 生日头像：按人物头像发色或衣服主色给色。
+        "刘易斯": "#8b5a36", "文森特": "#d69a36", "肯特": "#4d7a55", "乔迪": "#d6a137", "阿比盖尔": "#8f67cf",
+        "海莉": "#d6a137", "潘妮": "#c55a4e", "谢恩": "#375d8a", "皮埃尔": "#8a5a35", "艾米丽": "#2f8fb0",
+        "桑迪": "#d59632", "山姆": "#d6b045", "德米特里厄斯": "#5b6f8d", "玛鲁": "#8f67cf", "矮人": "#b84532",
+        "亚历克斯": "#5b8c5a", "威利": "#3a6f9a", "莱纳斯": "#8a6b43", "格斯": "#d28a28", "莉亚": "#b7673f",
+        "贾斯": "#b56b8f", "罗宾": "#b84532", "乔治": "#6f6254", "克林特": "#6b7a86", "卡洛琳": "#5b8c5a",
+        "塞巴斯蒂安": "#4d506d", "哈维": "#5c7f73", "法师": "#8f67cf", "艾芙琳": "#b77e55", "艾利欧特": "#b8573f",
+        "科罗布斯": "#5b4d7a", "潘姆": "#c17a38", "克罗布斯": "#5b4d7a", "雷欧": "#d59632", "玛妮": "#b45c55"
+      };
+      if (direct[key]) return direct[key];
+
+      if (/鱼|鲶|鲱|鲤|鲈|鲷|鳗|鳟|鲟|鲻|鲑|鲭|鱿|章|海参|水滴|河豚|比目|蛇齿|木跃|冰川|绯红|午夜/.test(key)) return "#5f8fb8";
+      if (/莓|番茄|辣椒|蔓越莓|玫瑰|花|虞美人|郁金香|甜瓜/.test(key)) return "#c95f72";
+      if (/南瓜|玉米|小麦|向日葵|星|啤酒|山药|土豆|甜菜/.test(key)) return "#c98535";
+      if (/豆|甘蓝|茶|芋|防风草|菜|洋蓟|白菜|水稻/.test(key)) return "#5f9256";
+      if (/节|宴|舞|夜市|雨|展览|盛宴|大赛/.test(key) || type === "festival") return "#c98638";
+      if (type === "fish") return "#5f8fb8";
+      if (type === "crop") return "#6f9b58";
+      if (type === "birthday") return "#b46d62";
+      return "#d8b96a";
+    }
+
     function renderSeasonFishingSummary(season, meta) {
       const data = SEASON_FISHING_DATA[season] || SEASON_FISHING_DATA.spring;
       const weatherList = appState.weather === "rainy" ? data.rainy : data.sunny;
@@ -17623,7 +17668,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         ...(entry.note ? [{ label: entry.note, kind: "good" }] : [])
       ];
       return `
-        <div class="fish-row ${entry.note ? "need" : ""}">
+        <div class="fish-row ${entry.note ? "need" : ""}"${seasonMiniAccentStyle(entry.name, "fish")}>
           <span class="fish-icon">${renderSeasonIcon(entry.name)}</span>
           <div class="season-mini-body">
             <div class="fish-name">${escapeHtml(entry.name)}</div>
@@ -17654,7 +17699,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
               const timing = getFestivalTiming(entry);
               const reasons = getSeasonFestivalReasonTags(entry, timing);
               return `
-                <div class="festival-row">
+                <div class="festival-row"${seasonMiniAccentStyle(entry.iconName || entry.name, "festival")}>
                   <span class="fish-icon">${renderOfficialIconContent(entry.iconName || entry.name || "节日", entry.name)}</span>
                   <div class="season-mini-body">
                     <div class="festival-name">${escapeHtml(entry.name)}</div>
@@ -17703,7 +17748,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
               const label = getSeasonDayLabel(villager.birthday.day);
               const reasons = getSeasonBirthdayReasonTags(label);
               return `
-                <div class="birthday-row">
+                <div class="birthday-row"${seasonMiniAccentStyle(villager.name, "birthday")}>
                   <span class="birthday-avatar">${renderSocialAvatar(villager)}</span>
                   <div class="season-mini-body">
                     <div class="birthday-name">${escapeHtml(villager.name)}</div>
