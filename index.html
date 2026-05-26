@@ -6056,28 +6056,13 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 
 
-/* v33：购物车店铺分区框 —— 店铺介绍 + 商品目录 + 购物车 作为一个完整分区 */
+/* v34：购物车分区框
+   每个店铺介绍 + 商品目录 + 购物车 = 一个完整分区。
+   用外描边画深色框，不增加 padding，不压缩内部卡片尺寸。 */
 #shoppingCartContent .shop-section {
-  position: relative;
   border-bottom: none;
   border-radius: 14px;
-  padding-bottom: 12px;
-  overflow: visible;
-}
-
-#shoppingCartContent .shop-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 3px solid #6b4a37;
-  border-radius: 14px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-#shoppingCartContent .shop-section > * {
-  position: relative;
-  z-index: 1;
+  box-shadow: 0 0 0 3px #6b4a37;
 }
 
 #shoppingCartContent .shop-section:last-child {
