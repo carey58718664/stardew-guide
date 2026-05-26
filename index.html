@@ -7424,6 +7424,129 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-weight: 800;
 }
 
+
+.planting-stock-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+.planting-stock-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  border-radius: 999px;
+  background: #fff4d8;
+  color: #8b5d11;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.planting-stock-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.planting-stock-controls button {
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
+  background: #fffdf8;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 950;
+  padding: 0;
+  line-height: 1;
+}
+.planting-stock-controls input {
+  width: 38px;
+  min-height: 24px;
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
+  background: #fffdf8;
+  color: var(--ink);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 0 2px;
+}
+.planting-extra-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.planting-extra-section {
+  border: 1px solid #eadcc0;
+  border-radius: 8px;
+  background: #fffaf0;
+  padding: 8px 9px;
+}
+.planting-extra-section.full {
+  grid-column: 1 / -1;
+}
+.planting-extra-title {
+  margin: 0 0 5px;
+  color: #9c620e;
+  font-size: 10.5px;
+  font-weight: 950;
+  line-height: 1.2;
+}
+.planting-extra-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.35;
+  padding: 2px 0;
+}
+.planting-extra-row + .planting-extra-row {
+  border-top: 1px dashed #f1e3c7;
+  margin-top: 2px;
+  padding-top: 4px;
+}
+.planting-extra-row .price-tag {
+  margin-left: auto;
+  color: #9c620e;
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.planting-extra-row .best-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 18px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green);
+  padding: 0 6px;
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1;
+}
+.planting-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 12px 12px;
+}
+.planting-card-remove {
+  min-height: 28px;
+  border: 1px solid #e8c4be;
+  border-radius: 6px;
+  background: #fff7f5;
+  color: var(--red);
+  padding: 0 12px;
+  font-size: 11px;
+  font-weight: 800;
+}
+@media (max-width: 720px) {
+  .planting-extra-grid {
+    grid-template-columns: 1fr;
+  }
+}
 @media (max-width: 720px) {
   .planting-grid {
     grid-template-columns: 1fr;
@@ -19611,6 +19734,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     }
 
     function renderPlantingCard(entry, season) {
+      if (entry?.name === "防风草") {
+        return renderUnifiedCropCard(entry, season, { editableQty: false, showRemove: false, showInventoryBadge: true });
+      }
       const status = getPlantingStatus(entry, season);
       const classes = [
         status.missed ? "missed" : "",
@@ -19656,6 +19782,137 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           </div>
         </article>
       `;
+    }
+
+    function findPlantingEntryByName(name, preferredCategory = "crop") {
+      return PLANTING_ALL_ITEMS.find((entry) => entry.name === name && entry.category === preferredCategory)
+        || PLANTING_ALL_ITEMS.find((entry) => entry.name === name)
+        || null;
+    }
+
+    function renderUnifiedCropCard(entry, season, options = {}) {
+      const editableQty = Boolean(options.editableQty);
+      const showRemove = Boolean(options.showRemove);
+      const showInventoryBadge = options.showInventoryBadge !== false;
+      const status = getPlantingStatus(entry, season);
+      const classes = [
+        status.missed ? "missed" : "",
+        entry.bundle ? "bundle" : "",
+        entry.tags.includes("avoid") ? "avoid" : ""
+      ].filter(Boolean).join(" ");
+      const seasonText = entry.seasons.map((s) => SEASON_CN[s]).join("/");
+      const statusTag = getPlantingStatusTag(entry, status);
+      const extra = buildUnifiedCropExtras(entry.name);
+      return `
+        <article class="planting-card ${classes}">
+          <header class="planting-card-head">
+            <div class="planting-crop-icon">${renderPlantingIcon(entry.name)}</div>
+            <div>
+              <div class="planting-crop-title">
+                <b title="${escapeAttribute(entry.name)}">${escapeHtml(entry.name)}</b>
+                <span class="planting-season-mark">${escapeHtml(seasonText)}季 · ${escapeHtml(entry.typeLabel || "作物")}</span>
+              </div>
+              <div class="planting-crop-subtitle">${escapeHtml(entry.seed)} · ${escapeHtml(entry.source)}</div>
+              <div class="planting-stock-row">
+                ${showInventoryBadge ? `<span class="planting-stock-badge">库存 ×${extra.qty}</span>` : ""}
+                ${editableQty ? `
+                  <div class="planting-stock-controls">
+                    <button type="button" data-detail-minus="${escapeAttribute(entry.name)}">−</button>
+                    <input type="number" min="0" value="${extra.qty}" data-detail-qty="${escapeAttribute(entry.name)}" />
+                    <button type="button" data-detail-plus="${escapeAttribute(entry.name)}">+</button>
+                  </div>
+                ` : ""}
+              </div>
+            </div>
+          </header>
+          <div class="planting-card-body">
+            <div class="planting-metric-grid">
+              ${renderPlantingMetrics(entry)}
+            </div>
+            <div class="planting-quality-row">
+              ${renderPlantingQuality("银", entry.silver)}
+              ${renderPlantingQuality("金", entry.gold)}
+              ${renderPlantingQuality("铱", entry.iridium)}
+            </div>
+            <div class="planting-tag-row">
+              ${statusTag}
+              ${renderPlantingTimingTag(entry, season, status)}
+              ${entry.bundle ? `<span class="planting-tag good">献祭：${escapeHtml(entry.bundle)}</span>` : ""}
+              ${entry.regrow ? `<span class="planting-tag good">持续收获</span>` : ""}
+              ${entry.tags.includes("artisan") || extra.procRows.length ? `<span class="planting-tag warn">适合加工</span>` : ""}
+              ${extra.giftRows.length ? `<span class="planting-tag good">送礼有用</span>` : ""}
+              ${extra.foodRows.length ? `<span class="planting-tag">可做料理</span>` : ""}
+            </div>
+            <div class="planting-note-list">
+              ${(entry.notes || []).map((note) => `<div class="planting-note">${escapeHtml(note)}</div>`).join("")}
+            </div>
+            <div class="planting-extra-grid">
+              ${extra.source ? `
+                <section class="planting-extra-section">
+                  <div class="planting-extra-title">物品库补充</div>
+                  <div class="planting-extra-row">📍 ${escapeHtml(extra.source)}</div>
+                </section>
+              ` : ""}
+              ${extra.bundleRows.length || extra.reserve ? `
+                <section class="planting-extra-section ${extra.bundleRows.length > 2 || extra.reserve ? 'full' : ''}">
+                  <div class="planting-extra-title">献祭 / 保留</div>
+                  ${extra.bundleRows.join("")}
+                  ${extra.reserve ? `<div class="planting-extra-row">⚠️ ${escapeHtml(extra.reserve.text)}</div>` : ""}
+                </section>
+              ` : ""}
+              ${extra.procRows.length ? `
+                <section class="planting-extra-section ${extra.procRows.length > 1 ? 'full' : ''}">
+                  <div class="planting-extra-title">加工</div>
+                  ${extra.procRows.join("")}
+                </section>
+              ` : ""}
+              ${extra.giftRows.length ? `
+                <section class="planting-extra-section">
+                  <div class="planting-extra-title">送礼</div>
+                  ${extra.giftRows.join("")}
+                </section>
+              ` : ""}
+              ${extra.foodRows.length ? `
+                <section class="planting-extra-section ${extra.foodRows.length > 1 ? 'full' : ''}">
+                  <div class="planting-extra-title">烹饪</div>
+                  ${extra.foodRows.join("")}
+                </section>
+              ` : ""}
+              ${extra.specialRows.length ? `
+                <section class="planting-extra-section full">
+                  <div class="planting-extra-title">特殊用途</div>
+                  ${extra.specialRows.join("")}
+                </section>
+              ` : ""}
+              ${extra.sell != null ? `
+                <section class="planting-extra-section">
+                  <div class="planting-extra-title">直接出售</div>
+                  <div class="planting-extra-row">💰 基础售价 <span class="price-tag">${extra.sell}g</span></div>
+                </section>
+              ` : ""}
+            </div>
+          </div>
+          ${showRemove ? `<div class="planting-card-footer"><button type="button" class="planting-card-remove" data-detail-remove="${escapeAttribute(entry.name)}">🗑️ 移除</button></div>` : ""}
+        </article>
+      `;
+    }
+
+    function buildUnifiedCropExtras(name) {
+      const qty = appState.inventory[name] || 0;
+      const sell = SELL_PRICES[name];
+      const source = ITEM_SOURCE_HINTS[name] || "";
+      const bundleEntries = getBundleEntriesForName(name);
+      const bundleRows = bundleEntries.map((entry) => {
+        const checked = isChecked(entry.uid);
+        const status = getBundleEntryStatus(entry);
+        return `<div class="planting-extra-row">${checked ? "✅" : "📦"} ${escapeHtml(describeItem(entry))}<span class="price-tag">${escapeHtml(entry.roomName)} · ${escapeHtml(entry.bundleName)} · ${escapeHtml(status)}</span></div>`;
+      });
+      const reserve = getReserveAdvice(name, true);
+      const procRows = (PROCESS_MAP[name] || []).map((p, i) => `<div class="planting-extra-row">${i === 0 ? '<span class="best-tag">最优</span>' : ''} ${escapeHtml(p.method)} → ${escapeHtml(p.out)} <span class="price-tag">${escapeHtml(p.gain)} · ${p.price}g</span></div>`);
+      const specialRows = (typeof getSpecialUses === 'function' ? getSpecialUses(name) : []).map((u) => `<div class="planting-extra-row">✨ ${escapeHtml(typeof formatSpecialUse === 'function' ? formatSpecialUse(u) : u.use)}</div>`);
+      const giftRows = (typeof getGiftUses === 'function' ? getGiftUses(name) : []).map((u) => `<div class="planting-extra-row">💝 ${escapeHtml(typeof formatGiftUse === 'function' ? formatGiftUse(u) : u.who)}</div>`);
+      const foodRows = (typeof getFoodUses === 'function' ? getFoodUses(name) : []).map((u) => `<div class="planting-extra-row">🥘 ${escapeHtml(typeof formatFoodUse === 'function' ? formatFoodUse(u) : u.dish)}</div>`);
+      return { qty, sell, source, bundleRows, reserve, procRows, specialRows, giftRows, foodRows };
     }
 
     function getPlantingStatusTag(entry, status) {
@@ -22843,6 +23100,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     }
     
     function renderItemDetailHtml(name) {
+      if (name === "防风草") {
+        const entry = findPlantingEntryByName(name, "crop");
+        if (entry) return renderUnifiedCropCard(entry, appState.season, { editableQty: true, showRemove: true, showInventoryBadge: false });
+      }
       const inv = appState.inventory;
       const qty = inv[name] || 0;
       const sell = SELL_PRICES[name];
