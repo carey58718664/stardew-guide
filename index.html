@@ -7189,6 +7189,17 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border-radius: 14px;
   box-shadow: inset 5px 0 0 var(--plant-accent), 0 8px 22px rgba(76, 49, 29, 0.10);
 }
+.planting-detail-wrap.planting-detail-inline {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+.planting-detail-wrap.planting-detail-inline .planting-card {
+  width: 100%;
+  border-width: 2px;
+  border-color: var(--gold);
+  border-radius: 14px;
+  box-shadow: inset 5px 0 0 var(--plant-accent), 0 8px 22px rgba(76, 49, 29, 0.10);
+}
 /* ── 速览条 ── */
 .crop-glance-strip {
   display: grid;
@@ -7276,7 +7287,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
 /* ── 品质总表 ── */
 .crop-quality-table {
   width: 100%;
-  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   border: 1.5px solid #e5d5b6;
@@ -7285,55 +7295,44 @@ body.modal-open { overflow: hidden; touch-action: none; }
   background: #fffaf0;
   font-size: 12.5px;
 }
-.crop-quality-table col.crop-quality-col { width: 24%; }
-.crop-quality-table col.crop-energy-col { width: 30%; }
-.crop-quality-table col.crop-price-col { width: 46%; }
 .crop-quality-table th {
-  height: 48px;
   background: linear-gradient(180deg, #fff8ee, #f8ecd4);
   color: #9c620e;
   font-size: 11px;
   font-weight: 950;
-  padding: 7px 10px;
+  padding: 6px 8px;
   text-align: center;
   border-bottom: 1.5px solid #e5d5b6;
-  vertical-align: middle;
 }
 .crop-quality-table th:first-child {
   text-align: center;
-  padding-left: 10px;
+  width: 56px;
+  padding-left: 8px;
 }
 .crop-quality-table th:last-child {
   text-align: right;
   padding-right: 14px;
 }
-.crop-quality-table th .crop-table-headline {
-  display: inline-flex;
-  align-items: center;
-  vertical-align: middle;
-}
 .crop-quality-table th .crop-info-note {
+  display: inline-flex;
   vertical-align: middle;
-  margin-left: 5px;
+  margin-left: 6px;
+  font-size: 9px;
 }
 .crop-quality-table td {
-  height: 64px;
-  padding: 6px 10px;
+  padding: 6px 8px;
   text-align: center;
   color: var(--ink);
   font-weight: 800;
   border-bottom: 1px solid #f0e8d5;
   font-size: 12.5px;
-  line-height: 1.35;
-  vertical-align: middle;
+  line-height: 1.28;
 }
 .crop-quality-table td:first-child {
   text-align: center;
+  width: 56px;
 }
-.crop-quality-table td:nth-child(2) {
-  text-align: center;
-}
-.crop-quality-table td:nth-child(3) {
+.crop-quality-table td:last-child {
   text-align: right;
   padding-right: 14px;
 }
@@ -7344,216 +7343,137 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .crop-quality-table tr:last-child td {
   border-bottom: none;
 }
-.crop-quality-price {
+.crop-quality-price-flow {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 5px;
-  white-space: nowrap;
-}
-.crop-quality-price .crop-price-tight {
-  min-width: 34px;
-  justify-content: flex-start;
+  gap: 6px;
+  width: 100%;
 }
 .crop-price-arrow {
-  color: #7d6442;
-  font-size: 14px;
+  color: #9d8968;
+  font-size: 16px;
   font-weight: 950;
-  opacity: .88;
+  line-height: 1;
 }
-.crop-tiller-price,
-.crop-artisan-price {
+.crop-price-output-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 32px;
-  min-height: 22px;
-  border: 1px solid #ead8b1;
+  min-width: 46px;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1.5px solid #ddcfab;
   border-radius: 999px;
-  background: #fff6df;
-  color: #6f4b22;
-  padding: 1px 8px;
+  background: linear-gradient(180deg, #fff8ee, #f6eedc);
+  color: #8b6516;
   font-size: 12px;
   font-weight: 950;
   line-height: 1;
 }
-.crop-info-note.compact-profession {
-  gap: 3px;
-  padding: 2px 7px 2px 5px;
-  font-size: 10.5px;
-  line-height: 1.15;
-  background: rgba(246, 230, 213, 0.72);
-  color: #7f6844;
-  border: 1px solid rgba(234, 216, 177, 0.7);
-}
-.crop-info-note.compact-profession .crop-profession-icon {
-  width: 18px;
-  height: 18px;
-  image-rendering: pixelated;
-  margin: 0;
-}
 /* ── 加工推荐卡 ── */
+.crop-process-list {
+  display: grid;
+  gap: 10px;
+}
 .crop-process-card {
   border: 1.5px solid #e5d5b6;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #fffaf0;
-  padding: 10px;
+  padding: 10px 12px;
   position: relative;
 }
-.crop-process-item {
-  display: grid;
-  gap: 8px;
-  border: 1.5px solid #e5d5b6;
-  border-radius: 10px;
-  background: linear-gradient(180deg, #fffdf8, #fffaf0);
-  padding: 10px;
-}
-.crop-process-item + .crop-process-item {
-  margin-top: 8px;
-}
-.crop-process-head {
+.crop-process-card-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  margin-bottom: 8px;
 }
 .crop-process-title-group {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   min-width: 0;
+  flex-wrap: wrap;
 }
 .crop-process-product-icon {
-  width: 28px;
-  height: 28px;
-  flex: 0 0 28px;
+  width: 24px;
+  height: 24px;
   image-rendering: pixelated;
-  object-fit: contain;
+  flex: 0 0 24px;
 }
 .crop-process-name {
-  min-width: 0;
   color: var(--ink);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 950;
-  line-height: 1.18;
-  overflow-wrap: anywhere;
+  line-height: 1.2;
 }
-.crop-process-priority,
-.crop-fold-priority {
+.crop-process-priority {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 22px;
+  padding: 0 10px;
   border-radius: 999px;
   background: var(--green-soft);
   color: #27835f;
-  padding: 1px 7px;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 950;
-  line-height: 1.35;
-  white-space: nowrap;
-}
-.crop-fold-priority {
-  margin-left: 4px;
-  transform: translateY(-1px);
 }
 .crop-process-profession {
-  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #f9f1e4;
+  color: #8a7048;
+  font-size: 11px;
+  font-weight: 900;
+  box-shadow: inset 0 0 0 1px rgba(213, 190, 150, 0.55);
+  white-space: nowrap;
 }
-.crop-process-info-grid {
+.crop-process-profession img {
+  width: 18px;
+  height: 18px;
+  image-rendering: pixelated;
+}
+.crop-process-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px;
+  gap: 8px;
 }
-.crop-process-info {
-  display: grid;
-  gap: 3px;
-  min-height: 50px;
-  border: 1px solid #eee0c6;
-  border-radius: 9px;
-  background: rgba(255, 252, 244, 0.82);
-  padding: 7px 8px;
+.crop-process-metric {
+  border: 1.5px solid #e5d5b6;
+  border-radius: 10px;
+  background: #fffdf8;
+  padding: 8px 10px;
 }
-.crop-process-info span {
+.crop-process-metric.price-merge {
+  grid-column: 1 / -1;
+}
+.crop-process-label {
+  display: block;
   color: #9c620e;
   font-size: 10.5px;
   font-weight: 950;
-  line-height: 1.1;
+  margin-bottom: 4px;
 }
-.crop-process-info b,
 .crop-process-value {
+  display: block;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+.crop-process-price-line {
   display: inline-flex;
   align-items: center;
-  min-width: 0;
-  color: #3b2b1f;
-  font-size: 12.5px;
-  font-weight: 950;
-  line-height: 1.2;
-  overflow-wrap: anywhere;
-}
-.crop-process-info .crop-price-tight {
-  justify-content: flex-start;
-}
-.crop-process-info .crop-artisan-price {
-  justify-self: start;
-  min-width: 40px;
-}
-.crop-process-card-title {
-  display: flex;
-  align-items: center;
   gap: 6px;
-  color: #3a7a1a;
-  font-size: 13px;
-  font-weight: 950;
-  margin-bottom: 6px;
+  flex-wrap: wrap;
 }
-.crop-process-card-body {
-  color: #4a3a2a;
-  font-size: 12.5px;
-  line-height: 1.55;
-  font-weight: 700;
-}
-.crop-process-card-body img {
-  width: 16px;
-  height: 16px;
-  image-rendering: pixelated;
-  vertical-align: -3px;
-  margin: 0 1px;
-}
-
-@media (max-width: 520px) {
-  .crop-quality-table th {
-    height: 46px;
-    padding: 6px 8px;
-  }
-  .crop-quality-table td {
-    height: 62px;
-    padding: 6px 8px;
-  }
-  .crop-quality-table td:nth-child(3),
-  .crop-quality-table th:last-child {
-    padding-right: 10px;
-  }
-  .crop-info-note.compact-profession {
-    padding: 1px 6px 1px 4px;
-    font-size: 10px;
-  }
-  .crop-info-note.compact-profession .crop-profession-icon {
-    width: 16px;
-    height: 16px;
-  }
-  .crop-process-head {
-    align-items: flex-start;
-  }
-  .crop-process-product-icon {
-    width: 26px;
-    height: 26px;
-    flex-basis: 26px;
-  }
-  .crop-process-info-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 /* ── 折叠区 ── */
 .crop-fold-section {
   border: 1.5px solid #e5d5b6;
@@ -7942,12 +7862,13 @@ body.modal-open { overflow: hidden; touch-action: none; }
   align-items: center;
   gap: 3px;
   color: #8a7048;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 850;
   margin-left: 6px;
-  padding: 1px 7px;
-  background: #f6e6d5;
+  padding: 1px 6px;
+  background: #f9f1e4;
   border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(213, 190, 150, 0.55);
 }
 .crop-info-note.tiller-note {
   margin-left: 0;
@@ -8106,31 +8027,32 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-quality-chip.has-official-icon {
   position: relative;
-  min-width: 24px;
-  min-height: 24px;
-  border-radius: 4px;
-  background: transparent;
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: 999px;
+  background: #f7f0e1;
+  box-shadow: inset 0 0 0 1px rgba(213, 190, 150, 0.62);
   padding: 0;
 }
 .crop-quality-icon-wrap {
   position: relative;
   display: inline-flex;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   align-items: center;
   justify-content: center;
 }
 .crop-quality-item-icon {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   image-rendering: pixelated;
 }
 .crop-quality-star-icon {
   position: absolute;
   left: 3px;
-  bottom: 2px;
-  width: 13px;
-  height: 13px;
+  bottom: 1px;
+  width: 12px;
+  height: 12px;
   image-rendering: pixelated;
 }
 .crop-quality-chip.q-normal { background: #ece2cc; color: #5b4a37; }
@@ -8468,6 +8390,17 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-weight: 800;
 }
 
+
+
+@media (max-width: 520px) {
+  .crop-process-card-head {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .crop-process-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 
 .planting-stock-row {
   display: flex;
@@ -20648,17 +20581,17 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       `;
 
       const allSeasons = ["spring", "summer", "fall", "winter"];
-      let globalActiveEntry = null;
-      let globalActiveSeason = null;
       grid.innerHTML = allSeasons.map(s => {
         const isCurrentSeason = s === appState.season;
-        const catBlocks = PLANTING_CATEGORY_GROUPS.map((group) => {
+        const seasonActiveEntry = getPlantingItemsForSeason(s)
+          .filter((entry) => plantingMatchesQuery(entry))
+          .filter((entry) => matchesPlantingFilter(entry, s))
+          .find((entry) => entry.id === appState._activePlantingCrop) || null;
+        const catBlocks = PLANTING_CATEGORY_GROUPS.map((group, index) => {
           const entries = getPlantingItemsForSeasonAndCategory(s, group.id)
             .filter((entry) => plantingMatchesQuery(entry))
             .filter((entry) => matchesPlantingFilter(entry, s))
             .sort(sortPlantingCrops);
-          const activeEntry = entries.find(c => c.id === appState._activePlantingCrop);
-          if (activeEntry) { globalActiveEntry = activeEntry; globalActiveSeason = s; }
           const chips = entries.map(entry => {
             const active = appState._activePlantingCrop === entry.id;
             const status = getPlantingStatus(entry, s);
@@ -20666,10 +20599,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             return `<button class="item-chip ${active ? 'active' : ''} ${missClass}" data-planting-chip="${entry.id}" type="button">${renderPlantingIcon(entry.name)}<span>${escapeHtml(entry.name)}</span></button>`;
           }).join("");
           const empty = !entries.length ? `<div class="planting-empty">${escapeHtml(group.empty)}</div>` : "";
-          return `<div class="item-lib-cat-group planting-subgroup">
+          const subgroupHtml = `<div class="item-lib-cat-group planting-subgroup">
             <div class="item-lib-cat-label">${renderOfficialIcon(group.icon, group.label)}${escapeHtml(group.label)}</div>
             ${chips ? `<div class="item-lib-chips">${chips}</div>` : empty}
           </div>`;
+          const inlineDetail = seasonActiveEntry && index === 0
+            ? `<div class="planting-detail-wrap planting-detail-inline">${renderPlantingCard(seasonActiveEntry, s)}</div>`
+            : "";
+          return subgroupHtml + inlineDetail;
         }).join("");
         return `<div class="item-lib-cat-group planting-season-group">
           <div class="planting-season-head">
@@ -20681,9 +20618,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
       const detailContainer = document.getElementById("plantingDetailContainer");
       if (detailContainer) {
-        detailContainer.innerHTML = globalActiveEntry
-          ? `<div class="planting-detail-wrap planting-detail-fullwidth">${renderPlantingCard(globalActiveEntry, globalActiveSeason)}</div>`
-          : "";
+        detailContainer.innerHTML = "";
       }
 
       greenhouse.innerHTML = renderPlantingGreenhouse();
@@ -20901,9 +20836,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       return `<span class="crop-quality-chip has-official-icon quality-${map[q] || "normal"}"><span class="crop-quality-icon-wrap">${itemIcon}${qualityIcon}</span></span>`;
     }
 
-    function renderCropWikiProfessionNote(fileName, text, extraClass = "") {
-      const className = ["crop-info-note", extraClass].filter(Boolean).join(" ");
-      return `<small class="${className}"><img class="crop-profession-icon" src="${iconUrl(fileName)}" alt="" loading="lazy" />${escapeHtml(text)}</small>`;
+    function renderCropWikiProfessionNote(fileName, text) {
+      return `<small class="crop-info-note"><img class="crop-profession-icon" src="${iconUrl(fileName)}" alt="" loading="lazy" />${escapeHtml(text)}</small>`;
     }
 
     function renderCropWikiBundleText(text) {
@@ -20926,6 +20860,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const goldIcon = renderPlantingIcon("金币");
       const priceHtml = (value) =>
         `<span class="crop-price-tight">${goldIcon}<b>${escapeHtml(String(value))}</b></span>`;
+      const priceFlowHtml = (base, output) =>
+        `<span class="crop-quality-price-flow">${priceHtml(base)}<span class="crop-price-arrow">→</span><span class="crop-price-output-pill">${escapeHtml(String(output))}</span></span>`;
+      const professionPillHtml = (fileName, text) =>
+        `<span class="crop-process-profession"><img src="${iconUrl(fileName)}" alt="" loading="lazy" />${escapeHtml(text)}</span>`;
 
       /* ── 种植建议 ── */
       if (entry.notes && entry.notes.length) {
@@ -20995,32 +20933,27 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const priceMap = {};
         if (detail.pricing) detail.pricing.forEach(p => { priceMap[p.q] = p; });
 
-        const tillerNote = renderCropWikiProfessionNote("Tiller.png", "农耕人 +10%", "compact-profession");
+        const tillerNote = renderCropWikiProfessionNote("Tiller.png", "农耕人（+10%）");
         const energyIcon = `<img src="${iconUrl("Energy.png")}" alt="能量" loading="lazy" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:-3px;" />`;
         const healthIcon = `<img src="${iconUrl("Health.png")}" alt="生命" loading="lazy" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:-3px;" />`;
 
         const rows = qLabels.map((q) => {
           const e = energyMap[q];
           const p = priceMap[q];
-          const tillerPrice = p ? (typeof p.farmer === "number" ? p.farmer : Math.floor(p.base * 1.1)) : "—";
+          const tillerPrice = p ? Math.floor(p.base * 1.1) : "—";
           return `<tr>
             <td>${renderCropWikiQualityChip(q, entry.name)}</td>
             <td>${e ? `${energyIcon} <b>${e.energy}</b>&ensp;${healthIcon} <b>${e.health}</b>` : "—"}</td>
-            <td>${p ? `<span class="crop-quality-price">${priceHtml(p.base)}<span class="crop-price-arrow">→</span><span class="crop-tiller-price">${escapeHtml(String(tillerPrice))}</span></span>` : "—"}</td>
+            <td>${p ? priceFlowHtml(p.base, tillerPrice) : "—"}</td>
           </tr>`;
         }).join("");
 
         html.push(`
           <table class="crop-quality-table">
-            <colgroup>
-              <col class="crop-quality-col" />
-              <col class="crop-energy-col" />
-              <col class="crop-price-col" />
-            </colgroup>
             <thead><tr>
               <th>品质</th>
               <th>增益</th>
-              <th><span class="crop-table-headline">售价</span>${tillerNote}</th>
+              <th>售价 ${tillerNote}</th>
             </tr></thead>
             <tbody>${rows}</tbody>
           </table>
@@ -21032,25 +20965,32 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
       /* 加工 */
       if (detail.products && detail.products.length) {
-        const artisanNote = renderCropWikiProfessionNote("Artisan.png", "工匠 +40%", "compact-profession");
         const processItems = detail.products.map((p) => {
-          const produceIconFile = iconFiles[p.produce] || (String(p.produce).includes("蜂蜜") ? iconFiles["蜂蜜"] : "") || iconFiles[p.device] || "Honey.png";
-          const rangeText = p.device === "蜂房" ? "蜂房 5×5" : p.device;
-          const artisanPrice = typeof p.artisan === "number" ? p.artisan : Math.floor(Number(p.base || 0) * 1.4);
-          return `<div class="crop-process-item">
-            <div class="crop-process-head">
+          const artisanPrice = Math.floor(p.base * 1.4);
+          const deviceText = /蜂房/.test(p.device) ? '蜂房 5×5' : p.device;
+          const productIconFile = iconFiles[p.produce] || iconFiles[entry.name] || 'Honey.png';
+          return `<div class="crop-process-card">
+            <div class="crop-process-card-head">
               <div class="crop-process-title-group">
-                <img class="crop-process-product-icon" src="${iconUrl(produceIconFile)}" alt="" loading="lazy" />
+                <img class="crop-process-product-icon" src="${iconUrl(productIconFile)}" alt="" loading="lazy" />
                 <span class="crop-process-name">${escapeHtml(p.produce)}</span>
                 <span class="crop-process-priority">优先</span>
               </div>
-              <span class="crop-process-profession">${artisanNote}</span>
+              ${professionPillHtml('Artisan.png', '工匠 +40%')}
             </div>
-            <div class="crop-process-info-grid">
-              <div class="crop-process-info"><span>范围</span><b>${escapeHtml(rangeText)}</b></div>
-              <div class="crop-process-info"><span>产物</span><b>${escapeHtml(p.produce)}</b></div>
-              <div class="crop-process-info"><span>售价</span><span class="crop-process-value">${priceHtml(p.base)}</span></div>
-              <div class="crop-process-info"><span>工匠价</span><span class="crop-process-value"><span class="crop-artisan-price">${escapeHtml(String(artisanPrice))}</span></span></div>
+            <div class="crop-process-grid">
+              <div class="crop-process-metric">
+                <span class="crop-process-label">范围</span>
+                <span class="crop-process-value">${escapeHtml(deviceText)}</span>
+              </div>
+              <div class="crop-process-metric">
+                <span class="crop-process-label">产物</span>
+                <span class="crop-process-value">${escapeHtml(p.produce)}</span>
+              </div>
+              <div class="crop-process-metric price-merge">
+                <span class="crop-process-label">售价</span>
+                <span class="crop-process-value crop-process-price-line">${priceHtml(p.base)}<span class="crop-price-arrow">→</span><span class="crop-price-output-pill">${escapeHtml(String(artisanPrice))}</span></span>
+              </div>
             </div>
           </div>`;
         }).join("");
@@ -21058,10 +20998,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           <div class="crop-fold-section open">
             <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
               <span class="crop-fold-arrow"></span>
-              <span class="crop-fold-title">⚙️ 加工 <span class="crop-fold-priority">优先</span></span>
+              <span class="crop-fold-title">⚙️ 加工</span>
               <span class="crop-fold-badge">${detail.products.length} 种</span>
             </div>
-            <div class="crop-fold-body">${processItems}</div>
+            <div class="crop-fold-body"><div class="crop-process-list">${processItems}</div></div>
           </div>
         `);
       }
