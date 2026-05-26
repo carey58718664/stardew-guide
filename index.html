@@ -7307,24 +7307,26 @@ body.modal-open { overflow: hidden; touch-action: none; }
   color: #9c620e;
   font-size: 11px;
   font-weight: 950;
-  padding: 6px 8px;
+  padding: 5px 8px;
   text-align: center;
   border-bottom: 1.5px solid #e5d5b6;
 }
 .crop-quality-table th:first-child {
   text-align: center;
-  width: 58px;
+  width: 54px;
   padding-left: 8px;
 }
 .crop-quality-table th:nth-child(2) {
-  width: 31%;
+  width: 35%;
   text-align: left;
   padding-left: 10px;
 }
 .crop-quality-table th:last-child {
-  width: 44%;
-  text-align: right;
-  padding-right: 12px;
+  width: 40%;
+  text-align: left;
+  padding-left: 16px;
+  padding-right: 8px;
+  border-left: 1.5px dashed #e6dcc6;
 }
 .crop-quality-table th .crop-info-note {
   display: inline-flex;
@@ -7333,17 +7335,17 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-size: 9px;
 }
 .crop-quality-table td {
-  padding: 6px 8px;
+  padding: 4px 8px;
   text-align: center;
   color: var(--ink);
   font-weight: 800;
-  border-bottom: 1px solid #f0e8d5;
+  border-bottom: 1px dashed #eadfc8;
   font-size: 12.5px;
-  line-height: 1.28;
+  line-height: 1.2;
 }
 .crop-quality-table td:first-child {
   text-align: center;
-  width: 58px;
+  width: 54px;
   padding-left: 6px;
 }
 .crop-quality-table td:nth-child(2) {
@@ -7351,8 +7353,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
   padding-left: 8px;
 }
 .crop-quality-table td:last-child {
-  text-align: right;
-  padding-right: 12px;
+  text-align: left;
+  padding-left: 16px;
+  padding-right: 8px;
+  border-left: 1.5px dashed #ece1ca;
 }
 .crop-quality-table td img {
   vertical-align: -3px;
@@ -7364,7 +7368,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .crop-quality-price-flow {
   display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 4px;
   width: 100%;
 }
@@ -7378,9 +7382,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
-  min-height: 28px;
-  padding: 0 10px;
+  min-width: 42px;
+  min-height: 26px;
+  padding: 0 9px;
   border: 1.5px solid #ddcfab;
   border-radius: 999px;
   background: linear-gradient(180deg, #fff8ee, #f6eedc);
@@ -7407,12 +7411,13 @@ body.modal-open { overflow: hidden; touch-action: none; }
   margin-bottom: 8px;
 }
 .crop-process-title-group {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 8px;
   min-width: 0;
-  flex-wrap: wrap;
-  max-width: 100%;
+  flex-wrap: nowrap;
+  width: 100%;
   padding: 8px 10px;
   border-radius: 12px;
   background: linear-gradient(180deg, rgba(232,246,232,0.96), rgba(243,251,236,0.96));
@@ -7428,6 +7433,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-size: 13.5px;
   font-weight: 950;
   line-height: 1.2;
+  flex: 0 1 auto;
+  min-width: 0;
+  white-space: nowrap;
 }
 .crop-process-priority {
   display: inline-flex;
@@ -7440,6 +7448,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   color: #27835f;
   font-size: 11px;
   font-weight: 950;
+  margin-left: auto;
+  white-space: nowrap;
+  flex: 0 0 auto;
 }
 .crop-process-profession {
   display: inline-flex;
@@ -7473,7 +7484,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-process-metric.price-merge {
   grid-column: 1 / -1;
-  padding: 8px 10px;
+  padding: 7px 10px;
 }
 .crop-process-label {
   display: block;
@@ -7500,14 +7511,14 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .crop-process-price-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 10px;
   flex-wrap: nowrap;
 }
 .crop-process-price-line {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   flex-wrap: nowrap;
 }
 /* ── 折叠区 ── */
@@ -8439,6 +8450,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
 @media (max-width: 520px) {
   .crop-process-grid {
     grid-template-columns: 1fr 1fr;
+  }
+  .crop-process-title-group {
+    gap: 7px;
   }
   .crop-process-price-row {
     gap: 6px;
