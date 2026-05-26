@@ -6055,6 +6055,35 @@ body.modal-open { overflow: hidden; touch-action: none; }
   }
 }
 
+
+/* v33：购物车店铺分区框 —— 店铺介绍 + 商品目录 + 购物车 作为一个完整分区 */
+#shoppingCartContent .shop-section {
+  position: relative;
+  border-bottom: none;
+  border-radius: 14px;
+  padding-bottom: 12px;
+  overflow: visible;
+}
+
+#shoppingCartContent .shop-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid #6b4a37;
+  border-radius: 14px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#shoppingCartContent .shop-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+#shoppingCartContent .shop-section:last-child {
+  border-bottom: none;
+}
+
 /* ── 物品库三合一 ── */
 .item-lib-toolbar {
   display: flex;
