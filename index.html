@@ -5648,6 +5648,26 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .guide-label { font-size: 13px; font-weight: 900; color: var(--ink); line-height: 1.15; }
 .guide-desc { font-size: 9px; color: var(--muted); text-align: center; line-height: 1.3; }
 
+
+/* v32：购物车页去掉顶部标题框和最外层大框 */
+#goalsPanel {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+#goalsPanel > #shoppingCartContent {
+  margin: 0 !important;
+}
+#goalsPanel > :first-child:not(.app-panel-title) {
+  margin-top: 0 !important;
+}
+#goalsPanel > :last-child:not(.app-panel-title) {
+  margin-bottom: 0 !important;
+}
+
 /* ── 购物车商店 ── */
 #shoppingCartContent {
   display: grid;
@@ -12620,7 +12640,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <!-- 🎯 目标 Tab -->
 <div class="tab-page" id="tabGoals" data-tab="goals">
 <section class="app-panel" id="goalsPanel">
-  <h2 class="app-panel-title">🛒 购物车</h2>
   <div id="shoppingCartContent"></div>
 </section>
 </div><!-- /tabGoals -->
