@@ -1,4 +1,3 @@
-目标版 codex claude 5.23
 
 <!doctype html>
 
@@ -5529,38 +5528,30 @@ body.modal-open { overflow: hidden; touch-action: none; }
   padding: 0;
 }
 
-/* 固定顶栏 */
+/* 当季事顶部日期天气栏 */
 .app-top-bar {
-  flex-shrink: 0;
-  padding: 6px 10px;
-  background: linear-gradient(180deg, #a66f42, var(--wood));
-  box-shadow: 0 2px 8px rgba(76, 49, 29, 0.15);
-  z-index: 10;
-}
-.app-top-bar .season-bar {
-  margin: 0;
-  padding: 4px 2px;
-  border: none;
-  border-radius: 0;
+  padding: 0 0 8px;
   background: transparent;
   box-shadow: none;
+  z-index: auto;
 }
-.app-top-bar .season-pill {
-  border-color: rgba(255,255,255,0.3);
-  background: rgba(255,250,240,0.15);
-  color: #fff7e8;
+#app-shell:not([data-active-tab="home"]) #appTopBar {
+  display: none;
 }
-.app-top-bar .season-pill.active {
-  background: var(--gold);
-  color: #fff;
-  border-color: var(--gold);
+#app-shell .app-top-bar .season-bar {
+  margin: 0;
+  padding: 6px 10px;
+  border: 1px solid #e8d8b8;
+  border-radius: 12px;
+  background: rgba(255, 250, 240, 0.94);
+  box-shadow: 0 4px 12px rgba(76, 49, 29, 0.06);
 }
-.app-top-bar .day-step,
-.app-top-bar .day-input,
-.app-top-bar .weather-toggle {
-  border-color: rgba(255,255,255,0.3);
-  background: rgba(255,250,240,0.15);
-  color: #fff7e8;
+#app-shell .app-top-bar .day-step,
+#app-shell .app-top-bar .day-input,
+#app-shell .app-top-bar .weather-toggle {
+  border-color: #d8c89d;
+  background: #fffdf8;
+  color: var(--ink);
 }
 
 /* Tab 内容区 */
@@ -5583,7 +5574,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   padding-bottom: env(safe-area-inset-bottom, 0);
   background: #fffdf6;
   border-top: 1px solid #e2d0aa;
+  border-radius: 12px;
   box-shadow: 0 -2px 8px rgba(76, 49, 29, 0.06);
+  overflow: hidden;
   z-index: 10;
 }
 .app-tab {
@@ -5613,70 +5606,361 @@ body.modal-open { overflow: hidden; touch-action: none; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 4px;
+  min-width: 0;
+  min-height: 96px;
   padding: 14px 6px;
   border: 1.5px solid #e2d0aa;
   border-radius: 12px;
   background: #fffdf6;
+  text-align: center;
   cursor: pointer;
   transition: background .15s ease, border-color .15s ease;
 }
 .guide-entry:active { background: #fff3d6; border-color: var(--gold); }
-.guide-icon { font-size: 28px; line-height: 1; }
-.guide-icon .official-ui-icon { width: 28px; height: 28px; }
-.guide-label { font-size: 13px; font-weight: 900; color: var(--ink); }
+.guide-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 34px;
+  margin: 0 auto 1px;
+  font-size: 0;
+  line-height: 1;
+}
+.guide-icon .official-ui-icon {
+  width: 34px;
+  height: 34px;
+  margin: 0 !important;
+  flex: 0 0 34px;
+  vertical-align: 0;
+}
+.guide-icon .official-ui-icon img,
+.guide-icon .official-ui-icon .fallback-icon {
+  width: 34px !important;
+  height: 34px !important;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.guide-icon .official-ui-icon .fallback-icon {
+  font-size: 11px;
+  line-height: 1.05;
+}
+.guide-label { font-size: 13px; font-weight: 900; color: var(--ink); line-height: 1.15; }
 .guide-desc { font-size: 9px; color: var(--muted); text-align: center; line-height: 1.3; }
 
 /* ── 购物车商店 ── */
+#shoppingCartContent {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
 .shop-section {
-  margin-bottom: 20px;
-  padding-bottom: 16px;
+  --shop-accent: #9a5a2f;
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  margin-bottom: 0;
+  padding-bottom: 12px;
   border-bottom: 2px solid #e8dcc4;
 }
 .shop-section:last-child { border-bottom: none; }
 .shop-intro-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   padding: 12px;
-  border: 1.5px solid #e2d0aa;
-  border-radius: 10px;
+  border: 1.5px solid #ecd9bf;
+  border-radius: 8px;
   background: #fffdf6;
-  margin-bottom: 10px;
+  box-shadow: inset 5px 0 0 var(--shop-accent), 0 7px 16px rgba(91, 62, 37, 0.07);
 }
 .shop-intro-head {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
-.shop-intro-icon img, .shop-intro-icon .fallback-icon { width: 28px !important; height: 28px !important; }
-.shop-intro-name { font-size: 15px; font-weight: 900; color: var(--ink); margin: 0; }
-.shop-intro-line { font-size: 12px; color: var(--muted); line-height: 1.5; }
-.shop-catalog { margin: 10px 0; }
+.shop-intro-head > div {
+  min-width: 0;
+}
+.shop-intro-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 8px;
+  background: #fff1d8;
+}
+.shop-intro-icon img, .shop-intro-icon .fallback-icon {
+  width: 26px !important;
+  height: 26px !important;
+  image-rendering: pixelated;
+}
+.shop-intro-name {
+  margin: 0;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.15;
+}
+.shop-intro-sub {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 850;
+  line-height: 1.3;
+}
+.shop-intro-name,
+.shop-intro-sub,
+.shop-intro-line,
+.shop-note {
+  overflow-wrap: anywhere;
+}
+.shop-intro-body,
+.shop-note-list {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 750;
+  line-height: 1.38;
+}
+.shop-intro-line,
+.shop-note {
+  position: relative;
+  padding-left: 13px;
+}
+.shop-intro-line::before,
+.shop-note::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 0.65em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--shop-accent);
+}
+.shop-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 9px;
+}
+.shop-metric {
+  border: 1px solid #ecd9bf;
+  border-radius: 8px;
+  background: #fffaf2;
+  padding: 6px 8px;
+}
+.shop-metric span {
+  display: block;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 850;
+}
+.shop-metric b {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.25;
+}
+.shop-chip-row,
+.shop-tag-row,
+.shop-material-row,
+.shop-feature-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.shop-chip-row { margin-top: 8px; }
+.shop-chip,
+.shop-tag,
+.shop-material,
+.shop-feature {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 24px;
+  border: 1px solid #ecd9bf;
+  border-radius: 8px;
+  background: #fffaf0;
+  color: var(--ink);
+  padding: 3px 8px;
+  font-size: 11.5px;
+  font-weight: 850;
+  line-height: 1.2;
+}
+.shop-tag.good,
+.shop-chip.good {
+  background: var(--green-soft);
+  color: var(--green);
+}
+.shop-tag.warn,
+.shop-chip.warn {
+  background: #fff0d2;
+  color: #9c620e;
+}
+.shop-chip img,
+.shop-tag img,
+.shop-material img,
+.shop-feature img,
+.shop-chip .fallback-icon,
+.shop-tag .fallback-icon,
+.shop-material .fallback-icon,
+.shop-feature .fallback-icon {
+  width: 18px;
+  height: 18px;
+  image-rendering: pixelated;
+}
+.shop-catalog {
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.shop-catalog .item-lib-cat-label,
+.shop-cart-section .item-lib-cat-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 22px;
+  margin: 0 0 5px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 1.1;
+}
+.shop-catalog .item-lib-cat-label .official-ui-icon,
+.shop-cart-section .item-lib-cat-label .official-ui-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  margin: 0 !important;
+  vertical-align: 0;
+}
+.shop-catalog .item-lib-cat-label .official-ui-icon img,
+.shop-cart-section .item-lib-cat-label .official-ui-icon img,
+.shop-catalog .item-lib-cat-label .official-ui-icon .fallback-icon,
+.shop-cart-section .item-lib-cat-label .official-ui-icon .fallback-icon {
+  width: 16px !important;
+  height: 16px !important;
+}
 .shop-cart-section { margin-top: 10px; }
 .shop-product-detail {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   margin-top: 10px;
-  border: 1.5px solid var(--gold);
-  border-radius: 10px;
+  border: 1.5px solid #ecd9bf;
+  border-radius: 8px;
   background: #fffdf6;
   overflow: hidden;
+  box-shadow: inset 5px 0 0 var(--shop-accent), 0 7px 16px rgba(91, 62, 37, 0.07);
   animation: detailSlideIn .15s ease;
 }
 .shop-product-head {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
   gap: 10px;
-  padding: 10px 12px;
-  background: linear-gradient(180deg, #fff8ee, #fffdf6);
-  border-bottom: 1px solid #f0e3c8;
+  align-items: center;
+  padding: 11px 12px 10px;
+  border-bottom: 1px solid #f1e1c9;
+  background: linear-gradient(180deg, #fffdf6, #fff8e8);
 }
-.shop-product-icon img, .shop-product-icon .fallback-icon { width: 32px !important; height: 32px !important; }
-.shop-product-title { font-size: 14px; font-weight: 900; color: var(--ink); }
-.shop-product-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.shop-product-steps { padding: 8px 12px; }
-.shop-product-step { font-size: 12px; color: var(--ink); padding: 3px 0; }
-.shop-product-sub { font-size: 10.5px; color: var(--muted); }
-.shop-product-actions { padding: 8px 12px; display: flex; gap: 8px; }
+.shop-product-icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid #ecd9bf;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fff3d8, #f2fbdf);
+}
+.shop-product-icon img, .shop-product-icon .fallback-icon {
+  width: 40px !important;
+  height: 40px !important;
+  image-rendering: pixelated;
+}
+.shop-product-title {
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 950;
+  line-height: 1.15;
+}
+.shop-product-note {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 850;
+  line-height: 1.35;
+}
+.shop-product-body {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px 12px 12px;
+}
+.shop-product-steps {
+  display: grid;
+  gap: 6px;
+  padding: 0;
+}
+.shop-product-step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  border: 1px solid #ecd9bf;
+  border-radius: 8px;
+  background: #fffdf8;
+  padding: 6px 8px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 850;
+}
+.shop-product-step.ready {
+  border-color: #a9d6a6;
+  background: var(--green-soft);
+}
+.shop-product-sub {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.3;
+}
+.shop-product-have {
+  color: #9c620e;
+  font-size: 11px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+.shop-product-step.ready .shop-product-have {
+  color: var(--green);
+}
+.shop-product-actions {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
 .shop-add-btn {
   flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   padding: 8px;
   border: 2px solid var(--green);
   border-radius: 8px;
@@ -5684,7 +5968,19 @@ body.modal-open { overflow: hidden; touch-action: none; }
   color: var(--green);
   font-size: 13px;
   font-weight: 900;
+  line-height: 1.2;
   cursor: pointer;
+}
+.shop-add-btn img,
+.shop-add-btn .fallback-icon {
+  flex: 0 0 20px;
+  width: 20px !important;
+  height: 20px !important;
+  max-width: 20px !important;
+  max-height: 20px !important;
+  margin: 0;
+  object-fit: contain;
+  image-rendering: pixelated;
 }
 .shop-add-btn:active { background: var(--green); color: #fff; }
 .shop-remove-btn {
@@ -5699,6 +5995,42 @@ body.modal-open { overflow: hidden; touch-action: none; }
   cursor: pointer;
 }
 .item-chip.in-cart { border-color: var(--green); background: var(--green-soft); }
+#app-shell #goalsPanel #shoppingCartContent .goal-card {
+  --shop-goal-accent: #9a5a2f;
+  box-shadow: inset 5px 0 0 var(--shop-goal-accent), 0 7px 16px rgba(76, 49, 29, 0.08);
+}
+#app-shell #goalsPanel #shoppingCartContent .goal-card[data-goal-kind="build"],
+#app-shell #goalsPanel #shoppingCartContent .goal-card[data-goal-kind="house"] { --shop-goal-accent: #9a5a2f; }
+#app-shell #goalsPanel #shoppingCartContent .goal-card[data-goal-kind="upgrade"] { --shop-goal-accent: #2f6fb0; }
+#app-shell #goalsPanel #shoppingCartContent .goal-card[data-goal-kind="craft"] { --shop-goal-accent: #d59624; }
+#app-shell #goalsPanel #shoppingCartContent .goal-card[data-goal-kind="buy"] { --shop-goal-accent: #2d8a5f; }
+#app-shell #goalsPanel #shoppingCartContent .goal-card[data-goal-kind="gift"] { --shop-goal-accent: #cf6aa6; }
+#app-shell #goalsPanel #shoppingCartContent .goal-card[data-goal-kind="cook"] { --shop-goal-accent: #b65a35; }
+#app-shell #goalsPanel #shoppingCartContent .goal-card[data-goal-kind="self"] { --shop-goal-accent: #8f67cf; }
+#app-shell #goalsPanel #shoppingCartContent .goal-head {
+  padding-left: 14px;
+}
+@media (max-width: 520px) {
+  .shop-metric-grid {
+    grid-template-columns: 1fr;
+  }
+  .shop-product-head {
+    grid-template-columns: 46px minmax(0, 1fr);
+    padding: 9px 10px;
+  }
+  .shop-product-icon {
+    width: 46px;
+    height: 46px;
+  }
+  .shop-product-icon img,
+  .shop-product-icon .fallback-icon {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .shop-product-title {
+    font-size: 15px;
+  }
+}
 
 /* ── 物品库三合一 ── */
 .item-lib-toolbar {
@@ -5723,10 +6055,20 @@ body.modal-open { overflow: hidden; touch-action: none; }
   gap: 12px;
 }
 .item-lib-cat-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 13px;
   font-weight: 900;
   color: #9c620e;
   margin-bottom: 6px;
+}
+
+.item-lib-cat-label .official-ui-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 0;
+  vertical-align: 0;
 }
 .item-lib-chips {
   display: flex;
@@ -10424,28 +10766,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
   box-shadow: 0 10px 22px rgba(80, 50, 20, 0.08);
 }
 
-#app-shell #seasonPanel .app-panel-title {
-  display: inline-flex;
-  width: auto;
-  margin: 21px 0 10px 12px;
-  padding: 5px 11px;
-  border: 2px solid #d8c89d;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #fff7d8, #f0d99a);
-  color: #4f321f;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 4px 9px rgba(76, 49, 29, 0.1);
-  font-size: 16.2px;
-  line-height: 1.1;
-}
-
-#app-shell #seasonTitleIcon {
-  font-size: 1em;
-}
-
-#app-shell #seasonPanel .app-panel-title .subtle {
-  display: none;
-}
-
 #app-shell #seasonPanel::before {
   content: "";
   position: absolute;
@@ -10737,7 +11057,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
 @media (max-width: 520px) {
   #app-shell {
     width: min(100% - 10px, 430px);
-    padding: 6px 0 22px;
+    padding: 6px 0 0;
   }
 
   #app-shell .app-hero {
@@ -10819,14 +11139,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
   #app-shell .weather-toggle {
     color: #1682d7;
     font-size: 12px;
-  }
-
-  #app-shell #seasonPanel .app-panel-title {
-    margin: 20px 0 9px 9px;
-    padding: 5px 10px;
-    border-radius: 12px;
-    color: #4f321f;
-    font-size: 16px;
   }
 
   #app-shell #seasonPanel {
@@ -11558,17 +11870,20 @@ body.modal-open { overflow: hidden; touch-action: none; }
 
 #app-shell #seasonPanel {
   min-height: 0;
-  padding: 14px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
 }
 
 #app-shell #seasonPanel::before {
-  opacity: 0.18;
-  filter: saturate(1.12) contrast(1.02) brightness(1.05);
+  display: none;
 }
 
 #app-shell #seasonPanel::after {
-  background: rgba(255, 250, 240, 0.66);
-  box-shadow: inset 0 0 20px rgba(255, 253, 248, 0.55);
+  display: none;
 }
 
 #app-shell .season-main-head {
@@ -11579,33 +11894,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
   margin-bottom: 12px;
 }
 
-#app-shell #seasonPanel .app-panel-title {
-  margin: 0 0 6px;
-  padding: 5px 11px;
-  font-size: 16px;
-}
-
-#app-shell #seasonPanel .app-panel-title .subtle {
-  display: inline;
-  color: #7b6045 !important;
-  font-size: 12px;
-}
-
-#app-shell .season-main-subtitle {
-  margin: 0;
-  color: #6f6254;
-  font-size: 12.5px;
-  line-height: 1.45;
-}
-
-#app-shell .season-main-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 6px;
-}
-
-#app-shell .season-main-actions button,
 #app-shell .season-main-link {
   min-height: 30px;
   border: 2px solid #d8c89d;
@@ -11625,12 +11913,54 @@ body.modal-open { overflow: hidden; touch-action: none; }
 
 #app-shell .season-main-card {
   min-width: 0;
-  border: 2px solid #e1cea8;
-  border-left-width: 6px;
-  border-radius: 8px;
+  border: 3px solid #e1cea8;
+  border-left-width: 7px;
+  border-radius: 10px;
   background: rgba(255, 253, 248, 0.96);
   padding: 10px;
-  box-shadow: 0 6px 14px rgba(76, 49, 29, 0.06);
+  box-shadow: 0 8px 18px rgba(76, 49, 29, 0.08);
+}
+
+#app-shell .season-main-card.season-themed {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(255, 246, 224, 0.1), rgba(255, 246, 224, 0.1)),
+    linear-gradient(180deg, rgba(255, 252, 242, 0.5), rgba(244, 226, 190, 0.34));
+}
+
+#app-shell .season-main-card.season-themed::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--season-card-bg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  opacity: 0.88;
+  filter: saturate(1.18) contrast(1.06) brightness(1.02);
+  pointer-events: none;
+}
+
+#app-shell .season-main-card.season-themed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(255, 246, 210, 0.08), rgba(255, 246, 210, 0) 34%),
+    linear-gradient(180deg, rgba(255, 252, 242, 0.38), rgba(255, 252, 242, 0.24));
+  backdrop-filter: blur(0.08px);
+  pointer-events: none;
+}
+
+#app-shell .season-main-card.season-themed > * {
+  position: relative;
+  z-index: 2;
 }
 
 #app-shell .season-main-card.planting { border-left-color: #389d62; }
@@ -11677,9 +12007,49 @@ body.modal-open { overflow: hidden; touch-action: none; }
 #app-shell .season-mini-item {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr);
-  align-items: center;
+  align-items: start;
   gap: 7px;
-  min-height: 54px;
+  min-height: 74px;
+}
+
+#app-shell .season-main-card.planting .season-mini-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+#app-shell .season-main-card.season-themed .season-mini-item,
+#app-shell .season-main-card.season-themed .fish-row,
+#app-shell .season-main-card.season-themed .festival-row,
+#app-shell .season-main-card.season-themed .birthday-row {
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: start;
+  gap: 6px;
+  min-height: 0;
+  padding: 6px;
+  background: rgba(255, 250, 240, 0.88);
+}
+
+#app-shell .season-main-card.season-themed .fish-row.need {
+  background: rgba(255, 246, 220, 0.9);
+}
+
+#app-shell .season-main-card.season-themed .season-mini-icon,
+#app-shell .season-main-card.season-themed .fish-icon,
+#app-shell .season-main-card.season-themed .birthday-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+}
+
+#app-shell .season-main-card.season-themed .season-mini-icon img,
+#app-shell .season-main-card.season-themed .fish-icon img,
+#app-shell .season-main-card.season-themed .birthday-avatar img {
+  width: 24px;
+  height: 24px;
+}
+
+#app-shell .season-mini-body {
+  min-width: 0;
 }
 
 #app-shell .season-mini-icon {
@@ -11721,6 +12091,51 @@ body.modal-open { overflow: hidden; touch-action: none; }
   color: #6f6254;
   font-size: 11px;
   line-height: 1.35;
+}
+
+#app-shell .season-main-card.planting .season-mini-meta {
+  white-space: normal;
+  margin-top: 1px;
+  font-size: 10.5px;
+  line-height: 1.24;
+}
+
+#app-shell .season-main-card.season-themed .fish-meta,
+#app-shell .season-main-card.season-themed .festival-meta,
+#app-shell .season-main-card.season-themed .birthday-meta {
+  margin-top: 1px;
+  font-size: 10.5px;
+  line-height: 1.24;
+}
+
+#app-shell .season-reason-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+#app-shell .season-reason-tag {
+  border: 1px solid #e4d0a6;
+  border-radius: 999px;
+  background: #f6e8bf;
+  color: #6f4b22;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+#app-shell .season-reason-tag.good {
+  border-color: #bedca4;
+  background: #e6f4df;
+  color: #237243;
+}
+
+#app-shell .season-reason-tag.warn {
+  border-color: #e2bf6d;
+  background: #fff3c4;
+  color: #8a5b12;
 }
 
 #app-shell .season-tag-row {
@@ -11814,6 +12229,21 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border: 1px solid #eadfc9;
   border-radius: 7px;
   background: #fffdf8;
+}
+
+#app-shell .season-main-card.season-themed .birthday-gifts {
+  gap: 3px;
+  margin-top: 4px;
+}
+
+#app-shell .season-main-card.season-themed .birthday-gift {
+  width: 24px;
+  height: 24px;
+}
+
+#app-shell .season-main-card.season-themed .birthday-gift img {
+  width: 20px;
+  height: 20px;
 }
 
 #app-shell #resourcePanel .resource-grid {
@@ -11959,14 +12389,15 @@ body.modal-open { overflow: hidden; touch-action: none; }
     flex-direction: column;
   }
 
-  #app-shell .season-main-actions {
-    justify-content: flex-start;
-  }
 }
 
 @media (max-width: 520px) {
   #app-shell .season-mini-grid {
     grid-template-columns: 1fr;
+  }
+
+  #app-shell .season-main-card.season-themed .season-mini-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   #app-shell .fish-row,
@@ -11980,9 +12411,15 @@ body.modal-open { overflow: hidden; touch-action: none; }
 </head>
 <body>
   <!-- 主工具：牧场决策助手 -->
-  <main class="app-shell" id="app-shell">
+  <main class="app-shell" id="app-shell" data-active-tab="home">
 
-<!-- 固定顶栏：日期天气 -->
+<!-- Tab 内容区 -->
+<div class="tab-content" id="tabContent">
+
+<!-- 🏠 主页 Tab -->
+<div class="tab-page active" id="tabHome" data-tab="home">
+
+<!-- 当季事顶部：日期天气 -->
 <div class="app-top-bar" id="appTopBar">
 <div class="season-bar">
   <button class="season-pill" data-season="spring"><span class="official-ui-icon" data-official-icon="春"></span>春</button>
@@ -11996,45 +12433,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
 </div>
 </div>
 
-<!-- Tab 内容区 -->
-<div class="tab-content" id="tabContent">
-
-<!-- 🏠 主页 Tab -->
-<div class="tab-page active" id="tabHome" data-tab="home">
-
 <!-- 当季主线 -->
 <section class="app-panel" id="seasonPanel">
-  <div class="season-main-head">
-    <div>
-      <h2 class="app-panel-title"><span id="seasonTitleIcon" class="official-ui-icon" data-official-icon="春"></span>当季主线 <span class="subtle" id="seasonLabel">春季</span></h2>
-      <p class="season-main-subtitle">把当季种植、钓鱼、养殖、矿洞、节日和居民生日放在一张清单里。</p>
-    </div>
-    <div class="season-main-actions">
-      <button type="button" data-open-planting><span class="official-ui-icon" data-official-icon="种植"></span>种植</button>
-      <button type="button" data-open-festival><span class="official-ui-icon" data-official-icon="节日"></span>节日</button>
-      <button type="button" data-open-social><span class="official-ui-icon" data-official-icon="生日"></span>生日</button>
-      <button type="button" data-open-fishing><span class="official-ui-icon" data-official-icon="钓鱼"></span>钓鱼</button>
-      <button type="button" data-open-animal><span class="official-ui-icon" data-official-icon="养殖"></span>养殖</button>
-      <button type="button" data-open-mine><span class="official-ui-icon" data-official-icon="普通矿洞"></span>普通矿洞</button>
-      <button type="button" data-open-skull><span class="official-ui-icon" data-official-icon="沙漠矿洞"></span>沙漠矿洞</button>
-      <button type="button" data-open-pond><span class="official-ui-icon" data-official-icon="鱼塘"></span>鱼塘</button>
-      <button type="button" data-open-island><span class="official-ui-icon" data-official-icon="姜岛"></span>姜岛</button>
-    </div>
-  </div>
   <div class="season-overview" id="seasonOverview"></div>
-</section>
-
-<!-- 今日推荐（场景） -->
-<section class="app-panel" id="scenePanel">
-  <h2 class="app-panel-title">🗺️ 今日推荐 <span class="subtle" id="sceneDayLabel"></span></h2>
-  <div class="scene-progress-bar">
-    <label><input type="checkbox" id="progDesert" /> 已解锁沙漠</label>
-    <label><input type="checkbox" id="progIsland" /> 已解锁姜岛</label>
-    <label><input type="checkbox" id="progVolcano" /> 已解锁火山</label>
-    <label>矿井 <input type="number" id="progMineLevel" min="0" max="120" value="0" style="width:46px;" /> 层</label>
-  </div>
-  <div id="sceneList" class="scene-list"></div>
-  <div id="sceneEmpty" class="scene-empty" style="display:none;">今天没有特别推荐，可以自由探索 🌾</div>
 </section>
 
 </div><!-- /tabHome -->
@@ -12889,7 +13290,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "棚屋": "Shed.png",
       "大棚屋": "Big Shed.png",
       "史莱姆屋": "Slime Hutch.png",
-      "宠物碗": "Pet Bowl.png",
+      "宠物碗": "Pet Bowl Stone.png",
       "鱼熏机": "Fish Smoker.png",
       "脱水机": "Dehydrator.png",
       "烘干机": "Dehydrator.png",
@@ -13040,10 +13441,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "水果干": "Dried Fruit.png",
       "葡萄干": "Raisins.png",
       "茶叶": "Tea Leaves.png",
-      "普通矿洞": "The Mines.png",
-      "深山矿洞": "The Mines.png",
-      "山顶矿洞": "The Mines.png",
-      "矿井入口": "The Mines.png",
+      "普通矿洞": "Minecart Mines.png",
+      "深山矿洞": "Minecart Mines.png",
+      "山顶矿洞": "Minecart Mines.png",
+      "矿井入口": "Minecart Mines.png",
       "电梯": "Elevator.png",
       "矿车": "Minecart.png",
       "冒险家公会": "Adventurer's Guild.png",
@@ -13459,7 +13860,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "背包": "36 Backpack.png",
       "背包录入": "36 Backpack.png",
       "建议": "Stardew Valley Almanac.png",
-      "查物品": "Price Catalogue.png",
+      "查物品": "Catalogue.png",
+      "商品目录": "Catalogue.png",
       "今日": "Map.png",
       "今日主线": "Map.png",
       "当季主线": "Calendar.png",
@@ -13514,6 +13916,18 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "姜岛探险": "Warp Totem Island.png",
       "当季限定鱼提醒": "Pufferfish.png",
       "休整日": "Coffee.png",
+      "商店": "Pierre's General Store.png",
+      "购物车": "Traveling Cart.png",
+      "皮埃尔": "Pierre Icon.png",
+      "克林特": "Clint Icon.png",
+      "格斯": "Gus Icon.png",
+      "日历": "Calendar.png",
+      "厨房": "Carpenter's Shop.png",
+      "儿童房": "Carpenter's Shop.png",
+      "地下室": "Carpenter's Shop.png",
+      "开放卧室": "Carpenter's Shop.png",
+      "移除婴儿床": "Carpenter's Shop.png",
+      "加南侧房间": "Carpenter's Shop.png",
       "合成": "Wood.png",
       "建造": "Carpenter's Shop.png",
       "升级": "Iron Bar.png",
@@ -13748,8 +14162,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         return;
       }
 
+      const compactIconContext = image.classList.contains("icon")
+        || image.closest(".item-chip, .item-lib-cat-label, .shop-intro-icon, .shop-product-icon, .shop-material, .shop-chip, .shop-tag, .official-ui-icon, .goal-emoji, .season-mini-icon, .fish-icon, .birthday-avatar, .birthday-gift, .processing-tool-icon, .processing-product-icon, .processing-rank-icon");
       const label = image.dataset.fallback || image.alt || "图片暂不可用";
-      const fallbackClass = image.classList.contains("icon") ? "fallback-icon" : "image-fallback";
+      const fallbackClass = compactIconContext ? "fallback-icon" : "image-fallback";
       image.replaceWith(fallbackNode(label, fallbackClass));
       scheduleLayout();
     }
@@ -15250,21 +15666,60 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     ];
 
     /* ── 商店数据（购物车 Tab） ── */
+    const SHOP_HOW_LABELS = {
+      buy: "购买",
+      build: "建造",
+      upgrade: "工具升级",
+      house: "房屋",
+      craft: "合成",
+      cook: "料理",
+      gift: "社交",
+      self: "自办"
+    };
+
+    function shopGood(id, title, iconName, kind, price, unlock, notes = [], tags = [], materials = []) {
+      return { id, title, iconName, kind, price, unlock, notes, tags, materials, shopOnly: true };
+    }
+
     const SHOP_DATA = [
       { id: "pierre", name: "皮埃尔杂货店", icon: "皮埃尔",
-        intro: ["营业 9:00AM–5:00PM；周三不营业（社区中心修复后周三也开）。", "种子、化肥、背包升级、脱水机配方等都在这买。"],
+        accent: "#389d62",
+        hours: "9:00AM-5:00PM", closed: "周三休", location: "小镇广场", focus: "种子 / 背包 / 配方",
+        intro: ["营业 9:00AM-5:00PM；周三不营业（社区中心修复后周三也开）。", "种子、化肥、果树苗、背包升级、脱水机配方等都在这买。", "第一年尽早买大背包；夏秋资金充足后再补高价值作物种子。"],
+        chips: ["新手必逛", "季节种子", "背包升级", "脱水机配方"],
+        goods: [
+          shopGood("pierre-parsnip", "防风草种子", "防风草种子", "春季种子", "20g", "春季常规出售", ["4 天成熟，是第一年春季最基础的启动作物。"], ["starter"]),
+          shopGood("pierre-strawberry", "草莓种子", "草莓种子", "节日种子", "100g", "蛋蛋节购买", ["春13日蛋蛋节限量购买；第一年如果资金够，适合囤到第二年春开局。"], ["profit", "seasonal"]),
+          shopGood("pierre-red-cabbage", "红叶卷心菜种子", "红叶卷心菜种子", "夏季种子", "100g", "第二年夏季常规出售", ["染料收集包需要红叶卷心菜；第一年想提前完成通常要看旅行货车。"], ["bundle"])
+        ],
         goalIds: ["buy-backpack-large", "buy-backpack-deluxe", "craft-dehydrator"] },
       { id: "robin", name: "木匠商店（罗宾）", icon: "罗宾",
-        intro: ["营业 9:00AM–5:00PM；周二不营业，周五提前一小时关。", "建造农场建筑和房屋升级都找罗宾，通常需要 2–3 天。"],
+        accent: "#9a5a2f",
+        hours: "9:00AM-5:00PM", closed: "周二休", location: "深山", focus: "建筑 / 房屋 / 木石",
+        intro: ["营业 9:00AM-5:00PM；周二不营业，周五提前一小时关。", "建造农场建筑和房屋升级都找罗宾，通常需要 2-3 天。", "养殖路线建议先筒仓，再鸡舍/畜棚；房屋厨房能解锁料理体系。"],
+        chips: ["农场建筑", "房屋升级", "木材石头", "养殖前置"],
+        goods: [
+          shopGood("robin-wood", "木材", "木材", "建筑材料", "10g/50g", "全年出售", ["第一年单价 10g，第二年起涨价；赶建筑进度时可直接补缺口。"], ["material"]),
+          shopGood("robin-stone", "石头", "石头", "建筑材料", "20g/100g", "全年出售", ["第一年单价 20g，第二年起涨价；筒仓、鱼塘、史莱姆屋会大量用到。"], ["material"]),
+          shopGood("robin-calendar", "日历", "日历", "家具", "2000g", "全年出售", ["放在农舍里即可查看节日和生日，适合社交路线早买。"], ["utility"])
+        ],
         goalIds: [
           "build-silo","build-coop","build-coop-big","build-coop-deluxe",
           "build-barn","build-barn-big","build-barn-deluxe",
           "build-well","build-mill","build-shed","build-shed-big",
           "build-shipping-bin","build-stable","build-fish-pond","build-slime-hutch","build-pet-bowl",
-          "house-kitchen","house-nursery","house-cellar","house-reno-open","house-reno-corner"
+          "house-kitchen","house-nursery","house-cellar","house-renovate-bedroom","house-renovate-crib","house-renovate-room"
         ] },
       { id: "clint", name: "铁匠铺（克林特）", icon: "克林特",
-        intro: ["营业 9:00AM–4:00PM；周五不营业。", "工具升级需要对应锭 ×5 + 金币，升级期间工具不可用（2 天）。", "也可以花 25g 开晶球。"],
+        accent: "#2f6fb0",
+        hours: "9:00AM-4:00PM", closed: "周五休", location: "小镇东侧", focus: "工具升级 / 开晶球",
+        intro: ["营业 9:00AM-4:00PM；周五不营业。", "工具升级需要对应锭 ×5 + 金币，升级期间工具不可用（2 天）。", "开晶球每个 25g；下矿路线可以顺路补矿石和煤炭。"],
+        chips: ["工具升级", "开晶球", "矿石", "煤炭"],
+        goods: [
+          shopGood("clint-geode", "开晶球", "晶球", "服务", "25g/个", "全年服务", ["普通晶球、冰封晶球、岩浆晶球、万象晶球都可在这里开启。"], ["service"]),
+          shopGood("clint-copper-ore", "铜矿石", "铜矿石", "矿石", "75g/150g", "全年出售", ["第一年 75g，第二年起 150g；赶熔炉、工具升级时可补少量。"], ["material"]),
+          shopGood("clint-coal", "煤炭", "煤炭", "燃料", "150g/250g", "全年出售", ["煤炭是熔炼和加工设备常见瓶颈；第二年起价格更高。"], ["material"])
+        ],
         goalIds: (function() {
           const ids = [];
           ["pickaxe","axe","hoe","wateringcan","trashcan"].forEach(t => {
@@ -15273,22 +15728,78 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           return ids;
         })() },
       { id: "willy", name: "渔店（威利）", icon: "威利",
-        intro: ["营业 9:00AM–5:00PM；周六不营业。", "鱼竿、鱼饵、鱼具在这买。鱼熏机配方也在这。"],
+        accent: "#2f8fb0",
+        hours: "9:00AM-5:00PM", closed: "周六休", location: "海滩码头", focus: "鱼竿 / 鱼饵 / 鱼熏机",
+        intro: ["营业 9:00AM-5:00PM；周六不营业。", "鱼竿、鱼饵、钓具在这里购买；鱼熏机配方也在这里。", "想走钓鱼赚钱，玻璃纤维竿和鱼饵是第一波质变。"],
+        chips: ["鱼竿", "钓具", "鱼熏机", "蟹笼"],
+        goods: [
+          shopGood("willy-bait", "鱼饵", "鱼饵", "消耗品", "5g", "玻璃纤维竿后可使用", ["缩短上钩等待时间；蟹笼每天也会消耗鱼饵。"], ["starter"]),
+          shopGood("willy-trout-soup", "鳟鱼汤", "鳟鱼汤", "料理", "250g", "全年出售", ["钓鱼 +1，早期冲高难鱼或补体力时很好用。"], ["food"]),
+          shopGood("willy-smoker-recipe", "鱼熏机配方", "鱼熏机", "配方", "10000g", "1.6 可购买", ["熏鱼售价为鱼基础售价的 2 倍，是钓鱼流派的重要加工设备。"], ["profit"])
+        ],
         goalIds: ["buy-fiberglass-rod","buy-iridium-rod","craft-fish-smoker","craft-crab-pot","craft-bait-maker","craft-worm-bin","craft-deluxe-worm-bin"] },
       { id: "marnie", name: "玛妮牧场", icon: "玛妮",
-        intro: ["营业 9:00AM–4:00PM；周一、周二不营业。秋18日、冬18日也休。", "牧场 9:00AM–6:00PM 可进入，购买动物和动物用品。"],
+        accent: "#b66a35",
+        hours: "9:00AM-4:00PM", closed: "周一/周二休", location: "煤矿森林", focus: "动物 / 干草 / 用品",
+        intro: ["营业 9:00AM-4:00PM；周一、周二不营业，秋18日和冬18日也休。", "牧场 9:00AM-6:00PM 可进入，购买动物和动物用品。", "先有对应建筑才能买动物；升级或建造期间不会出售动物。"],
+        chips: ["动物用品", "鸡舍动物", "畜棚动物", "自动采集器"],
+        goods: [
+          shopGood("marnie-hay", "干草", "干草", "饲料", "50g", "全年出售", ["冬天和雨天动物不能吃户外青草，要靠干草喂养。"], ["starter", "care"]),
+          shopGood("marnie-heater", "加热器", "加热器", "冬季用品", "2000g", "全年出售", ["放在鸡舍或畜棚内，冬天帮助动物保持好心情。"], ["care"]),
+          shopGood("marnie-milk-pail", "挤奶桶", "挤奶桶", "工具", "1000g", "养牛/山羊后购买", ["给奶牛和山羊挤奶；后期自动采集器可以替代手动操作。"], ["barn", "product"]),
+          shopGood("marnie-shears", "剪刀", "剪刀", "工具", "1000g", "养绵羊后购买", ["从绵羊身上剪羊毛；后期自动采集器可以统一收取。"], ["barn", "product"]),
+          shopGood("marnie-auto-grabber", "自动采集器", "自动采集器", "自动化", "25000g", "耕种10级解锁", ["每天自动收集动物产物，适合畜棚/鸡舍规模化后补。"], ["profit", "care"]),
+          shopGood("marnie-chicken", "鸡", "鸡", "鸡舍动物", "800g", "需要鸡舍", ["成年母鸡每天产蛋；蛋黄酱机能快速提高收益。"], ["starter", "coop"]),
+          shopGood("marnie-cow", "牛", "牛", "畜棚动物", "1500g", "需要畜棚", ["成年奶牛每天产奶；奶酪是早期稳定回血和收入来源。"], ["starter", "barn"]),
+          shopGood("marnie-pig", "猪", "猪", "畜棚动物", "16000g", "需要高级畜棚", ["非冬季、非雨天在户外寻找松露，是养殖后期高收益路线。"], ["profit", "barn"])
+        ],
         goalIds: [] },
       { id: "saloon", name: "星之果实餐吧（格斯）", icon: "格斯",
-        intro: ["营业 12:00PM–12:00AM；每天营业。", "购买料理配方和食物。也是村民社交聚集地。"],
-        goalIds: [] },
+        accent: "#b65a35",
+        hours: "12:00PM-12:00AM", closed: "每天营业", location: "小镇中心", focus: "食物 / 配方 / 社交",
+        intro: ["营业 12:00PM-12:00AM；每天营业。", "可以买食物、咖啡和料理配方；晚上许多村民会来这里社交。", "三倍浓缩咖啡配方是赶路和下矿常用目标。"],
+        chips: ["料理", "咖啡", "配方", "社交"],
+        goods: [
+          shopGood("saloon-salad", "沙拉", "沙拉", "食物", "220g", "全年出售", ["莉亚最爱；便宜且回复稳定，适合社交和早期补给。"], ["gift", "food"]),
+          shopGood("saloon-coffee", "咖啡", "咖啡", "饮料", "300g", "全年出售", ["速度 +1；哈维最爱，也是三倍浓缩咖啡材料。"], ["speed", "gift"]),
+          shopGood("saloon-pizza", "比萨", "比萨", "食物", "600g", "全年出售", ["谢恩最爱；也能作为高回复食物救急。"], ["gift", "food"]),
+          shopGood("saloon-espresso-recipe", "三倍浓缩咖啡配方", "三倍浓缩咖啡", "配方", "5000g", "全年出售", ["3 杯咖啡合成 1 杯三倍浓缩咖啡，速度增益更适合日常常驻。"], ["speed", "recipe"])
+        ],
+        goalIds: ["cook-stock-triple-espresso"] },
       { id: "desert", name: "沙漠绿洲（桑迪）", icon: "桑迪",
-        intro: ["需先解锁沙漠（修巴士或金库捐款）。", "大黄种子（春夏）、杨桃种子（夏）、甜菜种子（秋）在这买。"],
+        accent: "#d59624",
+        hours: "9:00AM-11:50PM", closed: "每天营业", location: "卡利科沙漠", focus: "沙漠种子",
+        intro: ["需先解锁沙漠（修巴士或金库捐款）。", "大黄种子、杨桃种子、甜菜种子和仙人掌种子都在这里买。", "杨桃是夏季高价值酿酒作物；甜菜是磨坊制糖和齐先生任务相关物品。"],
+        chips: ["沙漠解锁", "杨桃", "甜菜", "仙人掌"],
+        goods: [
+          shopGood("desert-rhubarb", "大黄种子", "大黄种子", "春季种子", "100g", "绿洲出售", ["春季作物，基础售价高，适合解锁沙漠后补种或温室种植。"], ["crop"]),
+          shopGood("desert-starfruit", "杨桃种子", "杨桃种子", "夏季种子", "400g", "绿洲出售", ["13 天成熟；进小桶做杨桃酒是中后期核心赚钱路线。"], ["profit"]),
+          shopGood("desert-beet", "甜菜种子", "甜菜种子", "秋季种子", "20g", "绿洲出售", ["6 天成熟；可用磨坊制糖，也和齐先生任务有关。"], ["crop"]),
+          shopGood("desert-cactus", "仙人掌种子", "仙人掌果子", "室内作物", "150g", "绿洲出售", ["只能在室内、温室或姜岛种植，仙人掌果子是桑迪最爱。"], ["gift"])
+        ],
         goalIds: [] },
       { id: "cart", name: "旅行货车", icon: "旅行货车",
-        intro: ["每周五、周日出现在秘密森林南侧。", "商品随机，可能有稀有种子、配方和收集包物品。带 3000–5000g 以备万一。"],
+        accent: "#8f67cf",
+        hours: "6:00AM-8:00PM", closed: "周五/周日出现", location: "煤矿森林西侧", focus: "随机稀有货",
+        intro: ["每周五、周日出现在秘密森林南侧。", "商品随机，可能有稀有种子、配方和收集包物品。带 3000-5000g 以备万一。", "第一年想提前拿红叶卷心菜、兔子脚等献祭物时，旅行货车值得固定查看。"],
+        chips: ["随机商品", "收集包补缺", "稀有种子", "第一年救急"],
+        goods: [
+          shopGood("cart-rare-seed", "稀有种子", "稀有种子", "稀有作物", "1000g", "春夏常见 / 随机出现", ["秋季播种，24 天成熟为宝石甜莓；规模化通常要靠种子生产器。"], ["profit"]),
+          shopGood("cart-red-cabbage", "红叶卷心菜/种子", "红叶卷心菜种子", "献祭补缺", "随机价格", "随机出现", ["第一年完成染料收集包的关键随机商品。"], ["bundle"]),
+          shopGood("cart-coffee-bean", "咖啡豆", "咖啡豆", "春夏作物", "随机价格", "随机出现", ["可春夏连续种植，5 颗咖啡豆进小桶做咖啡。"], ["speed"]),
+          shopGood("cart-bundle-items", "收集包物品", "收集包", "随机补货", "随机价格", "随机出现", ["高难鱼、动物产物、树果和稀有采集物都有机会救进度。"], ["bundle"])
+        ],
         goalIds: [] },
       { id: "crafting", name: "配方合成", icon: "合成",
-        intro: ["在合成菜单（ESC → 合成标签）制作。", "需要对应技能等级解锁配方 + 足够材料。加工设备是赚钱的核心。"],
+        accent: "#6f4b22",
+        hours: "随时", closed: "不受营业时间限制", location: "合成菜单", focus: "加工设备",
+        intro: ["在合成菜单（ESC → 合成标签）制作。", "需要对应技能等级解锁配方 + 足够材料。加工设备是赚钱的核心。", "罐头瓶、小桶、鱼熏机、脱水机和动物加工设备决定中后期现金流。"],
+        chips: ["加工设备", "技能解锁", "材料规划", "赚钱核心"],
+        goods: [
+          shopGood("crafting-furnace-tip", "熔炉", "熔炉", "基础设备", "铜矿石×20 石头×25", "获得铜矿石后解锁", ["工具升级、洒水器和多数设备都离不开金属锭。"], ["starter"]),
+          shopGood("crafting-keg-tip", "小桶", "小桶", "加工设备", "木材×30 铜锭×1 铁锭×1 橡树树脂×1", "耕种8级", ["啤酒花、杨桃、上古水果都非常适合进小桶。"], ["profit"]),
+          shopGood("crafting-preserves-tip", "罐头瓶", "罐头瓶", "加工设备", "木材×50 石头×40 煤炭×8", "耕种4级", ["低价作物和采集物进罐头瓶，前中期回本很稳。"], ["profit"])
+        ],
         goalIds: [
           "craft-furnace","craft-preserves-jar","craft-keg","craft-bee-house","craft-oil-maker",
           "craft-mayo-machine","craft-cheese-press","craft-loom","craft-tapper",
@@ -15315,58 +15826,45 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (!container) return;
 
       container.innerHTML = SHOP_DATA.map(shop => {
-        const templates = getShopGoalTemplates(shop);
+        const entries = getShopCatalogEntries(shop);
         const cartItems = getShopCartItems(shop);
 
         const introHtml = `
-          <div class="shop-intro-card">
+          <article class="shop-intro-card">
             <div class="shop-intro-head">
               <span class="shop-intro-icon">${renderInvIcon(shop.icon)}</span>
-              <h3 class="shop-intro-name">${escapeHtml(shop.name)}</h3>
+              <div>
+                <h3 class="shop-intro-name">${escapeHtml(shop.name)}</h3>
+                <div class="shop-intro-sub">${escapeHtml(shop.location || "")} · ${escapeHtml(shop.focus || "")}</div>
+              </div>
             </div>
             <div class="shop-intro-body">
-              ${shop.intro.map(line => `<div class="shop-intro-line">• ${escapeHtml(line)}</div>`).join("")}
+              ${shop.intro.map(line => `<div class="shop-intro-line">${escapeHtml(line)}</div>`).join("")}
             </div>
-          </div>`;
+            <div class="shop-metric-grid">
+              <div class="shop-metric"><span>营业时间</span><b>${escapeHtml(shop.hours || "查看详情")}</b></div>
+              <div class="shop-metric"><span>休息/出现</span><b>${escapeHtml(shop.closed || "全年")}</b></div>
+            </div>
+            ${(shop.chips || []).length ? `<div class="shop-chip-row">${shop.chips.map(chip => `<span class="shop-chip">${escapeHtml(chip)}</span>`).join("")}</div>` : ""}
+          </article>`;
 
         let catalogHtml = "";
-        if (templates.length) {
-          const chips = templates.map(tpl => {
-            const inCart = appState.goals.some(g => g.id === tpl.id);
-            const active = appState._activeShopItem === tpl.id;
-            return `<button class="item-chip ${active ? 'active' : ''} ${inCart ? 'in-cart' : ''}" data-shop-chip="${tpl.id}" type="button">${renderInvIcon(tpl.emoji || tpl.title)}<span>${escapeHtml(tpl.title)}</span>${inCart ? '<span class="chip-qty">✓</span>' : ''}</button>`;
+        if (entries.length) {
+          const chips = entries.map(entry => {
+            const inCart = entry.type === "goal" && appState.goals.some(g => g.id === entry.id);
+            const active = appState._activeShopItem === entry.key;
+            return `<button class="item-chip ${active ? 'active' : ''} ${inCart ? 'in-cart' : ''}" data-shop-chip="${escapeAttribute(entry.key)}" type="button">${renderShopEntryIcon(entry)}<span>${escapeHtml(entry.title)}</span>${inCart ? '<span class="chip-qty">✓</span>' : ''}</button>`;
           }).join("");
 
           let detailHtml = "";
           if (appState._activeShopItem) {
-            const at = templates.find(t => t.id === appState._activeShopItem);
-            if (at) {
-              const inCart = appState.goals.some(g => g.id === at.id);
-              const stepsInfo = (at.steps || []).map(s => {
-                const label = s.label || (s.invKey ? `${s.invKey} ×${s.invNeed}` : "");
-                const sub = s.sub || ITEM_SOURCE_HINTS[s.invKey] || "";
-                return `<div class="shop-product-step">${escapeHtml(label)}${sub ? `<span class="shop-product-sub"> — ${escapeHtml(sub)}</span>` : ""}</div>`;
-              }).join("");
-              detailHtml = `<div class="shop-product-detail">
-                <div class="shop-product-head">
-                  <span class="shop-product-icon">${renderInvIcon(at.emoji || at.title)}</span>
-                  <div>
-                    <div class="shop-product-title">${escapeHtml(at.title)}</div>
-                    ${at.note ? `<div class="shop-product-note">${escapeHtml(at.note)}</div>` : ""}
-                    ${at.duration ? `<div class="shop-product-note">⏱ 用时 ${escapeHtml(at.duration)}</div>` : ""}
-                  </div>
-                </div>
-                <div class="shop-product-steps">${stepsInfo || '<div class="shop-product-step" style="color:var(--muted)">无需材料</div>'}</div>
-                <div class="shop-product-actions">
-                  ${inCart
-                    ? `<button class="shop-remove-btn" data-shop-remove="${at.id}">已在购物车 ✓</button>`
-                    : `<button class="shop-add-btn" data-shop-add="${at.id}">🛒 加入购物车</button>`}
-                </div>
-              </div>`;
+            const activeEntry = entries.find(entry => entry.key === appState._activeShopItem);
+            if (activeEntry) {
+              detailHtml = renderShopProductDetail(activeEntry);
             }
           }
           catalogHtml = `<div class="shop-catalog">
-            <div class="item-lib-cat-label">📦 商品目录</div>
+            <div class="item-lib-cat-label">${renderOfficialIcon("商品目录", "商品")}商品目录</div>
             <div class="item-lib-chips">${chips}</div>
             ${detailHtml}
           </div>`;
@@ -15375,13 +15873,153 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         let cartHtml = "";
         if (cartItems.length) {
           cartHtml = `<div class="shop-cart-section">
-            <div class="item-lib-cat-label">🛒 购物车（${cartItems.length}）</div>
+            <div class="item-lib-cat-label">${renderOfficialIcon("购物车", "购物车")}购物车（${cartItems.length}）</div>
             ${renderGoalCards(cartItems)}
           </div>`;
         }
 
-        return `<div class="shop-section">${introHtml}${catalogHtml}${cartHtml}</div>`;
+        return `<section class="shop-section" style="--shop-accent:${escapeAttribute(shop.accent || "#9a5a2f")}">${introHtml}${catalogHtml}${cartHtml}</section>`;
       }).join("");
+    }
+
+    function getShopCatalogEntries(shop) {
+      const goalEntries = getShopGoalTemplates(shop).map((tpl) => ({
+        ...tpl,
+        key: `goal:${tpl.id}`,
+        type: "goal",
+        iconName: goalIconName(tpl),
+        kind: SHOP_HOW_LABELS[tpl.how] || "目标",
+        unlock: tpl.note || "",
+        price: getGoalMoneyLabel(tpl) || (tpl.duration ? `用时 ${tpl.duration}` : "查看材料"),
+        notes: getGoalDetailNotes(tpl),
+        tags: getGoalTags(tpl),
+        materials: getGoalMaterialSteps(tpl)
+      }));
+      const goodsEntries = (shop.goods || []).map((good) => ({
+        ...good,
+        key: `good:${good.id}`,
+        type: "good",
+        iconName: good.iconName || good.title,
+        materials: (good.materials || []).map((item) => Array.isArray(item) ? item : [item, ""])
+      }));
+      return [...goalEntries, ...goodsEntries];
+    }
+
+    function renderShopEntryIcon(entry) {
+      return renderInvIcon(entry.iconName || entry.emoji || entry.title);
+    }
+
+    function getGoalMaterialSteps(tpl) {
+      return (tpl.steps || []).filter((step) => step.manual || step.invKey || step.invNeed);
+    }
+
+    function getGoalMoneyLabel(tpl) {
+      const money = (tpl.steps || []).find((step) => step.invKey === "金币" && step.invNeed);
+      return money ? `${Number(money.invNeed).toLocaleString("en-US")}g` : "";
+    }
+
+    function getGoalDetailNotes(tpl) {
+      const notes = [];
+      if (tpl.note) notes.push(stripDecorativeIcons(tpl.note));
+      if (tpl.duration) notes.push(`用时：${tpl.duration}`);
+      if (tpl.how === "build" || tpl.how === "house") notes.push("在罗宾木匠商店办理，施工期间建筑或房屋会进入升级状态。");
+      if (tpl.how === "upgrade") notes.push("工具交给克林特后两天无法使用，建议雨天前交喷壶。");
+      if (tpl.how === "craft") notes.push("需要先解锁配方，再在合成菜单用材料制作。");
+      if (tpl.how === "buy") notes.push("准备好金币后到对应商店柜台购买。");
+      return notes;
+    }
+
+    function getGoalTags(tpl) {
+      const tags = [];
+      if (tpl.how) tags.push(SHOP_HOW_LABELS[tpl.how] || tpl.how);
+      if (tpl.duration) tags.push(tpl.duration);
+      if ((tpl.steps || []).some(step => step.invKey === "金币")) tags.push("金币");
+      if ((tpl.steps || []).some(step => step.invKey && step.invKey !== "金币")) tags.push("材料");
+      return tags;
+    }
+
+    function renderShopProductDetail(entry) {
+      const inCart = entry.type === "goal" && appState.goals.some(g => g.id === entry.id);
+      const materialHtml = renderShopMaterials(entry);
+      const stepHtml = renderShopRequirementRows(entry);
+      const noteHtml = (entry.notes || []).length ? `
+        <div class="shop-note-list">
+          ${(entry.notes || []).map(note => `<div class="shop-note">${escapeHtml(note)}</div>`).join("")}
+        </div>
+      ` : "";
+      return `<article class="shop-product-detail">
+        <header class="shop-product-head">
+          <span class="shop-product-icon">${renderShopEntryIcon(entry)}</span>
+          <div>
+            <div class="shop-product-title">${escapeHtml(entry.title)}</div>
+            <div class="shop-product-note">${escapeHtml(entry.kind || "商品")} · ${escapeHtml(entry.unlock || "查看商店说明")}</div>
+          </div>
+        </header>
+        <div class="shop-product-body">
+          <div class="shop-metric-grid">
+            <div class="shop-metric"><span>价格/成本</span><b>${escapeHtml(entry.price || getGoalMoneyLabel(entry) || "按材料")}</b></div>
+            <div class="shop-metric"><span>状态</span><b>${escapeHtml(inCart ? "已加入购物车" : entry.type === "goal" ? "可加入购物车" : "资料卡")}</b></div>
+          </div>
+          ${materialHtml}
+          ${stepHtml}
+          ${(entry.tags || []).length ? `<div class="shop-tag-row">${entry.tags.map(tag => `<span class="shop-tag ${String(tag).includes("收益") || tag === "profit" ? "good" : String(tag).includes("季") || tag === "bundle" ? "warn" : ""}">${escapeHtml(normalizeShopTag(tag))}</span>`).join("")}</div>` : ""}
+          ${noteHtml}
+          ${entry.type === "goal" ? `<div class="shop-product-actions">
+            ${inCart
+              ? `<button class="shop-remove-btn" data-shop-remove="${entry.id}" type="button">已在购物车 ✓</button>`
+              : `<button class="shop-add-btn" data-shop-add="${entry.id}" type="button">${renderInvIcon("购物车")}加入购物车</button>`}
+          </div>` : ""}
+        </div>
+      </article>`;
+    }
+
+    function renderShopMaterials(entry) {
+      const materials = entry.type === "goal"
+        ? (entry.materials || []).filter(step => step.invKey && step.invKey !== "金币").map(step => [step.invKey, step.invNeed || ""])
+        : (entry.materials || []);
+      if (!materials.length) return "";
+      return `<div class="shop-material-row">
+        ${materials.map(([name, count]) => `<span class="shop-material">${renderInvIcon(name)}<span>${escapeHtml(name)}${count ? `×${escapeHtml(String(count))}` : ""}</span></span>`).join("")}
+      </div>`;
+    }
+
+    function renderShopRequirementRows(entry) {
+      if (entry.type !== "goal") {
+        return entry.price ? `<div class="shop-product-steps"><div class="shop-product-step"><span>${escapeHtml(entry.price)}</span><span class="shop-product-have">${escapeHtml(entry.kind || "商品")}</span></div></div>` : "";
+      }
+      const rows = (entry.materials || []).map((step) => {
+        const have = step.invKey ? (appState.inventory[step.invKey] || 0) : 0;
+        const auto = step.invNeed && have >= step.invNeed;
+        const label = step.label || (step.invKey ? `${step.invKey} ×${step.invNeed}` : "");
+        const sub = getStepSub(step);
+        return `<div class="shop-product-step ${auto ? "ready" : ""}">
+          <span>${escapeHtml(label)}${sub ? `<span class="shop-product-sub">${escapeHtml(sub)}</span>` : ""}</span>
+          ${step.invKey && step.invNeed ? `<span class="shop-product-have">${auto ? "✓ " : ""}${have}/${step.invNeed}</span>` : ""}
+        </div>`;
+      }).join("");
+      return `<div class="shop-product-steps">${rows || '<div class="shop-product-step"><span>无需材料</span><span class="shop-product-have">直接办理</span></div>'}</div>`;
+    }
+
+    function normalizeShopTag(tag) {
+      const labels = {
+        starter: "新手",
+        care: "照料",
+        barn: "畜棚",
+        coop: "鸡舍",
+        product: "产物",
+        profit: "收益",
+        seasonal: "季节限定",
+        bundle: "献祭补缺",
+        material: "材料",
+        utility: "实用",
+        service: "服务",
+        food: "食物",
+        gift: "送礼",
+        speed: "速度",
+        recipe: "配方",
+        crop: "作物"
+      };
+      return labels[tag] || tag;
     }
 
     function renderGoalCards(goals) {
@@ -15408,7 +16046,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const isOpen = goal.expanded !== false;
         return `<div class="goal-card-container">
           <button class="goal-delete-btn" data-delete-goal="${goal.id}" type="button">🗑️<br/>删除</button>
-          <div class="goal-card ${complete ? "complete" : ""} ${isOpen ? "expanded" : ""}" data-swipe-goal="${goal.id}">
+          <div class="goal-card ${complete ? "complete" : ""} ${isOpen ? "expanded" : ""}" data-goal-kind="${escapeAttribute(tpl.how || "self")}" data-swipe-goal="${goal.id}">
             <button type="button" class="goal-head" data-toggle-goal="${goal.id}">
               <span class="goal-emoji">${renderGoalIcon(tpl)}</span>
               <div class="goal-info"><div class="goal-title">${escapeHtml(tpl.title)}</div></div>
@@ -16058,6 +16696,50 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       winter: "Festival of Ice.png"
     };
 
+    const APP_SEASON_CARD_BACKGROUNDS = {
+      spring: {
+        planting: "Egg Festival.png",
+        fishing: "Desert Festival.png",
+        festival: "Flower Festival.jpg",
+        birthday: "Egg Festival 18 Eggs.jpg"
+      },
+      summer: {
+        planting: "Luau.png",
+        fishing: "Trout Derby.png",
+        festival: "Dance Of The Moonlight Jellies.jpg",
+        birthday: "Rare Green Jelly.png"
+      },
+      fall: {
+        planting: "StardewValleyFair.png",
+        fishing: "StardropFair.png",
+        festival: "Spirits Eve.png",
+        birthday: "Winning Golden Pumpkin.png"
+      },
+      winter: {
+        planting: "Festival of Ice.png",
+        fishing: "SquidFest.png",
+        festival: "NightMarket.jpg",
+        birthday: "Feast of the Winterstar Secret Santa.png"
+      }
+    };
+
+    function resolveAppImageUrl(source) {
+      if (!source) return "";
+      return /^https?:\/\//i.test(source) ? source : iconUrl(source);
+    }
+
+    function getSeasonCardBackgroundSource(season, section) {
+      const seasonSet = APP_SEASON_CARD_BACKGROUNDS[season] || APP_SEASON_CARD_BACKGROUNDS.spring || {};
+      const fallbackSet = APP_SEASON_CARD_BACKGROUNDS.spring || {};
+      return seasonSet[section] || fallbackSet[section] || fallbackSet.planting || "";
+    }
+
+    function renderSeasonCardBgStyle(season, section) {
+      const source = getSeasonCardBackgroundSource(season, section);
+      const url = resolveAppImageUrl(source);
+      return url ? ` style="--season-card-bg:url(&quot;${escapeAttribute(url)}&quot;)"` : "";
+    }
+
     /* ── 渲染主入口 ── */
     function renderApp() {
       renderSeasonBar();
@@ -16121,13 +16803,17 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       document.getElementById("dayInput").value = appState.day;
       const seasonLabel = { spring: "春", summer: "夏", fall: "秋", winter: "冬" }[appState.season];
       const seasonIcon = { spring: "春", summer: "夏", fall: "秋", winter: "冬" }[appState.season];
-      document.getElementById("seasonLabel").textContent = `${seasonLabel}季`;
-      document.getElementById("seasonTitleIcon").innerHTML = renderOfficialIconContent(seasonIcon, seasonLabel);
+      const seasonLabelEl = document.getElementById("seasonLabel");
+      if (seasonLabelEl) seasonLabelEl.textContent = `${seasonLabel}季`;
+      const seasonTitleIcon = document.getElementById("seasonTitleIcon");
+      if (seasonTitleIcon) seasonTitleIcon.innerHTML = renderOfficialIconContent(seasonIcon, seasonLabel);
       const seasonPanel = document.getElementById("seasonPanel");
       if (seasonPanel) {
         const bgFile = APP_SEASON_BACKGROUNDS[appState.season] || APP_SEASON_BACKGROUNDS.spring;
+        const cardBgFile = getSeasonCardBackgroundSource(appState.season, "planting");
         seasonPanel.dataset.season = appState.season;
         seasonPanel.style.setProperty("--season-bg", `url("${iconUrl(bgFile)}")`);
+        seasonPanel.style.setProperty("--season-card-bg", `url("${resolveAppImageUrl(cardBgFile)}")`);
       }
       const wt = document.getElementById("weatherToggle");
       const weatherIcon = appState.weather === "rainy" ? "雨" : "晴";
@@ -16649,25 +17335,21 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       spring: {
         label: "春季",
         icon: "🌸",
-        planting: "草莓是春季赚钱核心；开局补防风草、土豆、花椰菜和青豆收集包。",
         fishing: "春季雨天很关键，优先鲶鱼、西鲱和鳗鱼，晴天补太阳鱼。"
       },
       summer: {
         label: "夏季",
         icon: "🌿",
-        planting: "杨桃单价最高，蓝莓稳定量大；啤酒花适合过渡酿酒。",
         fishing: "晴天钓太阳鱼、虹鳟鱼和河豚；雨天补红鲷鱼、鲶鱼和西鲱。"
       },
       fall: {
         label: "秋季",
         icon: "🍂",
-        planting: "蔓越莓稳定最强，南瓜和葡萄也值得种；记得留收集包作物。",
         fishing: "秋季雨天鱼特别多，大眼鱼、鳗鱼、鲶鱼、西鲱和红鲷鱼都能补。"
       },
       winter: {
         label: "冬季",
         icon: "❄️",
-        planting: "露地作物少，霜瓜和冬季种子是重点；建议顺手推进温室。",
         fishing: "冬季钓鱼是稳定主线，夜市期间别错过潜艇深海鱼。"
       }
     };
@@ -16777,79 +17459,110 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const season = appState.season;
       const meta = SEASON_MAIN_META[season] || SEASON_MAIN_META.spring;
       root.innerHTML = `
-        ${renderSeasonPlantingSummary(season, meta)}
+        ${renderSeasonPlantingSummary(season)}
         ${renderSeasonFishingSummary(season, meta)}
         ${renderSeasonFestivalSummary(season)}
         ${renderSeasonBirthdaysSummary(season)}
       `;
     }
 
-    function renderSeasonPlantingSummary(season, meta) {
+    function renderSeasonPlantingSummary(season) {
       const crops = getPlantingCropsForSeason(season).slice().sort((a, b) => b.profitDay - a.profitDay);
       const available = crops.filter((entry) => {
         const status = getPlantingStatus(entry, season);
         return !status.missed && !entry.tags.includes("avoid");
       });
-      const top = (available.length ? available : crops).slice(0, 4);
-      const urgent = available
-        .map((entry) => ({ entry, status: getPlantingStatus(entry, season) }))
-        .filter(({ status }) => status.checkDate && status.daysLeft <= 4)
-        .sort((a, b) => a.status.daysLeft - b.status.daysLeft)
-        .slice(0, 3);
-      const bundle = crops.filter((entry) => entry.bundle).slice(0, 6);
-      const urgentText = urgent.length
-        ? urgent.map(({ entry, status }) => `${entry.name}${Math.max(0, status.daysLeft)}天内`).join(" / ")
-        : "暂无临近最晚播种";
+      const keyCrops = getSeasonKeyCrops(available.length ? available : crops);
       return `
-        <article class="season-main-card planting">
-          <h3 class="season-card-title"><span>${renderOfficialLabel("种植", "当季种植")}</span><button type="button" class="season-main-link" data-open-planting>完整表</button></h3>
-          <p class="season-card-note">${escapeHtml(meta.planting)} ${escapeHtml(urgentText)}</p>
+        <article class="season-main-card planting season-themed"${renderSeasonCardBgStyle(season, "planting")}>
+          <h3 class="season-card-title"><span>${renderOfficialLabel("种植", "当季种植")}</span><button type="button" class="season-main-link" data-open-planting>种植页</button></h3>
           <div class="season-mini-grid">
-            ${top.map((entry) => {
+            ${keyCrops.map((entry) => {
               const status = getPlantingStatus(entry, season);
               const deadline = status.missed ? "已过最晚" : `最晚${SEASON_CN[season]}${status.latest}日`;
+              const reasons = getSeasonCropReasonTags(entry);
               return `
                 <div class="season-mini-item">
                   <span class="season-mini-icon">${renderPlantingIcon(entry.name)}</span>
-                  <span>
+                  <div class="season-mini-body">
                     <div class="season-mini-name">${escapeHtml(entry.name)}</div>
                     <div class="season-mini-meta">${escapeHtml(formatPlantingProfit(entry.profitDay))}/天 · ${entry.regrow ? "持续收获" : `${entry.growDays}天`} · ${escapeHtml(deadline)}</div>
-                  </span>
+                    <div class="season-reason-row">
+                      ${reasons.map((reason) => `<span class="season-reason-tag ${escapeAttribute(reason.kind)}">${escapeHtml(reason.label)}</span>`).join("")}
+                    </div>
+                  </div>
                 </div>
               `;
             }).join("")}
           </div>
-          <div class="season-tag-row">
-            ${bundle.map((entry) => `<span class="season-tag">${renderPlantingIcon(entry.name)} ${escapeHtml(entry.name)}</span>`).join("")}
-          </div>
         </article>
       `;
+    }
+
+    function getSeasonKeyCrops(crops) {
+      const scored = crops
+        .slice()
+        .map((entry) => ({ entry, score: getSeasonCropScore(entry) }))
+        .filter(({ score }) => score > 0)
+        .sort((a, b) => b.score - a.score || b.entry.profitDay - a.entry.profitDay)
+        .slice(0, 8)
+        .map(({ entry }) => entry);
+      return scored.length ? scored : crops.slice().sort((a, b) => b.profitDay - a.profitDay).slice(0, 4);
+    }
+
+    function getSeasonCropScore(entry) {
+      let score = 0;
+      if (entry.tags.includes("profitable")) score += 6;
+      else if (entry.profitDay >= 10) score += 4;
+      if (entry.bundle) score += 5;
+      if (entry.regrow) score += 2;
+      if (entry.tags.includes("artisan")) score += 2;
+      if (entry.tags.includes("quick")) score += 1.5;
+      if (/沙漠|绿洲/.test(entry.source || "")) score += 1;
+      return score;
+    }
+
+    function getSeasonCropReasonTags(entry) {
+      const reasons = [];
+      if (entry.tags.includes("profitable") || entry.profitDay >= 10) reasons.push({ label: "赚钱核心", kind: "good" });
+      if (entry.bundle) reasons.push({ label: "收集包", kind: "good" });
+      if (entry.regrow) reasons.push({ label: "持续收获", kind: "" });
+      if (entry.tags.includes("artisan")) reasons.push({ label: "适合加工", kind: "warn" });
+      if (entry.tags.includes("quick")) reasons.push({ label: "短周期", kind: "" });
+      if (/沙漠|绿洲/.test(entry.source || "")) reasons.push({ label: "沙漠解锁", kind: "warn" });
+      return reasons.slice(0, 3);
     }
 
     function renderSeasonFishingSummary(season, meta) {
       const data = SEASON_FISHING_DATA[season] || SEASON_FISHING_DATA.spring;
       const weatherList = appState.weather === "rainy" ? data.rainy : data.sunny;
-      const priority = [...weatherList, ...data.all].slice(0, 7);
+      const priority = [...weatherList, ...data.all].slice(0, 8);
+      const weatherTag = appState.weather === "rainy" ? "雨天" : "晴天";
       return `
-        <article class="season-main-card fishing">
-          <h3 class="season-card-title"><span>${renderOfficialLabel("钓鱼", "当季钓鱼")}</span><button type="button" class="season-main-link" data-open-fishing>完整表</button></h3>
-          <p class="season-card-note">${escapeHtml(data.focus || meta.fishing)}</p>
-          <div class="season-tag-row"><span class="season-tag ${appState.weather === "rainy" ? "warn" : ""}">${appState.weather === "rainy" ? "雨天" : "晴天"}</span></div>
-          <div class="fish-list">
-            ${priority.map((entry) => renderSeasonFishRow(entry)).join("")}
+        <article class="season-main-card fishing season-themed"${renderSeasonCardBgStyle(season, "fishing")}>
+          <h3 class="season-card-title"><span>${renderOfficialLabel("钓鱼", "当季钓鱼")}</span><button type="button" class="season-main-link" data-open-fishing>钓鱼页</button></h3>
+          <div class="season-mini-grid">
+            ${priority.map((entry) => renderSeasonFishRow(entry, weatherTag)).join("")}
           </div>
         </article>
       `;
     }
 
-    function renderSeasonFishRow(entry) {
+    function renderSeasonFishRow(entry, weatherTag) {
+      const reasons = [
+        { label: weatherTag, kind: weatherTag === "雨天" ? "warn" : "" },
+        ...(entry.note ? [{ label: entry.note, kind: "good" }] : [])
+      ];
       return `
         <div class="fish-row ${entry.note ? "need" : ""}">
           <span class="fish-icon">${renderSeasonIcon(entry.name)}</span>
-          <span>
+          <div class="season-mini-body">
             <div class="fish-name">${escapeHtml(entry.name)}</div>
-            <div class="fish-meta">${escapeHtml(entry.place)} · ${escapeHtml(entry.time)}${entry.note ? ` · ${escapeHtml(entry.note)}` : ""}</div>
-          </span>
+            <div class="fish-meta">${escapeHtml(entry.place)} · ${escapeHtml(entry.time)}</div>
+            <div class="season-reason-row">
+              ${reasons.map((reason) => `<span class="season-reason-tag ${escapeAttribute(reason.kind)}">${escapeHtml(reason.label)}</span>`).join("")}
+            </div>
+          </div>
         </div>
       `;
     }
@@ -16860,19 +17573,22 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         .slice()
         .sort((a, b) => a.start - b.start);
       return `
-        <article class="season-main-card festival">
+        <article class="season-main-card festival season-themed"${renderSeasonCardBgStyle(season, "festival")}>
           <h3 class="season-card-title"><span>${renderOfficialLabel("节日", "当季节日")}</span><button type="button" class="season-main-link" data-open-festival>节日页</button></h3>
-          <p class="season-card-note">提前准备商店、比赛和送礼道具，节日当天会占用大半天。</p>
-          <div class="festival-list">
+          <div class="season-mini-grid">
             ${festivals.map((entry) => {
               const timing = getFestivalTiming(entry);
+              const reasons = getSeasonFestivalReasonTags(entry, timing);
               return `
                 <div class="festival-row">
                   <span class="fish-icon">${renderOfficialIconContent(entry.iconName || entry.name || "节日", entry.name)}</span>
-                  <span>
-                    <div class="festival-name">${escapeHtml(entry.name)} <span class="season-tag ${timing.state === "today" ? "today" : timing.state === "upcoming" ? "warn" : ""}">${escapeHtml(timing.label)}</span></div>
+                  <div class="season-mini-body">
+                    <div class="festival-name">${escapeHtml(entry.name)}</div>
                     <div class="festival-meta">${escapeHtml(formatFestivalDate(entry))} · ${escapeHtml(entry.hours)} · ${escapeHtml(entry.location)}</div>
-                  </span>
+                    <div class="season-reason-row">
+                      ${reasons.map((reason) => `<span class="season-reason-tag ${escapeAttribute(reason.kind)}">${escapeHtml(reason.label)}</span>`).join("")}
+                    </div>
+                  </div>
                 </div>
               `;
             }).join("")}
@@ -16881,31 +17597,56 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       `;
     }
 
+    function getSeasonFestivalReasonTags(entry, timing) {
+      const reasons = [];
+      if (timing.state === "today") reasons.push({ label: "今天", kind: "good" });
+      else if (timing.state === "upcoming") reasons.push({ label: timing.label, kind: "warn" });
+      else reasons.push({ label: "已过", kind: "" });
+      if (entry.tags.includes("shop")) reasons.push({ label: "节日商店", kind: "warn" });
+      if (entry.tags.includes("contest")) reasons.push({ label: "比赛奖励", kind: "good" });
+      if (entry.tags.includes("friendship")) reasons.push({ label: "好感机会", kind: "good" });
+      if (entry.tags.includes("desert")) reasons.push({ label: "沙漠活动", kind: "warn" });
+      return reasons.slice(0, 3);
+    }
+
     function renderSeasonBirthdaysSummary(season) {
       const birthdays = VILLAGER_DATA
         .filter((villager) => villager.birthday && villager.birthday.season === season)
         .slice()
         .sort((a, b) => a.birthday.day - b.birthday.day);
       return `
-        <article class="season-main-card birthday">
+        <article class="season-main-card birthday season-themed"${renderSeasonCardBgStyle(season, "birthday")}>
           <h3 class="season-card-title"><span>${renderOfficialLabel("生日", "当季居民生日")}</span><button type="button" class="season-main-link" data-open-social>社交页</button></h3>
-          <p class="season-card-note">生日送最爱礼物收益最高，缺礼物时先准备通用最爱：兔子的脚、珍珠、黄金南瓜、五彩碎片。</p>
-          <div class="birthday-list">
+          <div class="season-mini-grid">
             ${birthdays.map((villager) => {
               const label = getSeasonDayLabel(villager.birthday.day);
+              const reasons = getSeasonBirthdayReasonTags(label);
               return `
                 <div class="birthday-row">
                   <span class="birthday-avatar">${renderSocialAvatar(villager)}</span>
-                  <span>
-                    <div class="birthday-name">${escapeHtml(villager.name)} <span class="season-tag ${label === "今天" ? "today" : label.includes("还有") ? "warn" : ""}">${escapeHtml(`${SEASON_CN[season]}${villager.birthday.day}日 · ${label}`)}</span></div>
-                    <div class="birthday-gifts">${villager.loved.slice(0, 5).map((gift) => `<span class="birthday-gift" title="${escapeAttribute(gift)}">${renderSeasonIcon(gift)}</span>`).join("")}</div>
-                  </span>
+                  <div class="season-mini-body">
+                    <div class="birthday-name">${escapeHtml(villager.name)}</div>
+                    <div class="birthday-meta">${escapeHtml(`${SEASON_CN[season]}${villager.birthday.day}日 · ${label}`)}</div>
+                    <div class="birthday-gifts">${villager.loved.slice(0, 3).map((gift) => `<span class="birthday-gift" title="${escapeAttribute(gift)}">${renderSeasonIcon(gift)}</span>`).join("")}</div>
+                    <div class="season-reason-row">
+                      ${reasons.map((reason) => `<span class="season-reason-tag ${escapeAttribute(reason.kind)}">${escapeHtml(reason.label)}</span>`).join("")}
+                    </div>
+                  </div>
                 </div>
               `;
             }).join("")}
           </div>
         </article>
       `;
+    }
+
+    function getSeasonBirthdayReasonTags(label) {
+      const reasons = [];
+      if (label === "今天") reasons.push({ label: "今天", kind: "good" });
+      else if (label.includes("还有")) reasons.push({ label, kind: "warn" });
+      else reasons.push({ label: "已过", kind: "" });
+      reasons.push({ label: "生日好感", kind: "good" });
+      return reasons;
     }
 
     function getSeasonDayLabel(day) {
@@ -20944,17 +21685,23 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     }
 
     function renderScenes() {
-      const dow = getDayOfWeek(appState.day);
-      document.getElementById("sceneDayLabel").textContent = `${DOW_NAMES[dow]} · ${appState.weather === "sunny" ? "晴" : appState.weather === "rain" || appState.weather === "rainy" ? "雨" : "暴风雨"}`;
-      // 同步进度 UI
-      document.getElementById("progDesert").checked = appState.progress.desertUnlocked;
-      document.getElementById("progIsland").checked = appState.progress.islandUnlocked;
-      document.getElementById("progVolcano").checked = appState.progress.volcanoUnlocked;
-      document.getElementById("progMineLevel").value = appState.progress.mineLevel;
-
-      const scenes = getSceneRecommendations();
+      const labelEl = document.getElementById("sceneDayLabel");
+      const desertEl = document.getElementById("progDesert");
+      const islandEl = document.getElementById("progIsland");
+      const volcanoEl = document.getElementById("progVolcano");
+      const mineLevelEl = document.getElementById("progMineLevel");
       const listEl = document.getElementById("sceneList");
       const emptyEl = document.getElementById("sceneEmpty");
+      if (!labelEl || !desertEl || !islandEl || !volcanoEl || !mineLevelEl || !listEl || !emptyEl) return;
+      const dow = getDayOfWeek(appState.day);
+      labelEl.textContent = `${DOW_NAMES[dow]} · ${appState.weather === "sunny" ? "晴" : appState.weather === "rain" || appState.weather === "rainy" ? "雨" : "暴风雨"}`;
+      // 同步进度 UI
+      desertEl.checked = appState.progress.desertUnlocked;
+      islandEl.checked = appState.progress.islandUnlocked;
+      volcanoEl.checked = appState.progress.volcanoUnlocked;
+      mineLevelEl.value = appState.progress.mineLevel;
+
+      const scenes = getSceneRecommendations();
       if (scenes.length === 0 || (scenes.length === 1 && scenes[0].id === "rest-day")) {
         listEl.innerHTML = "";
         emptyEl.style.display = "";
@@ -21345,6 +22092,40 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       renderApp();
     }
 
+    function preserveScrollPosition() {
+      const targetIds = [
+        "tabContent",
+        "planting-overlay",
+        "festival-overlay",
+        "fishing-overlay",
+        "animal-overlay",
+        "mine-overlay",
+        "skull-overlay",
+        "pond-overlay",
+        "island-overlay",
+        "strategy-overlay"
+      ];
+      const snapshots = [
+        { target: window, left: window.scrollX || 0, top: window.scrollY || 0 },
+        ...targetIds.map((id) => document.getElementById(id)).filter(Boolean).map((target) => ({
+          target,
+          left: target.scrollLeft || 0,
+          top: target.scrollTop || 0
+        }))
+      ];
+      const restore = () => {
+        snapshots.forEach(({ target, left, top }) => {
+          if (target === window) window.scrollTo(left, top);
+          else {
+            target.scrollLeft = left;
+            target.scrollTop = top;
+          }
+        });
+      };
+      restore();
+      requestAnimationFrame(restore);
+    }
+
     /* ── 背包 ── */
     function renderItemLibrary() {
       const grid = document.getElementById("itemLibGrid");
@@ -21481,7 +22262,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     function renderInvIcon(name) {
       const fileName = iconFiles[name];
       if (fileName) {
-        return `<img src="${iconUrl(fileName)}" alt="" onerror="this.replaceWith(fallbackIcon('${escapeAttribute(name)}'))" />`;
+        return `<img class="icon" src="${iconUrl(fileName)}" alt="" loading="lazy" data-fallback="${escapeAttribute(String(name || "?").slice(0, 1))}" onerror="this.replaceWith(fallbackIcon('${escapeAttribute(name)}'))" />`;
       }
       return `<span class="fallback-icon">${escapeHtml(name.slice(0, 1))}</span>`;
     }
@@ -22175,6 +22956,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       document.querySelectorAll(".app-tab").forEach(b => b.classList.remove("active"));
       const page = document.querySelector(`.tab-page[data-tab="${tabId}"]`);
       const btn = document.querySelector(`.app-tab[data-tab="${tabId}"]`);
+      const shell = document.getElementById("app-shell");
+      if (shell) shell.dataset.activeTab = tabId;
       if (page) page.classList.add("active");
       if (btn) btn.classList.add("active");
       document.getElementById("tabContent").scrollTop = 0;
@@ -22287,10 +23070,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       // 购物车商品目录点击
       const shopChip = e.target.closest("[data-shop-chip]");
       if (shopChip) {
+        preserveScrollPosition();
         const id = shopChip.dataset.shopChip;
         appState._activeShopItem = appState._activeShopItem === id ? null : id;
         renderShoppingCart();
-        if (appState._activeShopItem) setTimeout(() => { const w = document.querySelector(".shop-product-detail"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
         return;
       }
       // 加入购物车
@@ -22316,71 +23099,66 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       }
       const plantingChip = e.target.closest("[data-planting-chip]");
       if (plantingChip) {
+        preserveScrollPosition();
         const cropId = plantingChip.dataset.plantingChip;
         appState._activePlantingCrop = appState._activePlantingCrop === cropId ? null : cropId;
         renderPlanting();
-        if (appState._activePlantingCrop) {
-          setTimeout(() => {
-            const wrap = document.querySelector(".planting-detail-wrap");
-            if (wrap) wrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
-          }, 50);
-        }
         return;
       }
       // 社交图标点击
       const socialChip = e.target.closest("[data-social-chip]");
       if (socialChip) {
+        preserveScrollPosition();
         appState._activeSocialItem = appState._activeSocialItem === socialChip.dataset.socialChip ? null : socialChip.dataset.socialChip;
         renderSocial();
-        if (appState._activeSocialItem) setTimeout(() => { const w = document.querySelector(".social-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
         return;
       }
       // 烹饪图标点击
       const cookingChip = e.target.closest("[data-cooking-chip]");
       if (cookingChip) {
+        preserveScrollPosition();
         appState._activeCookingItem = appState._activeCookingItem === cookingChip.dataset.cookingChip ? null : cookingChip.dataset.cookingChip;
         renderCooking();
-        if (appState._activeCookingItem) setTimeout(() => { const w = document.querySelector(".cooking-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
         return;
       }
       // 节日图标点击
       const festivalChip = e.target.closest("[data-festival-chip]");
       if (festivalChip) {
+        preserveScrollPosition();
         appState._activeFestivalItem = appState._activeFestivalItem === festivalChip.dataset.festivalChip ? null : festivalChip.dataset.festivalChip;
         renderFestivals();
-        if (appState._activeFestivalItem) setTimeout(() => { const w = document.querySelector(".festival-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
         return;
       }
       // 鱼类图标点击
       const fishingChip = e.target.closest("[data-fishing-chip]");
       if (fishingChip) {
+        preserveScrollPosition();
         appState._activeFishingItem = appState._activeFishingItem === fishingChip.dataset.fishingChip ? null : fishingChip.dataset.fishingChip;
         renderFishing();
-        if (appState._activeFishingItem) setTimeout(() => { const w = document.querySelector(".fishing-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
         return;
       }
       // 养殖图标点击
       const animalChip = e.target.closest("[data-animal-chip]");
       if (animalChip) {
+        preserveScrollPosition();
         appState._activeAnimalItem = appState._activeAnimalItem === animalChip.dataset.animalChip ? null : animalChip.dataset.animalChip;
         renderAnimal();
-        if (appState._activeAnimalItem) setTimeout(() => { const w = document.querySelector(".animal-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
         return;
       }
       // 鱼塘图标点击
       const pondChip = e.target.closest("[data-pond-chip]");
       if (pondChip) {
+        preserveScrollPosition();
         appState._activePondItem = appState._activePondItem === pondChip.dataset.pondChip ? null : pondChip.dataset.pondChip;
         renderPond();
-        if (appState._activePondItem) setTimeout(() => { const w = document.querySelector(".pond-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
         return;
       }
       // 流派图标点击
       const strategyChip = e.target.closest("[data-strategy-chip]");
       if (strategyChip) {
+        preserveScrollPosition();
         appState._activeStrategyItem = appState._activeStrategyItem === strategyChip.dataset.strategyChip ? null : strategyChip.dataset.strategyChip;
         renderStrategies();
-        if (appState._activeStrategyItem) setTimeout(() => { const w = document.querySelector(".strategy-detail-wrap"); if (w) w.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
         return;
       }
       // 钓鱼筛选
@@ -22518,10 +23296,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     document.getElementById("dayInput").addEventListener("change", e => setDay(e.target.value));
 
     /* 今日主线 —— 进度设置 */
-    document.getElementById("progDesert").addEventListener("change", e => { appState.progress.desertUnlocked = e.target.checked; renderApp(); });
-    document.getElementById("progIsland").addEventListener("change", e => { appState.progress.islandUnlocked = e.target.checked; renderApp(); });
-    document.getElementById("progVolcano").addEventListener("change", e => { appState.progress.volcanoUnlocked = e.target.checked; renderApp(); });
-    document.getElementById("progMineLevel").addEventListener("change", e => { appState.progress.mineLevel = Math.max(0, Math.min(120, parseInt(e.target.value) || 0)); renderApp(); });
+    const progDesert = document.getElementById("progDesert");
+    if (progDesert) progDesert.addEventListener("change", e => { appState.progress.desertUnlocked = e.target.checked; renderApp(); });
+    const progIsland = document.getElementById("progIsland");
+    if (progIsland) progIsland.addEventListener("change", e => { appState.progress.islandUnlocked = e.target.checked; renderApp(); });
+    const progVolcano = document.getElementById("progVolcano");
+    if (progVolcano) progVolcano.addEventListener("change", e => { appState.progress.volcanoUnlocked = e.target.checked; renderApp(); });
+    const progMineLevel = document.getElementById("progMineLevel");
+    if (progMineLevel) progMineLevel.addEventListener("change", e => { appState.progress.mineLevel = Math.max(0, Math.min(120, parseInt(e.target.value) || 0)); renderApp(); });
 
     /* 社交面板 —— 心数输入 */
     document.getElementById("socialGrid").addEventListener("change", e => {
@@ -22633,13 +23415,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     document.getElementById("itemLibGrid")?.addEventListener("click", e => {
       const chip = e.target.closest("[data-item-chip]");
       if (chip) {
+        preserveScrollPosition();
         const name = chip.dataset.itemChip;
         appState._activeDetailItem = appState._activeDetailItem === name ? null : name;
         renderItemLibrary();
-        setTimeout(() => {
-          const card = document.querySelector(".item-detail-card");
-          if (card) card.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }, 50);
         return;
       }
       const minus = e.target.closest("[data-detail-minus]");
