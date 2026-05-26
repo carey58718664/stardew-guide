@@ -7313,18 +7313,18 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-quality-table th:first-child {
   text-align: center;
-  width: 52px;
+  width: 58px;
   padding-left: 8px;
 }
 .crop-quality-table th:nth-child(2) {
-  width: 34%;
+  width: 31%;
   text-align: left;
   padding-left: 10px;
 }
 .crop-quality-table th:last-child {
-  width: 40%;
+  width: 44%;
   text-align: right;
-  padding-right: 14px;
+  padding-right: 12px;
 }
 .crop-quality-table th .crop-info-note {
   display: inline-flex;
@@ -7343,15 +7343,16 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-quality-table td:first-child {
   text-align: center;
-  width: 52px;
+  width: 58px;
+  padding-left: 6px;
 }
 .crop-quality-table td:nth-child(2) {
   text-align: left;
-  padding-left: 10px;
+  padding-left: 8px;
 }
 .crop-quality-table td:last-child {
   text-align: right;
-  padding-right: 14px;
+  padding-right: 12px;
 }
 .crop-quality-table td img {
   vertical-align: -3px;
@@ -7364,12 +7365,12 @@ body.modal-open { overflow: hidden; touch-action: none; }
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 6px;
+  gap: 4px;
   width: 100%;
 }
 .crop-price-arrow {
   color: #9d8968;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 950;
   line-height: 1;
 }
@@ -7377,7 +7378,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 46px;
+  min-width: 44px;
   min-height: 28px;
   padding: 0 10px;
   border: 1.5px solid #ddcfab;
@@ -7402,23 +7403,23 @@ body.modal-open { overflow: hidden; touch-action: none; }
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
 }
 .crop-process-card-head {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
+  display: block;
   margin-bottom: 8px;
 }
 .crop-process-title-group {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
   flex-wrap: wrap;
-  flex: 1;
+  max-width: 100%;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(232,246,232,0.96), rgba(243,251,236,0.96));
 }
 .crop-process-product-icon {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   image-rendering: pixelated;
   flex: 0 0 24px;
 }
@@ -7444,24 +7445,19 @@ body.modal-open { overflow: hidden; touch-action: none; }
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  min-height: 22px;
+  min-height: 21px;
   padding: 0 8px;
   border-radius: 999px;
   background: #f9f1e4;
   color: #8a7048;
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 900;
   box-shadow: inset 0 0 0 1px rgba(213, 190, 150, 0.55);
   white-space: nowrap;
 }
-.crop-process-profession.in-price {
-  position: absolute;
-  right: 10px;
-  bottom: 8px;
-}
 .crop-process-profession img {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   image-rendering: pixelated;
 }
 .crop-process-grid {
@@ -7477,8 +7473,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-process-metric.price-merge {
   grid-column: 1 / -1;
-  position: relative;
-  padding-bottom: 34px;
+  padding: 8px 10px;
 }
 .crop-process-label {
   display: block;
@@ -7494,11 +7489,26 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-weight: 900;
   line-height: 1.25;
 }
+.crop-process-subtext {
+  display: block;
+  margin-top: 3px;
+  color: #7a6b58;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.crop-process-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
 .crop-process-price-line {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
+  gap: 5px;
+  flex-wrap: nowrap;
 }
 /* ── 折叠区 ── */
 .crop-fold-section {
@@ -7888,18 +7898,18 @@ body.modal-open { overflow: hidden; touch-action: none; }
   align-items: center;
   gap: 3px;
   color: #8a7048;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 850;
-  margin-left: 6px;
-  padding: 0 6px;
-  min-height: 26px;
+  margin-left: 4px;
+  padding: 0 5px;
+  min-height: 23px;
   background: #f9f1e4;
   border-radius: 999px;
   box-shadow: inset 0 0 0 1px rgba(213, 190, 150, 0.55);
 }
 .crop-info-note .crop-profession-icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   image-rendering: pixelated;
 }
 .crop-info-note.tiller-note {
@@ -8065,6 +8075,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   background: transparent;
   box-shadow: none;
   padding: 0;
+  transform: translateX(3px);
 }
 .crop-quality-icon-wrap {
   position: relative;
@@ -8426,16 +8437,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
 
 
 @media (max-width: 520px) {
-  .crop-process-card-head {
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
   .crop-process-grid {
     grid-template-columns: 1fr 1fr;
   }
-  .crop-process-profession.in-price {
-    right: 8px;
-    bottom: 8px;
+  .crop-process-price-row {
+    gap: 6px;
   }
 }
 
@@ -21004,11 +21010,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (detail.products && detail.products.length) {
         const processItems = detail.products.map((p) => {
           const artisanPrice = Math.floor(p.base * 1.4);
-          const deviceText = /蜂房/.test(p.device) ? '蜂房 5×5' : p.device;
           const productIconFile = /蜂蜜/.test(p.produce) ? 'Honey.png' : (iconFiles[p.produce] || iconFiles[entry.name] || 'Honey.png');
+          const deviceTitle = /蜂房/.test(p.device) ? '蜂房' : p.device;
           const deviceDesc = /蜂房/.test(p.device)
-            ? '蜂房周围 5×5 内种植蓝爵'
-            : p.device;
+            ? '蓝爵需种在蜂房 5×5 范围内'
+            : '';
           return `<div class="crop-process-card">
             <div class="crop-process-card-head">
               <div class="crop-process-title-group">
@@ -21020,7 +21026,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             <div class="crop-process-grid">
               <div class="crop-process-metric">
                 <span class="crop-process-label">设备</span>
-                <span class="crop-process-value">${escapeHtml(deviceDesc)}</span>
+                <span class="crop-process-value">${escapeHtml(deviceTitle)}</span>
+                ${deviceDesc ? `<span class="crop-process-subtext">${escapeHtml(deviceDesc)}</span>` : ''}
               </div>
               <div class="crop-process-metric">
                 <span class="crop-process-label">产物</span>
@@ -21028,8 +21035,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
               </div>
               <div class="crop-process-metric price-merge">
                 <span class="crop-process-label">售价</span>
-                <span class="crop-process-value crop-process-price-line">${priceHtml(p.base)}<span class="crop-price-arrow">→</span><span class="crop-price-output-pill">${escapeHtml(String(artisanPrice))}</span></span>
-                ${professionPillHtml('Artisan.png', '工匠 +40%').replace('crop-process-profession', 'crop-process-profession in-price')}
+                <div class="crop-process-price-row">
+                  <span class="crop-process-value crop-process-price-line">${priceHtml(p.base)}<span class="crop-price-arrow">→</span><span class="crop-price-output-pill">${escapeHtml(String(artisanPrice))}</span></span>
+                  ${professionPillHtml('Artisan.png', '工匠 +40%')}
+                </div>
               </div>
             </div>
           </div>`;
