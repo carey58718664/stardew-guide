@@ -18053,7 +18053,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       return `
         <article class="season-main-card planting">
           <header class="season-card-header">
-            <h3 class="season-card-title"><span class="season-title-tag">${renderOfficialLabel("种植", "种植和采集")}</span></h3>
+            <h3 class="season-card-title"><span class="season-title-tag">${renderOfficialLabel("种植", "当季种植")}</span></h3>
             <button type="button" class="season-main-link" data-open-planting>种植和采集页</button>
           </header>
           <div class="season-card-body">
@@ -19734,7 +19734,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     }
 
     function renderPlantingCard(entry, season) {
-      if (entry?.name === "防风草") {
+      if (entry?.category === "crop") {
         return renderUnifiedCropCard(entry, season, { editableQty: false, showRemove: false, showInventoryBadge: true });
       }
       const status = getPlantingStatus(entry, season);
@@ -19790,11 +19790,18 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         || null;
     }
 
+    function resolvePlantingCardSeason(entry, season) {
+      if (!entry) return season || appState.season;
+      if (season && entry.seasons.includes(season)) return season;
+      return entry.seasons[0] || season || appState.season;
+    }
+
     function renderUnifiedCropCard(entry, season, options = {}) {
       const editableQty = Boolean(options.editableQty);
       const showRemove = Boolean(options.showRemove);
       const showInventoryBadge = options.showInventoryBadge !== false;
-      const status = getPlantingStatus(entry, season);
+      const displaySeason = resolvePlantingCardSeason(entry, season);
+      const status = getPlantingStatus(entry, displaySeason);
       const classes = [
         status.missed ? "missed" : "",
         entry.bundle ? "bundle" : "",
@@ -19836,7 +19843,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             </div>
             <div class="planting-tag-row">
               ${statusTag}
-              ${renderPlantingTimingTag(entry, season, status)}
+              ${renderPlantingTimingTag(entry, displaySeason, status)}
               ${entry.bundle ? `<span class="planting-tag good">献祭：${escapeHtml(entry.bundle)}</span>` : ""}
               ${entry.regrow ? `<span class="planting-tag good">持续收获</span>` : ""}
               ${entry.tags.includes("artisan") || extra.procRows.length ? `<span class="planting-tag warn">适合加工</span>` : ""}
@@ -23100,9 +23107,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     }
     
     function renderItemDetailHtml(name) {
-      if (name === "防风草") {
-        const entry = findPlantingEntryByName(name, "crop");
-        if (entry) return renderUnifiedCropCard(entry, appState.season, { editableQty: true, showRemove: true, showInventoryBadge: false });
+      const cropEntry = findPlantingEntryByName(name, "crop");
+      if (cropEntry) {
+        return renderUnifiedCropCard(cropEntry, appState.season, { editableQty: true, showRemove: true, showInventoryBadge: false });
       }
       const inv = appState.inventory;
       const qty = inv[name] || 0;
