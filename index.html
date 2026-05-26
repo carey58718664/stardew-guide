@@ -13999,7 +13999,42 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 
 
-/* v39：计划清单改成场景集式框架 */
+/* v40：计划清单改成板块首页 + 板块内烹饪式标签资料卡 */
+.plan-overview-card {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 2px solid #d8c59e;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255,250,240,.96), rgba(247,237,214,.94));
+}
+.plan-overview-title {
+  color: var(--wood-dark);
+  font-size: 16px;
+  font-weight: 950;
+}
+.plan-overview-sub {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+.plan-overview-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.plan-overview-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff8e8;
+  color: #8b5d11;
+  font-size: 11px;
+  font-weight: 900;
+}
 .plan-hub-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -14011,7 +14046,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
-  min-height: 116px;
+  min-height: 118px;
   padding: 12px;
   border: 3px solid #6b4a37;
   border-radius: 14px;
@@ -14019,6 +14054,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
   box-shadow: 0 6px 18px rgba(76,49,29,.08);
   text-align: left;
   cursor: pointer;
+}
+.plan-hub-card.active {
+  border-color: var(--shop-accent, #9a5a2f);
+  box-shadow: 0 0 0 2px rgba(255,255,255,.65) inset, 0 10px 22px rgba(76,49,29,.12);
+  transform: translateY(-1px);
 }
 .plan-hub-card:active { transform: translateY(1px); }
 .plan-hub-icon {
@@ -14054,16 +14094,31 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-size: 11px;
   font-weight: 900;
 }
-.plan-section-stack { display: grid; gap: 12px; }
-.plan-scene-section { scroll-margin-top: 16px; }
-.plan-scene-hero { gap: 10px; }
-.plan-scene-hero .shop-intro-name {
+.plan-board-shell {
+  display: grid;
+  gap: 12px;
+}
+.plan-board-placeholder {
+  padding: 14px 12px;
+  border: 2px dashed #d8c59e;
+  border-radius: 12px;
+  background: rgba(255,253,247,.92);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.plan-board-view {
+  display: grid;
+  gap: 12px;
+}
+.plan-board-header { gap: 10px; }
+.plan-board-header .shop-intro-name {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 6px;
 }
-.plan-scene-kicker {
+.plan-board-kicker {
   display: inline-flex;
   align-items: center;
   min-height: 22px;
@@ -14074,13 +14129,17 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-size: 11px;
   font-weight: 900;
 }
-.plan-flow-row {
+.plan-board-note {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+.plan-board-flow {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 6px;
-  margin-top: 8px;
 }
-.plan-flow-step {
+.plan-board-step {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -14092,7 +14151,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-size: 12px;
   font-weight: 800;
 }
-.plan-flow-num {
+.plan-board-step-num {
   display: inline-grid;
   place-items: center;
   width: 18px;
@@ -14104,12 +14163,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-weight: 900;
   flex: none;
 }
-.plan-section-note {
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.5;
+.plan-board-groups {
+  display: grid;
+  gap: 12px;
 }
+.plan-detail-wrap { margin-top: 10px; }
 .plan-empty {
   border: 1.5px dashed #d8c59e;
   border-radius: 10px;
@@ -14129,7 +14187,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-size: 12px;
   line-height: 1.55;
 }
-
 
 /* ===== v35 全作物资料卡：加工模板压缩与通用字段 ===== */
 .crop-source-text-price {
@@ -17604,54 +17661,112 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         ] },
     ];
 
-    const SHOP_FRAMEWORK_SECTIONS = [
+    const SHOP_PLAN_SECTIONS = [
       {
         id: "tools",
         name: "工具升级",
         icon: "十字镐",
         accent: "#2f6fb0",
-        desc: "工具 / 打造页里偏服务型的目标",
-        summary: "典型闭环：选升级目标 → 看锭和金币 → 加入计划 → 勾进度。",
-        chips: ["服务型", "金币+材料", "2天"],
-        flow: ["选升级目标", "确认锭和金币", "加入计划", "勾选完成"],
-        entryKeys: ["goal:upgrade-pickaxe-copper", "goal:upgrade-axe-copper", "goal:upgrade-can-copper"],
-        featuredKey: "goal:upgrade-pickaxe-copper"
+        desc: "铁匠铺相关目标，重点看升级顺序、锭和金币。",
+        note: "和场景集-烹饪一样，这里也是先看分类标签，再点具体物品展开资料卡。",
+        flow: ["先选分类", "点标签看资料卡", "确认材料/金币", "加入计划后在本板块追进度"],
+        categories: [
+          { id: "pickaxe", label: "镐子升级", entryKeys: ["goal:upgrade-pickaxe-copper","goal:upgrade-pickaxe-steel","goal:upgrade-pickaxe-gold","goal:upgrade-pickaxe-iridium"] },
+          { id: "axe", label: "斧头升级", entryKeys: ["goal:upgrade-axe-copper","goal:upgrade-axe-steel","goal:upgrade-axe-gold","goal:upgrade-axe-iridium"] },
+          { id: "farm-tools", label: "锄头与喷壶", entryKeys: ["goal:upgrade-hoe-copper","goal:upgrade-hoe-steel","goal:upgrade-hoe-gold","goal:upgrade-hoe-iridium","goal:upgrade-wateringcan-copper","goal:upgrade-wateringcan-steel","goal:upgrade-wateringcan-gold","goal:upgrade-wateringcan-iridium"] },
+          { id: "trash", label: "垃圾桶升级", entryKeys: ["goal:upgrade-trashcan-copper","goal:upgrade-trashcan-steel","goal:upgrade-trashcan-gold","goal:upgrade-trashcan-iridium"] },
+          { id: "clint-service", label: "铁匠服务与补货", entryKeys: ["good:clint-geode","good:clint-copper-ore","good:clint-coal"] }
+        ]
+      },
+      {
+        id: "buildings",
+        name: "建筑与房屋",
+        icon: "罗宾",
+        accent: "#9a5a2f",
+        desc: "罗宾相关建筑、房屋升级和木石补货。",
+        note: "这一块适合做长期目标，建筑和房屋升级的计划都集中在这里看。",
+        flow: ["先看建筑分类", "点标签展开资料卡", "加入计划", "在本板块看施工材料进度"],
+        categories: [
+          { id: "basic-build", label: "基础建筑", entryKeys: ["goal:build-silo","goal:build-well","goal:build-shipping-bin","goal:build-stable"] },
+          { id: "coop", label: "鸡舍系列", entryKeys: ["goal:build-coop","goal:build-coop-big","goal:build-coop-deluxe"] },
+          { id: "barn", label: "畜棚系列", entryKeys: ["goal:build-barn","goal:build-barn-big","goal:build-barn-deluxe"] },
+          { id: "utility-build", label: "实用建筑", entryKeys: ["goal:build-mill","goal:build-shed","goal:build-shed-big","goal:build-fish-pond","goal:build-slime-hutch","goal:build-pet-bowl"] },
+          { id: "house", label: "房屋升级", entryKeys: ["goal:house-kitchen","goal:house-nursery","goal:house-cellar","goal:house-renovate-bedroom","goal:house-renovate-crib","goal:house-renovate-room"] },
+          { id: "robin-goods", label: "木匠商店物资", entryKeys: ["good:robin-wood","good:robin-stone","good:robin-calendar"] }
+        ]
       },
       {
         id: "craft",
         name: "打造与加工",
         icon: "小桶",
         accent: "#d59624",
-        desc: "打造页放配方、材料和赚钱设备",
-        summary: "典型闭环：点设备 → 看配方材料 → 加入计划 → 在下方追材料。",
-        chips: ["配方型", "材料汇总", "设备流"],
-        flow: ["选设备", "看配方材料", "加入计划", "按库存补齐"],
-        entryKeys: ["goal:craft-preserves-jar", "goal:craft-keg", "goal:craft-bee-house"],
-        featuredKey: "goal:craft-preserves-jar"
+        desc: "合成菜单相关设备，重点看配方、材料和赚钱设备。",
+        note: "资料卡和烹饪板块同结构，按设备分类展开。加入计划后的卡片样式继续沿用现在这版。",
+        flow: ["按分类找设备", "点标签看资料卡", "确认配方材料", "加入计划后在下方追材料"],
+        categories: [
+          { id: "core", label: "基础与熔炼", entryKeys: ["goal:craft-furnace","good:crafting-furnace-tip"] },
+          { id: "artisan", label: "工匠加工设备", entryKeys: ["goal:craft-preserves-jar","goal:craft-keg","goal:craft-bee-house","goal:craft-oil-maker","goal:craft-mayo-machine","goal:craft-cheese-press","goal:craft-loom","goal:craft-cask","good:crafting-preserves-tip","good:crafting-keg-tip"] },
+          { id: "gather", label: "树液与采集设备", entryKeys: ["goal:craft-tapper","goal:craft-mushroom-log"] },
+          { id: "recipe-shop", label: "配方购买与扩展", entryKeys: ["goal:craft-dehydrator","good:crafting-preserves-tip","good:crafting-keg-tip"] }
+        ]
       },
       {
         id: "fishing",
         name: "渔具与鱼店",
         icon: "钓鱼",
         accent: "#2f8fb0",
-        desc: "渔具页可以混合购买型和合成型目标",
-        summary: "典型闭环：买竿 / 做蟹笼都能放进同一块，非合成物就看金币和解锁条件。",
-        chips: ["购买", "合成", "解锁条件"],
-        flow: ["选渔具", "看购买或合成条件", "加入计划", "勾材料或攒钱"],
-        entryKeys: ["goal:buy-fiberglass-rod", "goal:craft-crab-pot", "goal:craft-bait-maker", "good:willy-bait"],
-        featuredKey: "goal:buy-fiberglass-rod"
+        desc: "鱼竿、钓具、蟹笼和鱼类加工都放在这里。",
+        note: "买的、做的都混在一个板块里，但显示还是统一成标签 + 折叠资料卡。",
+        flow: ["先选渔具分类", "点标签看详情", "买或做的条件都能看", "加入计划后在本板块追进度"],
+        categories: [
+          { id: "rod", label: "鱼竿升级", entryKeys: ["goal:buy-fiberglass-rod","goal:buy-iridium-rod"] },
+          { id: "tackle", label: "钓具与补给", entryKeys: ["good:willy-bait","good:willy-trout-soup"] },
+          { id: "trap", label: "蟹笼体系", entryKeys: ["goal:craft-crab-pot","goal:craft-bait-maker","goal:craft-worm-bin","goal:craft-deluxe-worm-bin"] },
+          { id: "smoker", label: "鱼类加工", entryKeys: ["goal:craft-fish-smoker","good:willy-smoker-recipe"] }
+        ]
       },
       {
         id: "cooking",
         name: "烹饪与补给",
         icon: "三倍浓缩咖啡",
         accent: "#b65a35",
-        desc: "烹饪可以作为独立计划块，和打造共用计划逻辑",
-        summary: "典型闭环：选料理目标 → 看食材和用途 → 加入计划 → 逐项备料。",
-        chips: ["料理目标", "补给", "跑图 buff"],
-        flow: ["选料理", "看食材/用途", "加入计划", "备料完成"],
-        entryKeys: ["goal:cook-stock-triple-espresso", "good:saloon-coffee", "good:saloon-espresso-recipe", "good:saloon-salad"],
-        featuredKey: "goal:cook-stock-triple-espresso"
+        desc: "直接沿用你喜欢的烹饪板块思路，按用途分类后点标签展开。",
+        note: "这一块就是把场景集-烹饪的结构搬进计划清单里，其他板块也尽量跟它统一。",
+        flow: ["先看料理分类", "点标签打开资料卡", "看配方/用途", "需要的目标再加入计划"],
+        categories: [
+          { id: "speed", label: "速度补给", entryKeys: ["good:saloon-coffee","good:saloon-espresso-recipe","goal:cook-stock-triple-espresso"] },
+          { id: "gift", label: "送礼常购", entryKeys: ["good:saloon-salad","good:saloon-pizza"] },
+          { id: "stock", label: "日常补给", entryKeys: ["good:saloon-salad","good:saloon-coffee","good:willy-trout-soup"] }
+        ]
+      },
+      {
+        id: "farm-shop",
+        name: "种子与商店购买",
+        icon: "皮埃尔",
+        accent: "#389d62",
+        desc: "种子、背包和沙漠/旅行货车的购买信息放在这里。",
+        note: "这一块先把购买型资料卡的框架搭起来，后面你再决定哪些也要纳入计划。",
+        flow: ["按来源看标签", "点标签看资料卡", "确认购买条件", "后续可继续扩成购买计划"],
+        categories: [
+          { id: "spring-seed", label: "春季与节庆种子", entryKeys: ["good:pierre-parsnip","good:pierre-strawberry"] },
+          { id: "summer-fall-seed", label: "高价值与献祭种子", entryKeys: ["good:pierre-red-cabbage","good:desert-rhubarb","good:desert-starfruit","good:desert-beet","good:desert-cactus"] },
+          { id: "bag", label: "背包与升级购买", entryKeys: ["goal:buy-backpack-large","goal:buy-backpack-deluxe"] },
+          { id: "cart", label: "旅行货车补缺", entryKeys: ["good:cart-rare-seed","good:cart-red-cabbage","good:cart-coffee-bean","good:cart-bundle-items"] }
+        ]
+      },
+      {
+        id: "ranch",
+        name: "养殖与牧场",
+        icon: "玛妮",
+        accent: "#b66a35",
+        desc: "动物、照料用品和牧场工具。",
+        note: "先按动物 / 工具 / 照料来分，后面再补更多养殖路线细节。",
+        flow: ["按养殖分类看标签", "点标签看资料卡", "确认购买或解锁条件", "后续可再扩成养殖计划"],
+        categories: [
+          { id: "animals", label: "动物与自动化", entryKeys: ["good:marnie-chicken","good:marnie-cow","good:marnie-pig","good:marnie-auto-grabber"] },
+          { id: "tools", label: "牧场工具", entryKeys: ["good:marnie-milk-pail","good:marnie-shears"] },
+          { id: "care", label: "照料与消耗", entryKeys: ["good:marnie-hay","good:marnie-heater"] }
+        ]
       }
     ];
 
@@ -17663,62 +17778,76 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       return null;
     }
 
-    function getPlanningSectionEntries(section) {
-      return (section.entryKeys || []).map(findShopCatalogEntryByKey).filter(Boolean);
+    function getPlanSectionEntries(section) {
+      return (section.categories || []).flatMap((group) => (group.entryKeys || []).map(findShopCatalogEntryByKey).filter(Boolean));
     }
 
-    function getPlanningSectionCartItems(section) {
-      const goalIds = new Set((section.entryKeys || [])
-        .filter((key) => key.startsWith("goal:"))
-        .map((key) => key.slice(5)));
+    function getPlanSectionGoalIds(section) {
+      return new Set(getPlanSectionEntries(section).filter((entry) => entry.type === "goal").map((entry) => entry.id));
+    }
+
+    function getPlanSectionCartItems(section) {
+      const goalIds = getPlanSectionGoalIds(section);
       return appState.goals.filter((goal) => goalIds.has(goal.id));
     }
 
-    function renderPlanningHubCard(section) {
-      const count = getPlanningSectionCartItems(section).length;
-      return `<button class="plan-hub-card" type="button" data-plan-jump="${escapeAttribute(section.id)}" style="--shop-accent:${escapeAttribute(section.accent || "#9a5a2f")}">
+    function renderPlanOverviewCard(section) {
+      const entries = getPlanSectionEntries(section);
+      const goalCount = entries.filter((entry) => entry.type === "goal").length;
+      const planCount = getPlanSectionCartItems(section).length;
+      const active = appState._activePlanSection === section.id;
+      return `<button class="plan-hub-card ${active ? 'active' : ''}" type="button" data-plan-jump="${escapeAttribute(section.id)}" style="--shop-accent:${escapeAttribute(section.accent || '#9a5a2f')}">
         <span class="plan-hub-icon">${renderInvIcon(section.icon || section.name)}</span>
         <div class="plan-hub-title">${escapeHtml(section.name)}</div>
-        <div class="plan-hub-desc">${escapeHtml(section.desc || "")}</div>
-        <div class="plan-hub-meta">已加入 ${count} 项</div>
+        <div class="plan-hub-desc">${escapeHtml(section.desc || '')}</div>
+        <div class="plan-hub-meta">分类 ${section.categories.length} · 标签 ${entries.length} · 计划 ${planCount}/${goalCount}</div>
       </button>`;
     }
 
-    function renderPlanningSection(section) {
-      const entries = getPlanningSectionEntries(section);
-      const cartItems = getPlanningSectionCartItems(section);
-      const activeEntry = entries.find((entry) => entry.key === appState._activeShopItem) || findShopCatalogEntryByKey(section.featuredKey) || entries[0] || null;
-      const chipHtml = entries.map((entry) => {
-        const inCart = entry.type === "goal" && appState.goals.some((goal) => goal.id === entry.id);
-        const active = activeEntry && activeEntry.key === entry.key;
-        return `<button class="item-chip ${active ? 'active' : ''} ${inCart ? 'in-cart' : ''}" data-shop-chip="${escapeAttribute(entry.key)}" type="button">${renderShopEntryIcon(entry)}<span>${escapeHtml(entry.title)}</span>${inCart ? '<span class="chip-qty">✓</span>' : ''}</button>`;
-      }).join("");
-      const flowHtml = (section.flow || []).map((label, index) => `<div class="plan-flow-step"><span class="plan-flow-num">${index + 1}</span><span>${escapeHtml(label)}</span></div>`).join("");
-      const detailHtml = activeEntry ? renderShopProductDetail(activeEntry) : `<div class="plan-empty">这里会显示这个板块里选中的典型条目。</div>`;
-      const cartHtml = cartItems.length
-        ? renderGoalCards(cartItems)
-        : `<div class="plan-empty">还没加入计划。先点上面的典型条目，再把它加入这里，就能形成一个可工作的最小闭环。</div>`;
-      return `<section class="shop-section plan-scene-section" id="planSection-${escapeAttribute(section.id)}" style="--shop-accent:${escapeAttribute(section.accent || "#9a5a2f")}">
-        <article class="shop-intro-card plan-scene-hero">
+    function renderPlanBoard(section) {
+      const sectionEntries = getPlanSectionEntries(section);
+      const cartItems = getPlanSectionCartItems(section);
+      const flowHtml = (section.flow || []).map((label, index) => `<div class="plan-board-step"><span class="plan-board-step-num">${index + 1}</span><span>${escapeHtml(label)}</span></div>`).join('');
+      const groupHtml = (section.categories || []).map((group) => {
+        const entries = (group.entryKeys || []).map(findShopCatalogEntryByKey).filter(Boolean);
+        const chips = entries.map((entry) => {
+          const active = appState._activeShopItem === entry.key;
+          const inCart = entry.type === 'goal' && appState.goals.some((goal) => goal.id === entry.id);
+          return `<button class="item-chip ${active ? 'active' : ''} ${inCart ? 'in-cart' : ''}" data-shop-chip="${escapeAttribute(entry.key)}" type="button">${renderShopEntryIcon(entry)}<span>${escapeHtml(entry.title)}</span>${inCart ? '<span class="chip-qty">✓</span>' : ''}</button>`;
+        }).join('');
+        let detailHtml = '';
+        if (appState._activeShopItem) {
+          const activeEntry = entries.find((entry) => entry.key === appState._activeShopItem);
+          if (activeEntry) detailHtml = `<div class="plan-detail-wrap">${renderShopProductDetail(activeEntry)}</div>`;
+        }
+        return `<div class="item-lib-cat-group">
+          <div class="item-lib-cat-label">${escapeHtml(group.label)}（${entries.length}）</div>
+          <div class="item-lib-chips">${chips || '<div class="plan-empty">这一类暂时还没塞条目。</div>'}</div>
+          ${detailHtml}
+        </div>`;
+      }).join('');
+
+      return `<section class="shop-section plan-board-view" style="--shop-accent:${escapeAttribute(section.accent || '#9a5a2f')}">
+        <article class="shop-intro-card plan-board-header">
           <div class="shop-intro-head">
             <span class="shop-intro-icon">${renderInvIcon(section.icon || section.name)}</span>
             <div>
-              <h3 class="shop-intro-name">${escapeHtml(section.name)}<span class="plan-scene-kicker">典型闭环</span></h3>
-              <div class="shop-intro-sub">${escapeHtml(section.desc || "")}</div>
+              <h3 class="shop-intro-name">${escapeHtml(section.name)}<span class="plan-board-kicker">板块内资料卡</span></h3>
+              <div class="shop-intro-sub">${escapeHtml(section.desc || '')}</div>
             </div>
           </div>
-          ${(section.chips || []).length ? `<div class="shop-chip-row">${section.chips.map((chip) => `<span class="shop-chip">${escapeHtml(chip)}</span>`).join("")}</div>` : ""}
-          <div class="plan-flow-row">${flowHtml}</div>
-          ${section.summary ? `<div class="plan-section-note">${escapeHtml(section.summary)}</div>` : ""}
+          <div class="shop-chip-row">
+            <span class="shop-chip">分类 ${section.categories.length}</span>
+            <span class="shop-chip">标签 ${sectionEntries.length}</span>
+            <span class="shop-chip">已加入计划 ${cartItems.length}</span>
+          </div>
+          <div class="plan-board-flow">${flowHtml}</div>
+          <div class="plan-board-note">${escapeHtml(section.note || '')}</div>
         </article>
-        <div class="shop-catalog">
-          <div class="item-lib-cat-label">${renderOfficialIcon("商品目录", "典型目录")}典型目录</div>
-          <div class="item-lib-chips">${chipHtml}</div>
-          ${detailHtml}
-        </div>
+        <div class="plan-board-groups">${groupHtml}</div>
         <div class="shop-cart-section">
-          <div class="item-lib-cat-label">${renderOfficialIcon("购物车", "计划清单")}计划清单（${cartItems.length}）</div>
-          ${cartHtml}
+          <div class="item-lib-cat-label">${renderOfficialIcon('购物车', '本板块计划')}本板块计划（${cartItems.length}）</div>
+          ${cartItems.length ? renderGoalCards(cartItems) : `<div class="plan-empty">这个板块里还没有加入计划的目标。先点上面的标签展开资料卡，再把需要的目标加入这里。</div>`}
         </div>
       </section>`;
     }
@@ -17741,10 +17870,22 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const container = document.getElementById("shoppingCartContent");
       if (!container) return;
 
-      const hubHtml = `<div class="plan-hub-grid">${SHOP_FRAMEWORK_SECTIONS.map(renderPlanningHubCard).join("")}</div>`;
-      const sectionHtml = `<div class="plan-section-stack">${SHOP_FRAMEWORK_SECTIONS.map(renderPlanningSection).join("")}</div>`;
-      const footHtml = `<div class="plan-footnote">这一版先把框架立起来：工具升级、打造与加工、渔具与鱼店、烹饪与补给四块都能从“点条目 → 看条件 → 加入计划 → 勾进度”走通。后面再继续把更多店铺、打造、渔具和菜谱往里填。</div>`;
-      container.innerHTML = hubHtml + sectionHtml + footHtml;
+      const totalGoals = SHOP_PLAN_SECTIONS.reduce((sum, section) => sum + getPlanSectionEntries(section).filter((entry) => entry.type === "goal").length, 0);
+      const overviewHtml = `<div class="plan-overview-card">
+        <div class="plan-overview-title">计划清单 · 板块总览</div>
+        <div class="plan-overview-sub">先点下面的大板块，再在板块里面按分类点标签展开资料卡。板块内的资料卡结构统一贴近场景集-烹饪板块，加入计划后的卡片样式先沿用你现在喜欢的这版。</div>
+        <div class="plan-overview-stats">
+          <span class="plan-overview-pill">板块 ${SHOP_PLAN_SECTIONS.length}</span>
+          <span class="plan-overview-pill">可加入计划目标 ${totalGoals}</span>
+          <span class="plan-overview-pill">当前计划 ${appState.goals.length}</span>
+        </div>
+      </div>`;
+      const hubHtml = `<div class="plan-hub-grid">${SHOP_PLAN_SECTIONS.map(renderPlanOverviewCard).join("")}</div>`;
+      let boardHtml = `<div class="plan-board-placeholder">点上面的板块卡片进入对应页面。进入后你会看到：分类标签 → 点击展开资料卡 → 加入计划 → 本板块计划清单。</div>`;
+      const activeSection = SHOP_PLAN_SECTIONS.find((section) => section.id === appState._activePlanSection);
+      if (activeSection) boardHtml = renderPlanBoard(activeSection);
+      const footHtml = `<div class="plan-footnote">这版先把计划清单的大框架完整搭起来：有板块首页，也有板块内分类、标签和折叠资料卡。后面你要是满意这个结构，我们再继续把每个板块里的条目补得更细。</div>`;
+      container.innerHTML = overviewHtml + hubHtml + `<div class="plan-board-shell">${boardHtml}</div>` + footHtml;
 
       container.querySelectorAll("[data-swipe-goal]").forEach(card => {
         if (!card.dataset.swipeBound) {
@@ -18558,6 +18699,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       festivalDone: _appLoaded.festivalDone || {},
       festivalPrepared: _appLoaded.festivalPrepared || {},
       strategyPinned: _appLoaded.strategyPinned || {},
+      _activeShopItem: _appLoaded._activeShopItem || "",
+      _activePlanSection: _appLoaded._activePlanSection || "",
       pendingInventoryDelete: "",
     };
 
@@ -26513,8 +26656,16 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       // 种植图标点击展开
       const planJump = e.target.closest("[data-plan-jump]");
       if (planJump) {
-        const target = document.getElementById(`planSection-${planJump.dataset.planJump}`);
-        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        const targetId = planJump.dataset.planJump || "";
+        if (appState._activePlanSection === targetId) {
+          appState._activePlanSection = "";
+          appState._activeShopItem = "";
+        } else {
+          appState._activePlanSection = targetId;
+          appState._activeShopItem = "";
+        }
+        saveAppState();
+        renderAll();
         return;
       }
       // 购物车商品目录点击
