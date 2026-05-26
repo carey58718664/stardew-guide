@@ -12418,9 +12418,19 @@ body.modal-open { overflow: hidden; touch-action: none; }
     grid-template-columns: 1fr;
   }
 
-  /* 当季事大卡片：手机端边框对齐献祭房间卡片 */
+  /* 当季事大卡片：手机端完整对齐献祭房间卡片 */
   #app-shell .season-main-card {
     border: 3px solid #6b4a37;
+    border-radius: 14px;
+  }
+
+  #app-shell .season-card-header {
+    border-bottom: 2px solid #d9c69c;
+  }
+
+  #app-shell .season-card-scene {
+    border: 2px solid #ddd0aa;
+    border-radius: 14px;
   }
 
   #app-shell .season-main-card .season-mini-grid {
@@ -12431,6 +12441,24 @@ body.modal-open { overflow: hidden; touch-action: none; }
   #app-shell .festival-row,
   #app-shell .birthday-row {
     grid-template-columns: 26px minmax(0, 1fr);
+  }
+}
+
+
+/* v23：当季事大卡片边框完整对齐献祭房间卡片 */
+@media (max-width: 520px) {
+  #app-shell .season-main-card {
+    border: 3px solid #6b4a37 !important;
+    border-radius: 14px !important;
+  }
+
+  #app-shell .season-card-header {
+    border-bottom: 2px solid #d9c69c !important;
+  }
+
+  #app-shell .season-card-scene {
+    border: 2px solid #ddd0aa !important;
+    border-radius: 14px !important;
   }
 }
 
