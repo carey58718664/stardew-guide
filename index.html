@@ -8456,6 +8456,14 @@ body.modal-open { overflow: hidden; touch-action: none; }
   color: #8b5d11;
   margin-bottom: 8px;
 }
+.planting-inline-cards {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+.planting-inline-cards .planting-card {
+  margin: 0;
+}
 .planting-empty {
   grid-column: 1 / -1;
   border: 1.5px dashed var(--line);
@@ -20701,14 +20709,25 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       let globalActiveSeason = null;
       grid.innerHTML = allSeasons.map(s => {
         const isCurrentSeason = s === appState.season;
-        const catBlocks = PLANTING_CATEGORY_GROUPS.map((group) => {
-          const entries = getPlantingItemsForSeasonAndCategory(s, group.id)
-            .filter((entry) => plantingMatchesQuery(entry))
-            .filter((entry) => matchesPlantingFilter(entry, s))
-            .sort(sortPlantingCrops);
-          const activeEntry = entries.find(c => c.id === appState._activePlantingCrop);
-          if (activeEntry) { globalActiveEntry = activeEntry; globalActiveSeason = s; }
-          const chips = entries.map(entry => {
+        const groupedEntries = Object.fromEntries(
+          PLANTING_CATEGORY_GROUPS.map((group) => {
+            const entries = getPlantingItemsForSeasonAndCategory(s, group.id)
+              .filter((entry) => plantingMatchesQuery(entry))
+              .filter((entry) => matchesPlantingFilter(entry, s))
+              .sort(sortPlantingCrops);
+            const activeEntry = entries.find((entry) => entry.id === appState._activePlantingCrop);
+            if (activeEntry) {
+              globalActiveEntry = activeEntry;
+              globalActiveSeason = s;
+            }
+            return [group.id, entries];
+          })
+        );
+
+        const renderCategoryGroup = (groupId) => {
+          const group = PLANTING_CATEGORY_GROUPS.find((item) => item.id === groupId);
+          const entries = groupedEntries[groupId] || [];
+          const chips = entries.map((entry) => {
             const active = appState._activePlantingCrop === entry.id;
             const status = getPlantingStatus(entry, s);
             const missClass = status.missed ? "search-miss" : "";
@@ -20719,18 +20738,26 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             <div class="item-lib-cat-label">${renderOfficialIcon(group.icon, group.label)}${escapeHtml(group.label)}</div>
             ${chips ? `<div class="item-lib-chips">${chips}</div>` : empty}
           </div>`;
-        }).join("");
+        };
+
+        const cropCards = (groupedEntries.crop || []).length
+          ? `<div class="planting-inline-cards">${groupedEntries.crop.map((entry) => renderUnifiedCropCard(entry, s, { editableQty: false, showRemove: false, showInventoryBadge: true })).join("")}</div>`
+          : "";
+
         return `<div class="item-lib-cat-group planting-season-group">
           <div class="planting-season-head">
             <div class="planting-season-title-box">${renderOfficialIcon(s === "spring" ? "春" : s === "summer" ? "夏" : s === "fall" ? "秋" : "冬", SEASON_CN[s])}<span>${escapeHtml(SEASON_CN[s])}季</span>${isCurrentSeason ? '<span class="planting-current-mark">← 当前季</span>' : ''}</div>
           </div>
-          ${catBlocks}
+          ${renderCategoryGroup("crop")}
+          ${cropCards}
+          ${renderCategoryGroup("forage")}
+          ${renderCategoryGroup("fruit")}
         </div>`;
       }).join("") || `<div class="planting-empty">没有匹配的资料。</div>`;
 
       const detailContainer = document.getElementById("plantingDetailContainer");
       if (detailContainer) {
-        detailContainer.innerHTML = globalActiveEntry
+        detailContainer.innerHTML = globalActiveEntry && globalActiveEntry.category !== "crop"
           ? `<div class="planting-detail-wrap planting-detail-fullwidth">${renderPlantingCard(globalActiveEntry, globalActiveSeason)}</div>`
           : "";
       }
