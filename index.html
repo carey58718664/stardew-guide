@@ -16627,6 +16627,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "玉米饼": "厨房烹饪：玉米×1；也可星之果实餐吧购买",
       "海参": "秋/冬海洋钓鱼，或旅行货车等来源",
       "干草": "筒仓割草储存，或在玛妮牧场购买",
+      "蓝爵": "春季用蓝爵士种子种植，常规种子可在皮埃尔杂货店购买；旅行货车也可能直接随机出售 1 个或 5 个蓝爵（150g~1000g）。",
       "苹果": "秋季苹果树，果蝠洞或旅行货车也可能获得",
       "霜瓜": "冬季作物（霜瓜种子），7 天生长；种子来源：浣熊商店 2 松果换、种子制造器、矿井木桶",
       "孔雀石": "矿井/晶球开出；博物馆捐赠；绿色染料素材",
@@ -16717,6 +16718,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "土豆": [{ method: "罐头瓶", out: "腌土豆", price: 210, gain: "+162%" }],
       "花椰菜": [{ method: "罐头瓶", out: "腌花椰菜", price: 400, gain: "+128%" }, { method: "小桶", out: "花椰菜汁", price: 393, gain: "+125%" }],
       "防风草": [{ method: "罐头瓶", out: "腌防风草", price: 120, gain: "+243%" }],
+      "蓝爵": [{ method: "蜂房（范围内放花）", out: "蓝爵蜂蜜", price: 200, gain: "工匠 280g" }],
       "羽衣甘蓝": [{ method: "罐头瓶", out: "腌羽衣甘蓝", price: 270, gain: "+145%" }],
       "蔓越莓": [{ method: "罐头瓶", out: "蔓越莓果酱", price: 200, gain: "+167%" }, { method: "小桶", out: "蔓越莓酒", price: 225, gain: "+200%" }],
       "朝鲜蓟": [{ method: "罐头瓶", out: "腌朝鲜蓟", price: 370, gain: "+131%" }],
@@ -16892,6 +16894,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "番茄": [{ dish: "比萨/鱼塔可/番茄烤面包", note: "多种料理基础材料" }],
       "大蒜": [{ dish: "法式田螺/煎蜗牛", note: "1.6 春季可种" }],
       "防风草": [{ dish: "农夫午餐/防风草汤", note: "农夫午餐 = 煎蛋卷 + 防风草，高品质回复" }],
+      "蓝爵": [{ dish: "幸运午餐", note: "海参 + 玉米饼 + 蓝爵，提供运气 +3" }],
       "葡萄": [{ dish: "水果沙拉", note: "也可做果酱/果酒，加工通常更值" }],
       "樱桃": [{ dish: "樱桃派", note: "春季树果料理" }],
       "苹果": [{ dish: "果酱", note: "树果常做罐头瓶加工，料理用途少" }],
@@ -16953,6 +16956,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "热带咖喱": [{ who: "卡罗琳", note: "最爱（椰子+甜瓜+辣椒）" }],
       "罂粟": [{ who: "潘妮", note: "最爱；多数村民厌恶，只送潘妮" }],
       "仙女蔷薇": [{ who: "贾斯/伊芙琳", note: "都是最爱（秋季花朵）" }],
+      "蓝爵": [{ who: "多数村民", note: "收到蓝爵后会喜欢；塞巴斯蒂安、乔治、克林特不喜欢" }],
       "番红花": [{ who: "桑迪", note: "最爱（冬季花朵）" }],
 
       // —— 树果 ——
@@ -17185,6 +17189,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "矮人卷轴III": [{ use: "博物馆捐赠/解锁矮人语言", note: "矿井 80+ 层怪物掉落" }],
       "矮人卷轴IV": [{ use: "博物馆捐赠/解锁矮人语言", note: "矿井全层怪物低概率掉落" }],
       "孔雀石": [{ use: "博物馆捐赠/染料", note: "矿井/晶球开出，绿色染料素材" }],
+      "蓝爵": [{ use: "重新混合社区中心", note: "花园收集包可交 1 个蓝爵（可选项）" }, { use: "缝纫/染色", note: "与布料可制作短裙；放入染料罐或缝纫机可作为蓝色染料，中等染色强度" }, { use: "蜂房布局", note: "种在蜂房作用范围内会产出蓝爵蜂蜜，基础售价 200g" }],
       "红蘑菇": [{ use: "生命药水材料", note: "不能进罐头瓶/酿桶，只能做生命药水（红蘑菇+紫蘑菇+羊肚菌+蝙蝠翅膀）或送礼/染料" }]
     };
 
@@ -19255,9 +19260,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         tags: ["bundle", "quick"]
       }),
       crop("spring-blue-jazz", "蓝爵", ["spring"], 30, 50, 2.86, 7, 21, {
-        silver: 62, gold: 75, iridium: 100, seed: "蓝爵士种子",
-        notes: ["主要用于料理、送礼或蜂蜜布局，不是主力赚钱作物。"],
-        tags: []
+        silver: 62, gold: 75, iridium: 100, seed: "蓝爵士种子", source: "皮埃尔杂货店 / 旅行货车",
+        notes: ["主要用于幸运午餐、送礼、染色和蜂房布局，不是主力赚钱作物。", "放在蜂房作用范围内可产出蓝爵蜂蜜，基础售价 200g。"],
+        tags: ["artisan"]
       }),
       crop("spring-tulip", "郁金香", ["spring"], 20, 30, 1.67, 6, 22, {
         silver: 37, gold: 45, iridium: 60, seed: "郁金香球茎",
