@@ -7456,6 +7456,38 @@ body.modal-open { overflow: hidden; touch-action: none; }
   margin-left: 4px;
   transform: translateY(-1px);
 }
+/* 菜名可点击 */
+.crop-recipe-link {
+  color: var(--blue);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: rgba(47, 111, 176, 0.3);
+  text-underline-offset: 2px;
+}
+.crop-recipe-link:active {
+  color: var(--wood-dark);
+}
+/* 送礼子折叠 */
+.crop-gift-subfold {
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+.crop-gift-subfold .crop-fold-header {
+  padding: 6px 0;
+  background: transparent;
+}
+.crop-gift-subfold .crop-fold-body {
+  padding: 0 0 6px;
+}
+/* 加工简化行内价格 */
+.crop-artisan-price-inline {
+  font-weight: 900;
+}
+.crop-source-method-list {
+  display: grid;
+  gap: 0;
+}
 .crop-process-profession {
   flex: 0 0 auto;
 }
@@ -21706,48 +21738,40 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         </div>
       `);
 
-      /* ── 获取来源（虚线分隔+标签框） ── */
-      const seedCostText = typeof entry.seedCost === "number" ? `${entry.seedCost}` : entry.seedCost;
-      const seedCostHtml = typeof entry.seedCost === "number" ? priceHtml(seedCostText) : `<span class="crop-source-text-price">${escapeHtml(String(seedCostText || "特殊来源"))}</span>`;
-      const cartBonus = detail.bonuses && detail.bonuses.find((b) => b.title.includes("货车") || b.title.includes("旅行"));
-      const seedIcon = `<img class="crop-source-seed-icon" src="${iconUrl(iconFiles[entry.seed] || "Mixed Seeds.png")}" alt="" loading="lazy" />`;
-      const cropIconSmall = `<img class="crop-source-seed-icon" src="${iconUrl(iconFiles[entry.name] || "Mixed Seeds.png")}" alt="" loading="lazy" />`;
-      const cartIcon = `<img class="crop-source-seed-icon" src="${iconUrl("Traveling Cart Icon.png")}" alt="" loading="lazy" />`;
+      /* ── 所有折叠区 ── */
+      const folds = [];
 
-      let sourceRows = "";
-      if (detail.sources && detail.sources.length) {
-        sourceRows = detail.sources.map((src, index) => {
-          const srcIconFile = src.icon || iconFiles[entry.seed] || iconFiles[entry.name] || "Mixed Seeds.png";
-          const srcIcon = `<img class="crop-source-seed-icon" src="${iconUrl(srcIconFile)}" alt="" loading="lazy" />`;
-          return `<div class="crop-source-method-row">
-            <span class="crop-wiki-mini-tag">${escapeHtml(src.tag || (index === 0 ? "主要" : "其他"))}</span>
-            <span class="crop-source-method-content">${srcIcon} ${escapeHtml(src.text || "")} ${index === 0 ? '<span class="crop-source-badge">主要</span>' : '<span class="crop-source-badge secondary">补充</span>'}</span>
-          </div>`;
-        }).join("");
-      } else {
-        sourceRows = `
-          <div class="crop-source-method-row">
-            <span class="crop-wiki-mini-tag">耕种</span>
-            <span class="crop-source-method-content">${seedIcon} ${escapeHtml(entry.seed)} · ${seedCostHtml} · ${escapeHtml(entry.source)} <span class="crop-source-badge">主要</span></span>
-          </div>
-        `;
+      /* 获取来源（默认折叠） */
+      {
+        let sourceRows = "";
+        if (detail.sources && detail.sources.length) {
+          sourceRows = detail.sources.map((src, index) => {
+            const srcIconFile = src.icon || iconFiles[entry.seed] || iconFiles[entry.name] || "Mixed Seeds.png";
+            const srcIcon = `<img class="crop-source-seed-icon" src="${iconUrl(srcIconFile)}" alt="" loading="lazy" />`;
+            const badge = index === 0 ? '<span class="crop-source-badge">主要</span>' : '<span class="crop-source-badge secondary">补充</span>';
+            return `<div class="crop-source-method-row">
+              <span class="crop-wiki-mini-tag">${escapeHtml(src.tag || "来源")}</span>
+              <span class="crop-source-method-content">${srcIcon} ${escapeHtml(src.text || "")} ${badge}</span>
+            </div>`;
+          }).join("");
+        }
+        if (sourceRows) {
+          folds.push(`
+            <div class="crop-fold-section">
+              <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="crop-fold-arrow"></span>
+                <span class="crop-fold-title">📍 获取来源</span>
+                <span class="crop-fold-badge">${detail.sources.length} 种</span>
+              </div>
+              <div class="crop-fold-body">
+                <div class="crop-source-method-list">${sourceRows}</div>
+              </div>
+            </div>
+          `);
+        }
       }
-      if (cartBonus && !(detail.sources && detail.sources.some((src) => String(src.text || "").includes("旅行货车")))) {
-        sourceRows += `
-          <div class="crop-source-method-row">
-            <span class="crop-wiki-mini-tag">购买</span>
-            <span class="crop-source-method-content">${cropIconSmall} ${escapeHtml(entry.name)}1-5个 · ${priceHtml("150-1000")} · ${cartIcon} 旅行货车 <span class="crop-source-badge secondary">随机</span></span>
-          </div>
-        `;
-      }
-      html.push(`
-        <div class="crop-source-card">
-          <div class="crop-source-card-title">📍 获取来源</div>
-          <div class="crop-source-method-list">${sourceRows}</div>
-        </div>
-      `);
 
-      /* ── 品质总表：增益 + 售价（含农耕人） ── */
+      /* 增益 | 售价（默认折叠） */
       if ((detail.energy && detail.energy.length) || (detail.pricing && detail.pricing.length)) {
         const qLabels = ["普通", "银", "金", "铱"];
         const energyMap = {};
@@ -21770,83 +21794,54 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           </tr>`;
         }).join("");
 
-        html.push(`
-          <table class="crop-quality-table">
-            <colgroup>
-              <col class="crop-quality-col" />
-              <col class="crop-energy-col" />
-              <col class="crop-price-col" />
-            </colgroup>
-            <thead><tr>
-              <th>品质</th>
-              <th>增益</th>
-              <th><span class="crop-table-headline">售价</span>${tillerNote}</th>
-            </tr></thead>
-            <tbody>${rows}</tbody>
-          </table>
-        `);
-      }
-
-      /* ── 折叠区 ── */
-      const folds = [];
-
-      /* 生长阶段 */
-      if (detail.stages && detail.stages.length) {
-        const stage = detail.stages[0];
-        const stageRows = stage.phases.map((days, index) => `
-          <div class="crop-wiki-mini-row">
-            <span class="crop-wiki-mini-tag">阶段${index + 1}</span>
-            <span>${escapeHtml(String(days))} 天</span>
-          </div>
-        `).join("");
-        const stageNotes = (stage.notes || []).map((note) => `
-          <div class="crop-wiki-mini-row">
-            <span class="crop-wiki-mini-tag">说明</span>
-            <span>${escapeHtml(note)}</span>
-          </div>
-        `).join("");
         folds.push(`
           <div class="crop-fold-section">
             <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
               <span class="crop-fold-arrow"></span>
-              <span class="crop-fold-title">🌱 生长阶段</span>
-              <span class="crop-fold-badge">总计 ${escapeHtml(String(stage.total))} 天</span>
+              <span class="crop-fold-title">📊 增益 | 售价</span>
             </div>
             <div class="crop-fold-body">
-              <div class="crop-wiki-mini-list">
-                ${stageRows}
-                ${stage.regrow ? `<div class="crop-wiki-mini-row"><span class="crop-wiki-mini-tag">再生</span><span>${escapeHtml(String(stage.regrow))} 天</span></div>` : ""}
-                ${stage.raised ? `<div class="crop-wiki-mini-row"><span class="crop-wiki-mini-tag">架子</span><span>不可穿行，种植时要留走道。</span></div>` : ""}
-                ${stageNotes}
-              </div>
+              <table class="crop-quality-table">
+                <colgroup>
+                  <col class="crop-quality-col" />
+                  <col class="crop-energy-col" />
+                  <col class="crop-price-col" />
+                </colgroup>
+                <thead><tr>
+                  <th>品质</th>
+                  <th>增益</th>
+                  <th><span class="crop-table-headline">售价</span>${tillerNote}</th>
+                </tr></thead>
+                <tbody>${rows}</tbody>
+              </table>
             </div>
           </div>
         `);
       }
 
-      /* 加工 */
+      /* 加工（默认展开，简化格式） */
       if (detail.products && detail.products.length) {
         const artisanNote = renderCropWikiProfessionNote("Artisan.png", "工匠 +40%", "compact-profession");
         const processItems = detail.products.map((p) => {
-          const produceIconFile = iconFiles[p.produce] || (String(p.produce).includes("蜂蜜") ? iconFiles["蜂蜜"] : "") || iconFiles[p.device] || iconFiles[entry.name] || "Honey.png";
-          const deviceText = p.device || "加工设备";
-          const conditionText = p.condition || (deviceText === "蜂房" ? "成熟花在蜂房 5 格范围内" : "放入设备加工");
+          const produceIconFile = iconFiles[p.produce] || iconFiles[p.device] || iconFiles[entry.name] || "Honey.png";
           const artisanPrice = typeof p.artisan === "number" ? p.artisan : Math.floor(Number(p.base || 0) * 1.4);
+          const methodName = p.device === "罐头瓶" ? "腌制" : p.device === "小桶" ? "榨汁" : (p.device || "加工");
+          const formula = p.condition && p.condition.includes("=") ? p.condition.split("=").pop().trim() : "";
           const badgeText = p.badge || "优先";
-          return `<div class="crop-process-item">
-            <div class="crop-process-head">
-              <div class="crop-process-title-group">
-                <img class="crop-process-product-icon" src="${iconUrl(produceIconFile)}" alt="" loading="lazy" />
-                <span class="crop-process-name">${escapeHtml(p.title || p.produce)}</span>
-                ${badgeText ? `<span class="crop-process-priority">${escapeHtml(badgeText)}</span>` : ""}
-              </div>
-              <span class="crop-process-profession">${artisanNote}</span>
+          return `<div class="crop-wiki-bundle" style="border-left-color:#6fae43;">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <img class="crop-source-seed-icon" src="${iconUrl(produceIconFile)}" alt="" loading="lazy" />
+              <b>${escapeHtml(methodName)}</b>
+              <span style="color:var(--muted);">→</span>
+              <span>${escapeHtml(p.produce)}</span>
+              <span class="crop-process-priority">${escapeHtml(badgeText)}</span>
             </div>
-            <div class="crop-process-info-grid">
-              <div class="crop-process-info"><span>设备</span><b>${escapeHtml(deviceText)}</b></div>
-              <div class="crop-process-info"><span>产物</span><b>${escapeHtml(p.produce)}</b></div>
-              <div class="crop-process-info crop-process-info-wide"><span>条件</span><b>${escapeHtml(conditionText)}</b></div>
-              <div class="crop-process-info crop-process-price-card"><span>售价</span><span class="crop-process-value">${priceHtml(p.base)}<span class="crop-price-arrow">→</span><span class="crop-artisan-price">${escapeHtml(String(artisanPrice))}</span></span></div>
+            <div style="margin-top:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12.5px;">
+              ${priceHtml(p.base)}
+              ${formula ? `<span style="color:var(--muted);font-size:11px;">(${escapeHtml(formula)})</span>` : ""}
+              <span style="color:var(--muted);">→</span>
+              ${artisanNote}
+              <span class="crop-artisan-price-inline">${priceHtml(artisanPrice)}</span>
             </div>
           </div>`;
         }).join("");
@@ -21854,7 +21849,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           <div class="crop-fold-section open">
             <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
               <span class="crop-fold-arrow"></span>
-              <span class="crop-fold-title">⚙️ 加工 <span class="crop-fold-priority">优先</span></span>
+              <span class="crop-fold-title">⚙️ 加工</span>
               <span class="crop-fold-badge">${detail.products.length} 种</span>
             </div>
             <div class="crop-fold-body">${processItems}</div>
@@ -21862,33 +21857,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         `);
       }
 
-      /* 说明 */
-      if (detail.bonuses && detail.bonuses.length) {
-        folds.push(`
-          <div class="crop-fold-section">
-            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
-              <span class="crop-fold-arrow"></span>
-              <span class="crop-fold-title">💡 说明</span>
-              <span class="crop-fold-badge">${detail.bonuses.length} 条</span>
-            </div>
-            <div class="crop-fold-body">
-              <div class="crop-wiki-mini-list">
-                ${detail.bonuses.map((b) => `
-                  <div class="crop-wiki-mini-row">
-                    <span class="crop-wiki-mini-tag">${escapeHtml(b.title)}</span>
-                    <span>${escapeHtml(b.text)}</span>
-                  </div>
-                `).join("")}
-              </div>
-            </div>
-          </div>
-        `);
-      }
-
-      /* 收集包 */
+      /* 收集包（默认展开） */
       if (detail.bundle) {
         folds.push(`
-          <div class="crop-fold-section">
+          <div class="crop-fold-section open">
             <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
               <span class="crop-fold-arrow"></span>
               <span class="crop-fold-title">📦 收集包</span>
@@ -21900,10 +21872,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         `);
       }
 
-      /* 烹饪 */
+      /* 烹饪（默认展开，菜名可点击） */
       if (detail.recipes && detail.recipes.length) {
         folds.push(`
-          <div class="crop-fold-section">
+          <div class="crop-fold-section open">
             <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
               <span class="crop-fold-arrow"></span>
               <span class="crop-fold-title">🍳 烹饪</span>
@@ -21913,7 +21885,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
               <div class="crop-wiki-recipe-grid">
                 ${detail.recipes.map((r) => `
                   <div class="crop-wiki-recipe-card">
-                    <b>${escapeHtml(r.name)}</b>
+                    <b class="crop-recipe-link" data-recipe-name="${escapeAttribute(r.name)}">${escapeHtml(r.name)}</b>
                     <div class="crop-wiki-recipe-ing">
                       ${r.ingredients.map((ing, i) =>
                         `<span class="crop-wiki-ing-chip">${renderPlantingIcon(ing)}${escapeHtml(ing)}<span class="crop-wiki-ing-qty">×1</span></span>${i < r.ingredients.length - 1 ? '<span class="ing-plus">+</span>' : ''}`
@@ -21927,7 +21899,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         `);
       }
 
-      /* 裁制 */
+      /* 裁制（默认折叠） */
       if (detail.tailoring && detail.tailoring.length) {
         folds.push(`
           <div class="crop-fold-section">
@@ -21949,7 +21921,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         `);
       }
 
-      /* 任务 */
+      /* 任务（默认折叠） */
       if (detail.quests && detail.quests.length) {
         folds.push(`
           <div class="crop-fold-section">
@@ -21972,12 +21944,67 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         `);
       }
 
-      /* 送礼 */
+      /* 送礼（默认折叠，最爱直接展示，喜欢/不喜欢各自折叠） */
       if (detail.gifting) {
         const love = detail.gifting.love;
         const like = detail.gifting.like;
         const dislike = detail.gifting.dislike;
         const giftCount = (love ? love.villagers.length : 0) + (like ? like.villagers.length : 0) + (dislike ? dislike.villagers.length : 0);
+
+        let giftInner = "";
+        /* 最爱：直接展示 */
+        if (love && love.label === "最爱") {
+          giftInner += `
+            <div class="crop-wiki-gift love">
+              <div class="crop-wiki-gift-head">
+                <span class="crop-wiki-gift-label love">${escapeHtml(love.label)} <b>+${love.value}</b></span>
+                <small>${love.villagers.length} 人</small>
+              </div>
+              <div class="crop-wiki-villager-grid">${love.villagers.map(renderCropWikiVillagerChip).join("")}</div>
+            </div>
+          `;
+        } else if (love) {
+          giftInner += `
+            <div class="crop-wiki-gift love">
+              <div class="crop-wiki-gift-head">
+                <span class="crop-wiki-gift-label love">${escapeHtml(love.label || "喜欢")} <b>+${love.value}</b></span>
+                <small>${love.villagers.length} 人</small>
+              </div>
+              <div class="crop-wiki-villager-grid">${love.villagers.map(renderCropWikiVillagerChip).join("")}</div>
+            </div>
+          `;
+        }
+        /* 喜欢：子折叠 */
+        if (like) {
+          giftInner += `
+            <div class="crop-fold-section crop-gift-subfold">
+              <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="crop-fold-arrow"></span>
+                <span class="crop-wiki-gift-label love" style="flex:1;">${escapeHtml(like.label || "喜欢")} <b>+${like.value}</b></span>
+                <small>${like.villagers.length} 人</small>
+              </div>
+              <div class="crop-fold-body">
+                <div class="crop-wiki-villager-grid">${like.villagers.map(renderCropWikiVillagerChip).join("")}</div>
+              </div>
+            </div>
+          `;
+        }
+        /* 不喜欢：子折叠 */
+        if (dislike) {
+          giftInner += `
+            <div class="crop-fold-section crop-gift-subfold">
+              <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="crop-fold-arrow"></span>
+                <span class="crop-wiki-gift-label dislike" style="flex:1;">${escapeHtml(dislike.label || "不喜欢")} <b>${dislike.value}</b></span>
+                <small>${dislike.villagers.length} 人</small>
+              </div>
+              <div class="crop-fold-body">
+                <div class="crop-wiki-villager-grid">${dislike.villagers.map(renderCropWikiVillagerChip).join("")}</div>
+              </div>
+            </div>
+          `;
+        }
+
         folds.push(`
           <div class="crop-fold-section">
             <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
@@ -21986,35 +22013,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
               <span class="crop-fold-badge">${giftCount} 人</span>
             </div>
             <div class="crop-fold-body">
-              <div class="crop-wiki-gift-stack">
-                ${love ? `
-                  <div class="crop-wiki-gift love">
-                    <div class="crop-wiki-gift-head">
-                      <span class="crop-wiki-gift-label love">${escapeHtml(love.label || "喜欢")} <b>+${love.value}</b></span>
-                      <small>${love.villagers.length} 人</small>
-                    </div>
-                    <div class="crop-wiki-villager-grid">${love.villagers.map(renderCropWikiVillagerChip).join("")}</div>
-                  </div>
-                ` : ""}
-                ${like ? `
-                  <div class="crop-wiki-gift love">
-                    <div class="crop-wiki-gift-head">
-                      <span class="crop-wiki-gift-label love">${escapeHtml(like.label || "喜欢")} <b>+${like.value}</b></span>
-                      <small>${like.villagers.length} 人</small>
-                    </div>
-                    <div class="crop-wiki-villager-grid">${like.villagers.map(renderCropWikiVillagerChip).join("")}</div>
-                  </div>
-                ` : ""}
-                ${dislike ? `
-                  <div class="crop-wiki-gift dislike">
-                    <div class="crop-wiki-gift-head">
-                      <span class="crop-wiki-gift-label dislike">${escapeHtml(dislike.label || "不喜欢")} <b>${dislike.value}</b></span>
-                      <small>${dislike.villagers.length} 人</small>
-                    </div>
-                    <div class="crop-wiki-villager-grid">${dislike.villagers.map(renderCropWikiVillagerChip).join("")}</div>
-                  </div>
-                ` : ""}
-              </div>
+              <div class="crop-wiki-gift-stack">${giftInner}</div>
             </div>
           </div>
         `);
@@ -26317,6 +26316,23 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const cropId = plantingChip.dataset.plantingChip;
         appState._activePlantingCrop = appState._activePlantingCrop === cropId ? null : cropId;
         renderPlanting();
+        return;
+      }
+      /* 菜名点击 → 跳转烹饪面板并展开该料理 */
+      const recipeLink = e.target.closest("[data-recipe-name]");
+      if (recipeLink) {
+        const recipeName = recipeLink.dataset.recipeName;
+        const cookingSearch = document.getElementById("cookingSearch");
+        if (cookingSearch) {
+          cookingQuery = recipeName;
+          cookingSearch.value = recipeName;
+        }
+        const allRecipes = typeof RECIPES !== "undefined" ? RECIPES : [];
+        const matched = allRecipes.find(r => r.name === recipeName);
+        if (matched) {
+          appState._activeCookingItem = matched.id || recipeName;
+        }
+        openCooking();
         return;
       }
       // 社交图标点击
