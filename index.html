@@ -7189,17 +7189,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border-radius: 14px;
   box-shadow: inset 5px 0 0 var(--plant-accent), 0 8px 22px rgba(76, 49, 29, 0.10);
 }
-.planting-detail-wrap.planting-detail-inline {
-  margin-top: 10px;
-  margin-bottom: 0;
-}
-.planting-detail-wrap.planting-detail-inline .planting-card {
-  width: 100%;
-  border-width: 2px;
-  border-color: var(--gold);
-  border-radius: 14px;
-  box-shadow: inset 5px 0 0 var(--plant-accent), 0 8px 22px rgba(76, 49, 29, 0.10);
-}
 /* ── 速览条 ── */
 .crop-glance-strip {
   display: grid;
@@ -7261,12 +7250,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
   color: #4a3a2a;
   font-weight: 700;
 }
-.crop-source-method-row .crop-wiki-mini-tag {
-  width: 44px;
-  min-width: 44px;
-  padding: 1px 0;
-  white-space: nowrap;
-}
 .crop-source-method-row + .crop-source-method-row {
   border-top: 1.5px dashed #ece0c8;
 }
@@ -7302,61 +7285,57 @@ body.modal-open { overflow: hidden; touch-action: none; }
   background: #fffaf0;
   font-size: 12.5px;
 }
+.crop-quality-table col.crop-quality-col { width: 24%; }
+.crop-quality-table col.crop-energy-col { width: 30%; }
+.crop-quality-table col.crop-price-col { width: 46%; }
 .crop-quality-table th {
+  height: 48px;
   background: linear-gradient(180deg, #fff8ee, #f8ecd4);
   color: #9c620e;
   font-size: 11px;
   font-weight: 950;
-  padding: 5px 8px;
+  padding: 7px 10px;
   text-align: center;
   border-bottom: 1.5px solid #e5d5b6;
+  vertical-align: middle;
 }
 .crop-quality-table th:first-child {
   text-align: center;
-  width: 54px;
-  padding-left: 8px;
-}
-.crop-quality-table th:nth-child(2) {
-  width: 35%;
-  text-align: left;
   padding-left: 10px;
 }
 .crop-quality-table th:last-child {
-  width: 40%;
-  text-align: left;
-  padding-left: 16px;
-  padding-right: 8px;
-  border-left: 1.5px dashed #e6dcc6;
+  text-align: right;
+  padding-right: 14px;
+}
+.crop-quality-table th .crop-table-headline {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
 }
 .crop-quality-table th .crop-info-note {
-  display: inline-flex;
   vertical-align: middle;
-  margin-left: 6px;
-  font-size: 9px;
+  margin-left: 5px;
 }
 .crop-quality-table td {
-  padding: 4px 8px;
+  height: 64px;
+  padding: 6px 10px;
   text-align: center;
   color: var(--ink);
   font-weight: 800;
-  border-bottom: 1px dashed #eadfc8;
+  border-bottom: 1px solid #f0e8d5;
   font-size: 12.5px;
-  line-height: 1.2;
+  line-height: 1.35;
+  vertical-align: middle;
 }
 .crop-quality-table td:first-child {
   text-align: center;
-  width: 54px;
-  padding-left: 6px;
 }
 .crop-quality-table td:nth-child(2) {
-  text-align: left;
-  padding-left: 8px;
+  text-align: center;
 }
-.crop-quality-table td:last-child {
-  text-align: left;
-  padding-left: 16px;
-  padding-right: 8px;
-  border-left: 1.5px dashed #ece1ca;
+.crop-quality-table td:nth-child(3) {
+  text-align: right;
+  padding-right: 14px;
 }
 .crop-quality-table td img {
   vertical-align: -3px;
@@ -7365,162 +7344,216 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .crop-quality-table tr:last-child td {
   border-bottom: none;
 }
-.crop-quality-price-flow {
+.crop-quality-price {
   display: inline-flex;
   align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  white-space: nowrap;
+}
+.crop-quality-price .crop-price-tight {
+  min-width: 34px;
   justify-content: flex-start;
-  gap: 4px;
-  width: 100%;
 }
 .crop-price-arrow {
-  color: #9d8968;
-  font-size: 15px;
+  color: #7d6442;
+  font-size: 14px;
   font-weight: 950;
-  line-height: 1;
+  opacity: .88;
 }
-.crop-price-output-pill {
+.crop-tiller-price,
+.crop-artisan-price {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 42px;
-  min-height: 26px;
-  padding: 0 9px;
-  border: 1.5px solid #ddcfab;
+  min-width: 32px;
+  min-height: 22px;
+  border: 1px solid #ead8b1;
   border-radius: 999px;
-  background: linear-gradient(180deg, #fff8ee, #f6eedc);
-  color: #8b6516;
+  background: #fff6df;
+  color: #6f4b22;
+  padding: 1px 8px;
   font-size: 12px;
   font-weight: 950;
   line-height: 1;
 }
+.crop-info-note.compact-profession {
+  gap: 3px;
+  padding: 2px 7px 2px 5px;
+  font-size: 10.5px;
+  line-height: 1.15;
+  background: rgba(246, 230, 213, 0.72);
+  color: #7f6844;
+  border: 1px solid rgba(234, 216, 177, 0.7);
+}
+.crop-info-note.compact-profession .crop-profession-icon {
+  width: 18px;
+  height: 18px;
+  image-rendering: pixelated;
+  margin: 0;
+}
 /* ── 加工推荐卡 ── */
-.crop-process-list {
-  display: grid;
-  gap: 10px;
-}
 .crop-process-card {
-  border: 1px solid #eadcc0;
-  border-radius: 12px;
+  border: 1.5px solid #e5d5b6;
+  border-radius: 10px;
   background: #fffaf0;
-  padding: 10px 12px;
+  padding: 10px;
   position: relative;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
 }
-.crop-process-card-head {
-  display: block;
-  margin-bottom: 8px;
+.crop-process-item {
+  display: grid;
+  gap: 8px;
+  border: 1.5px solid #e5d5b6;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fffdf8, #fffaf0);
+  padding: 10px;
+}
+.crop-process-item + .crop-process-item {
+  margin-top: 8px;
+}
+.crop-process-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 .crop-process-title-group {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
+  gap: 7px;
   min-width: 0;
-  flex-wrap: nowrap;
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(232,246,232,0.96), rgba(243,251,236,0.96));
 }
 .crop-process-product-icon {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
   image-rendering: pixelated;
-  flex: 0 0 24px;
+  object-fit: contain;
 }
 .crop-process-name {
-  color: var(--ink);
-  font-size: 13.5px;
-  font-weight: 950;
-  line-height: 1.2;
-  flex: 0 1 auto;
   min-width: 0;
-  white-space: nowrap;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
 }
-.crop-process-priority {
+.crop-process-priority,
+.crop-fold-priority {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 22px;
-  padding: 0 10px;
   border-radius: 999px;
   background: var(--green-soft);
   color: #27835f;
-  font-size: 11px;
+  padding: 1px 7px;
+  font-size: 10.5px;
   font-weight: 950;
-  margin-left: auto;
+  line-height: 1.35;
   white-space: nowrap;
-  flex: 0 0 auto;
+}
+.crop-fold-priority {
+  margin-left: 4px;
+  transform: translateY(-1px);
 }
 .crop-process-profession {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 21px;
-  padding: 0 8px;
-  border-radius: 999px;
-  background: #f9f1e4;
-  color: #8a7048;
-  font-size: 10px;
-  font-weight: 900;
-  box-shadow: inset 0 0 0 1px rgba(213, 190, 150, 0.55);
-  white-space: nowrap;
+  flex: 0 0 auto;
 }
-.crop-process-profession img {
-  width: 15px;
-  height: 15px;
-  image-rendering: pixelated;
-}
-.crop-process-grid {
+.crop-process-info-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 6px;
 }
-.crop-process-metric {
-  border: 1px solid #eadcc0;
-  border-radius: 10px;
-  background: #fffdf8;
-  padding: 8px 10px;
+.crop-process-info {
+  display: grid;
+  gap: 3px;
+  min-height: 50px;
+  border: 1px solid #eee0c6;
+  border-radius: 9px;
+  background: rgba(255, 252, 244, 0.82);
+  padding: 7px 8px;
 }
-.crop-process-metric.price-merge {
-  grid-column: 1 / -1;
-  padding: 7px 10px;
-}
-.crop-process-label {
-  display: block;
+.crop-process-info span {
   color: #9c620e;
   font-size: 10.5px;
   font-weight: 950;
-  margin-bottom: 4px;
+  line-height: 1.1;
 }
+.crop-process-info b,
 .crop-process-value {
-  display: block;
-  color: var(--ink);
-  font-size: 13px;
-  font-weight: 900;
-  line-height: 1.25;
-}
-.crop-process-subtext {
-  display: block;
-  margin-top: 3px;
-  color: #7a6b58;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.35;
-}
-.crop-process-price-row {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  flex-wrap: nowrap;
-}
-.crop-process-price-line {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  flex-wrap: nowrap;
+  min-width: 0;
+  color: #3b2b1f;
+  font-size: 12.5px;
+  font-weight: 950;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
 }
+.crop-process-info .crop-price-tight {
+  justify-content: flex-start;
+}
+.crop-process-info .crop-artisan-price {
+  justify-self: start;
+  min-width: 40px;
+}
+.crop-process-card-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #3a7a1a;
+  font-size: 13px;
+  font-weight: 950;
+  margin-bottom: 6px;
+}
+.crop-process-card-body {
+  color: #4a3a2a;
+  font-size: 12.5px;
+  line-height: 1.55;
+  font-weight: 700;
+}
+.crop-process-card-body img {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+  vertical-align: -3px;
+  margin: 0 1px;
+}
+
+@media (max-width: 520px) {
+  .crop-quality-table th {
+    height: 46px;
+    padding: 6px 8px;
+  }
+  .crop-quality-table td {
+    height: 62px;
+    padding: 6px 8px;
+  }
+  .crop-quality-table td:nth-child(3),
+  .crop-quality-table th:last-child {
+    padding-right: 10px;
+  }
+  .crop-info-note.compact-profession {
+    padding: 1px 6px 1px 4px;
+    font-size: 10px;
+  }
+  .crop-info-note.compact-profession .crop-profession-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .crop-process-head {
+    align-items: flex-start;
+  }
+  .crop-process-product-icon {
+    width: 26px;
+    height: 26px;
+    flex-basis: 26px;
+  }
+  .crop-process-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* ── 折叠区 ── */
 .crop-fold-section {
   border: 1.5px solid #e5d5b6;
@@ -7564,9 +7597,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   flex: 1;
 }
 .crop-fold-badge {
-  color: #8b7e6f;
-  font-size: 10.5px;
-  font-weight: 700;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
 }
 .crop-fold-body {
   display: none;
@@ -7909,19 +7942,12 @@ body.modal-open { overflow: hidden; touch-action: none; }
   align-items: center;
   gap: 3px;
   color: #8a7048;
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 850;
-  margin-left: 4px;
-  padding: 0 5px;
-  min-height: 23px;
-  background: #f9f1e4;
+  margin-left: 6px;
+  padding: 1px 7px;
+  background: #f6e6d5;
   border-radius: 999px;
-  box-shadow: inset 0 0 0 1px rgba(213, 190, 150, 0.55);
-}
-.crop-info-note .crop-profession-icon {
-  width: 18px;
-  height: 18px;
-  image-rendering: pixelated;
 }
 .crop-info-note.tiller-note {
   margin-left: 0;
@@ -8082,11 +8108,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   position: relative;
   min-width: 24px;
   min-height: 24px;
-  border-radius: 0;
+  border-radius: 4px;
   background: transparent;
-  box-shadow: none;
   padding: 0;
-  transform: translateX(3px);
 }
 .crop-quality-icon-wrap {
   position: relative;
@@ -8095,7 +8119,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
   height: 24px;
   align-items: center;
   justify-content: center;
-  overflow: visible;
 }
 .crop-quality-item-icon {
   width: 22px;
@@ -8104,10 +8127,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-quality-star-icon {
   position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 14px;
-  height: 14px;
+  left: 3px;
+  bottom: 2px;
+  width: 13px;
+  height: 13px;
   image-rendering: pixelated;
 }
 .crop-quality-chip.q-normal { background: #ece2cc; color: #5b4a37; }
@@ -8172,12 +8195,12 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-wiki-mini-row {
   display: grid;
-  grid-template-columns: 58px minmax(0, 1fr);
+  grid-template-columns: 64px minmax(0, 1fr);
   gap: 8px;
   align-items: center;
-  padding: 6px 9px;
+  padding: 7px 9px;
   font-size: 12px;
-  line-height: 1.35;
+  line-height: 1.4;
   color: #5b4a37;
 }
 .crop-wiki-mini-row + .crop-wiki-mini-row {
@@ -8208,9 +8231,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border-radius: 999px;
   background: var(--green-soft);
   color: var(--green);
-  padding: 1px 6px;
-  font-size: 10.5px;
-  font-weight: 900;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 950;
   min-height: 18px;
 }
 .crop-wiki-2col {
@@ -8228,24 +8251,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border-left: 4px solid #2f6fb0;
   border-radius: 0 8px 8px 0;
   background: #fffaf0;
-  padding: 7px 10px;
+  padding: 8px 11px;
   font-size: 12.5px;
-  line-height: 1.4;
+  line-height: 1.5;
   color: #5b4a37;
-}
-.crop-wiki-bundle .bundle-optional-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 6px;
-  padding: 1px 7px;
-  min-height: 18px;
-  border-radius: 999px;
-  background: #f3efe3;
-  color: #8b7e6f;
-  font-size: 10.5px;
-  font-weight: 900;
-  vertical-align: middle;
 }
 .crop-wiki-recipe-grid {
   display: grid;
@@ -8259,10 +8268,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border-left: 4px solid #d9a420;
   border-radius: 0 8px 8px 0;
   background: #fffaf0;
-  padding: 7px 10px;
+  padding: 8px 11px;
 }
 .crop-wiki-recipe-card > b {
-  flex: 0 0 78px;
+  flex: 0 0 auto;
   color: var(--ink);
   font-size: 12.5px;
   font-weight: 950;
@@ -8273,44 +8282,35 @@ body.modal-open { overflow: hidden; touch-action: none; }
   flex: 1 1 auto;
   flex-wrap: nowrap;
   gap: 4px;
-  align-items: stretch;
+  align-items: center;
   min-width: 0;
 }
 .crop-wiki-ing-chip {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   border: 1px solid #ead8b1;
   border-radius: 999px;
   background: #fff;
-  padding: 2px 8px 2px 3px;
-  min-height: 42px;
+  padding: 1px 8px 1px 2px;
   font-size: 11px;
   font-weight: 900;
   color: #5b4a37;
-  line-height: 1.15;
 }
 .crop-wiki-ing-chip img {
   width: 16px;
   height: 16px;
   image-rendering: pixelated;
-  flex: 0 0 16px;
-}
-.crop-wiki-ing-chip > span:first-of-type,
-.crop-wiki-ing-chip > b,
-.crop-wiki-ing-chip > strong {
-  line-height: 1.1;
 }
 .crop-wiki-ing-qty {
   color: #9c620e;
   font-size: 10px;
   font-weight: 950;
-  margin-left: 1px;
 }
 .crop-wiki-recipe-ing .ing-plus {
-  color: #c4b49c;
-  font-weight: 800;
-  font-size: 11px;
+  color: #b09a7a;
+  font-weight: 900;
+  font-size: 12px;
 }
 .crop-wiki-gift-stack {
   display: grid;
@@ -8320,11 +8320,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border: 1.5px solid #e5d5b6;
   border-radius: 10px;
   background: #fffaf0;
-  padding: 7px 10px;
-}
-.crop-wiki-gift.dislike {
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding: 8px 10px;
 }
 .crop-wiki-gift.love { border-left: 4px solid #6fae43; }
 .crop-wiki-gift.dislike { border-left: 4px solid #c25e3a; }
@@ -8343,18 +8339,14 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .crop-wiki-gift-label.dislike b { color: #b14a23; }
 .crop-wiki-gift-label b { font-size: 13px; }
 .crop-wiki-gift-head small {
-  color: #8b7e6f;
-  font-size: 10px;
-  font-weight: 700;
-  margin-left: auto;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 800;
 }
 .crop-wiki-villager-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 5px;
-}
-.crop-wiki-gift.dislike .crop-wiki-villager-grid {
-  gap: 4px;
+  gap: 3px 4px;
 }
 .crop-wiki-villager {
   display: inline-flex;
@@ -8364,8 +8356,8 @@ body.modal-open { overflow: hidden; touch-action: none; }
   background: #fff5dc;
   border: 1px solid #ead8b1;
   padding: 1px 7px 1px 1px;
-  font-size: 10.5px;
-  font-weight: 850;
+  font-size: 11px;
+  font-weight: 900;
   color: #5b4a37;
   line-height: 1.2;
 }
@@ -8396,15 +8388,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
   }
   .crop-wiki-2col {
     grid-template-columns: 1fr;
-  }
-  .crop-wiki-recipe-card {
-    gap: 8px;
-  }
-  .crop-wiki-recipe-card > b {
-    flex-basis: 72px;
-  }
-  .crop-wiki-ing-chip {
-    min-height: 40px;
   }
 }
 .planting-greenhouse {
@@ -8485,19 +8468,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-weight: 800;
 }
 
-
-
-@media (max-width: 520px) {
-  .crop-process-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .crop-process-title-group {
-    gap: 7px;
-  }
-  .crop-process-price-row {
-    gap: 6px;
-  }
-}
 
 .planting-stock-row {
   display: flex;
@@ -13981,6 +13951,55 @@ body.modal-open { overflow: hidden; touch-action: none; }
 
 #app-shell #shoppingCartContent .shop-intro-card .shop-metric-grid {
   display: none !important;
+}
+
+
+/* ===== v35 全作物资料卡：加工模板压缩与通用字段 ===== */
+.crop-source-text-price {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  border: 1px solid #ead8b1;
+  border-radius: 999px;
+  background: #fff6df;
+  color: #6f4b22;
+  padding: 1px 8px;
+  font-size: 11px;
+  font-weight: 950;
+  line-height: 1;
+}
+.crop-process-info-wide {
+  grid-column: span 2;
+}
+.crop-process-price-card {
+  grid-column: span 2;
+  min-height: 48px;
+}
+.crop-process-price-card .crop-process-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: space-between;
+}
+.crop-process-price-card .crop-price-tight {
+  min-width: auto;
+}
+@media (max-width: 520px) {
+  .crop-process-item {
+    gap: 7px;
+    padding: 8px;
+  }
+  .crop-process-info {
+    min-height: 44px;
+    padding: 6px 7px;
+  }
+  .crop-process-info-wide,
+  .crop-process-price-card {
+    grid-column: span 2;
+  }
+  .crop-process-price-card .crop-process-value {
+    justify-content: flex-start;
+  }
 }
 
 </style>
@@ -20678,17 +20697,17 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       `;
 
       const allSeasons = ["spring", "summer", "fall", "winter"];
+      let globalActiveEntry = null;
+      let globalActiveSeason = null;
       grid.innerHTML = allSeasons.map(s => {
         const isCurrentSeason = s === appState.season;
-        const seasonActiveEntry = getPlantingItemsForSeason(s)
-          .filter((entry) => plantingMatchesQuery(entry))
-          .filter((entry) => matchesPlantingFilter(entry, s))
-          .find((entry) => entry.id === appState._activePlantingCrop) || null;
-        const catBlocks = PLANTING_CATEGORY_GROUPS.map((group, index) => {
+        const catBlocks = PLANTING_CATEGORY_GROUPS.map((group) => {
           const entries = getPlantingItemsForSeasonAndCategory(s, group.id)
             .filter((entry) => plantingMatchesQuery(entry))
             .filter((entry) => matchesPlantingFilter(entry, s))
             .sort(sortPlantingCrops);
+          const activeEntry = entries.find(c => c.id === appState._activePlantingCrop);
+          if (activeEntry) { globalActiveEntry = activeEntry; globalActiveSeason = s; }
           const chips = entries.map(entry => {
             const active = appState._activePlantingCrop === entry.id;
             const status = getPlantingStatus(entry, s);
@@ -20696,14 +20715,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             return `<button class="item-chip ${active ? 'active' : ''} ${missClass}" data-planting-chip="${entry.id}" type="button">${renderPlantingIcon(entry.name)}<span>${escapeHtml(entry.name)}</span></button>`;
           }).join("");
           const empty = !entries.length ? `<div class="planting-empty">${escapeHtml(group.empty)}</div>` : "";
-          const subgroupHtml = `<div class="item-lib-cat-group planting-subgroup">
+          return `<div class="item-lib-cat-group planting-subgroup">
             <div class="item-lib-cat-label">${renderOfficialIcon(group.icon, group.label)}${escapeHtml(group.label)}</div>
             ${chips ? `<div class="item-lib-chips">${chips}</div>` : empty}
           </div>`;
-          const inlineDetail = seasonActiveEntry && index === 0
-            ? `<div class="planting-detail-wrap planting-detail-inline">${renderPlantingCard(seasonActiveEntry, s)}</div>`
-            : "";
-          return subgroupHtml + inlineDetail;
         }).join("");
         return `<div class="item-lib-cat-group planting-season-group">
           <div class="planting-season-head">
@@ -20715,7 +20730,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
       const detailContainer = document.getElementById("plantingDetailContainer");
       if (detailContainer) {
-        detailContainer.innerHTML = "";
+        detailContainer.innerHTML = globalActiveEntry
+          ? `<div class="planting-detail-wrap planting-detail-fullwidth">${renderPlantingCard(globalActiveEntry, globalActiveSeason)}</div>`
+          : "";
       }
 
       greenhouse.innerHTML = renderPlantingGreenhouse();
@@ -20872,45 +20889,515 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       `;
     }
 
-    const CROP_WIKI_DETAILS = {
+
+    const CROP_WIKI_META = {
+      "草莓": {
+            "enName": "Strawberry",
+            "category": "水果",
+            "energy": 50
+      },
+      "胡萝卜": {
+            "enName": "Carrot",
+            "category": "蔬菜",
+            "energy": 75
+      },
+      "大黄": {
+            "enName": "Rhubarb",
+            "category": "水果",
+            "inedible": true
+      },
+      "花椰菜": {
+            "enName": "Cauliflower",
+            "category": "蔬菜",
+            "energy": 75,
+            "giant": true
+      },
+      "青豆": {
+            "enName": "Green Bean",
+            "category": "蔬菜",
+            "energy": 25
+      },
+      "甘蓝菜": {
+            "enName": "Kale",
+            "category": "蔬菜",
+            "energy": 50,
+            "aliases": [
+                  "羽衣甘蓝"
+            ]
+      },
+      "蒜": {
+            "enName": "Garlic",
+            "category": "蔬菜",
+            "energy": 20,
+            "aliases": [
+                  "大蒜"
+            ]
+      },
+      "土豆": {
+            "enName": "Potato",
+            "category": "蔬菜",
+            "energy": 25,
+            "extra": "收获时至少 1 个，另有额外土豆概率。"
+      },
+      "防风草": {
+            "enName": "Parsnip",
+            "category": "蔬菜",
+            "energy": 25
+      },
       "蓝爵": {
-        enName: "Blue Jazz",
-        category: "花",
-        exp: { value: 10, type: "耕种经验值" },
-        energy: [
-          { q: "普通", energy: 45, health: 20 },
-          { q: "银", energy: 63, health: 28 },
-          { q: "金", energy: 81, health: 36 },
-          { q: "铱", energy: 117, health: 52 }
-        ],
-        pricing: [
-          { q: "普通", base: 50, farmer: 55 },
-          { q: "银", base: 62, farmer: 68 },
-          { q: "金", base: 75, farmer: 82 },
-          { q: "铱", base: 100, farmer: 110 }
-        ],
-        products: [
-          { device: "蜂房", produce: "蓝爵蜂蜜", base: 200, artisan: 280 }
-        ],
-        bonuses: [
-          { title: "蜂房加成", text: "种植在蜂房 5×5 作用范围内会产生蓝爵蜂蜜，基础价从 100g 提升到 200g。" },
-          { title: "旅行货车", text: "以 150g~1,000g 的价格随机出售 1 个或 5 个蓝爵。" }
-        ],
-        tailoring: [
-          { label: "缝纫机", text: "搭配布料可制成可染色的短裙。" },
-          { label: "染料罐", text: "可作为蓝色染料使用。" },
-          { label: "染色强度", text: "在缝纫机中作为蓝色染料，染色强度为中等。" }
-        ],
-        gifting: {
-          love: { value: 45, villagers: ["哈维","山姆","谢恩","亚历克斯","艾利欧特","海莉","莉亚","玛鲁","潘妮","艾米丽","阿比盖尔","皮埃尔","卡洛琳","刘易斯","玛妮","罗宾","德米特里厄斯","艾芙琳","贾斯","文森特","乔迪","肯特","威利","格斯","潘姆","莱纳斯","法师","矮人","科罗布斯","桑迪","雷欧"] },
-          dislike: { value: -20, villagers: ["塞巴斯蒂安","乔治","克林特"] }
-        },
-        bundle: "茶水间（重新混合）-花园收集包-蓝爵1（可选项）",
-        recipes: [
-          { name: "幸运午餐", ingredients: ["海参", "墨西哥薄饼", "蓝爵"] }
-        ]
+            "enName": "Blue Jazz",
+            "category": "花",
+            "energy": 45
+      },
+      "郁金香": {
+            "enName": "Tulip",
+            "category": "花",
+            "energy": 45
+      },
+      "稻苗": {
+            "enName": "Unmilled Rice",
+            "category": "谷物",
+            "energy": 3,
+            "aliases": [
+                  "未碾米"
+            ],
+            "extra": "靠近水源灌溉时生长更快；可磨坊加工为米。"
+      },
+      "咖啡豆": {
+            "enName": "Coffee Bean",
+            "category": "种子",
+            "inedible": true,
+            "extra": "每次收获 4 个咖啡豆；5 个咖啡豆可进小桶做咖啡。"
+      },
+      "杨桃": {
+            "enName": "Starfruit",
+            "category": "水果",
+            "energy": 125
+      },
+      "蓝莓": {
+            "enName": "Blueberry",
+            "category": "水果",
+            "energy": 25,
+            "extra": "每株每次产出 3 个蓝莓，另有少量额外产出概率。"
+      },
+      "红叶卷心菜": {
+            "enName": "Red Cabbage",
+            "category": "蔬菜",
+            "energy": 75
+      },
+      "甜瓜": {
+            "enName": "Melon",
+            "category": "水果",
+            "energy": 113,
+            "giant": true
+      },
+      "啤酒花": {
+            "enName": "Hops",
+            "category": "蔬菜",
+            "inedible": true
+      },
+      "夏南瓜": {
+            "enName": "Summer Squash",
+            "category": "蔬菜",
+            "energy": 63
+      },
+      "辣椒": {
+            "enName": "Hot Pepper",
+            "category": "蔬菜",
+            "energy": 13,
+            "aliases": [
+                  "热辣椒"
+            ]
+      },
+      "番茄": {
+            "enName": "Tomato",
+            "category": "蔬菜",
+            "energy": 20
+      },
+      "萝卜": {
+            "enName": "Radish",
+            "category": "蔬菜",
+            "energy": 45
+      },
+      "罂粟": {
+            "enName": "Poppy",
+            "category": "花",
+            "inedible": true
+      },
+      "夏季亮片": {
+            "enName": "Summer Spangle",
+            "category": "花",
+            "energy": 45
+      },
+      "小麦": {
+            "enName": "Wheat",
+            "category": "谷物",
+            "inedible": true
+      },
+      "玉米": {
+            "enName": "Corn",
+            "category": "蔬菜",
+            "energy": 25
+      },
+      "向日葵": {
+            "enName": "Sunflower",
+            "category": "花",
+            "energy": 45
+      },
+      "蔓越莓": {
+            "enName": "Cranberries",
+            "category": "水果",
+            "energy": 38,
+            "extra": "每株每次产出 2 个蔓越莓，另有少量额外产出概率。"
+      },
+      "南瓜": {
+            "enName": "Pumpkin",
+            "category": "蔬菜",
+            "inedible": true,
+            "giant": true
+      },
+      "葡萄": {
+            "enName": "Grape",
+            "category": "水果",
+            "energy": 38
+      },
+      "洋蓟": {
+            "enName": "Artichoke",
+            "category": "蔬菜",
+            "energy": 30,
+            "aliases": [
+                  "朝鲜蓟"
+            ]
+      },
+      "甜菜": {
+            "enName": "Beet",
+            "category": "蔬菜",
+            "energy": 30
+      },
+      "苋菜": {
+            "enName": "Amaranth",
+            "category": "蔬菜",
+            "energy": 50
+      },
+      "茄子": {
+            "enName": "Eggplant",
+            "category": "蔬菜",
+            "energy": 20
+      },
+      "山药": {
+            "enName": "Yam",
+            "category": "蔬菜",
+            "energy": 45
+      },
+      "西兰花": {
+            "enName": "Broccoli",
+            "category": "蔬菜",
+            "energy": 63
+      },
+      "玫瑰仙子": {
+            "enName": "Fairy Rose",
+            "category": "花",
+            "energy": 45
+      },
+      "小白菜": {
+            "enName": "Bok Choy",
+            "category": "蔬菜",
+            "energy": 25
+      },
+      "霜瓜": {
+            "enName": "Powdermelon",
+            "category": "水果",
+            "energy": 63,
+            "giant": true
+      },
+      "水晶果": {
+            "enName": "Crystal Fruit",
+            "category": "水果",
+            "energy": 63
+      },
+      "雪山药": {
+            "enName": "Snow Yam",
+            "category": "采集",
+            "energy": 30
+      },
+      "冬根": {
+            "enName": "Winter Root",
+            "category": "采集",
+            "energy": 25
+      },
+      "番红花": {
+            "enName": "Crocus",
+            "category": "花",
+            "energy": 30
       }
+};
+
+    const CROP_WIKI_LOOKUP_ALIASES = {
+      "甘蓝菜": ["甘蓝菜", "羽衣甘蓝"],
+      "蒜": ["蒜", "大蒜"],
+      "洋蓟": ["洋蓟", "朝鲜蓟"],
+      "辣椒": ["辣椒", "热辣椒"],
+      "萝卜": ["萝卜", "红萝卜"],
+      "稻苗": ["稻苗", "未碾米"],
+      "玫瑰仙子": ["玫瑰仙子", "仙女玫瑰"],
+      "夏季亮片": ["夏季亮片", "夏季金光"]
     };
+
+    const CROP_HONEY_PRODUCTS = {
+      "郁金香": { produce: "郁金香蜂蜜", base: 160, artisan: 224 },
+      "蓝爵": { produce: "蓝爵蜂蜜", base: 200, artisan: 280 },
+      "夏季亮片": { produce: "夏季亮片蜂蜜", base: 280, artisan: 392 },
+      "罂粟": { produce: "罂粟蜂蜜", base: 380, artisan: 532 },
+      "向日葵": { produce: "向日葵蜂蜜", base: 260, artisan: 364 },
+      "玫瑰仙子": { produce: "玫瑰仙子蜂蜜", base: 680, artisan: 952 }
+    };
+
+    function getCropWikiNames(name) {
+      return CROP_WIKI_LOOKUP_ALIASES[name] || [name];
+    }
+
+    function firstCropWikiMapValue(map, name) {
+      if (!map) return null;
+      for (const key of getCropWikiNames(name)) {
+        if (map[key]) return map[key];
+      }
+      return null;
+    }
+
+    function buildCropWikiEnergyRows(baseEnergy, inedible = false) {
+      if (inedible || baseEnergy == null) return [];
+      const rows = [
+        ["普通", 1],
+        ["银", 1.4],
+        ["金", 1.8],
+        ["铱", 2.6]
+      ];
+      return rows.map(([q, mult]) => {
+        const energy = Math.floor(baseEnergy * mult);
+        return { q, energy, health: Math.floor(energy * 0.45) };
+      });
+    }
+
+    function buildCropWikiPricingRows(entry) {
+      return [
+        { q: "普通", base: entry.sell },
+        { q: "银", base: entry.silver },
+        { q: "金", base: entry.gold },
+        { q: "铱", base: entry.iridium }
+      ].filter((row) => row.base !== undefined && row.base !== null).map((row) => ({
+        ...row,
+        farmer: Math.floor(Number(row.base) * 1.1)
+      }));
+    }
+
+    function inferCropWikiProcessType(entry, meta) {
+      const category = meta.category || "";
+      if (category === "水果") return "fruit";
+      if (category === "蔬菜") return "vegetable";
+      return "";
+    }
+
+    function createCropWikiProduct(device, produce, base, options = {}) {
+      return {
+        device,
+        produce,
+        base,
+        artisan: options.artisan ?? Math.floor(Number(base || 0) * 1.4),
+        condition: options.condition || "",
+        badge: options.badge || "优先",
+        title: options.title || `${device}加工`,
+        note: options.note || ""
+      };
+    }
+
+    function buildCropWikiProducts(entry, meta) {
+      const products = [];
+      const honey = CROP_HONEY_PRODUCTS[entry.name];
+      if (honey) {
+        products.push(createCropWikiProduct("蜂房", honey.produce, honey.base, {
+          artisan: honey.artisan,
+          title: "蜂房蜂蜜",
+          condition: "成熟花在蜂房 5 格范围内，花不会被消耗",
+          badge: entry.name === "玫瑰仙子" ? "最赚" : "优先"
+        }));
+      }
+
+      if (entry.name === "咖啡豆") {
+        products.push(createCropWikiProduct("小桶", "咖啡", 150, {
+          artisan: 150,
+          title: "小桶饮品",
+          condition: "5 个咖啡豆 → 1 杯咖啡"
+        }));
+        return products;
+      }
+      if (entry.name === "啤酒花") {
+        products.push(createCropWikiProduct("小桶", "淡啤酒", 300, {
+          title: "小桶酿造",
+          condition: "1 个啤酒花 → 1 个淡啤酒"
+        }));
+        return products;
+      }
+      if (entry.name === "小麦") {
+        products.push(createCropWikiProduct("小桶", "啤酒", 200, {
+          title: "小桶酿造",
+          condition: "1 个小麦 → 1 个啤酒"
+        }));
+        products.push(createCropWikiProduct("磨坊", "小麦粉", 50, {
+          artisan: 50,
+          badge: "材料",
+          title: "磨坊加工",
+          condition: "1 个小麦 → 1 个小麦粉"
+        }));
+        return products;
+      }
+      if (entry.name === "稻苗") {
+        products.push(createCropWikiProduct("磨坊", "米", 100, {
+          artisan: 100,
+          badge: "材料",
+          title: "磨坊加工",
+          condition: "1 个未碾米 → 1 个米"
+        }));
+        return products;
+      }
+      if (entry.name === "甜菜") {
+        products.push(createCropWikiProduct("磨坊", "糖", 50, {
+          artisan: 50,
+          badge: "材料",
+          title: "磨坊加工",
+          condition: "1 个甜菜 → 3 个糖"
+        }));
+      }
+      if (entry.name === "向日葵") {
+        products.push(createCropWikiProduct("产油机", "油", 100, {
+          artisan: 100,
+          badge: "材料",
+          title: "产油机",
+          condition: "向日葵或葵花籽均可产油"
+        }));
+      }
+
+      const type = inferCropWikiProcessType(entry, meta);
+      if (type === "fruit") {
+        products.push(createCropWikiProduct("小桶", `${entry.name}酒`, Math.floor(entry.sell * 3), {
+          title: "小桶酿酒",
+          condition: "水果进小桶，果酒基础价 = 作物基础价 ×3"
+        }));
+        products.push(createCropWikiProduct("罐头瓶", `${entry.name}果酱`, entry.sell * 2 + 50, {
+          title: "罐头瓶",
+          condition: "水果进罐头瓶，果酱基础价 = 作物基础价 ×2 +50"
+        }));
+      } else if (type === "vegetable") {
+        products.push(createCropWikiProduct("罐头瓶", `腌${entry.name}`, entry.sell * 2 + 50, {
+          title: "罐头瓶",
+          condition: "蔬菜进罐头瓶，腌菜基础价 = 作物基础价 ×2 +50"
+        }));
+        products.push(createCropWikiProduct("小桶", `${entry.name}汁`, Math.floor(entry.sell * 2.25), {
+          title: "小桶榨汁",
+          condition: "蔬菜进小桶，果汁基础价 = 作物基础价 ×2.25"
+        }));
+      }
+
+      return products;
+    }
+
+    function buildCropWikiBonuses(entry, meta) {
+      const bonuses = [];
+      if (meta.giant) {
+        bonuses.push({ title: "巨大作物", text: "3×3 同种成熟作物每天有概率合成巨大作物，需要斧头收获。" });
+      }
+      if (entry.regrow) {
+        bonuses.push({ title: "持续收获", text: `成熟后每 ${entry.regrow} 天再次收获，跨季作物在仍适合的季节不会枯萎。` });
+      }
+      if (meta.extra) {
+        bonuses.push({ title: "官方说明", text: meta.extra });
+      }
+      if (entry.tags && entry.tags.includes("avoid")) {
+        bonuses.push({ title: "收益提醒", text: "直接种植的现金效率偏低，更适合作为加工材料、任务材料或图鉴补全。" });
+      }
+      return bonuses;
+    }
+
+    function buildCropWikiRecipes(name) {
+      const rows = firstCropWikiMapValue(FOOD_USES, name) || [];
+      return rows.map((row) => ({
+        name: row.dish,
+        ingredients: [name],
+        note: row.note || ""
+      }));
+    }
+
+    function normalizeCropWikiVillagerName(name) {
+      const map = {
+        "帕姆": "潘姆",
+        "克罗布斯": "科罗布斯",
+        "卡罗琳": "卡洛琳",
+        "阿历克斯": "亚历克斯",
+        "朱迪": "乔迪"
+      };
+      return map[name] || name;
+    }
+
+    function buildCropWikiGifting(name) {
+      const rows = firstCropWikiMapValue(GIFT_USES, name) || [];
+      const loved = [];
+      rows.forEach((row) => {
+        String(row.who || "").split(/[\/、]/).forEach((part) => {
+          const cleaned = normalizeCropWikiVillagerName(part.trim());
+          if (cleaned && !/所有|几乎/.test(cleaned)) loved.push(cleaned);
+        });
+      });
+      const uniqueLoved = Array.from(new Set(loved));
+      if (uniqueLoved.length) {
+        return { love: { label: "最爱", value: 80, villagers: uniqueLoved } };
+      }
+      return null;
+    }
+
+    function buildCropWikiTailoring(name, meta) {
+      const rows = [];
+      if (meta.category === "花") {
+        rows.push({ label: "染料罐", text: "可作为对应颜色系染料使用。" });
+      }
+      if (name === "蓝爵") {
+        rows.unshift({ label: "缝纫机", text: "搭配布料可制成可染色的短裙。" });
+      }
+      return rows;
+    }
+
+    function buildOfficialCropWikiDetails() {
+      const details = {};
+      PLANTING_CROPS.forEach((entry) => {
+        const meta = CROP_WIKI_META[entry.name] || {};
+        const expValue = Math.max(1, Math.round(16 * Math.log(0.018 * Number(entry.sell || 0) + 1)));
+        const detail = {
+          enName: meta.enName || "",
+          category: meta.category || "作物",
+          exp: { value: expValue, type: "耕种经验值" },
+          energy: buildCropWikiEnergyRows(meta.energy, meta.inedible),
+          pricing: buildCropWikiPricingRows(entry),
+          products: buildCropWikiProducts(entry, meta),
+          bonuses: buildCropWikiBonuses(entry, meta),
+          tailoring: buildCropWikiTailoring(entry.name, meta),
+          gifting: buildCropWikiGifting(entry.name),
+          bundle: entry.bundle || "",
+          recipes: buildCropWikiRecipes(entry.name)
+        };
+        details[entry.name] = detail;
+      });
+
+      if (details["蓝爵"]) {
+        details["蓝爵"].gifting = {
+          love: { label: "喜欢", value: 45, villagers: ["哈维","山姆","谢恩","亚历克斯","艾利欧特","海莉","莉亚","玛鲁","潘妮","艾米丽","阿比盖尔","皮埃尔","卡洛琳","刘易斯","玛妮","罗宾","德米特里厄斯","艾芙琳","贾斯","文森特","乔迪","肯特","威利","格斯","潘姆","莱纳斯","法师","矮人","科罗布斯","桑迪","雷欧"] },
+          dislike: { label: "不喜欢", value: -20, villagers: ["塞巴斯蒂安","乔治","克林特"] }
+        };
+        details["蓝爵"].bundle = "茶水间（重新混合）-花园收集包-蓝爵1（可选项）";
+        details["蓝爵"].recipes = [{ name: "幸运午餐", ingredients: ["海参", "墨西哥薄饼", "蓝爵"] }];
+      }
+      return details;
+    }
+
+    const CROP_WIKI_DETAILS = buildOfficialCropWikiDetails();
+
 
     function renderCropWikiQualityChip(q, itemName = "蓝爵") {
       const itemFile = iconFiles[itemName] || "";
@@ -20933,16 +21420,15 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       return `<span class="crop-quality-chip has-official-icon quality-${map[q] || "normal"}"><span class="crop-quality-icon-wrap">${itemIcon}${qualityIcon}</span></span>`;
     }
 
-    function renderCropWikiProfessionNote(fileName, text) {
-      return `<small class="crop-info-note"><img class="crop-profession-icon" src="${iconUrl(fileName)}" alt="" loading="lazy" />${escapeHtml(text)}</small>`;
+    function renderCropWikiProfessionNote(fileName, text, extraClass = "") {
+      const className = ["crop-info-note", extraClass].filter(Boolean).join(" ");
+      return `<small class="${className}"><img class="crop-profession-icon" src="${iconUrl(fileName)}" alt="" loading="lazy" />${escapeHtml(text)}</small>`;
     }
 
     function renderCropWikiBundleText(text) {
-      let html = escapeHtml(text)
+      return escapeHtml(text)
         .replaceAll("茶水间", "<b>茶水间</b>")
         .replaceAll("花园收集包", "<b>花园收集包</b>");
-      html = html.replace(/（可选项）/g, '<span class="bundle-optional-badge">可选项</span>');
-      return html;
     }
 
     function renderCropWikiVillagerChip(name) {
@@ -20959,10 +21445,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const goldIcon = renderPlantingIcon("金币");
       const priceHtml = (value) =>
         `<span class="crop-price-tight">${goldIcon}<b>${escapeHtml(String(value))}</b></span>`;
-      const priceFlowHtml = (base, output) =>
-        `<span class="crop-quality-price-flow">${priceHtml(base)}<span class="crop-price-arrow">→</span><span class="crop-price-output-pill">${escapeHtml(String(output))}</span></span>`;
-      const professionPillHtml = (fileName, text) =>
-        `<span class="crop-process-profession"><img src="${iconUrl(fileName)}" alt="" loading="lazy" />${escapeHtml(text)}</span>`;
 
       /* ── 种植建议 ── */
       if (entry.notes && entry.notes.length) {
@@ -20998,6 +21480,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
       /* ── 获取来源（虚线分隔+标签框） ── */
       const seedCostText = typeof entry.seedCost === "number" ? `${entry.seedCost}` : entry.seedCost;
+      const seedCostHtml = typeof entry.seedCost === "number" ? priceHtml(seedCostText) : `<span class="crop-source-text-price">${escapeHtml(String(seedCostText || "特殊来源"))}</span>`;
       const cartBonus = detail.bonuses && detail.bonuses.find((b) => b.title.includes("货车") || b.title.includes("旅行"));
       const seedIcon = `<img class="crop-source-seed-icon" src="${iconUrl(iconFiles[entry.seed] || "Mixed Seeds.png")}" alt="" loading="lazy" />`;
       const cropIconSmall = `<img class="crop-source-seed-icon" src="${iconUrl(iconFiles[entry.name] || "Mixed Seeds.png")}" alt="" loading="lazy" />`;
@@ -21006,14 +21489,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       let sourceRows = `
         <div class="crop-source-method-row">
           <span class="crop-wiki-mini-tag">耕种</span>
-          <span class="crop-source-method-content">${seedIcon} ${escapeHtml(entry.seed)} · ${priceHtml(seedCostText)} · ${escapeHtml(entry.source)} <span class="crop-source-badge">主要</span></span>
+          <span class="crop-source-method-content">${seedIcon} ${escapeHtml(entry.seed)} · ${seedCostHtml} · ${escapeHtml(entry.source)} <span class="crop-source-badge">主要</span></span>
         </div>
       `;
       if (cartBonus) {
         sourceRows += `
           <div class="crop-source-method-row">
             <span class="crop-wiki-mini-tag">购买</span>
-            <span class="crop-source-method-content">${cropIconSmall} ${escapeHtml(entry.name)}1-5个 · ${priceHtml("150-1000")} · ${cartIcon} 旅行货车</span>
+            <span class="crop-source-method-content">${cropIconSmall} ${escapeHtml(entry.name)}1-5个 · ${priceHtml("150-1000")} · ${cartIcon} 旅行货车 <span class="crop-source-badge secondary">随机</span></span>
           </div>
         `;
       }
@@ -21032,27 +21515,32 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const priceMap = {};
         if (detail.pricing) detail.pricing.forEach(p => { priceMap[p.q] = p; });
 
-        const tillerNote = renderCropWikiProfessionNote("Tiller.png", "农耕人 +10%");
+        const tillerNote = renderCropWikiProfessionNote("Tiller.png", "农耕人 +10%", "compact-profession");
         const energyIcon = `<img src="${iconUrl("Energy.png")}" alt="能量" loading="lazy" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:-3px;" />`;
         const healthIcon = `<img src="${iconUrl("Health.png")}" alt="生命" loading="lazy" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:-3px;" />`;
 
         const rows = qLabels.map((q) => {
           const e = energyMap[q];
           const p = priceMap[q];
-          const tillerPrice = p ? Math.floor(p.base * 1.1) : "—";
+          const tillerPrice = p ? (typeof p.farmer === "number" ? p.farmer : Math.floor(p.base * 1.1)) : "—";
           return `<tr>
             <td>${renderCropWikiQualityChip(q, entry.name)}</td>
             <td>${e ? `${energyIcon} <b>${e.energy}</b>&ensp;${healthIcon} <b>${e.health}</b>` : "—"}</td>
-            <td>${p ? priceFlowHtml(p.base, tillerPrice) : "—"}</td>
+            <td>${p ? `<span class="crop-quality-price">${priceHtml(p.base)}<span class="crop-price-arrow">→</span><span class="crop-tiller-price">${escapeHtml(String(tillerPrice))}</span></span>` : "—"}</td>
           </tr>`;
         }).join("");
 
         html.push(`
           <table class="crop-quality-table">
+            <colgroup>
+              <col class="crop-quality-col" />
+              <col class="crop-energy-col" />
+              <col class="crop-price-col" />
+            </colgroup>
             <thead><tr>
               <th>品质</th>
               <th>增益</th>
-              <th>售价 ${tillerNote}</th>
+              <th><span class="crop-table-headline">售价</span>${tillerNote}</th>
             </tr></thead>
             <tbody>${rows}</tbody>
           </table>
@@ -21064,38 +21552,27 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
       /* 加工 */
       if (detail.products && detail.products.length) {
+        const artisanNote = renderCropWikiProfessionNote("Artisan.png", "工匠 +40%", "compact-profession");
         const processItems = detail.products.map((p) => {
-          const artisanPrice = Math.floor(p.base * 1.4);
-          const productIconFile = /蜂蜜/.test(p.produce) ? 'Honey.png' : (iconFiles[p.produce] || iconFiles[entry.name] || 'Honey.png');
-          const deviceTitle = /蜂房/.test(p.device) ? '蜂房' : p.device;
-          const deviceDesc = /蜂房/.test(p.device)
-            ? '蓝爵需种在蜂房 5×5 范围内'
-            : '';
-          return `<div class="crop-process-card">
-            <div class="crop-process-card-head">
+          const produceIconFile = iconFiles[p.produce] || (String(p.produce).includes("蜂蜜") ? iconFiles["蜂蜜"] : "") || iconFiles[p.device] || iconFiles[entry.name] || "Honey.png";
+          const deviceText = p.device || "加工设备";
+          const conditionText = p.condition || (deviceText === "蜂房" ? "成熟花在蜂房 5 格范围内" : "放入设备加工");
+          const artisanPrice = typeof p.artisan === "number" ? p.artisan : Math.floor(Number(p.base || 0) * 1.4);
+          const badgeText = p.badge || "优先";
+          return `<div class="crop-process-item">
+            <div class="crop-process-head">
               <div class="crop-process-title-group">
-                <img class="crop-process-product-icon" src="${iconUrl(productIconFile)}" alt="" loading="lazy" />
-                <span class="crop-process-name">${escapeHtml(p.produce)}</span>
-                <span class="crop-process-priority">优先</span>
+                <img class="crop-process-product-icon" src="${iconUrl(produceIconFile)}" alt="" loading="lazy" />
+                <span class="crop-process-name">${escapeHtml(p.title || p.produce)}</span>
+                ${badgeText ? `<span class="crop-process-priority">${escapeHtml(badgeText)}</span>` : ""}
               </div>
+              <span class="crop-process-profession">${artisanNote}</span>
             </div>
-            <div class="crop-process-grid">
-              <div class="crop-process-metric">
-                <span class="crop-process-label">设备</span>
-                <span class="crop-process-value">${escapeHtml(deviceTitle)}</span>
-                ${deviceDesc ? `<span class="crop-process-subtext">${escapeHtml(deviceDesc)}</span>` : ''}
-              </div>
-              <div class="crop-process-metric">
-                <span class="crop-process-label">产物</span>
-                <span class="crop-process-value">${escapeHtml(p.produce)}</span>
-              </div>
-              <div class="crop-process-metric price-merge">
-                <span class="crop-process-label">售价</span>
-                <div class="crop-process-price-row">
-                  <span class="crop-process-value crop-process-price-line">${priceHtml(p.base)}<span class="crop-price-arrow">→</span><span class="crop-price-output-pill">${escapeHtml(String(artisanPrice))}</span></span>
-                  ${professionPillHtml('Artisan.png', '工匠 +40%')}
-                </div>
-              </div>
+            <div class="crop-process-info-grid">
+              <div class="crop-process-info"><span>设备</span><b>${escapeHtml(deviceText)}</b></div>
+              <div class="crop-process-info"><span>产物</span><b>${escapeHtml(p.produce)}</b></div>
+              <div class="crop-process-info crop-process-info-wide"><span>条件</span><b>${escapeHtml(conditionText)}</b></div>
+              <div class="crop-process-info crop-process-price-card"><span>售价</span><span class="crop-process-value">${priceHtml(p.base)}<span class="crop-price-arrow">→</span><span class="crop-artisan-price">${escapeHtml(String(artisanPrice))}</span></span></div>
             </div>
           </div>`;
         }).join("");
@@ -21103,10 +21580,33 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           <div class="crop-fold-section open">
             <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
               <span class="crop-fold-arrow"></span>
-              <span class="crop-fold-title">⚙️ 加工</span>
+              <span class="crop-fold-title">⚙️ 加工 <span class="crop-fold-priority">优先</span></span>
               <span class="crop-fold-badge">${detail.products.length} 种</span>
             </div>
-            <div class="crop-fold-body"><div class="crop-process-list">${processItems}</div></div>
+            <div class="crop-fold-body">${processItems}</div>
+          </div>
+        `);
+      }
+
+      /* 说明 */
+      if (detail.bonuses && detail.bonuses.length) {
+        folds.push(`
+          <div class="crop-fold-section">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span>
+              <span class="crop-fold-title">💡 说明</span>
+              <span class="crop-fold-badge">${detail.bonuses.length} 条</span>
+            </div>
+            <div class="crop-fold-body">
+              <div class="crop-wiki-mini-list">
+                ${detail.bonuses.map((b) => `
+                  <div class="crop-wiki-mini-row">
+                    <span class="crop-wiki-mini-tag">${escapeHtml(b.title)}</span>
+                    <span>${escapeHtml(b.text)}</span>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
           </div>
         `);
       }
@@ -21192,7 +21692,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
                 ${love ? `
                   <div class="crop-wiki-gift love">
                     <div class="crop-wiki-gift-head">
-                      <span class="crop-wiki-gift-label love">喜欢 <b>+${love.value}</b></span>
+                      <span class="crop-wiki-gift-label love">${escapeHtml(love.label || "喜欢")} <b>+${love.value}</b></span>
                       <small>${love.villagers.length} 人</small>
                     </div>
                     <div class="crop-wiki-villager-grid">${love.villagers.map(renderCropWikiVillagerChip).join("")}</div>
@@ -21201,7 +21701,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
                 ${dislike ? `
                   <div class="crop-wiki-gift dislike">
                     <div class="crop-wiki-gift-head">
-                      <span class="crop-wiki-gift-label dislike">不喜欢 <b>${dislike.value}</b></span>
+                      <span class="crop-wiki-gift-label dislike">${escapeHtml(dislike.label || "不喜欢")} <b>${dislike.value}</b></span>
                       <small>${dislike.villagers.length} 人</small>
                     </div>
                     <div class="crop-wiki-villager-grid">${dislike.villagers.map(renderCropWikiVillagerChip).join("")}</div>
