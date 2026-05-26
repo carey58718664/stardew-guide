@@ -7564,9 +7564,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   flex: 1;
 }
 .crop-fold-badge {
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 800;
+  color: #8b7e6f;
+  font-size: 10.5px;
+  font-weight: 700;
 }
 .crop-fold-body {
   display: none;
@@ -8172,12 +8172,12 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-wiki-mini-row {
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-columns: 58px minmax(0, 1fr);
   gap: 8px;
   align-items: center;
-  padding: 7px 9px;
+  padding: 6px 9px;
   font-size: 12px;
-  line-height: 1.4;
+  line-height: 1.35;
   color: #5b4a37;
 }
 .crop-wiki-mini-row + .crop-wiki-mini-row {
@@ -8208,9 +8208,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border-radius: 999px;
   background: var(--green-soft);
   color: var(--green);
-  padding: 1px 7px;
-  font-size: 11px;
-  font-weight: 950;
+  padding: 1px 6px;
+  font-size: 10.5px;
+  font-weight: 900;
   min-height: 18px;
 }
 .crop-wiki-2col {
@@ -8228,10 +8228,24 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border-left: 4px solid #2f6fb0;
   border-radius: 0 8px 8px 0;
   background: #fffaf0;
-  padding: 8px 11px;
+  padding: 7px 10px;
   font-size: 12.5px;
-  line-height: 1.5;
+  line-height: 1.4;
   color: #5b4a37;
+}
+.crop-wiki-bundle .bundle-optional-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  padding: 1px 7px;
+  min-height: 18px;
+  border-radius: 999px;
+  background: #f3efe3;
+  color: #8b7e6f;
+  font-size: 10.5px;
+  font-weight: 900;
+  vertical-align: middle;
 }
 .crop-wiki-recipe-grid {
   display: grid;
@@ -8245,10 +8259,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border-left: 4px solid #d9a420;
   border-radius: 0 8px 8px 0;
   background: #fffaf0;
-  padding: 8px 11px;
+  padding: 7px 10px;
 }
 .crop-wiki-recipe-card > b {
-  flex: 0 0 auto;
+  flex: 0 0 78px;
   color: var(--ink);
   font-size: 12.5px;
   font-weight: 950;
@@ -8259,35 +8273,44 @@ body.modal-open { overflow: hidden; touch-action: none; }
   flex: 1 1 auto;
   flex-wrap: nowrap;
   gap: 4px;
-  align-items: center;
+  align-items: stretch;
   min-width: 0;
 }
 .crop-wiki-ing-chip {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   border: 1px solid #ead8b1;
   border-radius: 999px;
   background: #fff;
-  padding: 1px 8px 1px 2px;
+  padding: 2px 8px 2px 3px;
+  min-height: 42px;
   font-size: 11px;
   font-weight: 900;
   color: #5b4a37;
+  line-height: 1.15;
 }
 .crop-wiki-ing-chip img {
   width: 16px;
   height: 16px;
   image-rendering: pixelated;
+  flex: 0 0 16px;
+}
+.crop-wiki-ing-chip > span:first-of-type,
+.crop-wiki-ing-chip > b,
+.crop-wiki-ing-chip > strong {
+  line-height: 1.1;
 }
 .crop-wiki-ing-qty {
   color: #9c620e;
   font-size: 10px;
   font-weight: 950;
+  margin-left: 1px;
 }
 .crop-wiki-recipe-ing .ing-plus {
-  color: #b09a7a;
-  font-weight: 900;
-  font-size: 12px;
+  color: #c4b49c;
+  font-weight: 800;
+  font-size: 11px;
 }
 .crop-wiki-gift-stack {
   display: grid;
@@ -8297,7 +8320,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border: 1.5px solid #e5d5b6;
   border-radius: 10px;
   background: #fffaf0;
-  padding: 8px 10px;
+  padding: 7px 10px;
+}
+.crop-wiki-gift.dislike {
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 .crop-wiki-gift.love { border-left: 4px solid #6fae43; }
 .crop-wiki-gift.dislike { border-left: 4px solid #c25e3a; }
@@ -8316,14 +8343,18 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .crop-wiki-gift-label.dislike b { color: #b14a23; }
 .crop-wiki-gift-label b { font-size: 13px; }
 .crop-wiki-gift-head small {
-  color: var(--muted);
-  font-size: 10.5px;
-  font-weight: 800;
+  color: #8b7e6f;
+  font-size: 10px;
+  font-weight: 700;
+  margin-left: auto;
 }
 .crop-wiki-villager-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 3px 4px;
+  gap: 4px 5px;
+}
+.crop-wiki-gift.dislike .crop-wiki-villager-grid {
+  gap: 4px;
 }
 .crop-wiki-villager {
   display: inline-flex;
@@ -8333,8 +8364,8 @@ body.modal-open { overflow: hidden; touch-action: none; }
   background: #fff5dc;
   border: 1px solid #ead8b1;
   padding: 1px 7px 1px 1px;
-  font-size: 11px;
-  font-weight: 900;
+  font-size: 10.5px;
+  font-weight: 850;
   color: #5b4a37;
   line-height: 1.2;
 }
@@ -8365,6 +8396,15 @@ body.modal-open { overflow: hidden; touch-action: none; }
   }
   .crop-wiki-2col {
     grid-template-columns: 1fr;
+  }
+  .crop-wiki-recipe-card {
+    gap: 8px;
+  }
+  .crop-wiki-recipe-card > b {
+    flex-basis: 72px;
+  }
+  .crop-wiki-ing-chip {
+    min-height: 40px;
   }
 }
 .planting-greenhouse {
@@ -20898,9 +20938,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     }
 
     function renderCropWikiBundleText(text) {
-      return escapeHtml(text)
+      let html = escapeHtml(text)
         .replaceAll("茶水间", "<b>茶水间</b>")
         .replaceAll("花园收集包", "<b>花园收集包</b>");
+      html = html.replace(/（可选项）/g, '<span class="bundle-optional-badge">可选项</span>');
+      return html;
     }
 
     function renderCropWikiVillagerChip(name) {
