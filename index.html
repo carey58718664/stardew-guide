@@ -7401,12 +7401,16 @@ body.modal-open { overflow: hidden; touch-action: none; }
   display: grid;
   grid-template-columns: 22px 72px minmax(0, 1fr);
   gap: 8px;
-  align-items: center;
-  padding: 5px 6px;
+  align-items: start;
+  padding: 6px 6px;
   font-size: 12px;
   line-height: 1.45;
   color: #5b4a37;
   border-radius: 6px;
+}
+.crop-info-line .crop-info-icon,
+.crop-info-line .crop-info-label {
+  padding-top: 3px;
 }
 .crop-info-line + .crop-info-line {
   border-top: 1px dashed #f0e3c8;
@@ -7443,10 +7447,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   color: #4a3a2a;
   font-size: 12.5px;
   font-weight: 700;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 6px;
-  align-items: center;
+  line-height: 1.7;
 }
 .crop-info-content b {
   color: var(--ink);
@@ -7456,13 +7457,41 @@ body.modal-open { overflow: hidden; touch-action: none; }
   width: 16px;
   height: 16px;
   image-rendering: pixelated;
+  vertical-align: -3px;
+  margin: 0 1px;
+}
+.crop-info-content .crop-q-pill {
+  margin: 2px 3px 2px 0;
+  vertical-align: middle;
+}
+.crop-info-content .planting-tag {
+  margin-left: 4px;
   vertical-align: middle;
 }
 .crop-info-note {
-  color: var(--muted);
+  display: inline-block;
+  color: #8a7048;
   font-size: 11px;
-  font-weight: 800;
-  margin-left: 2px;
+  font-weight: 850;
+  margin-left: 6px;
+  padding: 1px 7px;
+  background: #f6e6d5;
+  border-radius: 4px;
+}
+.crop-price-tight {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  vertical-align: -3px;
+  white-space: nowrap;
+}
+.crop-price-tight img {
+  margin: 0 !important;
+  vertical-align: middle;
+}
+.crop-price-tight b {
+  font-weight: 950;
+  color: var(--ink);
 }
 
 /* 品质 + 数据 胶囊 */
@@ -19537,7 +19566,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       // 加工售出
       if (detail.products && detail.products.length) {
         const productsHtml = detail.products.map((p) =>
-          `种植在<b>${escapeHtml(p.device)}</b>的作用范围内（水平方向 5 格，竖直方向 5 格），产生<b>${escapeHtml(p.produce)}</b>，${goldIcon}<b>${p.base}</b><small class="crop-info-note">工匠（耕种10级）×1.4</small>`
+          `种植在<b>${escapeHtml(p.device)}</b>的作用范围内（水平方向 5 格，竖直方向 5 格），产生<b>${escapeHtml(p.produce)}</b>，<span class="crop-price-tight">${goldIcon}<b>${p.base}</b></span><small class="crop-info-note">工匠（耕种10级）×1.4</small>`
         ).join("<br>");
         lines.push(`
           <div class="crop-info-line">
@@ -19555,7 +19584,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           <div class="crop-info-line tips">
             <span class="crop-info-icon"><span class="crop-emoji">💡</span></span>
             <span class="crop-info-label">Tips</span>
-            <span class="crop-info-content">旅行货车 · ${goldIcon}150 ~ ${goldIcon}1,000 随机 · 出售 1 个或 5 个${escapeHtml(entry.name)}</span>
+            <span class="crop-info-content">旅行货车 · <span class="crop-price-tight">${goldIcon}<b>150</b></span> ~ <span class="crop-price-tight">${goldIcon}<b>1,000</b></span> 随机 · 出售 1 个或 5 个${escapeHtml(entry.name)}</span>
           </div>
         `);
       }
