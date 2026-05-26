@@ -7261,6 +7261,12 @@ body.modal-open { overflow: hidden; touch-action: none; }
   color: #4a3a2a;
   font-weight: 700;
 }
+.crop-source-method-row .crop-wiki-mini-tag {
+  width: 44px;
+  min-width: 44px;
+  padding: 1px 0;
+  white-space: nowrap;
+}
 .crop-source-method-row + .crop-source-method-row {
   border-top: 1.5px dashed #ece0c8;
 }
@@ -7287,6 +7293,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
 /* ── 品质总表 ── */
 .crop-quality-table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   border: 1.5px solid #e5d5b6;
@@ -7306,10 +7313,16 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-quality-table th:first-child {
   text-align: center;
-  width: 56px;
+  width: 52px;
   padding-left: 8px;
 }
+.crop-quality-table th:nth-child(2) {
+  width: 34%;
+  text-align: left;
+  padding-left: 10px;
+}
 .crop-quality-table th:last-child {
+  width: 40%;
   text-align: right;
   padding-right: 14px;
 }
@@ -7330,7 +7343,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-quality-table td:first-child {
   text-align: center;
-  width: 56px;
+  width: 52px;
+}
+.crop-quality-table td:nth-child(2) {
+  text-align: left;
+  padding-left: 10px;
 }
 .crop-quality-table td:last-child {
   text-align: right;
@@ -7377,16 +7394,17 @@ body.modal-open { overflow: hidden; touch-action: none; }
   gap: 10px;
 }
 .crop-process-card {
-  border: 1.5px solid #e5d5b6;
+  border: 1px solid #eadcc0;
   border-radius: 12px;
   background: #fffaf0;
   padding: 10px 12px;
   position: relative;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
 }
 .crop-process-card-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 8px;
   margin-bottom: 8px;
 }
@@ -7396,6 +7414,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   gap: 8px;
   min-width: 0;
   flex-wrap: wrap;
+  flex: 1;
 }
 .crop-process-product-icon {
   width: 24px;
@@ -7425,34 +7444,41 @@ body.modal-open { overflow: hidden; touch-action: none; }
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  min-height: 24px;
-  padding: 0 10px;
+  min-height: 22px;
+  padding: 0 8px;
   border-radius: 999px;
   background: #f9f1e4;
   color: #8a7048;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 900;
   box-shadow: inset 0 0 0 1px rgba(213, 190, 150, 0.55);
   white-space: nowrap;
 }
+.crop-process-profession.in-price {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+}
 .crop-process-profession img {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   image-rendering: pixelated;
 }
 .crop-process-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: 6px;
 }
 .crop-process-metric {
-  border: 1.5px solid #e5d5b6;
+  border: 1px solid #eadcc0;
   border-radius: 10px;
   background: #fffdf8;
   padding: 8px 10px;
 }
 .crop-process-metric.price-merge {
   grid-column: 1 / -1;
+  position: relative;
+  padding-bottom: 34px;
 }
 .crop-process-label {
   display: block;
@@ -7862,13 +7888,19 @@ body.modal-open { overflow: hidden; touch-action: none; }
   align-items: center;
   gap: 3px;
   color: #8a7048;
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 850;
   margin-left: 6px;
-  padding: 1px 6px;
+  padding: 0 6px;
+  min-height: 26px;
   background: #f9f1e4;
   border-radius: 999px;
   box-shadow: inset 0 0 0 1px rgba(213, 190, 150, 0.55);
+}
+.crop-info-note .crop-profession-icon {
+  width: 20px;
+  height: 20px;
+  image-rendering: pixelated;
 }
 .crop-info-note.tiller-note {
   margin-left: 0;
@@ -8027,32 +8059,33 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-quality-chip.has-official-icon {
   position: relative;
-  min-width: 28px;
-  min-height: 28px;
-  border-radius: 999px;
-  background: #f7f0e1;
-  box-shadow: inset 0 0 0 1px rgba(213, 190, 150, 0.62);
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   padding: 0;
 }
 .crop-quality-icon-wrap {
   position: relative;
   display: inline-flex;
-  width: 26px;
-  height: 26px;
-  align-items: center;
-  justify-content: center;
-}
-.crop-quality-item-icon {
   width: 24px;
   height: 24px;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+.crop-quality-item-icon {
+  width: 22px;
+  height: 22px;
   image-rendering: pixelated;
 }
 .crop-quality-star-icon {
   position: absolute;
-  left: 3px;
-  bottom: 1px;
-  width: 12px;
-  height: 12px;
+  left: 0;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
   image-rendering: pixelated;
 }
 .crop-quality-chip.q-normal { background: #ece2cc; color: #5b4a37; }
@@ -8399,6 +8432,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
   }
   .crop-process-grid {
     grid-template-columns: 1fr 1fr;
+  }
+  .crop-process-profession.in-price {
+    right: 8px;
+    bottom: 8px;
   }
 }
 
@@ -20914,7 +20951,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         sourceRows += `
           <div class="crop-source-method-row">
             <span class="crop-wiki-mini-tag">购买</span>
-            <span class="crop-source-method-content">${cropIconSmall} ${escapeHtml(entry.name)}1-5个 · ${priceHtml("150-1000")} · ${cartIcon} 旅行货车 <span class="crop-source-badge secondary">随机</span></span>
+            <span class="crop-source-method-content">${cropIconSmall} ${escapeHtml(entry.name)}1-5个 · ${priceHtml("150-1000")} · ${cartIcon} 旅行货车</span>
           </div>
         `;
       }
@@ -20933,7 +20970,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const priceMap = {};
         if (detail.pricing) detail.pricing.forEach(p => { priceMap[p.q] = p; });
 
-        const tillerNote = renderCropWikiProfessionNote("Tiller.png", "农耕人（+10%）");
+        const tillerNote = renderCropWikiProfessionNote("Tiller.png", "农耕人 +10%");
         const energyIcon = `<img src="${iconUrl("Energy.png")}" alt="能量" loading="lazy" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:-3px;" />`;
         const healthIcon = `<img src="${iconUrl("Health.png")}" alt="生命" loading="lazy" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:-3px;" />`;
 
@@ -20968,7 +21005,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const processItems = detail.products.map((p) => {
           const artisanPrice = Math.floor(p.base * 1.4);
           const deviceText = /蜂房/.test(p.device) ? '蜂房 5×5' : p.device;
-          const productIconFile = iconFiles[p.produce] || iconFiles[entry.name] || 'Honey.png';
+          const productIconFile = /蜂蜜/.test(p.produce) ? 'Honey.png' : (iconFiles[p.produce] || iconFiles[entry.name] || 'Honey.png');
+          const deviceDesc = /蜂房/.test(p.device)
+            ? '蜂房周围 5×5 内种植蓝爵'
+            : p.device;
           return `<div class="crop-process-card">
             <div class="crop-process-card-head">
               <div class="crop-process-title-group">
@@ -20976,12 +21016,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
                 <span class="crop-process-name">${escapeHtml(p.produce)}</span>
                 <span class="crop-process-priority">优先</span>
               </div>
-              ${professionPillHtml('Artisan.png', '工匠 +40%')}
             </div>
             <div class="crop-process-grid">
               <div class="crop-process-metric">
-                <span class="crop-process-label">范围</span>
-                <span class="crop-process-value">${escapeHtml(deviceText)}</span>
+                <span class="crop-process-label">设备</span>
+                <span class="crop-process-value">${escapeHtml(deviceDesc)}</span>
               </div>
               <div class="crop-process-metric">
                 <span class="crop-process-label">产物</span>
@@ -20990,6 +21029,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
               <div class="crop-process-metric price-merge">
                 <span class="crop-process-label">售价</span>
                 <span class="crop-process-value crop-process-price-line">${priceHtml(p.base)}<span class="crop-price-arrow">→</span><span class="crop-price-output-pill">${escapeHtml(String(artisanPrice))}</span></span>
+                ${professionPillHtml('Artisan.png', '工匠 +40%').replace('crop-process-profession', 'crop-process-profession in-price')}
               </div>
             </div>
           </div>`;
