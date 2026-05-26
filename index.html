@@ -7213,8 +7213,8 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .planting-card-head {
   display: grid;
   grid-template-columns: 54px minmax(0, 1fr);
-  gap: 10px;
-  padding: 11px 12px 9px;
+  gap: 12px;
+  padding: 12px 14px 10px;
   border-bottom: 1px solid #f0e3c8;
   background: linear-gradient(180deg, #fffdf6, #fff7ea);
 }
@@ -7266,8 +7266,8 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .planting-card-body {
   display: grid;
-  gap: 8px;
-  padding: 10px 12px 12px;
+  gap: 12px;
+  padding: 12px 14px 14px;
 }
 .planting-metric-grid {
   display: grid;
@@ -7350,7 +7350,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
 
 /* ── 作物 wiki 扩展板块（信息行版） ── */
 .planting-card.has-wiki .planting-card-head {
-  padding: 10px 12px 8px;
+  padding: 12px 14px 10px;
 }
 .planting-crop-cat {
   flex-shrink: 0;
@@ -7374,17 +7374,17 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .planting-card.has-wiki .planting-card-body {
   display: grid;
-  gap: 8px;
-  padding: 10px 12px 12px;
+  gap: 12px;
+  padding: 12px 14px 14px;
 }
 .crop-wiki-intro {
   border-left: 3px solid var(--plant-accent);
   background: #fff8e8;
   color: #5b4a37;
-  padding: 6px 10px;
+  padding: 8px 12px;
   font-size: 12.5px;
-  line-height: 1.5;
-  border-radius: 0 6px 6px 0;
+  line-height: 1.55;
+  border-radius: 0 8px 8px 0;
 }
 .crop-wiki-intro-title {
   display: flex;
@@ -7415,32 +7415,33 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-info-list {
   display: grid;
-  gap: 2px;
-  border: 2px solid #e5d5b6;
-  border-radius: 10px;
+  gap: 0;
+  border: 1.5px solid #e5d5b6;
+  border-radius: 12px;
   background: #fffaf0;
-  padding: 5px;
+  padding: 4px 6px;
+  box-shadow: 0 2px 8px rgba(76, 49, 29, 0.04);
 }
 .crop-info-line {
   display: grid;
-  grid-template-columns: 22px 50px minmax(0, 1fr);
+  grid-template-columns: 22px 54px minmax(0, 1fr);
   gap: 8px;
   align-items: start;
-  padding: 4px 6px;
+  padding: 7px 8px;
   font-size: 12px;
-  line-height: 1.34;
+  line-height: 1.4;
   color: #5b4a37;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 .crop-info-line.no-icon {
-  grid-template-columns: 50px minmax(0, 1fr);
+  grid-template-columns: 54px minmax(0, 1fr);
 }
 .crop-info-line .crop-info-icon,
 .crop-info-line .crop-info-label {
   padding-top: 2px;
 }
 .crop-info-line + .crop-info-line {
-  border-top: 2px dashed #f0e3c8;
+  border-top: 1.5px dashed #ece0c8;
 }
 .crop-info-line.wide {
   align-items: center;
@@ -7466,9 +7467,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-info-label {
   color: #9c620e;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 950;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
 }
 .crop-info-label-stack {
   display: inline-grid;
@@ -7479,7 +7480,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   color: #4a3a2a;
   font-size: 12.5px;
   font-weight: 700;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 .crop-info-content b {
   color: var(--ink);
@@ -7708,22 +7709,22 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-wiki-section {
   display: grid;
-  gap: 6px;
+  gap: 8px;
 }
 .crop-wiki-h4 {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   margin: 0;
   color: var(--ink);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 950;
   line-height: 1.2;
 }
 .crop-wiki-h4-bar {
   display: inline-block;
-  width: 3px;
-  height: 13px;
+  width: 3.5px;
+  height: 14px;
   border-radius: 2px;
   background: var(--plant-accent);
 }
@@ -7733,12 +7734,12 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .crop-wiki-note-line {
   position: relative;
-  padding: 4px 8px 4px 16px;
+  padding: 5px 10px 5px 18px;
   color: #5b4a37;
   font-size: 12px;
-  line-height: 1.45;
+  line-height: 1.5;
   background: #fffaf0;
-  border-radius: 6px;
+  border-radius: 8px;
   border-left: 3px solid var(--plant-accent);
 }
 .crop-wiki-note-line::before {
@@ -7755,30 +7756,30 @@ body.modal-open { overflow: hidden; touch-action: none; }
   display: grid;
   gap: 0;
   overflow: hidden;
-  border: 2px solid #e5d5b6;
-  border-radius: 8px;
+  border: 1.5px solid #e5d5b6;
+  border-radius: 10px;
   background: #fffaf0;
 }
 .crop-wiki-mini-row {
   display: grid;
-  grid-template-columns: 60px minmax(0, 1fr);
-  gap: 6px;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 8px;
   align-items: center;
-  padding: 5px 7px;
+  padding: 7px 9px;
   font-size: 12px;
   line-height: 1.4;
   color: #5b4a37;
 }
 .crop-wiki-mini-row + .crop-wiki-mini-row {
-  border-top: 2px dashed #ead8b1;
+  border-top: 1.5px dashed #ece0c8;
 }
 .crop-wiki-tailoring-box {
   display: block;
   gap: 0;
   padding: 0;
   overflow: hidden;
-  border: 2px solid #e5d5b6;
-  border-radius: 8px;
+  border: 1.5px solid #e5d5b6;
+  border-radius: 10px;
   background: #fffaf0;
 }
 .crop-wiki-tailoring-box .crop-wiki-mini-row {
@@ -7788,7 +7789,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   margin: 0;
 }
 .crop-wiki-tailoring-box .crop-wiki-mini-row + .crop-wiki-mini-row {
-  border-top: 2px dashed #ead8b1;
+  border-top: 1.5px dashed #ece0c8;
 }
 .crop-wiki-mini-tag {
   display: inline-flex;
@@ -7813,13 +7814,13 @@ body.modal-open { overflow: hidden; touch-action: none; }
   gap: 8px;
 }
 .crop-wiki-bundle {
-  border: 2px solid #e5d5b6;
+  border: 1.5px solid #e5d5b6;
   border-left: 4px solid #2f6fb0;
   border-radius: 0 8px 8px 0;
   background: #fffaf0;
-  padding: 6px 9px;
-  font-size: 12px;
-  line-height: 1.45;
+  padding: 8px 11px;
+  font-size: 12.5px;
+  line-height: 1.5;
   color: #5b4a37;
 }
 .crop-wiki-recipe-grid {
@@ -7829,12 +7830,12 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .crop-wiki-recipe-card {
   display: flex;
   align-items: center;
-  gap: 8px;
-  border: 2px solid #e5d5b6;
+  gap: 10px;
+  border: 1.5px solid #e5d5b6;
   border-left: 4px solid #d9a420;
   border-radius: 0 8px 8px 0;
   background: #fffaf0;
-  padding: 6px 9px;
+  padding: 8px 11px;
 }
 .crop-wiki-recipe-card > b {
   flex: 0 0 auto;
@@ -7883,10 +7884,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
   gap: 5px;
 }
 .crop-wiki-gift {
-  border: 2px solid #e5d5b6;
-  border-radius: 8px;
+  border: 1.5px solid #e5d5b6;
+  border-radius: 10px;
   background: #fffaf0;
-  padding: 6px 8px;
+  padding: 8px 10px;
 }
 .crop-wiki-gift.love { border-left: 4px solid #6fae43; }
 .crop-wiki-gift.dislike { border-left: 4px solid #c25e3a; }
@@ -7946,11 +7947,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 @media (max-width: 520px) {
   .crop-info-line {
-    grid-template-columns: 22px 50px minmax(0, 1fr);
+    grid-template-columns: 22px 54px minmax(0, 1fr);
     gap: 6px;
   }
   .crop-info-line.no-icon {
-    grid-template-columns: 50px minmax(0, 1fr);
+    grid-template-columns: 54px minmax(0, 1fr);
   }
   .crop-wiki-2col {
     grid-template-columns: 1fr;
