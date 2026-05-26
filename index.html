@@ -11907,20 +11907,17 @@ body.modal-open { overflow: hidden; touch-action: none; }
 #app-shell .season-overview {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  padding: 8px 2px;
+  gap: 10px;
 }
 
 #app-shell .season-main-card {
   min-width: 0;
-  border: 1.5px solid rgba(150, 112, 63, 0.24);
+  border: 3px solid #e1cea8;
+  border-left-width: 7px;
   border-radius: 10px;
-  background: rgba(255, 252, 242, 0.92);
-  padding: 8px;
-  box-shadow:
-    0 0 0 6px rgba(255, 252, 242, 0.92),
-    0 0 0 7.5px rgba(184, 143, 84, 0.5),
-    0 12px 26px rgba(76, 49, 29, 0.1);
+  background: rgba(255, 253, 248, 0.96);
+  padding: 10px;
+  box-shadow: 0 8px 18px rgba(76, 49, 29, 0.08);
 }
 
 #app-shell .season-main-card.season-themed {
@@ -11965,10 +11962,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
   z-index: 2;
 }
 
-#app-shell .season-main-card.planting { border-left: 5px solid #389d62; }
-#app-shell .season-main-card.fishing { border-left: 5px solid #308bd9; }
-#app-shell .season-main-card.festival { border-left: 5px solid #d28a28; }
-#app-shell .season-main-card.birthday { border-left: 5px solid #cf6aa6; }
+#app-shell .season-main-card.planting { border-left-color: #389d62; }
+#app-shell .season-main-card.fishing { border-left-color: #308bd9; }
+#app-shell .season-main-card.festival { border-left-color: #d28a28; }
+#app-shell .season-main-card.birthday { border-left-color: #cf6aa6; }
 
 #app-shell .season-card-title {
   display: flex;
@@ -12000,16 +11997,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
 #app-shell .festival-row,
 #app-shell .birthday-row {
   min-width: 0;
-  border: 1.5px solid rgba(143, 108, 64, 0.22);
-  border-radius: 10px;
-  background: rgba(255, 250, 238, 0.93);
+  border: 1px solid #eadfc9;
+  border-radius: 8px;
+  background: #fffaf0;
   padding: 7px;
-  box-shadow: inset 4px 0 0 var(--mini-accent, #d8b96a);
 }
-#app-shell .season-main-card.planting .season-mini-item { --mini-accent: #389d62; }
-#app-shell .season-main-card.fishing .fish-row { --mini-accent: #308bd9; }
-#app-shell .season-main-card.festival .festival-row { --mini-accent: #d28a28; }
-#app-shell .season-main-card.birthday .birthday-row { --mini-accent: #cf6aa6; }
 
 #app-shell .season-mini-item {
   display: grid;
@@ -12033,14 +12025,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
   gap: 6px;
   min-height: 0;
   padding: 6px;
-  background: rgba(255, 250, 240, 0.92);
-  border: 1.5px solid rgba(143, 108, 64, 0.18);
-  border-radius: 10px;
-  box-shadow: inset 4px 0 0 var(--mini-accent, #d8b96a);
+  background: rgba(255, 250, 240, 0.88);
 }
 
 #app-shell .season-main-card.season-themed .fish-row.need {
-  background: rgba(255, 246, 220, 0.93);
+  background: rgba(255, 246, 220, 0.9);
 }
 
 #app-shell .season-main-card.season-themed .season-mini-icon,
@@ -12414,6 +12403,92 @@ body.modal-open { overflow: hidden; touch-action: none; }
   #app-shell .festival-row,
   #app-shell .birthday-row {
     grid-template-columns: 26px minmax(0, 1fr);
+  }
+}
+
+
+
+/* ===== v21 当季事：大卡片双层边框 + 小卡片色块质感 ===== */
+#app-shell .season-main-card {
+  border: 3px solid #6b4a37;
+  border-left-width: 7px;
+  border-radius: 12px;
+  background: rgba(255, 250, 240, 0.9);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 244, 218, 0.96),
+    0 8px 18px rgba(76, 49, 29, 0.1);
+}
+
+#app-shell .season-main-card.planting { border-left-color: #389d62; }
+#app-shell .season-main-card.fishing { border-left-color: #308bd9; }
+#app-shell .season-main-card.festival { border-left-color: #d28a28; }
+#app-shell .season-main-card.birthday { border-left-color: #cf6aa6; }
+
+#app-shell .season-main-card.season-themed {
+  background:
+    linear-gradient(rgba(255, 246, 224, 0.08), rgba(255, 246, 224, 0.08)),
+    linear-gradient(180deg, rgba(255, 252, 242, 0.48), rgba(244, 226, 190, 0.32));
+}
+
+#app-shell .season-main-card.season-themed::after {
+  background:
+    radial-gradient(circle at 78% 18%, rgba(255, 246, 210, 0.06), rgba(255, 246, 210, 0) 34%),
+    linear-gradient(180deg, rgba(255, 252, 242, 0.3), rgba(255, 252, 242, 0.16));
+}
+
+#app-shell .season-main-card .season-mini-item,
+#app-shell .season-main-card .fish-row,
+#app-shell .season-main-card .festival-row,
+#app-shell .season-main-card .birthday-row {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(143, 108, 64, 0.24);
+  border-radius: 10px;
+  background: rgba(255, 250, 240, 0.72);
+  box-shadow:
+    inset 5px 0 0 var(--season-item-accent, #8f67cf),
+    0 4px 10px rgba(80, 50, 20, 0.08);
+}
+
+#app-shell .season-main-card.planting .season-mini-item { --season-item-accent: #389d62; }
+#app-shell .season-main-card.fishing .fish-row { --season-item-accent: #308bd9; }
+#app-shell .season-main-card.festival .festival-row { --season-item-accent: #d28a28; }
+#app-shell .season-main-card.birthday .birthday-row { --season-item-accent: #cf6aa6; }
+
+#app-shell .season-main-card.season-themed .season-mini-item,
+#app-shell .season-main-card.season-themed .fish-row,
+#app-shell .season-main-card.season-themed .festival-row,
+#app-shell .season-main-card.season-themed .birthday-row {
+  padding-left: 11px;
+  background: rgba(255, 250, 240, 0.68);
+}
+
+#app-shell .season-main-card.season-themed .fish-row.need,
+#app-shell .season-main-card .season-tag.warn,
+#app-shell .season-main-card .fish-row.need {
+  background: rgba(255, 246, 220, 0.72);
+}
+
+#app-shell .season-main-card .season-mini-item:hover,
+#app-shell .season-main-card .fish-row:hover,
+#app-shell .season-main-card .festival-row:hover,
+#app-shell .season-main-card .birthday-row:hover {
+  border-color: rgba(205, 167, 102, 0.78);
+  background: rgba(255, 248, 229, 0.82);
+}
+
+@media (max-width: 720px) {
+  #app-shell .season-main-card {
+    border-width: 3px;
+    border-left-width: 7px;
+    border-radius: 11px;
+  }
+
+  #app-shell .season-main-card.season-themed .season-mini-item,
+  #app-shell .season-main-card.season-themed .fish-row,
+  #app-shell .season-main-card.season-themed .festival-row,
+  #app-shell .season-main-card.season-themed .birthday-row {
+    padding-left: 10px;
   }
 }
 
