@@ -7241,9 +7241,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
   gap: 0;
 }
 .crop-source-method-row {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 8px;
+  align-items: start;
   padding: 7px 0;
   font-size: 12.5px;
   line-height: 1.5;
@@ -7254,10 +7255,8 @@ body.modal-open { overflow: hidden; touch-action: none; }
   border-top: 1.5px dashed #ece0c8;
 }
 .crop-source-method-content {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 3px;
+  display: inline;
+  word-break: break-word;
 }
 .crop-source-method-content img {
   width: 16px;
@@ -7289,12 +7288,12 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .crop-quality-table col.crop-energy-col { width: 30%; }
 .crop-quality-table col.crop-price-col { width: 46%; }
 .crop-quality-table th {
-  height: 48px;
+  height: 36px;
   background: linear-gradient(180deg, #fff8ee, #f8ecd4);
   color: #9c620e;
   font-size: 11px;
   font-weight: 950;
-  padding: 7px 10px;
+  padding: 4px 8px;
   text-align: center;
   border-bottom: 1.5px solid #e5d5b6;
   vertical-align: middle;
@@ -7317,14 +7316,14 @@ body.modal-open { overflow: hidden; touch-action: none; }
   margin-left: 5px;
 }
 .crop-quality-table td {
-  height: 64px;
-  padding: 6px 10px;
+  height: 42px;
+  padding: 4px 8px;
   text-align: center;
   color: var(--ink);
   font-weight: 800;
   border-bottom: 1px solid #f0e8d5;
   font-size: 12.5px;
-  line-height: 1.35;
+  line-height: 1.3;
   vertical-align: middle;
 }
 .crop-quality-table td:first-child {
@@ -21825,15 +21824,15 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const processItems = detail.products.map((p) => {
           const produceIconFile = iconFiles[p.produce] || iconFiles[p.device] || iconFiles[entry.name] || "Honey.png";
           const artisanPrice = typeof p.artisan === "number" ? p.artisan : Math.floor(Number(p.base || 0) * 1.4);
-          const methodName = p.device === "罐头瓶" ? "腌制" : p.device === "小桶" ? "榨汁" : (p.device || "加工");
+          const deviceName = p.device || "加工设备";
           const formula = p.condition && p.condition.includes("=") ? p.condition.split("=").pop().trim() : "";
           const badgeText = p.badge || "优先";
           return `<div class="crop-wiki-bundle" style="border-left-color:#6fae43;">
             <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
               <img class="crop-source-seed-icon" src="${iconUrl(produceIconFile)}" alt="" loading="lazy" />
-              <b>${escapeHtml(methodName)}</b>
+              <b>${escapeHtml(deviceName)}</b>
               <span style="color:var(--muted);">→</span>
-              <span>${escapeHtml(p.produce)}</span>
+              <b>${escapeHtml(p.produce)}</b>
               <span class="crop-process-priority">${escapeHtml(badgeText)}</span>
             </div>
             <div style="margin-top:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12.5px;">
@@ -21944,18 +21943,18 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         `);
       }
 
-      /* 送礼（默认折叠，最爱直接展示，喜欢/不喜欢各自折叠） */
+      /* 送礼（最爱始终展示，喜欢/不喜欢折叠展开） */
       if (detail.gifting) {
         const love = detail.gifting.love;
         const like = detail.gifting.like;
         const dislike = detail.gifting.dislike;
         const giftCount = (love ? love.villagers.length : 0) + (like ? like.villagers.length : 0) + (dislike ? dislike.villagers.length : 0);
 
-        let giftInner = "";
-        /* 最爱：直接展示 */
+        /* 最爱部分始终可见（放在fold header下方、body外面） */
+        let loveHtml = "";
         if (love && love.label === "最爱") {
-          giftInner += `
-            <div class="crop-wiki-gift love">
+          loveHtml = `
+            <div class="crop-wiki-gift love" style="margin:0 12px 4px;">
               <div class="crop-wiki-gift-head">
                 <span class="crop-wiki-gift-label love">${escapeHtml(love.label)} <b>+${love.value}</b></span>
                 <small>${love.villagers.length} 人</small>
@@ -21963,44 +21962,41 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
               <div class="crop-wiki-villager-grid">${love.villagers.map(renderCropWikiVillagerChip).join("")}</div>
             </div>
           `;
-        } else if (love) {
-          giftInner += `
+        }
+
+        /* 喜欢/不喜欢在fold body里 */
+        let foldBodyInner = "";
+        const loveInFold = (love && love.label !== "最爱") ? love : null;
+        if (loveInFold) {
+          foldBodyInner += `
             <div class="crop-wiki-gift love">
               <div class="crop-wiki-gift-head">
-                <span class="crop-wiki-gift-label love">${escapeHtml(love.label || "喜欢")} <b>+${love.value}</b></span>
-                <small>${love.villagers.length} 人</small>
+                <span class="crop-wiki-gift-label love">${escapeHtml(loveInFold.label || "喜欢")} <b>+${loveInFold.value}</b></span>
+                <small>${loveInFold.villagers.length} 人</small>
               </div>
-              <div class="crop-wiki-villager-grid">${love.villagers.map(renderCropWikiVillagerChip).join("")}</div>
+              <div class="crop-wiki-villager-grid">${loveInFold.villagers.map(renderCropWikiVillagerChip).join("")}</div>
             </div>
           `;
         }
-        /* 喜欢：子折叠 */
         if (like) {
-          giftInner += `
-            <div class="crop-fold-section crop-gift-subfold">
-              <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
-                <span class="crop-fold-arrow"></span>
-                <span class="crop-wiki-gift-label love" style="flex:1;">${escapeHtml(like.label || "喜欢")} <b>+${like.value}</b></span>
+          foldBodyInner += `
+            <div class="crop-wiki-gift love">
+              <div class="crop-wiki-gift-head">
+                <span class="crop-wiki-gift-label love">${escapeHtml(like.label || "喜欢")} <b>+${like.value}</b></span>
                 <small>${like.villagers.length} 人</small>
               </div>
-              <div class="crop-fold-body">
-                <div class="crop-wiki-villager-grid">${like.villagers.map(renderCropWikiVillagerChip).join("")}</div>
-              </div>
+              <div class="crop-wiki-villager-grid">${like.villagers.map(renderCropWikiVillagerChip).join("")}</div>
             </div>
           `;
         }
-        /* 不喜欢：子折叠 */
         if (dislike) {
-          giftInner += `
-            <div class="crop-fold-section crop-gift-subfold">
-              <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
-                <span class="crop-fold-arrow"></span>
-                <span class="crop-wiki-gift-label dislike" style="flex:1;">${escapeHtml(dislike.label || "不喜欢")} <b>${dislike.value}</b></span>
+          foldBodyInner += `
+            <div class="crop-wiki-gift dislike">
+              <div class="crop-wiki-gift-head">
+                <span class="crop-wiki-gift-label dislike">${escapeHtml(dislike.label || "不喜欢")} <b>${dislike.value}</b></span>
                 <small>${dislike.villagers.length} 人</small>
               </div>
-              <div class="crop-fold-body">
-                <div class="crop-wiki-villager-grid">${dislike.villagers.map(renderCropWikiVillagerChip).join("")}</div>
-              </div>
+              <div class="crop-wiki-villager-grid">${dislike.villagers.map(renderCropWikiVillagerChip).join("")}</div>
             </div>
           `;
         }
@@ -22012,9 +22008,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
               <span class="crop-fold-title">🎁 送礼</span>
               <span class="crop-fold-badge">${giftCount} 人</span>
             </div>
-            <div class="crop-fold-body">
-              <div class="crop-wiki-gift-stack">${giftInner}</div>
-            </div>
+            ${loveHtml}
+            ${foldBodyInner ? `<div class="crop-fold-body"><div class="crop-wiki-gift-stack">${foldBodyInner}</div></div>` : ""}
           </div>
         `);
       }
@@ -26321,16 +26316,16 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       /* 菜名点击 → 跳转烹饪面板并展开该料理 */
       const recipeLink = e.target.closest("[data-recipe-name]");
       if (recipeLink) {
+        e.stopPropagation();
         const recipeName = recipeLink.dataset.recipeName;
         const cookingSearch = document.getElementById("cookingSearch");
         if (cookingSearch) {
           cookingQuery = recipeName;
           cookingSearch.value = recipeName;
         }
-        const allRecipes = typeof RECIPES !== "undefined" ? RECIPES : [];
-        const matched = allRecipes.find(r => r.name === recipeName);
+        const matched = COOKING_RECIPES.find(r => r.name === recipeName);
         if (matched) {
-          appState._activeCookingItem = matched.id || recipeName;
+          appState._activeCookingItem = matched.id;
         }
         openCooking();
         return;
