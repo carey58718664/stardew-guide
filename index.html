@@ -1,4 +1,3 @@
-
 <!doctype html>
 
 <html lang="zh-CN">
@@ -11913,12 +11912,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
 
 #app-shell .season-main-card {
   min-width: 0;
-  border: 3px solid #e1cea8;
-  border-left-width: 7px;
-  border-radius: 10px;
+  border: 2.5px solid rgba(143, 108, 64, 0.42);
+  border-radius: 12px;
   background: rgba(255, 253, 248, 0.96);
   padding: 10px;
-  box-shadow: 0 8px 18px rgba(76, 49, 29, 0.08);
+  box-shadow: inset 0 0 0 2.5px rgba(255, 250, 240, 0.7), 0 8px 18px rgba(76, 49, 29, 0.08);
 }
 
 #app-shell .season-main-card.season-themed {
@@ -11963,10 +11961,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
   z-index: 2;
 }
 
-#app-shell .season-main-card.planting { border-left-color: #389d62; }
-#app-shell .season-main-card.fishing { border-left-color: #308bd9; }
-#app-shell .season-main-card.festival { border-left-color: #d28a28; }
-#app-shell .season-main-card.birthday { border-left-color: #cf6aa6; }
+#app-shell .season-main-card.planting { box-shadow: inset 5px 0 0 #389d62, inset 0 0 0 2.5px rgba(255, 250, 240, 0.7), 0 8px 18px rgba(76, 49, 29, 0.08); }
+#app-shell .season-main-card.fishing { box-shadow: inset 5px 0 0 #308bd9, inset 0 0 0 2.5px rgba(255, 250, 240, 0.7), 0 8px 18px rgba(76, 49, 29, 0.08); }
+#app-shell .season-main-card.festival { box-shadow: inset 5px 0 0 #d28a28, inset 0 0 0 2.5px rgba(255, 250, 240, 0.7), 0 8px 18px rgba(76, 49, 29, 0.08); }
+#app-shell .season-main-card.birthday { box-shadow: inset 5px 0 0 #cf6aa6, inset 0 0 0 2.5px rgba(255, 250, 240, 0.7), 0 8px 18px rgba(76, 49, 29, 0.08); }
 
 #app-shell .season-card-title {
   display: flex;
@@ -11998,11 +11996,16 @@ body.modal-open { overflow: hidden; touch-action: none; }
 #app-shell .festival-row,
 #app-shell .birthday-row {
   min-width: 0;
-  border: 1px solid #eadfc9;
-  border-radius: 8px;
-  background: #fffaf0;
+  border: 1.5px solid rgba(143, 108, 64, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 250, 238, 0.72);
   padding: 7px;
+  box-shadow: inset 4px 0 0 var(--mini-accent, #d8b96a);
 }
+#app-shell .season-main-card.planting .season-mini-item { --mini-accent: #389d62; }
+#app-shell .season-main-card.fishing .fish-row { --mini-accent: #308bd9; }
+#app-shell .season-main-card.festival .festival-row { --mini-accent: #d28a28; }
+#app-shell .season-main-card.birthday .birthday-row { --mini-accent: #cf6aa6; }
 
 #app-shell .season-mini-item {
   display: grid;
@@ -12026,11 +12029,14 @@ body.modal-open { overflow: hidden; touch-action: none; }
   gap: 6px;
   min-height: 0;
   padding: 6px;
-  background: rgba(255, 250, 240, 0.88);
+  background: rgba(255, 250, 240, 0.68);
+  border: 1.5px solid rgba(143, 108, 64, 0.18);
+  border-radius: 10px;
+  box-shadow: inset 4px 0 0 var(--mini-accent, #d8b96a);
 }
 
 #app-shell .season-main-card.season-themed .fish-row.need {
-  background: rgba(255, 246, 220, 0.9);
+  background: rgba(255, 246, 220, 0.72);
 }
 
 #app-shell .season-main-card.season-themed .season-mini-icon,
