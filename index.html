@@ -5657,6 +5657,85 @@ body.modal-open { overflow: hidden; touch-action: none; }
   max-width: 100%;
   overflow-x: hidden;
 }
+/* ══ 新购物车板块 ══ */
+.cart-top-section {
+  background: linear-gradient(180deg, #fffdf6, #fff7e8);
+  border: 2px solid var(--gold, #d9a420);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.cart-top-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.cart-top-title { font-size: 15px; font-weight: 950; color: var(--ink, #4a3a2a); }
+.cart-top-count {
+  font-size: 12px; font-weight: 800; color: #9c620e;
+  background: #fff; border: 1.5px solid #e5d5b6; border-radius: 999px; padding: 2px 10px;
+}
+.cart-top-list { display: grid; gap: 8px; }
+.cart-top-empty { text-align: center; padding: 28px 16px; }
+.cart-empty-icon { font-size: 32px; margin-bottom: 6px; }
+.cart-empty-text { font-size: 14px; font-weight: 900; color: var(--ink); }
+.cart-empty-sub { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+.cart-cooking-entry {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  background: linear-gradient(180deg, #fff8ee, #fdedd4);
+  border: 1.5px solid #e8c98a; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px;
+  cursor: pointer; text-align: left; -webkit-tap-highlight-color: transparent;
+}
+.cart-cooking-entry:active { background: #f8ecd4; }
+.cart-cooking-icon { font-size: 26px; flex-shrink: 0; }
+.cart-cooking-body { flex: 1; min-width: 0; }
+.cart-cooking-title { font-size: 14px; font-weight: 900; color: var(--ink); }
+.cart-cooking-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+.cart-cooking-arrow { font-size: 22px; color: #c9a45e; font-weight: 700; flex-shrink: 0; }
+.cart-browse-head { font-size: 12px; font-weight: 900; color: #9c620e; margin-bottom: 8px; padding-left: 2px; }
+.cart-browse-list { display: grid; gap: 6px; }
+.cart-fold-section { border: 1.5px solid #e5d5b6; border-radius: 10px; overflow: hidden; background: #fffaf0; }
+.cart-fold-header {
+  display: flex; align-items: center; gap: 8px; padding: 11px 12px;
+  cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.cart-fold-header:active { background: #f8ecd4; }
+.cart-fold-arrow {
+  width: 0; height: 0; border-left: 5px solid var(--gold, #d9a420);
+  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+  transition: transform .15s ease; flex-shrink: 0;
+}
+.cart-fold-section.open .cart-fold-arrow { transform: rotate(90deg); }
+.cart-fold-icon { font-size: 16px; }
+.cart-fold-title { flex: 1; font-size: 13.5px; font-weight: 900; color: var(--ink); }
+.cart-fold-badge { font-size: 11px; font-weight: 800; color: var(--muted); background: #f0e3c8; border-radius: 999px; padding: 1px 8px; }
+.cart-fold-body { display: none; padding: 0 12px 12px; }
+.cart-fold-section.open .cart-fold-body { display: block; }
+.cart-item-detail { margin-top: 10px; border: 1.5px solid #e5d5b6; border-radius: 10px; background: #fff; padding: 12px; }
+.cart-detail-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.cart-detail-emoji { font-size: 24px; flex-shrink: 0; }
+.cart-detail-info { flex: 1; min-width: 0; }
+.cart-detail-title { font-size: 14px; font-weight: 900; color: var(--ink); }
+.cart-detail-note { font-size: 11.5px; color: var(--muted); margin-top: 3px; line-height: 1.45; }
+.cart-detail-mats { display: grid; gap: 0; margin-bottom: 10px; border: 1.5px solid #f0e3c8; border-radius: 9px; overflow: hidden; }
+.cart-detail-mat { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; font-size: 12.5px; color: var(--ink); font-weight: 700; }
+.cart-detail-mat + .cart-detail-mat { border-top: 1px dashed #ece0c8; }
+.cart-detail-mat.manual { color: var(--muted); }
+.cart-mat-name { display: flex; align-items: center; gap: 5px; }
+.cart-mat-sub { font-size: 11px; color: var(--muted); }
+.cart-mat-qty { font-weight: 900; color: #c25e3a; font-size: 12px; }
+.cart-mat-qty.ready { color: #6fae43; }
+.cart-add-btn, .cart-remove-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%;
+  padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 900; cursor: pointer;
+  border: none; -webkit-tap-highlight-color: transparent;
+}
+.cart-add-btn { background: var(--gold, #d9a420); color: #fff; }
+.cart-add-btn:active { filter: brightness(.94); }
+.cart-remove-btn { background: #f3e6cc; color: #9c620e; border: 1.5px solid #e5d5b6; }
+.cart-remove-btn:active { background: #ecdcbb; }
+
 .shop-section {
   --shop-accent: #9a5a2f;
   display: grid;
@@ -13999,195 +14078,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 
 
-/* v40：计划清单改成板块首页 + 板块内烹饪式标签资料卡 */
-.plan-overview-card {
-  display: grid;
-  gap: 8px;
-  padding: 12px;
-  margin-bottom: 12px;
-  border: 2px solid #d8c59e;
-  border-radius: 14px;
-  background: linear-gradient(180deg, rgba(255,250,240,.96), rgba(247,237,214,.94));
-}
-.plan-overview-title {
-  color: var(--wood-dark);
-  font-size: 16px;
-  font-weight: 950;
-}
-.plan-overview-sub {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.55;
-}
-.plan-overview-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.plan-overview-pill {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #fff8e8;
-  color: #8b5d11;
-  font-size: 11px;
-  font-weight: 900;
-}
-.plan-hub-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 12px;
-}
-.plan-hub-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  min-height: 118px;
-  padding: 12px;
-  border: 3px solid #6b4a37;
-  border-radius: 14px;
-  background: linear-gradient(180deg, rgba(255,250,240,.97), rgba(248,238,214,.95));
-  box-shadow: 0 6px 18px rgba(76,49,29,.08);
-  text-align: left;
-  cursor: pointer;
-}
-.plan-hub-card.active {
-  border-color: var(--shop-accent, #9a5a2f);
-  box-shadow: 0 0 0 2px rgba(255,255,255,.65) inset, 0 10px 22px rgba(76,49,29,.12);
-  transform: translateY(-1px);
-}
-.plan-hub-card:active { transform: translateY(1px); }
-.plan-hub-icon {
-  display: inline-grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: rgba(255,255,255,.72);
-}
-.plan-hub-icon img,
-.plan-hub-icon .fallback-icon { width: 26px; height: 26px; }
-.plan-hub-title {
-  color: var(--wood-dark);
-  font-size: 15px;
-  font-weight: 950;
-  line-height: 1.2;
-}
-.plan-hub-desc {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.45;
-}
-.plan-hub-meta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 24px;
-  padding: 3px 9px;
-  border-radius: 999px;
-  background: #fff8e8;
-  color: #8b5d11;
-  font-size: 11px;
-  font-weight: 900;
-}
-.plan-board-shell {
-  display: grid;
-  gap: 12px;
-}
-.plan-board-placeholder {
-  padding: 14px 12px;
-  border: 2px dashed #d8c59e;
-  border-radius: 12px;
-  background: rgba(255,253,247,.92);
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.7;
-}
-.plan-board-view {
-  display: grid;
-  gap: 12px;
-}
-.plan-board-header { gap: 10px; }
-.plan-board-header .shop-intro-name {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.plan-board-kicker {
-  display: inline-flex;
-  align-items: center;
-  min-height: 22px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: rgba(255,244,216,.95);
-  color: #8b5d11;
-  font-size: 11px;
-  font-weight: 900;
-}
-.plan-board-note {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.55;
-}
-.plan-board-flow {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px;
-}
-.plan-board-step {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 8px;
-  border: 1.5px solid #e2d0aa;
-  border-radius: 10px;
-  background: #fffaf0;
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 800;
-}
-.plan-board-step-num {
-  display: inline-grid;
-  place-items: center;
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  background: var(--shop-accent, #9a5a2f);
-  color: #fff7e8;
-  font-size: 11px;
-  font-weight: 900;
-  flex: none;
-}
-.plan-board-groups {
-  display: grid;
-  gap: 12px;
-}
-.plan-detail-wrap { margin-top: 10px; }
-.plan-empty {
-  border: 1.5px dashed #d8c59e;
-  border-radius: 10px;
-  background: rgba(255,253,247,.92);
-  color: var(--muted);
-  padding: 14px 12px;
-  font-size: 12px;
-  line-height: 1.6;
-}
-.plan-footnote {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border: 1.5px solid #e2d0aa;
-  border-radius: 10px;
-  background: rgba(255,253,247,.92);
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.55;
-}
-
 /* ===== v35 全作物资料卡：加工模板压缩与通用字段 ===== */
 .crop-source-text-price {
   display: inline-flex;
@@ -14286,7 +14176,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <!-- 🎯 目标 Tab -->
 <div class="tab-page" id="tabGoals" data-tab="goals">
 <section class="app-panel" id="goalsPanel">
-  <h2 class="app-panel-title">🛒 计划清单</h2>
+  <h2 class="app-panel-title">🛒 购物车</h2>
   <div id="shoppingCartContent"></div>
 </section>
 </div><!-- /tabGoals -->
@@ -17213,6 +17103,154 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         { id: "house-renovate-crib", title: "移除婴儿床", emoji: "🧸", how: "house", duration: "立即", note: "二次升级后可免费装修", steps: [] },
         { id: "house-renovate-room", title: "加南侧房间", emoji: "🚪", how: "house", duration: "立即", note: "二次升级后可免费装修", steps: [] },
       ]},
+      { cat: "其他机器", goals: [
+        { id: "craft-furnace2", title: "做熔炉", emoji: "🔥", how: "craft", note: "首次获得铜矿石后 Clint 教你",
+          steps: [goalItem("铜矿石", 20), goalItem("石头", 25)] },
+        { id: "craft-heavy-furnace", title: "做重型熔炉", emoji: "🔥", how: "craft", note: "采矿精通解锁",
+          steps: [goalManual("熔炉 ×2", "先有两台熔炉"), goalItem("铁锭", 3), goalItem("石头", 50)] },
+        { id: "craft-recycling", title: "做回收机", emoji: "♻️", how: "craft", note: "钓鱼等级 4",
+          steps: [goalItem("木材", 25), goalItem("石头", 25), goalItem("铁锭", 1)] },
+        { id: "craft-seed-maker", title: "做种子生产器", emoji: "🌱", how: "craft", note: "耕种等级 9",
+          steps: [goalItem("木材", 25), goalItem("煤炭", 10), goalItem("金锭", 1)] },
+        { id: "craft-lightning-rod", title: "做避雷针", emoji: "⚡", how: "craft", note: "觅食等级 6",
+          steps: [goalItem("铁锭", 1), goalItem("精炼石英", 1), goalItem("蝙蝠翅膀", 5)] },
+        { id: "craft-charcoal-kiln", title: "做木炭窑", emoji: "🪵", how: "craft", note: "觅食等级 4",
+          steps: [goalItem("木材", 20), goalItem("铜锭", 2)] },
+        { id: "craft-crystalarium", title: "做宝石复制机", emoji: "💎", how: "craft", note: "采矿等级 9",
+          steps: [goalItem("石头", 99), goalItem("金锭", 5), goalItem("铱矿", 2), goalItem("电池组", 1)] },
+        { id: "craft-geode-crusher", title: "做晶球破碎机", emoji: "🪨", how: "craft", note: "完成 Clint 的特殊订单",
+          steps: [goalItem("金锭", 2), goalItem("石头", 50), goalItem("钻石", 1)] },
+        { id: "craft-bone-mill", title: "做骨磨", emoji: "🦴", how: "craft", note: "完成冈瑟的特殊订单",
+          steps: [goalItem("骨头碎片", 10), goalItem("粘土", 3), goalItem("石头", 20)] },
+        { id: "craft-solar-panel", title: "做太阳能板", emoji: "🔆", how: "craft", note: "完成卡罗琳的特殊订单",
+          steps: [goalItem("精炼石英", 10), goalItem("铁锭", 5), goalItem("金锭", 5)] },
+        { id: "craft-slime-incubator", title: "做史莱姆孵化器", emoji: "🟢", how: "craft", note: "战斗等级 8",
+          steps: [goalItem("铱锭", 2), goalItem("史莱姆", 100)] },
+        { id: "craft-slime-egg-press", title: "做史莱姆蛋压制机", emoji: "🥚", how: "craft", note: "战斗等级 6",
+          steps: [goalItem("煤炭", 25), goalItem("火水晶", 1), goalItem("电池组", 1)] },
+        { id: "craft-farm-computer", title: "做农场电脑", emoji: "💻", how: "craft", note: "完成德米特里厄斯的特殊订单",
+          steps: [goalManual("矮人设备 ×1"), goalItem("电池组", 1), goalItem("精炼石英", 10)] },
+        { id: "craft-hopper", title: "做漏斗", emoji: "📥", how: "craft", note: "齐先生 Qi 币购买配方",
+          steps: [goalItem("硬木", 10), goalItem("铱锭", 1), goalItem("放射性锭", 1)] },
+        { id: "craft-mini-obelisk", title: "做迷你方尖碑", emoji: "🗿", how: "craft", note: "完成巫师特殊订单「奇异物质」",
+          steps: [goalItem("硬木", 30), goalItem("太阳精华", 20), goalItem("金锭", 3)] },
+        { id: "craft-mini-forge", title: "做迷你锻炉", emoji: "⚒️", how: "craft", note: "战斗精通解锁，等于随身火山锻炉",
+          steps: [goalItem("龙牙", 5), goalItem("铁锭", 10), goalItem("金锭", 10), goalItem("铱锭", 5)] },
+        { id: "craft-ostrich-incubator", title: "做鸵鸟孵化器", emoji: "🥚", how: "craft", note: "姜岛捐赠全部动物化石给蜗牛教授",
+          steps: [goalItem("骨头碎片", 50), goalItem("硬木", 50), goalItem("煤渣碎片", 20)] },
+      ]},
+      { cat: "农场设备", goals: [
+        { id: "craft-scarecrow", title: "做稻草人", emoji: "🐦", how: "craft", note: "耕种等级 1，防乌鸦",
+          steps: [goalItem("木材", 50), goalItem("煤炭", 1), goalItem("纤维", 20)] },
+        { id: "craft-deluxe-scarecrow", title: "做豪华稻草人", emoji: "🐦‍⬛", how: "craft", note: "范围更大",
+          steps: [goalItem("木材", 50), goalItem("纤维", 40), goalItem("铱矿", 1)] },
+        { id: "craft-sprinkler", title: "做洒水器", emoji: "💦", how: "craft", note: "耕种等级 2，浇 4 格",
+          steps: [goalItem("铜锭", 1), goalItem("铁锭", 1)] },
+        { id: "craft-quality-sprinkler", title: "做高级洒水器", emoji: "💦", how: "craft", note: "耕种等级 6，浇 8 格",
+          steps: [goalItem("铁锭", 1), goalItem("金锭", 1), goalItem("精炼石英", 1)] },
+        { id: "craft-iridium-sprinkler", title: "做铱制洒水器", emoji: "💦", how: "craft", note: "耕种等级 9，浇 24 格",
+          steps: [goalItem("金锭", 1), goalItem("铱锭", 1), goalItem("电池组", 1)] },
+        { id: "craft-tree-fertilizer", title: "做树木肥料", emoji: "🌳", how: "craft", note: "觅食等级 7",
+          steps: [goalItem("纤维", 5), goalItem("石头", 5)] },
+        { id: "craft-quality-soil", title: "做高级保湿土", emoji: "🟫", how: "craft", note: "耕种等级 7",
+          steps: [goalItem("石头", 3), goalItem("粘土", 1)] },
+        { id: "craft-deluxe-fertilizer", title: "做顶级肥料", emoji: "🌟", how: "craft", note: "耕种等级 10",
+          steps: [goalItem("铱锭", 1), goalItem("树液", 40)] },
+        { id: "craft-tea-sapling", title: "做茶苗", emoji: "🍵", how: "craft", note: "卡罗琳 2 心赠送配方",
+          steps: [goalManual("任意野生种子 ×2"), goalItem("纤维", 5), goalItem("木材", 5)] },
+        { id: "craft-garden-pot", title: "做花园盆", emoji: "🪴", how: "craft", note: "茶水间公告板奖励",
+          steps: [goalItem("粘土", 1), goalItem("石头", 10), goalItem("精炼石英", 1)] },
+      ]},
+      { cat: "巫师建筑", goals: [
+        { id: "build-junimo-hut", title: "建祝尼魔小屋", emoji: "🍃", how: "build", note: "巫师塔购买，需先完成哥布林问题任务",
+          steps: [goalItem("石头", 200), goalItem("杨桃", 9), goalItem("纤维", 100), goalMoney(20000)] },
+        { id: "build-earth-obelisk", title: "建大地方尖碑", emoji: "🗿", how: "build", note: "瞬移到山区",
+          steps: [goalItem("铱锭", 10), goalItem("地晶", 10), goalMoney(500000)] },
+        { id: "build-water-obelisk", title: "建水之方尖碑", emoji: "🗿", how: "build", note: "瞬移到海滩",
+          steps: [goalItem("铱锭", 5), goalItem("蛤蜊", 10), goalItem("珊瑚", 10), goalMoney(500000)] },
+        { id: "build-desert-obelisk", title: "建沙漠方尖碑", emoji: "🗿", how: "build", note: "瞬移到沙漠",
+          steps: [goalItem("铱锭", 20), goalItem("椰子", 10), goalItem("仙人掌果子", 10), goalMoney(1000000)] },
+        { id: "build-island-obelisk", title: "建姜岛方尖碑", emoji: "🗿", how: "build", note: "瞬移到姜岛，需先到访姜岛",
+          steps: [goalItem("铱锭", 10), goalItem("龙牙", 10), goalItem("香蕉", 10), goalMoney(1000000)] },
+        { id: "build-gold-clock", title: "建黄金钟", emoji: "🕰️", how: "build", note: "防止围栏老化、清除垃圾",
+          steps: [goalMoney(10000000)] },
+      ]},
+      { cat: "锻造台", goals: [
+        { id: "forge-weapon", title: "锻造武器（宝石强化）", emoji: "⚔️", how: "self", note: "火山锻炉/迷你锻炉。每把武器可锻造 3 次；需先持有该武器",
+          steps: [
+            goalManual("持有要强化的近战武器"),
+            goalManual("宝石 ×1（红宝石+攻击 / 海蓝宝石+暴击 / 翡翠+速度 / 玉+暴伤 / 紫水晶+击退 / 黄玉+防御 / 钻石随机）"),
+            goalItem("煤渣碎片", 45, "三次锻造共需 10+15+20")] },
+        { id: "forge-infinity", title: "锻造无限武器", emoji: "🌌", how: "self", note: "银河武器→无限武器，需先持有银河剑/锤/匕首",
+          steps: [
+            goalManual("持有银河武器"),
+            goalItem("银河之魂", 3, "齐先生 40 Qi 币 / 危险矿大史莱姆 / 姜岛商人 10 放射性锭"),
+            goalItem("煤渣碎片", 60, "三次各 20")] },
+        { id: "forge-enchant", title: "附魔武器/工具", emoji: "✨", how: "self", note: "随机附魔效果",
+          steps: [
+            goalManual("持有要附魔的武器或工具"),
+            goalItem("五彩碎片", 1),
+            goalItem("煤渣碎片", 20)] },
+        { id: "forge-innate", title: "内在附魔（武器）", emoji: "🔮", how: "self", note: "为武器追加内在词条",
+          steps: [
+            goalManual("持有要附魔的武器"),
+            goalItem("龙牙", 1, "火山地牢 / 熔岩潜伏者 / 9 黄貂鱼鱼塘"),
+            goalItem("煤渣碎片", 20)] },
+        { id: "forge-combine-rings", title: "合并两枚戒指", emoji: "💍", how: "self", note: "两枚戒指效果叠加成一枚",
+          steps: [
+            goalManual("持有要合并的两枚戒指"),
+            goalItem("煤渣碎片", 20)] },
+      ]},
+      { cat: "传送图腾 & 消耗品", goals: [
+        { id: "craft-totem-beach", title: "做传送图腾：海滩", emoji: "🏖️", how: "craft", note: "一次性消耗",
+          steps: [goalItem("硬木", 1), goalItem("珊瑚", 2), goalItem("纤维", 10)] },
+        { id: "craft-totem-mountain", title: "做传送图腾：山区", emoji: "⛰️", how: "craft", note: "一次性消耗",
+          steps: [goalItem("硬木", 1), goalItem("铁锭", 1), goalItem("石头", 25)] },
+        { id: "craft-totem-farm", title: "做传送图腾：农场", emoji: "🚜", how: "craft", note: "一次性消耗",
+          steps: [goalItem("硬木", 1), goalItem("蜂蜜", 1), goalItem("纤维", 20)] },
+        { id: "craft-totem-desert", title: "做传送图腾：沙漠", emoji: "🏜️", how: "craft", note: "觅食等级 10",
+          steps: [goalItem("硬木", 2), goalItem("椰子", 1), goalItem("铱矿", 4)] },
+        { id: "craft-rain-totem", title: "做雨水图腾", emoji: "🌧️", how: "craft", note: "觅食等级 9，次日降雨",
+          steps: [goalItem("硬木", 1), goalItem("松露油", 1), goalItem("松焦油", 5)] },
+        { id: "craft-bomb", title: "做炸弹", emoji: "💣", how: "craft", note: "采矿等级 6",
+          steps: [goalItem("铁矿", 4), goalItem("煤炭", 1)] },
+        { id: "craft-mega-bomb", title: "做超级炸弹", emoji: "🧨", how: "craft", note: "采矿等级 8",
+          steps: [goalItem("金矿", 4), goalItem("太阳精华", 1), goalItem("虚空精华", 1)] },
+        { id: "craft-life-elixir", title: "做生命药剂", emoji: "🧪", how: "craft", note: "战斗等级 2，回满血",
+          steps: [goalItem("红蘑菇", 1), goalItem("紫蘑菇", 1), goalItem("羊肚菌", 1), goalItem("鸡油菌", 1)] },
+        { id: "craft-warrior-ring", title: "做战士戒指", emoji: "🔴", how: "craft", note: "战斗等级 4，连杀加攻击",
+          steps: [goalItem("铁锭", 10), goalItem("煤炭", 25), goalItem("冻泪", 10)] },
+        { id: "craft-glowstone-ring", title: "做发光戒指", emoji: "💡", how: "craft", note: "光照+磁力",
+          steps: [goalItem("太阳精华", 5), goalItem("铁锭", 5)] },
+      ]},
+      { cat: "钓鱼装备", goals: [
+        { id: "craft-crab-pot2", title: "做蟹笼", emoji: "🪤", how: "craft", note: "钓鱼等级 3",
+          steps: [goalItem("木材", 40), goalItem("铁锭", 3)] },
+        { id: "craft-bait-maker2", title: "做饵料制作机", emoji: "🪱", how: "craft", note: "钓鱼等级 6",
+          steps: [goalItem("铁锭", 3), goalItem("珊瑚", 3), goalItem("海胆", 3)] },
+        { id: "craft-quality-bobber", title: "做品质浮标", emoji: "🎣", how: "craft", note: "钓鱼等级 9，提高品质",
+          steps: [goalItem("铜锭", 1), goalItem("树液", 20), goalItem("太阳精华", 5)] },
+        { id: "craft-sonar-bobber", title: "做声纳浮标", emoji: "📡", how: "craft", note: "下钩前显示鱼种",
+          steps: [goalItem("铜锭", 1), goalItem("树液", 10), goalItem("蝙蝠翅膀", 5)] },
+        { id: "craft-dressed-spinner", title: "做华丽旋转器", emoji: "🌀", how: "craft", note: "钓鱼等级 8",
+          steps: [goalItem("铁锭", 2), goalItem("布料", 1)] },
+        { id: "craft-deluxe-bait", title: "做高级鱼饵", emoji: "🪱", how: "craft", note: "钓鱼等级 4",
+          steps: [goalItem("苔藓", 1), goalItem("虫肉", 3)] },
+        { id: "craft-magic-bait", title: "做魔法鱼饵", emoji: "✨", how: "craft", note: "齐先生配方，无视季节天气",
+          steps: [goalItem("放射性矿", 1), goalItem("虫肉", 3)] },
+      ]},
+      { cat: "装饰 & 灯具", goals: [
+        { id: "craft-campfire", title: "做篝火", emoji: "🔥", how: "craft", note: "光源",
+          steps: [goalItem("木材", 10), goalItem("纤维", 10), goalItem("煤炭", 3)] },
+        { id: "craft-cookout-kit", title: "做野营炊具", emoji: "🍳", how: "craft", note: "觅食等级 9，野外做饭",
+          steps: [goalItem("木材", 15), goalItem("纤维", 10), goalItem("煤炭", 3)] },
+        { id: "craft-wicked-statue", title: "做邪恶雕像", emoji: "🗿", how: "craft", note: "驱赶幽灵",
+          steps: [goalItem("煤炭", 5), goalItem("铜锭", 2)] },
+        { id: "craft-firefly-lamp", title: "做萤火虫灯", emoji: "🪔", how: "craft", note: "觅食等级 8",
+          steps: [goalItem("铁锭", 1), goalItem("精炼石英", 1)] },
+        { id: "craft-fairy-dust", title: "做仙尘", emoji: "🧚", how: "craft", note: "加速机器加工",
+          steps: [goalItem("钻石", 1), goalItem("仙女蔷薇", 1)] },
+      ]},
       { cat: "料理目标（按 buff 用途）", goals: [
         // —— 下矿/骷髅洞常备 ——
         { id: "cook-stock-spicy-eel", title: "下矿常备：香辣鳗鱼 ×10", emoji: "🌶️", how: "cook", note: "速度+1 运气+1 × 7 分钟，骷髅洞首选",
@@ -17661,197 +17699,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         ] },
     ];
 
-    const SHOP_PLAN_SECTIONS = [
-      {
-        id: "tools",
-        name: "工具升级",
-        icon: "十字镐",
-        accent: "#2f6fb0",
-        desc: "铁匠铺相关目标，重点看升级顺序、锭和金币。",
-        note: "和场景集-烹饪一样，这里也是先看分类标签，再点具体物品展开资料卡。",
-        flow: ["先选分类", "点标签看资料卡", "确认材料/金币", "加入计划后在本板块追进度"],
-        categories: [
-          { id: "pickaxe", label: "镐子升级", entryKeys: ["goal:upgrade-pickaxe-copper","goal:upgrade-pickaxe-steel","goal:upgrade-pickaxe-gold","goal:upgrade-pickaxe-iridium"] },
-          { id: "axe", label: "斧头升级", entryKeys: ["goal:upgrade-axe-copper","goal:upgrade-axe-steel","goal:upgrade-axe-gold","goal:upgrade-axe-iridium"] },
-          { id: "farm-tools", label: "锄头与喷壶", entryKeys: ["goal:upgrade-hoe-copper","goal:upgrade-hoe-steel","goal:upgrade-hoe-gold","goal:upgrade-hoe-iridium","goal:upgrade-wateringcan-copper","goal:upgrade-wateringcan-steel","goal:upgrade-wateringcan-gold","goal:upgrade-wateringcan-iridium"] },
-          { id: "trash", label: "垃圾桶升级", entryKeys: ["goal:upgrade-trashcan-copper","goal:upgrade-trashcan-steel","goal:upgrade-trashcan-gold","goal:upgrade-trashcan-iridium"] },
-          { id: "clint-service", label: "铁匠服务与补货", entryKeys: ["good:clint-geode","good:clint-copper-ore","good:clint-coal"] }
-        ]
-      },
-      {
-        id: "buildings",
-        name: "建筑与房屋",
-        icon: "罗宾",
-        accent: "#9a5a2f",
-        desc: "罗宾相关建筑、房屋升级和木石补货。",
-        note: "这一块适合做长期目标，建筑和房屋升级的计划都集中在这里看。",
-        flow: ["先看建筑分类", "点标签展开资料卡", "加入计划", "在本板块看施工材料进度"],
-        categories: [
-          { id: "basic-build", label: "基础建筑", entryKeys: ["goal:build-silo","goal:build-well","goal:build-shipping-bin","goal:build-stable"] },
-          { id: "coop", label: "鸡舍系列", entryKeys: ["goal:build-coop","goal:build-coop-big","goal:build-coop-deluxe"] },
-          { id: "barn", label: "畜棚系列", entryKeys: ["goal:build-barn","goal:build-barn-big","goal:build-barn-deluxe"] },
-          { id: "utility-build", label: "实用建筑", entryKeys: ["goal:build-mill","goal:build-shed","goal:build-shed-big","goal:build-fish-pond","goal:build-slime-hutch","goal:build-pet-bowl"] },
-          { id: "house", label: "房屋升级", entryKeys: ["goal:house-kitchen","goal:house-nursery","goal:house-cellar","goal:house-renovate-bedroom","goal:house-renovate-crib","goal:house-renovate-room"] },
-          { id: "robin-goods", label: "木匠商店物资", entryKeys: ["good:robin-wood","good:robin-stone","good:robin-calendar"] }
-        ]
-      },
-      {
-        id: "craft",
-        name: "打造与加工",
-        icon: "小桶",
-        accent: "#d59624",
-        desc: "合成菜单相关设备，重点看配方、材料和赚钱设备。",
-        note: "资料卡和烹饪板块同结构，按设备分类展开。加入计划后的卡片样式继续沿用现在这版。",
-        flow: ["按分类找设备", "点标签看资料卡", "确认配方材料", "加入计划后在下方追材料"],
-        categories: [
-          { id: "core", label: "基础与熔炼", entryKeys: ["goal:craft-furnace","good:crafting-furnace-tip"] },
-          { id: "artisan", label: "工匠加工设备", entryKeys: ["goal:craft-preserves-jar","goal:craft-keg","goal:craft-bee-house","goal:craft-oil-maker","goal:craft-mayo-machine","goal:craft-cheese-press","goal:craft-loom","goal:craft-cask","good:crafting-preserves-tip","good:crafting-keg-tip"] },
-          { id: "gather", label: "树液与采集设备", entryKeys: ["goal:craft-tapper","goal:craft-mushroom-log"] },
-          { id: "recipe-shop", label: "配方购买与扩展", entryKeys: ["goal:craft-dehydrator","good:crafting-preserves-tip","good:crafting-keg-tip"] }
-        ]
-      },
-      {
-        id: "fishing",
-        name: "渔具与鱼店",
-        icon: "钓鱼",
-        accent: "#2f8fb0",
-        desc: "鱼竿、钓具、蟹笼和鱼类加工都放在这里。",
-        note: "买的、做的都混在一个板块里，但显示还是统一成标签 + 折叠资料卡。",
-        flow: ["先选渔具分类", "点标签看详情", "买或做的条件都能看", "加入计划后在本板块追进度"],
-        categories: [
-          { id: "rod", label: "鱼竿升级", entryKeys: ["goal:buy-fiberglass-rod","goal:buy-iridium-rod"] },
-          { id: "tackle", label: "钓具与补给", entryKeys: ["good:willy-bait","good:willy-trout-soup"] },
-          { id: "trap", label: "蟹笼体系", entryKeys: ["goal:craft-crab-pot","goal:craft-bait-maker","goal:craft-worm-bin","goal:craft-deluxe-worm-bin"] },
-          { id: "smoker", label: "鱼类加工", entryKeys: ["goal:craft-fish-smoker","good:willy-smoker-recipe"] }
-        ]
-      },
-      {
-        id: "cooking",
-        name: "烹饪与补给",
-        icon: "三倍浓缩咖啡",
-        accent: "#b65a35",
-        desc: "直接沿用你喜欢的烹饪板块思路，按用途分类后点标签展开。",
-        note: "这一块就是把场景集-烹饪的结构搬进计划清单里，其他板块也尽量跟它统一。",
-        flow: ["先看料理分类", "点标签打开资料卡", "看配方/用途", "需要的目标再加入计划"],
-        categories: [
-          { id: "speed", label: "速度补给", entryKeys: ["good:saloon-coffee","good:saloon-espresso-recipe","goal:cook-stock-triple-espresso"] },
-          { id: "gift", label: "送礼常购", entryKeys: ["good:saloon-salad","good:saloon-pizza"] },
-          { id: "stock", label: "日常补给", entryKeys: ["good:saloon-salad","good:saloon-coffee","good:willy-trout-soup"] }
-        ]
-      },
-      {
-        id: "farm-shop",
-        name: "种子与商店购买",
-        icon: "皮埃尔",
-        accent: "#389d62",
-        desc: "种子、背包和沙漠/旅行货车的购买信息放在这里。",
-        note: "这一块先把购买型资料卡的框架搭起来，后面你再决定哪些也要纳入计划。",
-        flow: ["按来源看标签", "点标签看资料卡", "确认购买条件", "后续可继续扩成购买计划"],
-        categories: [
-          { id: "spring-seed", label: "春季与节庆种子", entryKeys: ["good:pierre-parsnip","good:pierre-strawberry"] },
-          { id: "summer-fall-seed", label: "高价值与献祭种子", entryKeys: ["good:pierre-red-cabbage","good:desert-rhubarb","good:desert-starfruit","good:desert-beet","good:desert-cactus"] },
-          { id: "bag", label: "背包与升级购买", entryKeys: ["goal:buy-backpack-large","goal:buy-backpack-deluxe"] },
-          { id: "cart", label: "旅行货车补缺", entryKeys: ["good:cart-rare-seed","good:cart-red-cabbage","good:cart-coffee-bean","good:cart-bundle-items"] }
-        ]
-      },
-      {
-        id: "ranch",
-        name: "养殖与牧场",
-        icon: "玛妮",
-        accent: "#b66a35",
-        desc: "动物、照料用品和牧场工具。",
-        note: "先按动物 / 工具 / 照料来分，后面再补更多养殖路线细节。",
-        flow: ["按养殖分类看标签", "点标签看资料卡", "确认购买或解锁条件", "后续可再扩成养殖计划"],
-        categories: [
-          { id: "animals", label: "动物与自动化", entryKeys: ["good:marnie-chicken","good:marnie-cow","good:marnie-pig","good:marnie-auto-grabber"] },
-          { id: "tools", label: "牧场工具", entryKeys: ["good:marnie-milk-pail","good:marnie-shears"] },
-          { id: "care", label: "照料与消耗", entryKeys: ["good:marnie-hay","good:marnie-heater"] }
-        ]
-      }
-    ];
-
-    function findShopCatalogEntryByKey(key) {
-      for (const shop of SHOP_DATA) {
-        const found = getShopCatalogEntries(shop).find((entry) => entry.key === key);
-        if (found) return found;
-      }
-      return null;
-    }
-
-    function getPlanSectionEntries(section) {
-      return (section.categories || []).flatMap((group) => (group.entryKeys || []).map(findShopCatalogEntryByKey).filter(Boolean));
-    }
-
-    function getPlanSectionGoalIds(section) {
-      return new Set(getPlanSectionEntries(section).filter((entry) => entry.type === "goal").map((entry) => entry.id));
-    }
-
-    function getPlanSectionCartItems(section) {
-      const goalIds = getPlanSectionGoalIds(section);
-      return appState.goals.filter((goal) => goalIds.has(goal.id));
-    }
-
-    function renderPlanOverviewCard(section) {
-      const entries = getPlanSectionEntries(section);
-      const goalCount = entries.filter((entry) => entry.type === "goal").length;
-      const planCount = getPlanSectionCartItems(section).length;
-      const active = appState._activePlanSection === section.id;
-      return `<button class="plan-hub-card ${active ? 'active' : ''}" type="button" data-plan-jump="${escapeAttribute(section.id)}" style="--shop-accent:${escapeAttribute(section.accent || '#9a5a2f')}">
-        <span class="plan-hub-icon">${renderInvIcon(section.icon || section.name)}</span>
-        <div class="plan-hub-title">${escapeHtml(section.name)}</div>
-        <div class="plan-hub-desc">${escapeHtml(section.desc || '')}</div>
-        <div class="plan-hub-meta">分类 ${section.categories.length} · 标签 ${entries.length} · 计划 ${planCount}/${goalCount}</div>
-      </button>`;
-    }
-
-    function renderPlanBoard(section) {
-      const sectionEntries = getPlanSectionEntries(section);
-      const cartItems = getPlanSectionCartItems(section);
-      const flowHtml = (section.flow || []).map((label, index) => `<div class="plan-board-step"><span class="plan-board-step-num">${index + 1}</span><span>${escapeHtml(label)}</span></div>`).join('');
-      const groupHtml = (section.categories || []).map((group) => {
-        const entries = (group.entryKeys || []).map(findShopCatalogEntryByKey).filter(Boolean);
-        const chips = entries.map((entry) => {
-          const active = appState._activeShopItem === entry.key;
-          const inCart = entry.type === 'goal' && appState.goals.some((goal) => goal.id === entry.id);
-          return `<button class="item-chip ${active ? 'active' : ''} ${inCart ? 'in-cart' : ''}" data-shop-chip="${escapeAttribute(entry.key)}" type="button">${renderShopEntryIcon(entry)}<span>${escapeHtml(entry.title)}</span>${inCart ? '<span class="chip-qty">✓</span>' : ''}</button>`;
-        }).join('');
-        let detailHtml = '';
-        if (appState._activeShopItem) {
-          const activeEntry = entries.find((entry) => entry.key === appState._activeShopItem);
-          if (activeEntry) detailHtml = `<div class="plan-detail-wrap">${renderShopProductDetail(activeEntry)}</div>`;
-        }
-        return `<div class="item-lib-cat-group">
-          <div class="item-lib-cat-label">${escapeHtml(group.label)}（${entries.length}）</div>
-          <div class="item-lib-chips">${chips || '<div class="plan-empty">这一类暂时还没塞条目。</div>'}</div>
-          ${detailHtml}
-        </div>`;
-      }).join('');
-
-      return `<section class="shop-section plan-board-view" style="--shop-accent:${escapeAttribute(section.accent || '#9a5a2f')}">
-        <article class="shop-intro-card plan-board-header">
-          <div class="shop-intro-head">
-            <span class="shop-intro-icon">${renderInvIcon(section.icon || section.name)}</span>
-            <div>
-              <h3 class="shop-intro-name">${escapeHtml(section.name)}<span class="plan-board-kicker">板块内资料卡</span></h3>
-              <div class="shop-intro-sub">${escapeHtml(section.desc || '')}</div>
-            </div>
-          </div>
-          <div class="shop-chip-row">
-            <span class="shop-chip">分类 ${section.categories.length}</span>
-            <span class="shop-chip">标签 ${sectionEntries.length}</span>
-            <span class="shop-chip">已加入计划 ${cartItems.length}</span>
-          </div>
-          <div class="plan-board-flow">${flowHtml}</div>
-          <div class="plan-board-note">${escapeHtml(section.note || '')}</div>
-        </article>
-        <div class="plan-board-groups">${groupHtml}</div>
-        <div class="shop-cart-section">
-          <div class="item-lib-cat-label">${renderOfficialIcon('购物车', '本板块计划')}本板块计划（${cartItems.length}）</div>
-          ${cartItems.length ? renderGoalCards(cartItems) : `<div class="plan-empty">这个板块里还没有加入计划的目标。先点上面的标签展开资料卡，再把需要的目标加入这里。</div>`}
-        </div>
-      </section>`;
-    }
-
     function getShopGoalTemplates(shop) {
       return shop.goalIds.map(id => {
         for (const cat of GOAL_TEMPLATES) {
@@ -17866,33 +17713,160 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       return appState.goals.filter(g => shop.goalIds.includes(g.id));
     }
 
+    /* cat → 顶层展示分组 的映射（购物车按用途分 11 组） */
+    const CART_GROUP_DEFS = [
+      { id: "artisan",   label: "加工设备", icon: "🫙", cats: ["加工设备"] },
+      { id: "farm-eq",   label: "农场设备", icon: "💦", cats: ["农场设备"] },
+      { id: "machines",  label: "其他机器", icon: "⚙️", cats: ["其他机器"] },
+      { id: "buildings", label: "农场建筑", icon: "🏘️", cats: ["农场建筑"] },
+      { id: "wizard",    label: "巫师建筑", icon: "🗿", cats: ["巫师建筑"] },
+      { id: "upgrades",  label: "房屋 & 工具升级", icon: "🏠", cats: ["工具升级", "房屋升级/装修", "背包/商店购买"] },
+      { id: "combat",    label: "战斗 & 消耗品", icon: "💣", cats: ["传送图腾 & 消耗品"] },
+      { id: "fishing",   label: "钓鱼装备", icon: "🎣", cats: ["钓鱼装备"] },
+      { id: "forge",     label: "锻造台", icon: "⚒️", cats: ["锻造台"] },
+      { id: "decor",     label: "装饰 & 杂项", icon: "🪔", cats: ["装饰 & 灯具", "其他"] },
+      { id: "social",    label: "送礼里程碑", icon: "🎁", cats: ["送礼目标（按村民心数里程碑）"] },
+    ];
+
+    function findGoalCat(id) {
+      for (const c of GOAL_TEMPLATES) {
+        if (c.goals.some(g => g.id === id)) return c.cat;
+      }
+      return null;
+    }
+
     function renderShoppingCart() {
       const container = document.getElementById("shoppingCartContent");
       if (!container) return;
 
-      const totalGoals = SHOP_PLAN_SECTIONS.reduce((sum, section) => sum + getPlanSectionEntries(section).filter((entry) => entry.type === "goal").length, 0);
-      const overviewHtml = `<div class="plan-overview-card">
-        <div class="plan-overview-title">计划清单 · 板块总览</div>
-        <div class="plan-overview-sub">先点下面的大板块，再在板块里面按分类点标签展开资料卡。板块内的资料卡结构统一贴近场景集-烹饪板块，加入计划后的卡片样式先沿用你现在喜欢的这版。</div>
-        <div class="plan-overview-stats">
-          <span class="plan-overview-pill">板块 ${SHOP_PLAN_SECTIONS.length}</span>
-          <span class="plan-overview-pill">可加入计划目标 ${totalGoals}</span>
-          <span class="plan-overview-pill">当前计划 ${appState.goals.length}</span>
-        </div>
-      </div>`;
-      const hubHtml = `<div class="plan-hub-grid">${SHOP_PLAN_SECTIONS.map(renderPlanOverviewCard).join("")}</div>`;
-      let boardHtml = `<div class="plan-board-placeholder">点上面的板块卡片进入对应页面。进入后你会看到：分类标签 → 点击展开资料卡 → 加入计划 → 本板块计划清单。</div>`;
-      const activeSection = SHOP_PLAN_SECTIONS.find((section) => section.id === appState._activePlanSection);
-      if (activeSection) boardHtml = renderPlanBoard(activeSection);
-      const footHtml = `<div class="plan-footnote">这版先把计划清单的大框架完整搭起来：有板块首页，也有板块内分类、标签和折叠资料卡。后面你要是满意这个结构，我们再继续把每个板块里的条目补得更细。</div>`;
-      container.innerHTML = overviewHtml + hubHtml + `<div class="plan-board-shell">${boardHtml}</div>` + footHtml;
+      const html = [];
 
+      /* ── 顶部：我的购物车（进度追踪） ── */
+      const cartGoals = appState.goals;
+      let cartSection = "";
+      if (cartGoals.length) {
+        cartSection = `
+          <div class="cart-top-section">
+            <div class="cart-top-head">
+              <span class="cart-top-title">🛒 我的购物车</span>
+              <span class="cart-top-count">${cartGoals.length} 项</span>
+            </div>
+            <div class="cart-top-list">${renderGoalCards(cartGoals)}</div>
+          </div>`;
+      } else {
+        cartSection = `
+          <div class="cart-top-section cart-top-empty">
+            <div class="cart-empty-icon">🛒</div>
+            <div class="cart-empty-text">购物车还是空的</div>
+            <div class="cart-empty-sub">在下方分类里点物品 → 加入购物车，开始追踪材料进度</div>
+          </div>`;
+      }
+      html.push(cartSection);
+
+      /* ── 烹饪入口卡片 ── */
+      html.push(`
+        <button class="cart-cooking-entry" id="cartCookingEntry" type="button">
+          <span class="cart-cooking-icon">🍳</span>
+          <div class="cart-cooking-body">
+            <div class="cart-cooking-title">料理目标</div>
+            <div class="cart-cooking-sub">80+ 道食谱在烹饪面板里挑选，加入购物车追踪</div>
+          </div>
+          <span class="cart-cooking-arrow">›</span>
+        </button>
+      `);
+
+      /* ── 下方：按分类折叠浏览 ── */
+      html.push(`<div class="cart-browse-head">📂 浏览全部 · 点击展开分类</div>`);
+
+      const browseHtml = CART_GROUP_DEFS.map(group => {
+        const goals = [];
+        group.cats.forEach(catName => {
+          const cat = GOAL_TEMPLATES.find(c => c.cat === catName);
+          if (cat) goals.push(...cat.goals);
+        });
+        if (!goals.length) return "";
+
+        const chips = goals.map(g => {
+          const inCart = appState.goals.some(x => x.id === g.id);
+          const active = appState._activeCartItem === g.id;
+          return `<button class="item-chip ${active ? 'active' : ''} ${inCart ? 'in-cart' : ''}" data-cart-chip="${escapeAttribute(g.id)}" type="button">${renderGoalIcon(g)}<span>${escapeHtml(g.title)}</span>${inCart ? '<span class="chip-qty">✓</span>' : ''}</button>`;
+        }).join("");
+
+        let detailHtml = "";
+        if (appState._activeCartItem) {
+          const activeGoal = goals.find(g => g.id === appState._activeCartItem);
+          if (activeGoal) detailHtml = renderCartItemDetail(activeGoal);
+        }
+
+        return `
+          <div class="cart-fold-section" data-cart-group="${group.id}">
+            <div class="cart-fold-header" data-cart-fold="${group.id}">
+              <span class="cart-fold-arrow"></span>
+              <span class="cart-fold-icon">${group.icon}</span>
+              <span class="cart-fold-title">${escapeHtml(group.label)}</span>
+              <span class="cart-fold-badge">${goals.length}</span>
+            </div>
+            <div class="cart-fold-body">
+              <div class="item-lib-chips">${chips}</div>
+              ${detailHtml}
+            </div>
+          </div>`;
+      }).join("");
+
+      html.push(`<div class="cart-browse-list">${browseHtml}</div>`);
+
+      container.innerHTML = html.join("");
+
+      // 恢复已展开的分类
+      if (appState._openCartGroups) {
+        appState._openCartGroups.forEach(gid => {
+          const sec = container.querySelector(`[data-cart-group="${gid}"]`);
+          if (sec) sec.classList.add("open");
+        });
+      }
+
+      // 购物车里的目标卡片绑定左滑删除
       container.querySelectorAll("[data-swipe-goal]").forEach(card => {
         if (!card.dataset.swipeBound) {
           attachGoalSwipe(card, card.dataset.swipeGoal);
           card.dataset.swipeBound = "1";
         }
       });
+    }
+
+    /* 浏览区点击某物品后的详情卡（材料清单 + 加入按钮） */
+    function renderCartItemDetail(goal) {
+      const cat = findGoalCat(goal.id);
+      const inCart = appState.goals.some(x => x.id === goal.id);
+      const matRows = (goal.steps || []).map(step => {
+        if (step.invKey === "金币") {
+          return `<div class="cart-detail-mat"><span class="cart-mat-name">💰 ${Number(step.invNeed).toLocaleString("en-US")}g</span></div>`;
+        }
+        if (step.manual) {
+          return `<div class="cart-detail-mat manual"><span class="cart-mat-name">${escapeHtml(step.label)}</span>${step.sub ? `<span class="cart-mat-sub">${escapeHtml(step.sub)}</span>` : ""}</div>`;
+        }
+        const have = step.invKey ? (appState.inventory[step.invKey] || 0) : 0;
+        const enough = step.invNeed && have >= step.invNeed;
+        return `<div class="cart-detail-mat">
+          <span class="cart-mat-name">${renderInvIcon(step.invKey)} ${escapeHtml(step.invKey)}</span>
+          <span class="cart-mat-qty ${enough ? 'ready' : ''}">${enough ? '✓ ' : ''}${have}/${step.invNeed}</span>
+        </div>`;
+      }).join("");
+
+      return `
+        <div class="cart-item-detail">
+          <div class="cart-detail-head">
+            <span class="cart-detail-emoji">${renderGoalIcon(goal)}</span>
+            <div class="cart-detail-info">
+              <div class="cart-detail-title">${escapeHtml(goal.title)}</div>
+              ${goal.note ? `<div class="cart-detail-note">${escapeHtml(stripDecorativeIcons(goal.note))}</div>` : ""}
+            </div>
+          </div>
+          ${matRows ? `<div class="cart-detail-mats">${matRows}</div>` : ""}
+          ${inCart
+            ? `<button class="cart-remove-btn" data-cart-remove="${escapeAttribute(goal.id)}" type="button">已在购物车 ✓ · 点击移除</button>`
+            : `<button class="cart-add-btn" data-cart-add="${escapeAttribute(goal.id)}" type="button">${renderInvIcon("购物车")} 加入购物车</button>`}
+        </div>`;
     }
 
     function getShopCatalogEntries(shop) {
@@ -18699,8 +18673,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       festivalDone: _appLoaded.festivalDone || {},
       festivalPrepared: _appLoaded.festivalPrepared || {},
       strategyPinned: _appLoaded.strategyPinned || {},
-      _activeShopItem: _appLoaded._activeShopItem || "",
-      _activePlanSection: _appLoaded._activePlanSection || "",
       pendingInventoryDelete: "",
     };
 
@@ -26654,48 +26626,58 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         return;
       }
       // 种植图标点击展开
-      const planJump = e.target.closest("[data-plan-jump]");
-      if (planJump) {
-        const targetId = planJump.dataset.planJump || "";
-        if (appState._activePlanSection === targetId) {
-          appState._activePlanSection = "";
-          appState._activeShopItem = "";
-        } else {
-          appState._activePlanSection = targetId;
-          appState._activeShopItem = "";
-        }
-        saveApp();
-        renderApp();
-        return;
-      }
-      // 购物车商品目录点击
-      const shopChip = e.target.closest("[data-shop-chip]");
-      if (shopChip) {
+      // 购物车分类折叠开关
+      const cartFold = e.target.closest("[data-cart-fold]");
+      if (cartFold) {
         preserveScrollPosition();
-        const id = shopChip.dataset.shopChip;
-        appState._activeShopItem = appState._activeShopItem === id ? null : id;
-        renderShoppingCart();
-        return;
-      }
-      // 加入购物车
-      const shopAdd = e.target.closest("[data-shop-add]");
-      if (shopAdd) {
-        const id = shopAdd.dataset.shopAdd;
-        if (!appState.goals.some(g => g.id === id)) {
-          const tpl = findGoalTemplate(id);
-          if (tpl) {
-            appState.goals.push({ id, steps: (tpl.steps || []).map(() => ({ checked: false })), expanded: true });
-            appState._activeShopItem = null;
-            renderApp();
+        const gid = cartFold.dataset.cartFold;
+        const sec = cartFold.closest("[data-cart-group]");
+        if (sec) {
+          sec.classList.toggle("open");
+          appState._openCartGroups = appState._openCartGroups || [];
+          if (sec.classList.contains("open")) {
+            if (!appState._openCartGroups.includes(gid)) appState._openCartGroups.push(gid);
+          } else {
+            appState._openCartGroups = appState._openCartGroups.filter(x => x !== gid);
           }
         }
         return;
       }
-      // 从购物车移除（商品详情里的按钮）
-      const shopRemove = e.target.closest("[data-shop-remove]");
-      if (shopRemove) {
-        appState.goals = appState.goals.filter(g => g.id !== shopRemove.dataset.shopRemove);
+      // 购物车浏览区物品 chip 点击
+      const cartChip = e.target.closest("[data-cart-chip]");
+      if (cartChip) {
+        preserveScrollPosition();
+        const id = cartChip.dataset.cartChip;
+        appState._activeCartItem = appState._activeCartItem === id ? null : id;
+        renderShoppingCart();
+        return;
+      }
+      // 加入购物车
+      const cartAdd = e.target.closest("[data-cart-add]");
+      if (cartAdd) {
+        const id = cartAdd.dataset.cartAdd;
+        if (!appState.goals.some(g => g.id === id)) {
+          const tpl = findGoalTemplate(id);
+          if (tpl) {
+            appState.goals.push({ id, steps: (tpl.steps || []).map(() => ({ checked: false })), expanded: true });
+            appState._activeCartItem = null;
+            renderApp();
+            toast("已加入购物车");
+          }
+        }
+        return;
+      }
+      // 从购物车移除（浏览区详情里的按钮）
+      const cartRemove = e.target.closest("[data-cart-remove]");
+      if (cartRemove) {
+        appState.goals = appState.goals.filter(g => g.id !== cartRemove.dataset.cartRemove);
         renderApp();
+        return;
+      }
+      // 烹饪入口
+      const cookEntry = e.target.closest("#cartCookingEntry");
+      if (cookEntry) {
+        openCooking();
         return;
       }
       const plantingChip = e.target.closest("[data-planting-chip]");
