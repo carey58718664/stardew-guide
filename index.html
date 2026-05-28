@@ -5735,6 +5735,20 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .cart-add-btn:active { filter: brightness(.94); }
 .cart-remove-btn { background: #f3e6cc; color: #9c620e; border: 1.5px solid #e5d5b6; }
 .cart-remove-btn:active { background: #ecdcbb; }
+.cart-card-block { margin-bottom: 12px; }
+.cart-block-label { font-size: 11px; font-weight: 950; color: #9c620e; margin-bottom: 6px; }
+.cart-block-line { font-size: 12.5px; color: var(--ink); line-height: 1.55; margin-bottom: 3px; }
+.cart-block-line b { color: #9c620e; font-size: 11px; font-weight: 900; margin-right: 6px; }
+.cart-produce-list { display: grid; gap: 0; border: 1.5px solid #f0e3c8; border-radius: 9px; overflow: hidden; }
+.cart-produce-row { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; padding: 7px 10px; font-size: 12px; }
+.cart-produce-row + .cart-produce-row { border-top: 1px dashed #ece0c8; }
+.cart-produce-in { font-weight: 800; color: var(--ink); }
+.cart-produce-arrow { color: var(--muted); }
+.cart-produce-out { font-weight: 900; color: #6f4b22; }
+.cart-produce-value { font-size: 11px; color: var(--muted); width: 100%; padding-left: 2px; }
+.cart-verdict { background: #f4fbe8; border: 1.5px solid #cfe6a8; border-radius: 10px; padding: 9px 11px; }
+.cart-verdict .cart-block-label { color: #3a7a1a; }
+.cart-verdict-text { font-size: 12.5px; color: #3d4a2a; line-height: 1.6; font-weight: 700; }
 
 .shop-section {
   --shop-accent: #9a5a2f;
@@ -17028,7 +17042,20 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         { id: "craft-preserves-jar", title: "做罐头瓶", emoji: "🫙", how: "craft", note: "耕种等级 4",
           steps: [goalItem("木材", 50), goalItem("石头", 40), goalItem("煤炭", 8)] },
         { id: "craft-keg", title: "做小桶", emoji: "🪣", how: "craft", note: "耕种等级 8",
-          steps: [goalItem("木材", 30), goalItem("铜锭", 1), goalItem("铁锭", 1), goalItem("橡树树脂", 1)] },
+          steps: [goalItem("木材", 30), goalItem("铜锭", 1), goalItem("铁锭", 1), goalItem("橡树树脂", 1)],
+          info: {
+            unlock: "耕种等级 8 解锁配方",
+            where: "配方合成菜单（ESC → 合成标签）随处可做，不用去商店",
+            produces: [
+              { in: "水果", out: "对应果酒", value: "果价 ×3，陈酿可再翻倍" },
+              { in: "蔬菜", out: "对应蔬菜汁", value: "菜价 ×2.25" },
+              { in: "啤酒花", out: "淡啤酒", value: "300g（最划算的常驻产出之一）" },
+              { in: "小麦", out: "啤酒", value: "200g" },
+              { in: "蜂蜜", out: "蜂蜜酒", value: "蜂蜜价 ×2" },
+              { in: "咖啡豆 ×5", out: "咖啡", value: "速度 +1 buff 饮料" }
+            ],
+            verdict: "中后期核心现金流设备。杨桃、上古水果、星星水果进小桶酿酒利润极高；前期可先用啤酒花/小麦稳定产出。建议规模化铺设。"
+          } },
         { id: "craft-bee-house", title: "做蜂房", emoji: "🐝", how: "craft", note: "耕种等级 3",
           steps: [goalItem("木材", 40), goalItem("煤炭", 8), goalItem("铁锭", 1), goalItem("枫糖浆", 1)] },
         { id: "craft-oil-maker", title: "做产油机", emoji: "🛢️", how: "craft", note: "耕种等级 8",
@@ -17834,13 +17861,32 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       });
     }
 
-    /* 浏览区点击某物品后的详情卡（材料清单 + 加入按钮） */
+    /* 工具间物品详情卡：自包含的完整资料 */
     function renderCartItemDetail(goal) {
-      const cat = findGoalCat(goal.id);
       const inCart = appState.goals.some(x => x.id === goal.id);
+      const info = goal.info || {};
+
+      /* —— 怎么得到（解锁 + 在哪做 + 材料） —— */
+      const WHERE_BY_HOW = {
+        craft: "配方合成菜单（ESC → 合成标签）",
+        build: "木匠商店找罗宾建造",
+        house: "木匠商店找罗宾升级",
+        upgrade: "铁匠铺交给克林特升级",
+        buy: "到对应商店购买",
+        self: ""
+      };
+      const whereText = info.where || WHERE_BY_HOW[goal.how] || "";
+      const unlockText = info.unlock || stripDecorativeIcons(goal.note || "");
+      const durationText = goal.duration ? `用时 ${goal.duration}` : "";
+
       const matRows = (goal.steps || []).map(step => {
         if (step.invKey === "金币") {
-          return `<div class="cart-detail-mat"><span class="cart-mat-name">💰 ${Number(step.invNeed).toLocaleString("en-US")}g</span></div>`;
+          const have = appState.inventory["金币"] || 0;
+          const enough = have >= step.invNeed;
+          return `<div class="cart-detail-mat">
+            <span class="cart-mat-name">💰 金币</span>
+            <span class="cart-mat-qty ${enough ? 'ready' : ''}">${enough ? '✓ ' : ''}${Number(step.invNeed).toLocaleString("en-US")}g</span>
+          </div>`;
         }
         if (step.manual) {
           return `<div class="cart-detail-mat manual"><span class="cart-mat-name">${escapeHtml(step.label)}</span>${step.sub ? `<span class="cart-mat-sub">${escapeHtml(step.sub)}</span>` : ""}</div>`;
@@ -17853,16 +17899,53 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         </div>`;
       }).join("");
 
+      const obtainBlock = `
+        <div class="cart-card-block">
+          <div class="cart-block-label">🔧 怎么得到</div>
+          ${unlockText ? `<div class="cart-block-line"><b>解锁</b>${escapeHtml(unlockText)}</div>` : ""}
+          ${whereText ? `<div class="cart-block-line"><b>在哪做</b>${escapeHtml(whereText)}${durationText ? ` · ${escapeHtml(durationText)}` : ""}</div>` : ""}
+          ${matRows ? `<div class="cart-detail-mats">${matRows}</div>` : ""}
+        </div>`;
+
+      /* —— 能加工啥 / 用途 —— */
+      let producesBlock = "";
+      if (info.produces && info.produces.length) {
+        const rows = info.produces.map(p => `
+          <div class="cart-produce-row">
+            <span class="cart-produce-in">${escapeHtml(p.in)}</span>
+            <span class="cart-produce-arrow">→</span>
+            <span class="cart-produce-out">${escapeHtml(p.out)}</span>
+            ${p.value ? `<span class="cart-produce-value">${escapeHtml(p.value)}</span>` : ""}
+          </div>`).join("");
+        producesBlock = `
+          <div class="cart-card-block">
+            <div class="cart-block-label">⚙️ 能加工 / 用途</div>
+            <div class="cart-produce-list">${rows}</div>
+          </div>`;
+      }
+
+      /* —— 值不值 —— */
+      let verdictBlock = "";
+      if (info.verdict) {
+        verdictBlock = `
+          <div class="cart-card-block cart-verdict">
+            <div class="cart-block-label">⭐ 值不值</div>
+            <div class="cart-verdict-text">${escapeHtml(info.verdict)}</div>
+          </div>`;
+      }
+
       return `
         <div class="cart-item-detail">
           <div class="cart-detail-head">
             <span class="cart-detail-emoji">${renderGoalIcon(goal)}</span>
             <div class="cart-detail-info">
               <div class="cart-detail-title">${escapeHtml(goal.title)}</div>
-              ${goal.note ? `<div class="cart-detail-note">${escapeHtml(stripDecorativeIcons(goal.note))}</div>` : ""}
+              ${!info.verdict && goal.note ? `<div class="cart-detail-note">${escapeHtml(stripDecorativeIcons(goal.note))}</div>` : ""}
             </div>
           </div>
-          ${matRows ? `<div class="cart-detail-mats">${matRows}</div>` : ""}
+          ${obtainBlock}
+          ${producesBlock}
+          ${verdictBlock}
           ${inCart
             ? `<button class="cart-remove-btn" data-cart-remove="${escapeAttribute(goal.id)}" type="button">已在购物车 ✓ · 点击移除</button>`
             : `<button class="cart-add-btn" data-cart-add="${escapeAttribute(goal.id)}" type="button">${renderInvIcon("购物车")} 加入购物车</button>`}
