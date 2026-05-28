@@ -9449,18 +9449,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .fishing-gear-card {
   padding: 12px;
 }
-.fishing-gear-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-bottom: 4px;
-}
-.fishing-gear-hint {
-  font-size: 12px;
-  color: var(--muted, #8a8278);
-  line-height: 1.5;
-  padding: 2px 2px 0;
-}
 .fishing-section-title {
   display: flex;
   align-items: center;
@@ -17338,18 +17326,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           steps: [goalItem("苔藓", 1), goalItem("虫肉", 3)] },
         { id: "craft-magic-bait", title: "做魔法鱼饵", emoji: "✨", how: "craft", note: "齐先生配方，无视季节天气",
           steps: [goalItem("放射性矿", 1), goalItem("虫肉", 3)] },
-        // —— 鱼竿（威利鱼店购买） ——
-        { id: "buy-training-rod", title: "买训练用鱼竿", emoji: "🎣", how: "buy", note: "只能钓基础鱼类，适合新手", steps: [goalMoney(25)] },
-        { id: "buy-bamboo-rod", title: "买竹鱼竿", emoji: "🎣", how: "buy", note: "最普通鱼竿，不能装鱼饵和渔具", steps: [goalMoney(500)] },
-        // —— 鱼饵 / 鱼具（威利鱼店购买） ——
-        { id: "buy-spinner", title: "买旋式鱼饵", emoji: "🌀", how: "buy", note: "减少咬钩前等待时间，钓鱼6级解锁", steps: [goalMoney(500)] },
-        { id: "buy-dressed-spinner", title: "买精装旋式鱼饵", emoji: "🌀", how: "buy", note: "更强的减少等待效果，钓鱼8级解锁", steps: [goalMoney(1000)] },
-        { id: "buy-trap-bobber", title: "买陷阱浮标", emoji: "🎣", how: "buy", note: "减缓进度条下降速度，钓鱼6级解锁", steps: [goalMoney(500)] },
-        { id: "buy-cork-bobber", title: "买软木塞浮标", emoji: "🎣", how: "buy", note: "钓鱼条增加6格，钓鱼7级解锁", steps: [goalMoney(750)] },
-        { id: "buy-barbed-hook", title: "买倒刺钩", emoji: "🪝", how: "buy", note: "上钩的鱼不容易跑掉，钓鱼8级解锁", steps: [goalMoney(1000)] },
-        { id: "buy-sonar-bobber", title: "买声纳浮标", emoji: "📡", how: "buy", note: "钓到鱼之前显示鱼的品种，钓鱼6级解锁", steps: [goalMoney(500)] },
-        { id: "buy-lead-bobber", title: "买铅制浮标", emoji: "🎣", how: "buy", note: "阻止钓鱼条触底反弹，钓鱼6级解锁", steps: [goalMoney(200)] },
-        { id: "buy-treasure-hunter", title: "买寻宝者", emoji: "💰", how: "buy", note: "增加找到宝藏的几率，钓鱼7级解锁", steps: [goalMoney(750)] },
       ]},
       { cat: "装饰 & 灯具", goals: [
         { id: "craft-campfire", title: "做篝火", emoji: "🔥", how: "craft", note: "光源",
@@ -23194,10 +23170,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <div class="fishing-info-grid">
           ${FISHING_INFO_CARDS.map(renderFishingInfoCard).join("")}
         </div>
-        <div class="fishing-gear-stack">
-          <div class="fishing-gear-hint">点击渔具查看详情，资料卡里可「加入购物车」追踪进度</div>
-          ${renderFishingGearSection("鱼竿", "竹鱼竿", FISHING_RODS, "🎣 鱼竿", appState._activeFishingGear)}
-          ${renderFishingGearSection("鱼饵 / 鱼具", "陷阱浮标", FISHING_TACKLES, "🪝 鱼饵 / 渔具", appState._activeFishingGear)}
+        <div class="fishing-gear-grid">
+          ${renderFishingGearCard("鱼竿介绍", "竹鱼竿", FISHING_RODS)}
+          ${renderFishingGearCard("鱼饵 / 鱼具", "陷阱浮标", FISHING_TACKLES)}
         </div>
         <section>
           <h3 class="fishing-section-title"><span class="fishing-mini-icon">${renderFishingIcon("收集包")}</span>鱼类全图鉴</h3>
@@ -23295,65 +23270,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           </div>
         </section>
       `;
-    }
-
-    /* 渔具名 → 购物车目标 id（可买/可做的才有；珍稀诱钩、优质浮标等特殊获取的不映射） */
-    const FISHING_GEAR_CART = {
-      "训练用鱼竿": "buy-training-rod",
-      "竹鱼竿": "buy-bamboo-rod",
-      "玻璃纤维鱼竿": "buy-fiberglass-rod",
-      "铱金鱼竿": "buy-iridium-rod",
-      "旋式鱼饵": "buy-spinner",
-      "精装旋式鱼饵": "buy-dressed-spinner",
-      "陷阱浮标": "buy-trap-bobber",
-      "软木塞浮标": "buy-cork-bobber",
-      "倒刺钩": "buy-barbed-hook",
-      "声纳浮标": "buy-sonar-bobber",
-      "铅制浮标": "buy-lead-bobber",
-      "寻宝者": "buy-treasure-hunter"
-    };
-
-    /* 把 [name, desc, price] 渔具数据转成统一资料卡 schema */
-    function fishingGearToCard(name, desc, price, kind) {
-      const cartId = FISHING_GEAR_CART[name] || null;
-      let getText;
-      if (cartId) getText = `威利鱼店购买 · ${price}`;
-      else if (price === "配方") getText = "完成特别任务获得配方后合成";
-      else getText = "稀有获取：矿井木桶 / 击杀怪物概率掉落";
-      return {
-        id: "fgear-" + name,
-        title: name,
-        icon: name,
-        subtitle: kind,
-        tags: [{ text: price, tone: cartId ? "good" : "warn" }],
-        sections: [
-          { id: "effect", label: "📖 效果 / 说明", open: true, type: "lines", data: [{ text: desc }] },
-          { id: "get", label: "🛒 获取方式", open: false, type: "lines", data: [{ text: getText }] }
-        ],
-        _cartId: cartId
-      };
-    }
-
-    /* 一组渔具：标签 chip + 点击展开统一资料卡（可加入购物车） */
-    function renderFishingGearSection(title, iconName, entries, kind, activeKey) {
-      const chips = entries.map(([name]) => {
-        const active = activeKey === name;
-        return `<button class="item-chip ${active ? "active" : ""}" data-fishing-gear-chip="${escapeAttribute(name)}" type="button">${renderFishingIcon(name)}<span>${escapeHtml(name)}</span></button>`;
-      }).join("");
-      let detail = "";
-      if (activeKey) {
-        const e = entries.find((x) => x[0] === activeKey);
-        if (e) {
-          const card = fishingGearToCard(e[0], e[1], e[2], kind);
-          detail = `<div class="fishing-detail-wrap">${renderResourceCard(card, { showCartButton: !!card._cartId, cartId: card._cartId, foldKey: "fgear" })}</div>`;
-        }
-      }
-      return `
-        <div class="item-lib-cat-group">
-          <div class="item-lib-cat-label"><span class="fishing-mini-icon">${renderFishingIcon(iconName)}</span>${escapeHtml(title)}</div>
-          <div class="item-lib-chips">${chips}</div>
-          ${detail}
-        </div>`;
     }
 
     function renderFishingFishCard(entry) {
@@ -27040,11 +26956,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         if (!appState.goals.some(g => g.id === id)) {
           const tpl = findGoalTemplate(id);
           if (tpl) {
-            appState.goals.push({ id, steps: (tpl.steps || []).map((s) => ({ ...s, checked: false })), expanded: true });
+            appState.goals.push({ id, steps: (tpl.steps || []).map(() => ({ checked: false })), expanded: true });
             appState._activeCartItem = null;
             renderApp();
-            const _fo = document.getElementById("fishing-overlay");
-            if (_fo && !_fo.hidden) renderFishing();
             toast("已加入购物车");
           }
         }
@@ -27055,8 +26969,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (cartRemove) {
         appState.goals = appState.goals.filter(g => g.id !== cartRemove.dataset.cartRemove);
         renderApp();
-        const _foR = document.getElementById("fishing-overlay");
-        if (_foR && !_foR.hidden) renderFishing();
         return;
       }
       // 烹饪入口
@@ -27119,15 +27031,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (fishingChip) {
         preserveScrollPosition();
         appState._activeFishingItem = appState._activeFishingItem === fishingChip.dataset.fishingChip ? null : fishingChip.dataset.fishingChip;
-        renderFishing();
-        return;
-      }
-      // 渔具（鱼竿/鱼饵）标签点击
-      const fishingGearChip = e.target.closest("[data-fishing-gear-chip]");
-      if (fishingGearChip) {
-        preserveScrollPosition();
-        const k = fishingGearChip.dataset.fishingGearChip;
-        appState._activeFishingGear = appState._activeFishingGear === k ? null : k;
         renderFishing();
         return;
       }
