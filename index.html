@@ -5797,6 +5797,12 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .rc-mat-sub { font-size: 11px; color: var(--muted); }
 .rc-mat-qty { font-weight: 900; color: #c25e3a; font-size: 12px; }
 .rc-mat-qty.ready { color: #6fae43; }
+.rc-mat.checkable { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.rc-mat.checkable:active { background: #fbf5e6; }
+.rc-mat.checked { background: #f3f9ec; }
+.rc-mat.checked .rc-mat-name { color: #6fae43; text-decoration: line-through; text-decoration-color: #b9d99a; }
+.rc-check { flex: 0 0 auto; width: 17px; height: 17px; margin-right: 8px; border: 1.5px solid #c9b98f; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; background: #fff; transition: background .12s, border-color .12s; }
+.rc-check.done { background: var(--green, #6fae43); border-color: var(--green, #6fae43); }
 .rc-produce-list { display: grid; gap: 0; border: 1.5px solid #f0e3c8; border-radius: 9px; overflow: hidden; }
 .rc-produce-row { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; padding: 7px 10px; font-size: 12px; background: #fff; }
 .rc-produce-row + .rc-produce-row { border-top: 1px dashed #ece0c8; }
@@ -17985,24 +17991,30 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     function renderResourceCardSection(sec, card, options) {
       switch (sec.type) {
         case "checklist": {
-          // data: [{ key, need, sub, manual, label }]
+          // data: [{ key, need, sub, manual, label, goalId, idx, checkable, checked }]
           const rows = (sec.data || []).map(step => {
+            const checkable = step.checkable;
+            const checked = step.checked;
+            const boxAttr = checkable ? ` data-rc-check="${escapeAttribute(step.goalId)}|${step.idx}" role="checkbox" aria-checked="${checked}"` : "";
+            const box = checkable
+              ? `<span class="rc-check ${checked ? "done" : ""}">${checked ? "✓" : ""}</span>`
+              : "";
             if (step.manual) {
-              return `<div class="rc-mat manual"><span class="rc-mat-name">${escapeHtml(step.label)}</span>${step.sub ? `<span class="rc-mat-sub">${escapeHtml(step.sub)}</span>` : ""}</div>`;
+              return `<div class="rc-mat manual ${checked ? "checked" : ""} ${checkable ? "checkable" : ""}"${boxAttr}>${box}<span class="rc-mat-name">${escapeHtml(step.label)}</span>${step.sub ? `<span class="rc-mat-sub">${escapeHtml(step.sub)}</span>` : ""}</div>`;
             }
             if (step.key === "金币") {
               const have = appState.inventory["金币"] || 0;
               const enough = have >= step.need;
-              return `<div class="rc-mat">
-                <span class="rc-mat-name">💰 金币</span>
-                <span class="rc-mat-qty ${enough ? 'ready' : ''}">${enough ? '✓ ' : ''}${Number(step.need).toLocaleString("en-US")}g</span>
+              return `<div class="rc-mat ${checked ? "checked" : ""} ${checkable ? "checkable" : ""}"${boxAttr}>
+                ${box}<span class="rc-mat-name">💰 金币</span>
+                <span class="rc-mat-qty ${checked || enough ? 'ready' : ''}">${(checked || enough) ? '✓ ' : ''}${Number(step.need).toLocaleString("en-US")}g</span>
               </div>`;
             }
             const have = step.key ? (appState.inventory[step.key] || 0) : 0;
             const enough = step.need && have >= step.need;
-            return `<div class="rc-mat">
-              <span class="rc-mat-name">${renderInvIcon(step.key)} ${escapeHtml(step.key)}</span>
-              <span class="rc-mat-qty ${enough ? 'ready' : ''}">${enough ? '✓ ' : ''}${have}/${step.need}</span>
+            return `<div class="rc-mat ${checked ? "checked" : ""} ${checkable ? "checkable" : ""}"${boxAttr}>
+              ${box}<span class="rc-mat-name">${renderInvIcon(step.key)} ${escapeHtml(step.key)}</span>
+              <span class="rc-mat-qty ${checked || enough ? 'ready' : ''}">${(checked || enough) ? '✓ ' : ''}${have}/${step.need}</span>
             </div>`;
           }).join("");
           return `<div class="rc-mat-list">${rows}</div>`;
@@ -18050,10 +18062,16 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (unlockText) obtainLines.push({ label: "解锁", text: unlockText });
       if (whereText) obtainLines.push({ label: "在哪做", text: whereText + (goal.duration ? ` · 用时 ${goal.duration}` : "") });
 
-      const checklist = (goal.steps || []).map(s =>
-        s.manual ? { manual: true, label: s.label, sub: s.sub }
-                 : { key: s.invKey, need: s.invNeed, sub: s.sub }
-      );
+      // 勾选只对"已在购物车"的物品开放；读购物车里那份 steps 的 checked
+      const cartGoal = appState.goals.find(g => g.id === goal.id);
+      const canCheck = !!cartGoal;
+      const checklist = (goal.steps || []).map((s, idx) => {
+        const checked = canCheck && cartGoal.steps[idx] ? !!cartGoal.steps[idx].checked : false;
+        const base = s.manual
+          ? { manual: true, label: s.label, sub: s.sub }
+          : { key: s.invKey, need: s.invNeed, sub: s.sub };
+        return { ...base, goalId: goal.id, idx, checkable: canCheck, checked };
+      });
 
       // 把"怎么得到"做成一个 section：先 lines 再 checklist，用 html 拼
       let obtainBody = "";
@@ -23313,24 +23331,39 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "寻宝者": "buy-treasure-hunter"
     };
 
-    /* 把 [name, desc, price] 渔具数据转成统一资料卡 schema */
-    function fishingGearToCard(name, desc, price, kind) {
+    /* 渔具名 → 完整 goal 对象（走全站共享卡 goalToResourceCard）
+       - 已在购物车：直接用购物车里那份（含勾选态）
+       - 未加车但有模板：用模板 + 补 info（效果/获取/价格）
+       - 无模板（珍稀诱钩/优质浮标等特殊获取）：现造只读 goal，不可加车 */
+    function fishingGearToGoal(name, desc, price, kind) {
       const cartId = FISHING_GEAR_CART[name] || null;
-      let getText;
-      if (cartId) getText = `威利鱼店购买 · ${price}`;
-      else if (price === "配方") getText = "完成特别任务获得配方后合成";
-      else getText = "稀有获取：矿井木桶 / 击杀怪物概率掉落";
+
+      // info：效果说明 + 在哪做 + 值不值
+      let where, unlock;
+      if (cartId) { where = "威利鱼店购买"; unlock = desc; }
+      else if (price === "配方") { where = "完成特别任务获得配方后合成"; unlock = desc; }
+      else { where = "稀有获取：矿井木桶 / 击杀怪物概率掉落"; unlock = desc; }
+      const info = { unlock, where, verdict: kind === "🎣 鱼竿"
+        ? "鱼竿决定能不能用鱼饵/渔具：玻璃纤维竿是第一波质变，铱金竿能上渔具，是钓鱼流派的门槛。"
+        : "渔具按需取舍：怕跑鱼用倒刺钩，难控用陷阱/软木塞，刷宝箱用寻宝者，省时用旋式鱼饵。" };
+
+      if (cartId) {
+        const inCart = appState.goals.find(g => g.id === cartId);
+        if (inCart) {
+          const tpl = findGoalTemplate(cartId) || {};
+          return { ...tpl, ...inCart, info, iconName: name };
+        }
+        const tpl = findGoalTemplate(cartId);
+        if (tpl) return { ...tpl, info, iconName: name };
+      }
+      // 特殊获取：只读，单材料价（不可加车）
       return {
         id: "fgear-" + name,
         title: name,
-        icon: name,
-        subtitle: kind,
-        tags: [{ text: price, tone: cartId ? "good" : "warn" }],
-        sections: [
-          { id: "effect", label: "📖 效果 / 说明", open: true, type: "lines", data: [{ text: desc }] },
-          { id: "get", label: "🛒 获取方式", open: false, type: "lines", data: [{ text: getText }] }
-        ],
-        _cartId: cartId
+        iconName: name,
+        how: "buy",
+        info,
+        steps: []
       };
     }
 
@@ -23344,8 +23377,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (activeKey) {
         const e = entries.find((x) => x[0] === activeKey);
         if (e) {
-          const card = fishingGearToCard(e[0], e[1], e[2], kind);
-          detail = `<div class="fishing-detail-wrap">${renderResourceCard(card, { showCartButton: !!card._cartId, cartId: card._cartId, foldKey: "fgear" })}</div>`;
+          const cartId = FISHING_GEAR_CART[e[0]] || null;
+          const goal = fishingGearToGoal(e[0], e[1], e[2], kind);
+          detail = `<div class="fishing-detail-wrap">${renderResourceCard(goalToResourceCard(goal), { showCartButton: !!cartId, cartId: cartId, foldKey: "fgear" })}</div>`;
         }
       }
       return `
@@ -26921,6 +26955,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const toggleStep = e.target.closest("[data-toggle-step]");
       if (toggleStep) {
         const [gid, idx] = toggleStep.dataset.toggleStep.split("|");
+        toggleGoalStep(gid, parseInt(idx));
+        return;
+      }
+      // 共享资料卡材料清单勾选（购物车物品才可勾）
+      const rcCheck = e.target.closest("[data-rc-check]");
+      if (rcCheck) {
+        const [gid, idx] = rcCheck.dataset.rcCheck.split("|");
+        preserveScrollPosition();
         toggleGoalStep(gid, parseInt(idx));
         return;
       }
