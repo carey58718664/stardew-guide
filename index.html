@@ -14254,18 +14254,8 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <!-- 📖 攻略 Tab -->
 <div class="tab-page" id="tabGuide" data-tab="guide">
 <section class="app-panel">
-  <h2 class="app-panel-title">📖 攻略中心</h2>
+  <h2 class="app-panel-title">📖 场景集</h2>
   <div class="guide-grid">
-    <button class="guide-entry" id="openBundleBtn" type="button">
-      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="献祭"></span></span>
-      <span class="guide-label">献祭</span>
-      <span class="guide-desc">社区中心收集包</span>
-    </button>
-    <button class="guide-entry" id="openSocialBtn" type="button">
-      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="社交"></span></span>
-      <span class="guide-label">社交</span>
-      <span class="guide-desc">村民好感·送礼·生日</span>
-    </button>
     <button class="guide-entry" id="openCookingBtn" type="button">
       <span class="guide-icon"><span class="official-ui-icon" data-official-icon="烹饪"></span></span>
       <span class="guide-label">烹饪</span>
@@ -14280,11 +14270,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
       <span class="guide-icon"><span class="official-ui-icon" data-official-icon="钓鱼"></span></span>
       <span class="guide-label">钓鱼</span>
       <span class="guide-desc">鱼类·地点·时间</span>
-    </button>
-    <button class="guide-entry" id="openFestivalBtn" type="button">
-      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="节日"></span></span>
-      <span class="guide-label">节日</span>
-      <span class="guide-desc">活动·奖励·准备</span>
     </button>
     <button class="guide-entry" id="openAnimalBtn" type="button">
       <span class="guide-icon"><span class="official-ui-icon" data-official-icon="养殖"></span></span>
@@ -14311,23 +14296,43 @@ body.modal-open { overflow: hidden; touch-action: none; }
       <span class="guide-label">姜岛</span>
       <span class="guide-desc">探险·火山·核桃</span>
     </button>
-    <button class="guide-entry" id="openStrategyBtn" type="button">
-      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="流派"></span></span>
-      <span class="guide-label">流派</span>
-      <span class="guide-desc">盈利路线指南</span>
-    </button>
   </div>
 </section>
 </div><!-- /tabGuide -->
+
+<!-- 🎯 进度 Tab -->
+<div class="tab-page" id="tabProgress" data-tab="progress">
+<section class="app-panel">
+  <h2 class="app-panel-title">🎯 进度</h2>
+  <div class="guide-grid">
+    <button class="guide-entry" id="openBundleBtn2" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="献祭"></span></span>
+      <span class="guide-label">献祭</span>
+      <span class="guide-desc">社区中心收集包</span>
+    </button>
+    <button class="guide-entry" id="openSocialBtn2" type="button">
+      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="社交"></span></span>
+      <span class="guide-label">社交</span>
+      <span class="guide-desc">村民好感·送礼·生日</span>
+    </button>
+    <button class="guide-entry" id="openPerfectionBtn" type="button">
+      <span class="guide-icon">🏆</span>
+      <span class="guide-label">完美评定</span>
+      <span class="guide-desc">通关度·达成清单</span>
+    </button>
+  </div>
+</section>
+</div><!-- /tabProgress -->
 
 </div><!-- /tabContent -->
 
 <!-- 固定底栏 Tab Bar -->
 <nav class="app-tab-bar" id="appTabBar">
   <button class="app-tab active" data-tab="home"><span class="app-tab-icon">🌿</span><span class="app-tab-label">当季事</span></button>
-  <button class="app-tab" data-tab="items"><span class="app-tab-icon">🎒</span><span class="app-tab-label">物品库</span></button>
-  <button class="app-tab" data-tab="goals"><span class="app-tab-icon">🛒</span><span class="app-tab-label">购物车</span></button>
   <button class="app-tab" data-tab="guide"><span class="app-tab-icon">📖</span><span class="app-tab-label">场景集</span></button>
+  <button class="app-tab" data-tab="progress"><span class="app-tab-icon">🎯</span><span class="app-tab-label">进度</span></button>
+  <button class="app-tab" data-tab="goals"><span class="app-tab-icon">🛒</span><span class="app-tab-label">购物车</span></button>
+  <button class="app-tab" data-tab="items"><span class="app-tab-icon">🎒</span><span class="app-tab-label">物品库</span></button>
 </nav>
 
   </main>
@@ -17824,89 +17829,39 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
       const html = [];
 
-      /* ── 顶部：我的购物车（进度追踪） ── */
+      /* ── 我的购物车（已加入物品 + 进度） ── */
       const cartGoals = appState.goals;
-      let cartSection = "";
       if (cartGoals.length) {
-        cartSection = `
+        html.push(`
           <div class="cart-top-section">
             <div class="cart-top-head">
               <span class="cart-top-title">🛒 我的购物车</span>
               <span class="cart-top-count">${cartGoals.length} 项</span>
             </div>
             <div class="cart-top-list">${renderGoalCards(cartGoals)}</div>
-          </div>`;
+          </div>`);
       } else {
-        cartSection = `
+        html.push(`
           <div class="cart-top-section cart-top-empty">
             <div class="cart-empty-icon">🛒</div>
             <div class="cart-empty-text">购物车还是空的</div>
-            <div class="cart-empty-sub">在下方分类里点物品 → 加入购物车，开始追踪材料进度</div>
-          </div>`;
+            <div class="cart-empty-sub">在场景集里浏览工具/设备，左滑或点「加入购物车」，就会出现在这里追踪材料进度</div>
+          </div>`);
       }
-      html.push(cartSection);
 
-      /* ── 烹饪入口卡片 ── */
+      /* ── 烹饪入口（料理也是要做的东西，从烹饪面板加入） ── */
       html.push(`
         <button class="cart-cooking-entry" id="cartCookingEntry" type="button">
           <span class="cart-cooking-icon">🍳</span>
           <div class="cart-cooking-body">
             <div class="cart-cooking-title">料理目标</div>
-            <div class="cart-cooking-sub">80+ 道食谱在烹饪面板里挑选，加入购物车追踪</div>
+            <div class="cart-cooking-sub">在烹饪面板挑选食谱，加入购物车追踪</div>
           </div>
           <span class="cart-cooking-arrow">›</span>
         </button>
       `);
 
-      /* ── 下方：按分类折叠浏览 ── */
-      html.push(`<div class="cart-browse-head">📂 浏览全部 · 点击展开分类</div>`);
-
-      const browseHtml = CART_GROUP_DEFS.map(group => {
-        const goals = [];
-        group.cats.forEach(catName => {
-          const cat = GOAL_TEMPLATES.find(c => c.cat === catName);
-          if (cat) goals.push(...cat.goals);
-        });
-        if (!goals.length) return "";
-
-        const chips = goals.map(g => {
-          const inCart = appState.goals.some(x => x.id === g.id);
-          const active = appState._activeCartItem === g.id;
-          return `<button class="item-chip ${active ? 'active' : ''} ${inCart ? 'in-cart' : ''}" data-cart-chip="${escapeAttribute(g.id)}" type="button">${renderGoalIcon(g)}<span>${escapeHtml(g.title)}</span>${inCart ? '<span class="chip-qty">✓</span>' : ''}</button>`;
-        }).join("");
-
-        let detailHtml = "";
-        if (appState._activeCartItem) {
-          const activeGoal = goals.find(g => g.id === appState._activeCartItem);
-          if (activeGoal) detailHtml = renderCartItemDetail(activeGoal);
-        }
-
-        return `
-          <div class="cart-fold-section" data-cart-group="${group.id}">
-            <div class="cart-fold-header" data-cart-fold="${group.id}">
-              <span class="cart-fold-arrow"></span>
-              <span class="cart-fold-icon">${group.icon}</span>
-              <span class="cart-fold-title">${escapeHtml(group.label)}</span>
-              <span class="cart-fold-badge">${goals.length}</span>
-            </div>
-            <div class="cart-fold-body">
-              <div class="item-lib-chips">${chips}</div>
-              ${detailHtml}
-            </div>
-          </div>`;
-      }).join("");
-
-      html.push(`<div class="cart-browse-list">${browseHtml}</div>`);
-
       container.innerHTML = html.join("");
-
-      // 恢复已展开的分类
-      if (appState._openCartGroups) {
-        appState._openCartGroups.forEach(gid => {
-          const sec = container.querySelector(`[data-cart-group="${gid}"]`);
-          if (sec) sec.classList.add("open");
-        });
-      }
 
       // 购物车里的目标卡片绑定左滑删除
       container.querySelectorAll("[data-swipe-goal]").forEach(card => {
@@ -18081,15 +18036,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (obtainLines.length) {
         obtainBody += obtainLines.map(l => `<div class="rc-line"><b>${escapeHtml(l.label)}</b>${escapeHtml(l.text)}</div>`).join("");
       }
-      sections.push({ id: "obtain", label: "🔧 怎么得到", open: true, type: "html",
-        data: obtainBody + renderResourceCardSection({ type: "checklist", data: checklist }, goal, {}) });
-
-      if (info.produces && info.produces.length) {
-        sections.push({ id: "produces", label: "⚙️ 能加工 / 用途", open: true, type: "produces", data: info.produces, badge: `${info.produces.length}` });
-      }
       if (info.verdict) {
         sections.push({ id: "verdict", label: "⭐ 值不值", open: true, type: "verdict", data: info.verdict });
       }
+      if (info.produces && info.produces.length) {
+        sections.push({ id: "produces", label: "⚙️ 能加工 / 用途", open: true, type: "produces", data: info.produces, badge: `${info.produces.length}` });
+      }
+      sections.push({ id: "obtain", label: "🔧 怎么得到", open: true, type: "html",
+        data: obtainBody + renderResourceCardSection({ type: "checklist", data: checklist }, goal, {}) });
 
       return {
         id: goal.id,
@@ -26899,8 +26853,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const removeBtn = e.target.closest("[data-remove-goal]");
       if (removeBtn) { removeGoal(removeBtn.dataset.removeGoal); return; }
       // 打开献祭
-      if (e.target.closest("#openBundleBtn")) { openBundle(); return; }
-      if (e.target.closest("#openSocialBtn") || e.target.closest("[data-open-social]")) { openSocial(); return; }
+      if (e.target.closest("#openBundleBtn") || e.target.closest("#openBundleBtn2")) { openBundle(); return; }
+      if (e.target.closest("#openSocialBtn") || e.target.closest("#openSocialBtn2") || e.target.closest("[data-open-social]")) { openSocial(); return; }
       if (e.target.closest("#openCookingBtn")) { openCooking(); return; }
       if (e.target.closest("#openFestivalBtn") || e.target.closest("[data-open-festival]")) { openFestival(); return; }
       if (e.target.closest("#openPlantingBtn") || e.target.closest("[data-open-planting]")) { openPlanting(); return; }
@@ -26911,6 +26865,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (e.target.closest("#openPondBtn") || e.target.closest("[data-open-pond]")) { openPond(); return; }
       if (e.target.closest("#openIslandBtn") || e.target.closest("[data-open-island]")) { openIsland(); return; }
       if (e.target.closest("#openStrategyBtn")) { openStrategy(); return; }
+      if (e.target.closest("#openPerfectionBtn")) { toast("完美评定面板待补充"); return; }
       // Tab 快捷跳转（从旧按钮迁移）
       if (e.target.closest("#openResourcePanelBtn")) { switchTab("items"); return; }
       if (e.target.closest("#openGoalsPanelBtn")) { switchTab("goals"); return; }
