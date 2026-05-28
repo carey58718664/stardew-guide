@@ -5750,6 +5750,62 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .cart-verdict .cart-block-label { color: #3a7a1a; }
 .cart-verdict-text { font-size: 12.5px; color: #3d4a2a; line-height: 1.6; font-weight: 700; }
 
+/* ══ 统一资料卡组件 renderResourceCard ══ */
+.resource-card {
+  margin-top: 10px;
+  border: 1.5px solid #e5d5b6;
+  border-radius: 12px;
+  background: #fff;
+  padding: 12px;
+}
+.rc-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.rc-icon { font-size: 24px; flex-shrink: 0; }
+.rc-icon img { width: 28px; height: 28px; image-rendering: pixelated; vertical-align: middle; }
+.rc-head-info { flex: 1; min-width: 0; }
+.rc-title { font-size: 15px; font-weight: 950; color: var(--ink); }
+.rc-subtitle { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.rc-tag-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.rc-tag { font-size: 10.5px; font-weight: 900; border-radius: 999px; padding: 1px 8px; }
+.rc-tag-good { background: #e7f3d6; color: #3a7a1a; }
+.rc-tag-warn { background: #fbeccb; color: #9c620e; }
+.rc-tag-info { background: #e3eef7; color: #2f6fb0; }
+.rc-tag-bad  { background: #f7e0d7; color: #c25e3a; }
+.rc-sections { display: grid; gap: 6px; }
+.rc-section { border: 1.5px solid #f0e3c8; border-radius: 10px; overflow: hidden; background: #fffaf0; }
+.rc-section-head {
+  display: flex; align-items: center; gap: 7px; padding: 9px 11px;
+  cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.rc-section-head:active { background: #f5e9d2; }
+.rc-section-arrow {
+  width: 0; height: 0; border-left: 5px solid var(--gold, #d9a420);
+  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+  transition: transform .15s ease; flex-shrink: 0;
+}
+.rc-section.open .rc-section-arrow { transform: rotate(90deg); }
+.rc-section-label { flex: 1; font-size: 13px; font-weight: 900; color: var(--ink); }
+.rc-section-badge { font-size: 11px; font-weight: 800; color: var(--muted); background: #f0e3c8; border-radius: 999px; padding: 1px 8px; }
+.rc-section-body { display: none; padding: 0 11px 11px; }
+.rc-section.open .rc-section-body { display: block; }
+.rc-line { font-size: 12.5px; color: var(--ink); line-height: 1.55; margin-bottom: 3px; }
+.rc-line b { color: #9c620e; font-size: 11px; font-weight: 900; margin-right: 6px; }
+.rc-mat-list { display: grid; gap: 0; margin-top: 6px; border: 1.5px solid #f0e3c8; border-radius: 9px; overflow: hidden; }
+.rc-mat { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; font-size: 12.5px; color: var(--ink); font-weight: 700; background: #fff; }
+.rc-mat + .rc-mat { border-top: 1px dashed #ece0c8; }
+.rc-mat.manual { color: var(--muted); }
+.rc-mat-name { display: flex; align-items: center; gap: 5px; }
+.rc-mat-sub { font-size: 11px; color: var(--muted); }
+.rc-mat-qty { font-weight: 900; color: #c25e3a; font-size: 12px; }
+.rc-mat-qty.ready { color: #6fae43; }
+.rc-produce-list { display: grid; gap: 0; border: 1.5px solid #f0e3c8; border-radius: 9px; overflow: hidden; }
+.rc-produce-row { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; padding: 7px 10px; font-size: 12px; background: #fff; }
+.rc-produce-row + .rc-produce-row { border-top: 1px dashed #ece0c8; }
+.rc-produce-in { font-weight: 800; color: var(--ink); }
+.rc-produce-arrow { color: var(--muted); }
+.rc-produce-out { font-weight: 900; color: #6f4b22; }
+.rc-produce-value { font-size: 11px; color: var(--muted); width: 100%; padding-left: 2px; }
+.rc-verdict-text { font-size: 12.5px; color: #3d4a2a; line-height: 1.6; font-weight: 700; }
+
 .shop-section {
   --shop-accent: #9a5a2f;
   display: grid;
@@ -17861,8 +17917,198 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       });
     }
 
+    /* ════════════════════════════════════════════════════════════
+       统一资料卡组件 renderResourceCard
+       ────────────────────────────────────────────────────────────
+       全站共享的唯一资料卡渲染器。各板块通过 adapter 把自己的数据
+       转成下面这个 canonical schema，再交给本函数渲染，保证表述一致。
+
+       ResourceCard schema:
+       {
+         id:        唯一标识（用于加入购物车 / 库存联动）
+         title:     名称
+         icon:      图标名（喂给 renderInvIcon）或 emoji
+         subtitle:  副标题（英文名 / 分类 / 季节等，可选）
+         tags:      [{ text, tone }]  顶部小标签，tone: good|warn|info|bad
+         sections:  [ Section ]  可折叠条目，顺序即展示顺序
+       }
+
+       Section（一个可折叠条目）:
+       {
+         id:        条目标识（折叠状态记忆用）
+         label:     标题（含 emoji，如 "⚙️ 加工"）
+         open:      默认是否展开（true/false）
+         badge:     标题右侧角标文字（可选）
+         type:      内容类型，决定 body 怎么渲染：
+                    - "checklist" : 可勾选材料清单 + 进度（购物车/场景共享）
+                    - "produces"  : 加工/用途表（in → out · value）
+                    - "verdict"   : 绿色"值不值"块
+                    - "lines"     : 普通文本行 [{ label?, text }]
+                    - "html"      : 直接塞 rawHtml（过渡期兼容旧渲染）
+         data:      跟随 type 的数据
+       }
+
+       options:
+       {
+         showCartButton: 是否显示"加入/移除购物车"按钮
+         cartId:         购物车用的 id（默认取 card.id）
+         foldKey:        折叠状态命名空间（区分不同板块记忆）
+       }
+       ════════════════════════════════════════════════════════════ */
+    function renderResourceCard(card, options = {}) {
+      const foldKey = options.foldKey || "rc";
+      const openSet = (appState._openRcSections && appState._openRcSections[foldKey]) || {};
+
+      const tagsHtml = (card.tags || []).map(t =>
+        `<span class="rc-tag rc-tag-${t.tone || 'info'}">${escapeHtml(t.text)}</span>`
+      ).join("");
+
+      const sectionsHtml = (card.sections || []).map(sec => {
+        // 折叠状态：用户手动操作过的优先，否则用 section.open
+        const stored = openSet[sec.id];
+        const isOpen = stored === undefined ? Boolean(sec.open) : stored;
+        const body = renderResourceCardSection(sec, card, options);
+        return `
+          <div class="rc-section ${isOpen ? 'open' : ''}" data-rc-group="${escapeAttribute(sec.id)}">
+            <div class="rc-section-head" data-rc-fold="${escapeAttribute(foldKey)}|${escapeAttribute(sec.id)}">
+              <span class="rc-section-arrow"></span>
+              <span class="rc-section-label">${escapeHtml(sec.label)}</span>
+              ${sec.badge ? `<span class="rc-section-badge">${escapeHtml(sec.badge)}</span>` : ""}
+            </div>
+            <div class="rc-section-body">${body}</div>
+          </div>`;
+      }).join("");
+
+      let cartBtn = "";
+      if (options.showCartButton) {
+        const cartId = options.cartId || card.id;
+        const inCart = appState.goals.some(g => g.id === cartId);
+        cartBtn = inCart
+          ? `<button class="cart-remove-btn" data-cart-remove="${escapeAttribute(cartId)}" type="button">已在购物车 ✓ · 点击移除</button>`
+          : `<button class="cart-add-btn" data-cart-add="${escapeAttribute(cartId)}" type="button">${renderInvIcon("购物车")} 加入购物车</button>`;
+      }
+
+      return `
+        <div class="resource-card" data-rc-id="${escapeAttribute(card.id || '')}">
+          <div class="rc-head">
+            <span class="rc-icon">${card.icon ? renderInvIcon(card.icon) : "📦"}</span>
+            <div class="rc-head-info">
+              <div class="rc-title">${escapeHtml(card.title || "")}</div>
+              ${card.subtitle ? `<div class="rc-subtitle">${escapeHtml(card.subtitle)}</div>` : ""}
+              ${tagsHtml ? `<div class="rc-tag-row">${tagsHtml}</div>` : ""}
+            </div>
+          </div>
+          ${sectionsHtml ? `<div class="rc-sections">${sectionsHtml}</div>` : ""}
+          ${cartBtn}
+        </div>`;
+    }
+
+    function renderResourceCardSection(sec, card, options) {
+      switch (sec.type) {
+        case "checklist": {
+          // data: [{ key, need, sub, manual, label }]
+          const rows = (sec.data || []).map(step => {
+            if (step.manual) {
+              return `<div class="rc-mat manual"><span class="rc-mat-name">${escapeHtml(step.label)}</span>${step.sub ? `<span class="rc-mat-sub">${escapeHtml(step.sub)}</span>` : ""}</div>`;
+            }
+            if (step.key === "金币") {
+              const have = appState.inventory["金币"] || 0;
+              const enough = have >= step.need;
+              return `<div class="rc-mat">
+                <span class="rc-mat-name">💰 金币</span>
+                <span class="rc-mat-qty ${enough ? 'ready' : ''}">${enough ? '✓ ' : ''}${Number(step.need).toLocaleString("en-US")}g</span>
+              </div>`;
+            }
+            const have = step.key ? (appState.inventory[step.key] || 0) : 0;
+            const enough = step.need && have >= step.need;
+            return `<div class="rc-mat">
+              <span class="rc-mat-name">${renderInvIcon(step.key)} ${escapeHtml(step.key)}</span>
+              <span class="rc-mat-qty ${enough ? 'ready' : ''}">${enough ? '✓ ' : ''}${have}/${step.need}</span>
+            </div>`;
+          }).join("");
+          return `<div class="rc-mat-list">${rows}</div>`;
+        }
+        case "produces": {
+          const rows = (sec.data || []).map(p => `
+            <div class="rc-produce-row">
+              <span class="rc-produce-in">${escapeHtml(p.in)}</span>
+              <span class="rc-produce-arrow">→</span>
+              <span class="rc-produce-out">${escapeHtml(p.out)}</span>
+              ${p.value ? `<span class="rc-produce-value">${escapeHtml(p.value)}</span>` : ""}
+            </div>`).join("");
+          return `<div class="rc-produce-list">${rows}</div>`;
+        }
+        case "verdict":
+          return `<div class="rc-verdict-text">${escapeHtml(sec.data || "")}</div>`;
+        case "lines":
+          return (sec.data || []).map(line =>
+            `<div class="rc-line">${line.label ? `<b>${escapeHtml(line.label)}</b>` : ""}${escapeHtml(line.text)}</div>`
+          ).join("");
+        case "html":
+          return sec.data || "";
+        default:
+          return "";
+      }
+    }
+
+    /* adapter: 把购物车 goal 转成 ResourceCard schema */
+    function goalToResourceCard(goal) {
+      const info = goal.info || {};
+      const WHERE_BY_HOW = {
+        craft: "配方合成菜单（ESC → 合成标签）",
+        build: "木匠商店找罗宾建造",
+        house: "木匠商店找罗宾升级",
+        upgrade: "铁匠铺交给克林特升级",
+        buy: "到对应商店购买",
+        self: ""
+      };
+      const sections = [];
+
+      // 怎么得到（解锁 + 在哪做 + 可勾选材料）
+      const obtainLines = [];
+      const unlockText = info.unlock || stripDecorativeIcons(goal.note || "");
+      const whereText = info.where || WHERE_BY_HOW[goal.how] || "";
+      if (unlockText) obtainLines.push({ label: "解锁", text: unlockText });
+      if (whereText) obtainLines.push({ label: "在哪做", text: whereText + (goal.duration ? ` · 用时 ${goal.duration}` : "") });
+
+      const checklist = (goal.steps || []).map(s =>
+        s.manual ? { manual: true, label: s.label, sub: s.sub }
+                 : { key: s.invKey, need: s.invNeed, sub: s.sub }
+      );
+
+      // 把"怎么得到"做成一个 section：先 lines 再 checklist，用 html 拼
+      let obtainBody = "";
+      if (obtainLines.length) {
+        obtainBody += obtainLines.map(l => `<div class="rc-line"><b>${escapeHtml(l.label)}</b>${escapeHtml(l.text)}</div>`).join("");
+      }
+      sections.push({ id: "obtain", label: "🔧 怎么得到", open: true, type: "html",
+        data: obtainBody + renderResourceCardSection({ type: "checklist", data: checklist }, goal, {}) });
+
+      if (info.produces && info.produces.length) {
+        sections.push({ id: "produces", label: "⚙️ 能加工 / 用途", open: true, type: "produces", data: info.produces, badge: `${info.produces.length}` });
+      }
+      if (info.verdict) {
+        sections.push({ id: "verdict", label: "⭐ 值不值", open: true, type: "verdict", data: info.verdict });
+      }
+
+      return {
+        id: goal.id,
+        title: goal.title,
+        icon: goal.iconName || goal.emoji || goal.title,
+        sections
+      };
+    }
+
     /* 工具间物品详情卡：自包含的完整资料 */
     function renderCartItemDetail(goal) {
+      // 有完整 info 的物品走统一资料卡组件（地基验证：小桶等）
+      if (goal.info) {
+        return renderResourceCard(goalToResourceCard(goal), {
+          showCartButton: true,
+          cartId: goal.id,
+          foldKey: "cart"
+        });
+      }
       const inCart = appState.goals.some(x => x.id === goal.id);
       const info = goal.info || {};
 
@@ -26709,6 +26955,19 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         return;
       }
       // 种植图标点击展开
+      // 统一资料卡 section 折叠
+      const rcFold = e.target.closest("[data-rc-fold]");
+      if (rcFold) {
+        preserveScrollPosition();
+        const [fk, sid] = rcFold.dataset.rcFold.split("|");
+        appState._openRcSections = appState._openRcSections || {};
+        appState._openRcSections[fk] = appState._openRcSections[fk] || {};
+        const sec = rcFold.closest("[data-rc-group]");
+        const nowOpen = sec ? !sec.classList.contains("open") : true;
+        appState._openRcSections[fk][sid] = nowOpen;
+        if (sec) sec.classList.toggle("open", nowOpen);
+        return;
+      }
       // 购物车分类折叠开关
       const cartFold = e.target.closest("[data-cart-fold]");
       if (cartFold) {
