@@ -5797,12 +5797,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .rc-mat-sub { font-size: 11px; color: var(--muted); }
 .rc-mat-qty { font-weight: 900; color: #c25e3a; font-size: 12px; }
 .rc-mat-qty.ready { color: #6fae43; }
-.rc-mat.checkable { cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.rc-mat.checkable:active { background: #fbf5e6; }
-.rc-mat.checked { background: #f3f9ec; }
-.rc-mat.checked .rc-mat-name { color: #6fae43; text-decoration: line-through; text-decoration-color: #b9d99a; }
-.rc-check { flex: 0 0 auto; width: 17px; height: 17px; margin-right: 8px; border: 1.5px solid #c9b98f; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; background: #fff; transition: background .12s, border-color .12s; }
-.rc-check.done { background: var(--green, #6fae43); border-color: var(--green, #6fae43); }
 .rc-produce-list { display: grid; gap: 0; border: 1.5px solid #f0e3c8; border-radius: 9px; overflow: hidden; }
 .rc-produce-row { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; padding: 7px 10px; font-size: 12px; background: #fff; }
 .rc-produce-row + .rc-produce-row { border-top: 1px dashed #ece0c8; }
@@ -5811,6 +5805,20 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .rc-produce-out { font-weight: 900; color: #6f4b22; }
 .rc-produce-value { font-size: 11px; color: var(--muted); width: 100%; padding-left: 2px; }
 .rc-verdict-text { font-size: 12.5px; color: #3d4a2a; line-height: 1.6; font-weight: 700; }
+.cart-pick-btn {
+  width: 100%; padding: 5px 8px; border-radius: 8px; font-size: 12px; font-weight: 900;
+  border: 1.5px solid var(--gold, #d9a420); background: var(--gold, #d9a420); color: #fff;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.cart-pick-btn.added { background: #eef3e3; color: #6fae43; border-color: #c2dca0; }
+.rc-check {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid #cbb98c;
+  background: #fff; font-size: 11px; font-weight: 900; color: #6fae43; flex-shrink: 0;
+}
+.rc-check.on { background: #eef3e3; border-color: #6fae43; }
+.rc-mat[data-cart-check] { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.rc-mat.done .rc-mat-name { color: var(--muted); text-decoration: line-through; }
 
 .shop-section {
   --shop-accent: #9a5a2f;
@@ -9454,18 +9462,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .fishing-info-card,
 .fishing-gear-card {
   padding: 12px;
-}
-.fishing-gear-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-bottom: 4px;
-}
-.fishing-gear-hint {
-  font-size: 12px;
-  color: var(--muted, #8a8278);
-  line-height: 1.5;
-  padding: 2px 2px 0;
 }
 .fishing-section-title {
   display: flex;
@@ -14261,10 +14257,14 @@ body.modal-open { overflow: hidden; touch-action: none; }
 
 
 
-<!-- 🎯 目标 Tab -->
+<!-- 🛒 购物车 Tab -->
 <div class="tab-page" id="tabGoals" data-tab="goals">
 <section class="app-panel" id="goalsPanel">
-  <h2 class="app-panel-title">🛒 购物车</h2>
+  <h2 class="app-panel-title">🛒 购物车 <span class="subtle" id="cartCount"></span></h2>
+  <div class="item-lib-toolbar">
+    <input type="search" id="cartSearch" class="item-lib-search" placeholder="搜索已加购物品..." autocomplete="off" />
+    <button class="add-item-btn" id="openCartPickerBtn" type="button">+ 添加物品</button>
+  </div>
   <div id="shoppingCartContent"></div>
 </section>
 </div><!-- /tabGoals -->
@@ -17344,18 +17344,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           steps: [goalItem("苔藓", 1), goalItem("虫肉", 3)] },
         { id: "craft-magic-bait", title: "做魔法鱼饵", emoji: "✨", how: "craft", note: "齐先生配方，无视季节天气",
           steps: [goalItem("放射性矿", 1), goalItem("虫肉", 3)] },
-        // —— 鱼竿（威利鱼店购买） ——
-        { id: "buy-training-rod", title: "买训练用鱼竿", emoji: "🎣", how: "buy", note: "只能钓基础鱼类，适合新手", steps: [goalMoney(25)] },
-        { id: "buy-bamboo-rod", title: "买竹鱼竿", emoji: "🎣", how: "buy", note: "最普通鱼竿，不能装鱼饵和渔具", steps: [goalMoney(500)] },
-        // —— 鱼饵 / 鱼具（威利鱼店购买） ——
-        { id: "buy-spinner", title: "买旋式鱼饵", emoji: "🌀", how: "buy", note: "减少咬钩前等待时间，钓鱼6级解锁", steps: [goalMoney(500)] },
-        { id: "buy-dressed-spinner", title: "买精装旋式鱼饵", emoji: "🌀", how: "buy", note: "更强的减少等待效果，钓鱼8级解锁", steps: [goalMoney(1000)] },
-        { id: "buy-trap-bobber", title: "买陷阱浮标", emoji: "🎣", how: "buy", note: "减缓进度条下降速度，钓鱼6级解锁", steps: [goalMoney(500)] },
-        { id: "buy-cork-bobber", title: "买软木塞浮标", emoji: "🎣", how: "buy", note: "钓鱼条增加6格，钓鱼7级解锁", steps: [goalMoney(750)] },
-        { id: "buy-barbed-hook", title: "买倒刺钩", emoji: "🪝", how: "buy", note: "上钩的鱼不容易跑掉，钓鱼8级解锁", steps: [goalMoney(1000)] },
-        { id: "buy-sonar-bobber", title: "买声纳浮标", emoji: "📡", how: "buy", note: "钓到鱼之前显示鱼的品种，钓鱼6级解锁", steps: [goalMoney(500)] },
-        { id: "buy-lead-bobber", title: "买铅制浮标", emoji: "🎣", how: "buy", note: "阻止钓鱼条触底反弹，钓鱼6级解锁", steps: [goalMoney(200)] },
-        { id: "buy-treasure-hunter", title: "买寻宝者", emoji: "💰", how: "buy", note: "增加找到宝藏的几率，钓鱼7级解锁", steps: [goalMoney(750)] },
       ]},
       { cat: "装饰 & 灯具", goals: [
         { id: "craft-campfire", title: "做篝火", emoji: "🔥", how: "craft", note: "光源",
@@ -17856,31 +17844,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     function renderShoppingCart() {
       const container = document.getElementById("shoppingCartContent");
       if (!container) return;
+      const searchQ = (document.getElementById("cartSearch")?.value || "").trim().toLowerCase();
 
-      const html = [];
-
-      /* ── 我的购物车（已加入物品 + 进度） ── */
       const cartGoals = appState.goals;
-      if (cartGoals.length) {
-        html.push(`
-          <div class="cart-top-section">
-            <div class="cart-top-head">
-              <span class="cart-top-title">🛒 我的购物车</span>
-              <span class="cart-top-count">${cartGoals.length} 项</span>
-            </div>
-            <div class="cart-top-list">${renderGoalCards(cartGoals)}</div>
-          </div>`);
-      } else {
-        html.push(`
-          <div class="cart-top-section cart-top-empty">
-            <div class="cart-empty-icon">🛒</div>
-            <div class="cart-empty-text">购物车还是空的</div>
-            <div class="cart-empty-sub">在场景集里浏览工具/设备，左滑或点「加入购物车」，就会出现在这里追踪材料进度</div>
-          </div>`);
-      }
+      const countEl = document.getElementById("cartCount");
+      if (countEl) countEl.textContent = cartGoals.length ? `${cartGoals.length} 项` : "";
 
-      /* ── 烹饪入口（料理也是要做的东西，从烹饪面板加入） ── */
-      html.push(`
+      // 料理入口卡（料理也是要做的，从烹饪面板加）
+      const cookingEntry = `
         <button class="cart-cooking-entry" id="cartCookingEntry" type="button">
           <span class="cart-cooking-icon">🍳</span>
           <div class="cart-cooking-body">
@@ -17888,18 +17859,50 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             <div class="cart-cooking-sub">在烹饪面板挑选食谱，加入购物车追踪</div>
           </div>
           <span class="cart-cooking-arrow">›</span>
-        </button>
-      `);
+        </button>`;
 
-      container.innerHTML = html.join("");
+      if (!cartGoals.length) {
+        container.innerHTML = `
+          <div class="cart-top-empty">
+            <div class="cart-empty-icon">🛒</div>
+            <div class="cart-empty-text">购物车还是空的</div>
+            <div class="cart-empty-sub">点右上角「+ 添加物品」挑选要做的工具 / 设备 / 建筑</div>
+          </div>
+          ${cookingEntry}`;
+        return;
+      }
 
-      // 购物车里的目标卡片绑定左滑删除
-      container.querySelectorAll("[data-swipe-goal]").forEach(card => {
-        if (!card.dataset.swipeBound) {
-          attachGoalSwipe(card, card.dataset.swipeGoal);
-          card.dataset.swipeBound = "1";
+      // 按 CART_GROUP_DEFS 分类显示已加购物品
+      const cartIds = new Set(cartGoals.map(g => g.id));
+      const groupsHtml = CART_GROUP_DEFS.map(group => {
+        const goals = [];
+        group.cats.forEach(catName => {
+          const cat = GOAL_TEMPLATES.find(c => c.cat === catName);
+          if (cat) cat.goals.forEach(g => { if (cartIds.has(g.id)) goals.push(g); });
+        });
+        if (!goals.length) return "";
+
+        const chips = goals.map(g => {
+          const miss = searchQ && !g.title.toLowerCase().includes(searchQ);
+          const active = appState._activeCartItem === g.id;
+          return `<button class="item-chip ${active ? 'active' : ''} ${miss ? 'search-miss' : ''}" data-cart-chip="${escapeAttribute(g.id)}" type="button">${renderGoalIcon(g)}<span>${escapeHtml(g.title)}</span></button>`;
+        }).join("");
+
+        let detailHtml = "";
+        const activeGoal = goals.find(g => g.id === appState._activeCartItem);
+        if (activeGoal) {
+          const stateGoal = cartGoals.find(x => x.id === activeGoal.id) || {};
+          detailHtml = renderCartItemDetail({ ...activeGoal, ...stateGoal });
         }
-      });
+
+        return `<div class="item-lib-cat-group">
+          <div class="item-lib-cat-label">${group.icon} ${escapeHtml(group.label)}</div>
+          <div class="item-lib-chips">${chips}</div>
+          ${detailHtml}
+        </div>`;
+      }).join("");
+
+      container.innerHTML = groupsHtml + cookingEntry;
     }
 
     /* ════════════════════════════════════════════════════════════
@@ -17991,30 +17994,27 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     function renderResourceCardSection(sec, card, options) {
       switch (sec.type) {
         case "checklist": {
-          // data: [{ key, need, sub, manual, label, goalId, idx, checkable, checked }]
+          // data: [{ key, need, sub, manual, label, checked, idx, goalId }]
           const rows = (sec.data || []).map(step => {
-            const checkable = step.checkable;
-            const checked = step.checked;
-            const boxAttr = checkable ? ` data-rc-check="${escapeAttribute(step.goalId)}|${step.idx}" role="checkbox" aria-checked="${checked}"` : "";
-            const box = checkable
-              ? `<span class="rc-check ${checked ? "done" : ""}">${checked ? "✓" : ""}</span>`
-              : "";
             if (step.manual) {
-              return `<div class="rc-mat manual ${checked ? "checked" : ""} ${checkable ? "checkable" : ""}"${boxAttr}>${box}<span class="rc-mat-name">${escapeHtml(step.label)}</span>${step.sub ? `<span class="rc-mat-sub">${escapeHtml(step.sub)}</span>` : ""}</div>`;
+              return `<div class="rc-mat manual"><span class="rc-mat-name">${escapeHtml(step.label)}</span>${step.sub ? `<span class="rc-mat-sub">${escapeHtml(step.sub)}</span>` : ""}</div>`;
             }
+            const checkable = step.goalId != null && step.idx != null;
+            const checkAttr = checkable ? `data-cart-check="${escapeAttribute(step.goalId)}|${step.idx}"` : "";
+            const box = checkable ? `<span class="rc-check ${step.checked ? 'on' : ''}">${step.checked ? '✓' : ''}</span>` : "";
             if (step.key === "金币") {
               const have = appState.inventory["金币"] || 0;
-              const enough = have >= step.need;
-              return `<div class="rc-mat ${checked ? "checked" : ""} ${checkable ? "checkable" : ""}"${boxAttr}>
-                ${box}<span class="rc-mat-name">💰 金币</span>
-                <span class="rc-mat-qty ${checked || enough ? 'ready' : ''}">${(checked || enough) ? '✓ ' : ''}${Number(step.need).toLocaleString("en-US")}g</span>
+              const enough = step.checked || have >= step.need;
+              return `<div class="rc-mat ${step.checked ? 'done' : ''}" ${checkAttr}>
+                <span class="rc-mat-name">${box}💰 金币</span>
+                <span class="rc-mat-qty ${enough ? 'ready' : ''}">${enough ? '✓ ' : ''}${Number(step.need).toLocaleString("en-US")}g</span>
               </div>`;
             }
             const have = step.key ? (appState.inventory[step.key] || 0) : 0;
-            const enough = step.need && have >= step.need;
-            return `<div class="rc-mat ${checked ? "checked" : ""} ${checkable ? "checkable" : ""}"${boxAttr}>
-              ${box}<span class="rc-mat-name">${renderInvIcon(step.key)} ${escapeHtml(step.key)}</span>
-              <span class="rc-mat-qty ${checked || enough ? 'ready' : ''}">${(checked || enough) ? '✓ ' : ''}${have}/${step.need}</span>
+            const enough = step.checked || (step.need && have >= step.need);
+            return `<div class="rc-mat ${step.checked ? 'done' : ''}" ${checkAttr}>
+              <span class="rc-mat-name">${box}${renderInvIcon(step.key)} ${escapeHtml(step.key)}</span>
+              <span class="rc-mat-qty ${enough ? 'ready' : ''}">${enough ? '✓ ' : ''}${have}/${step.need}</span>
             </div>`;
           }).join("");
           return `<div class="rc-mat-list">${rows}</div>`;
@@ -18062,15 +18062,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (unlockText) obtainLines.push({ label: "解锁", text: unlockText });
       if (whereText) obtainLines.push({ label: "在哪做", text: whereText + (goal.duration ? ` · 用时 ${goal.duration}` : "") });
 
-      // 勾选只对"已在购物车"的物品开放；读购物车里那份 steps 的 checked
-      const cartGoal = appState.goals.find(g => g.id === goal.id);
-      const canCheck = !!cartGoal;
+      const stateGoal = appState.goals.find(x => x.id === goal.id);
       const checklist = (goal.steps || []).map((s, idx) => {
-        const checked = canCheck && cartGoal.steps[idx] ? !!cartGoal.steps[idx].checked : false;
-        const base = s.manual
+        const checked = stateGoal && stateGoal.steps && stateGoal.steps[idx] && stateGoal.steps[idx].checked;
+        return s.manual
           ? { manual: true, label: s.label, sub: s.sub }
-          : { key: s.invKey, need: s.invNeed, sub: s.sub };
-        return { ...base, goalId: goal.id, idx, checkable: canCheck, checked };
+          : { key: s.invKey, need: s.invNeed, sub: s.sub, idx, goalId: goal.id, checked: !!checked };
       });
 
       // 把"怎么得到"做成一个 section：先 lines 再 checklist，用 html 拼
@@ -18095,16 +18092,15 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       };
     }
 
-    /* 工具间物品详情卡：自包含的完整资料 */
+    /* 工具间物品详情卡：统一走 renderResourceCard */
     function renderCartItemDetail(goal) {
-      // 有完整 info 的物品走统一资料卡组件（地基验证：小桶等）
-      if (goal.info) {
-        return renderResourceCard(goalToResourceCard(goal), {
-          showCartButton: true,
-          cartId: goal.id,
-          foldKey: "cart"
-        });
-      }
+      return renderResourceCard(goalToResourceCard(goal), {
+        showCartButton: true,
+        cartId: goal.id,
+        foldKey: "cart"
+      });
+    }
+    function _renderCartItemDetail_legacy(goal) {
       const inCart = appState.goals.some(x => x.id === goal.id);
       const info = goal.info || {};
 
@@ -23212,10 +23208,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <div class="fishing-info-grid">
           ${FISHING_INFO_CARDS.map(renderFishingInfoCard).join("")}
         </div>
-        <div class="fishing-gear-stack">
-          <div class="fishing-gear-hint">点击渔具查看详情，资料卡里可「加入购物车」追踪进度</div>
-          ${renderFishingGearSection("鱼竿", "竹鱼竿", FISHING_RODS, "🎣 鱼竿", appState._activeFishingGear)}
-          ${renderFishingGearSection("鱼饵 / 鱼具", "陷阱浮标", FISHING_TACKLES, "🪝 鱼饵 / 渔具", appState._activeFishingGear)}
+        <div class="fishing-gear-grid">
+          ${renderFishingGearCard("鱼竿介绍", "竹鱼竿", FISHING_RODS)}
+          ${renderFishingGearCard("鱼饵 / 鱼具", "陷阱浮标", FISHING_TACKLES)}
         </div>
         <section>
           <h3 class="fishing-section-title"><span class="fishing-mini-icon">${renderFishingIcon("收集包")}</span>鱼类全图鉴</h3>
@@ -23313,81 +23308,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           </div>
         </section>
       `;
-    }
-
-    /* 渔具名 → 购物车目标 id（可买/可做的才有；珍稀诱钩、优质浮标等特殊获取的不映射） */
-    const FISHING_GEAR_CART = {
-      "训练用鱼竿": "buy-training-rod",
-      "竹鱼竿": "buy-bamboo-rod",
-      "玻璃纤维鱼竿": "buy-fiberglass-rod",
-      "铱金鱼竿": "buy-iridium-rod",
-      "旋式鱼饵": "buy-spinner",
-      "精装旋式鱼饵": "buy-dressed-spinner",
-      "陷阱浮标": "buy-trap-bobber",
-      "软木塞浮标": "buy-cork-bobber",
-      "倒刺钩": "buy-barbed-hook",
-      "声纳浮标": "buy-sonar-bobber",
-      "铅制浮标": "buy-lead-bobber",
-      "寻宝者": "buy-treasure-hunter"
-    };
-
-    /* 渔具名 → 完整 goal 对象（走全站共享卡 goalToResourceCard）
-       - 已在购物车：直接用购物车里那份（含勾选态）
-       - 未加车但有模板：用模板 + 补 info（效果/获取/价格）
-       - 无模板（珍稀诱钩/优质浮标等特殊获取）：现造只读 goal，不可加车 */
-    function fishingGearToGoal(name, desc, price, kind) {
-      const cartId = FISHING_GEAR_CART[name] || null;
-
-      // info：效果说明 + 在哪做 + 值不值
-      let where, unlock;
-      if (cartId) { where = "威利鱼店购买"; unlock = desc; }
-      else if (price === "配方") { where = "完成特别任务获得配方后合成"; unlock = desc; }
-      else { where = "稀有获取：矿井木桶 / 击杀怪物概率掉落"; unlock = desc; }
-      const info = { unlock, where, verdict: kind === "🎣 鱼竿"
-        ? "鱼竿决定能不能用鱼饵/渔具：玻璃纤维竿是第一波质变，铱金竿能上渔具，是钓鱼流派的门槛。"
-        : "渔具按需取舍：怕跑鱼用倒刺钩，难控用陷阱/软木塞，刷宝箱用寻宝者，省时用旋式鱼饵。" };
-
-      if (cartId) {
-        const inCart = appState.goals.find(g => g.id === cartId);
-        if (inCart) {
-          const tpl = findGoalTemplate(cartId) || {};
-          return { ...tpl, ...inCart, info, iconName: name };
-        }
-        const tpl = findGoalTemplate(cartId);
-        if (tpl) return { ...tpl, info, iconName: name };
-      }
-      // 特殊获取：只读，单材料价（不可加车）
-      return {
-        id: "fgear-" + name,
-        title: name,
-        iconName: name,
-        how: "buy",
-        info,
-        steps: []
-      };
-    }
-
-    /* 一组渔具：标签 chip + 点击展开统一资料卡（可加入购物车） */
-    function renderFishingGearSection(title, iconName, entries, kind, activeKey) {
-      const chips = entries.map(([name]) => {
-        const active = activeKey === name;
-        return `<button class="item-chip ${active ? "active" : ""}" data-fishing-gear-chip="${escapeAttribute(name)}" type="button">${renderFishingIcon(name)}<span>${escapeHtml(name)}</span></button>`;
-      }).join("");
-      let detail = "";
-      if (activeKey) {
-        const e = entries.find((x) => x[0] === activeKey);
-        if (e) {
-          const cartId = FISHING_GEAR_CART[e[0]] || null;
-          const goal = fishingGearToGoal(e[0], e[1], e[2], kind);
-          detail = `<div class="fishing-detail-wrap">${renderResourceCard(goalToResourceCard(goal), { showCartButton: !!cartId, cartId: cartId, foldKey: "fgear" })}</div>`;
-        }
-      }
-      return `
-        <div class="item-lib-cat-group">
-          <div class="item-lib-cat-label"><span class="fishing-mini-icon">${renderFishingIcon(iconName)}</span>${escapeHtml(title)}</div>
-          <div class="item-lib-chips">${chips}</div>
-          ${detail}
-        </div>`;
     }
 
     function renderFishingFishCard(entry) {
@@ -26404,6 +26324,98 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       closeQtyPopover();
       document.body.classList.remove("modal-open");
     }
+
+    /* ── 购物车选择浮窗（镜像录入库存） ── */
+    let currentCartTab = CART_GROUP_DEFS[0].id;
+    let cartPickerQuery = "";
+    function openCartPicker() {
+      document.body.classList.add("modal-open");
+      const modal = document.createElement("div");
+      modal.className = "modal-backdrop";
+      modal.id = "cartPickerModal";
+      modal.innerHTML = `
+        <div class="modal-sheet">
+          <div class="modal-grip"></div>
+          <div class="modal-head">
+            <h3 class="modal-title">🛒 添加到购物车</h3>
+            <button class="modal-close" onclick="closeCartPicker()">×</button>
+          </div>
+          <div style="padding:0 14px 8px;">
+            <input type="search" id="cartPickerSearch" class="item-lib-search" placeholder="搜索物品..." autocomplete="off" />
+          </div>
+          <div class="item-cat-tabs" id="cartPickerTabs">
+            ${CART_GROUP_DEFS.map(g => `<button class="item-cat-tab ${g.id === currentCartTab ? "active" : ""}" data-cart-tab="${g.id}">${g.icon} ${escapeHtml(g.label)}</button>`).join("")}
+          </div>
+          <div id="cartPickerBody"></div>
+        </div>
+      `;
+      modal.addEventListener("click", e => {
+        if (e.target === modal) { closeCartPicker(); return; }
+        const catTab = e.target.closest("[data-cart-tab]");
+        if (catTab) {
+          currentCartTab = catTab.dataset.cartTab;
+          modal.querySelectorAll("[data-cart-tab]").forEach(b => b.classList.toggle("active", b === catTab));
+          renderCartPickerBody();
+          return;
+        }
+        const addBtn = e.target.closest("[data-cart-pick]");
+        if (addBtn) {
+          const id = addBtn.dataset.cartPick;
+          toggleCartGoal(id);
+          renderCartPickerBody();
+          renderShoppingCart();
+          return;
+        }
+      });
+      const searchInput = modal.querySelector("#cartPickerSearch");
+      searchInput.addEventListener("input", () => { cartPickerQuery = searchInput.value.trim().toLowerCase(); renderCartPickerBody(); });
+      document.body.appendChild(modal);
+      attachSheetSwipe(modal, closeCartPicker);
+      renderCartPickerBody();
+    }
+    function closeCartPicker() {
+      const m = document.getElementById("cartPickerModal");
+      if (m) m.remove();
+      document.body.classList.remove("modal-open");
+    }
+    function toggleCartGoal(id) {
+      const idx = appState.goals.findIndex(g => g.id === id);
+      if (idx >= 0) {
+        appState.goals.splice(idx, 1);
+      } else {
+        const tpl = findGoalTemplate(id);
+        if (tpl) appState.goals.push({ id, steps: (tpl.steps || []).map(() => ({ checked: false })), expanded: true });
+      }
+      saveApp();
+    }
+    function renderCartPickerBody() {
+      const body = document.getElementById("cartPickerBody");
+      if (!body) return;
+      const group = CART_GROUP_DEFS.find(g => g.id === currentCartTab);
+      if (!group) { body.innerHTML = ""; return; }
+      const goals = [];
+      group.cats.forEach(catName => {
+        const cat = GOAL_TEMPLATES.find(c => c.cat === catName);
+        if (cat) goals.push(...cat.goals);
+      });
+      const filtered = cartPickerQuery
+        ? goals.filter(g => g.title.toLowerCase().includes(cartPickerQuery))
+        : goals;
+      if (!filtered.length) {
+        body.innerHTML = `<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">没有匹配的物品</div>`;
+        return;
+      }
+      body.innerHTML = `<div class="item-grid">${filtered.map(g => {
+        const inCart = appState.goals.some(x => x.id === g.id);
+        return `<div class="item-tile ${inCart ? "has" : ""}">
+          <div class="item-tile-icon">${renderGoalIcon(g)}</div>
+          <span class="item-tile-name">${escapeHtml(g.title)}</span>
+          <div class="item-tile-ctrl">
+            <button class="cart-pick-btn ${inCart ? 'added' : ''}" data-cart-pick="${escapeAttribute(g.id)}" type="button">${inCart ? '✓ 已加' : '+ 加购'}</button>
+          </div>
+        </div>`;
+      }).join("")}</div>`;
+    }
     function handleInventoryModalClick(e) {
       const catTab = e.target.closest("[data-cat-tab]");
       if (catTab) {
@@ -26958,14 +26970,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         toggleGoalStep(gid, parseInt(idx));
         return;
       }
-      // 共享资料卡材料清单勾选（购物车物品才可勾）
-      const rcCheck = e.target.closest("[data-rc-check]");
-      if (rcCheck) {
-        const [gid, idx] = rcCheck.dataset.rcCheck.split("|");
-        preserveScrollPosition();
-        toggleGoalStep(gid, parseInt(idx));
-        return;
-      }
       // 目标动作步骤勾选（获取方式）
       const toggleAction = e.target.closest("[data-toggle-action]");
       if (toggleAction) {
@@ -27036,6 +27040,24 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         return;
       }
       // 种植图标点击展开
+      // 购物车材料勾选
+      const cartCheck = e.target.closest("[data-cart-check]");
+      if (cartCheck) {
+        preserveScrollPosition();
+        const [gid, idxStr] = cartCheck.dataset.cartCheck.split("|");
+        const idx = parseInt(idxStr, 10);
+        const g = appState.goals.find(x => x.id === gid);
+        if (g) {
+          g.steps = g.steps || [];
+          while (g.steps.length <= idx) g.steps.push({ checked: false });
+          g.steps[idx].checked = !g.steps[idx].checked;
+          saveApp();
+          renderShoppingCart();
+        }
+        return;
+      }
+      // 打开添加物品浮窗
+      if (e.target.closest("#openCartPickerBtn")) { openCartPicker(); return; }
       // 统一资料卡 section 折叠
       const rcFold = e.target.closest("[data-rc-fold]");
       if (rcFold) {
@@ -27082,11 +27104,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         if (!appState.goals.some(g => g.id === id)) {
           const tpl = findGoalTemplate(id);
           if (tpl) {
-            appState.goals.push({ id, steps: (tpl.steps || []).map((s) => ({ ...s, checked: false })), expanded: true });
+            appState.goals.push({ id, steps: (tpl.steps || []).map(() => ({ checked: false })), expanded: true });
             appState._activeCartItem = null;
             renderApp();
-            const _fo = document.getElementById("fishing-overlay");
-            if (_fo && !_fo.hidden) renderFishing();
             toast("已加入购物车");
           }
         }
@@ -27097,8 +27117,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (cartRemove) {
         appState.goals = appState.goals.filter(g => g.id !== cartRemove.dataset.cartRemove);
         renderApp();
-        const _foR = document.getElementById("fishing-overlay");
-        if (_foR && !_foR.hidden) renderFishing();
         return;
       }
       // 烹饪入口
@@ -27161,15 +27179,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (fishingChip) {
         preserveScrollPosition();
         appState._activeFishingItem = appState._activeFishingItem === fishingChip.dataset.fishingChip ? null : fishingChip.dataset.fishingChip;
-        renderFishing();
-        return;
-      }
-      // 渔具（鱼竿/鱼饵）标签点击
-      const fishingGearChip = e.target.closest("[data-fishing-gear-chip]");
-      if (fishingGearChip) {
-        preserveScrollPosition();
-        const k = fishingGearChip.dataset.fishingGearChip;
-        appState._activeFishingGear = appState._activeFishingGear === k ? null : k;
         renderFishing();
         return;
       }
@@ -27446,6 +27455,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     /* 物品查询 */
     /* 物品库 —— 搜索过滤 */
     document.getElementById("itemLibSearch")?.addEventListener("input", () => renderItemLibrary());
+    document.getElementById("cartSearch")?.addEventListener("input", () => renderShoppingCart());
 
     /* 物品库 —— 标签点击展开详情 / 数量加减 / 移除 */
     document.getElementById("itemLibGrid")?.addEventListener("click", e => {
