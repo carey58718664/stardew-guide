@@ -14329,7 +14329,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <!-- 🛒 购物车 Tab -->
 <div class="tab-page" id="tabGoals" data-tab="goals">
 <section class="app-panel" id="goalsPanel">
-  <h2 class="app-panel-title">🛒 我的购物车 <span class="subtle" id="cartCount"></span></h2>
+  <h2 class="app-panel-title">🧰 我的设备间 <span class="subtle" id="cartCount"></span></h2>
   <div class="sub-tabs" id="cartSubTabs" data-subtab-group="cart">
     <button class="sub-tab active" data-subtab="all" type="button">全部</button>
     <button class="sub-tab" data-subtab="fav" type="button">⭐ 我的关注</button>
@@ -14422,10 +14422,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <nav class="app-tab-bar" id="appTabBar">
   <button class="app-tab active" data-tab="home"><span class="app-tab-icon">🌿</span><span class="app-tab-label">当季事</span></button>
   <button class="app-tab" data-tab="guide"><span class="app-tab-icon">📖</span><span class="app-tab-label">场景集</span></button>
-  <button class="app-tab" data-tab="progress"><span class="app-tab-icon">🎯</span><span class="app-tab-label">进度</span></button>
-  <button class="app-tab" data-tab="goals"><span class="app-tab-icon">🛒</span><span class="app-tab-label">购物车</span></button>
-  <button class="app-tab" data-tab="cooking"><span class="app-tab-icon">🍳</span><span class="app-tab-label">烹饪</span></button>
   <button class="app-tab" data-tab="items"><span class="app-tab-icon">🎒</span><span class="app-tab-label">物品库</span></button>
+  <button class="app-tab" data-tab="goals"><span class="app-tab-icon">🧰</span><span class="app-tab-label">设备间</span></button>
+  <button class="app-tab" data-tab="cooking"><span class="app-tab-icon">🍳</span><span class="app-tab-label">烹饪</span></button>
+  <button class="app-tab" data-tab="progress"><span class="app-tab-icon">🎯</span><span class="app-tab-label">进度</span></button>
 </nav>
 
   </main>
@@ -15028,6 +15028,50 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "冬青": "Holly.png",
       "野梅": "Wild Plum.png",
       "大葱": "Spring Onion.png",
+      "豪华稻草人": "Deluxe Scarecrow.png",
+      "高级洒水器": "Quality Sprinkler.png",
+      "铱制洒水器": "Iridium Sprinkler.png",
+      "基础肥料": "Basic Fertilizer.png",
+      "品质肥料": "Quality Fertilizer.png",
+      "豪华肥料": "Deluxe Fertilizer.png",
+      "速生肥": "Speed-Gro.png",
+      "高级速生肥": "Deluxe Speed-Gro.png",
+      "顶级速生肥": "Hyper Speed-Gro.png",
+      "基础保湿土": "Basic Retaining Soil.png",
+      "品质保湿土": "Quality Retaining Soil.png",
+      "豪华保湿土": "Deluxe Retaining Soil.png",
+      "树木肥料": "Tree Fertilizer.png",
+      "茶苗": "Tea Sapling.png",
+      "花园盆": "Garden Pot.png",
+      "铁砧": "Anvil.png",
+      "大箱子": "Big Chest.png",
+      "石制大箱子": "Big Stone Chest.png",
+      "便携帐篷": "Tent Kit.png",
+      "加料器": "Deluxe Feed Hopper.png",
+      "重型树液采集器": "Heavy Tapper.png",
+      "碎木机": "Wood Chipper.png",
+      "工作台": "Workbench.png",
+      "竹质鱼竿": "Bamboo Pole.png",
+      "高级铱金鱼竿": "Advanced Iridium Rod.png",
+      "磁铁": "Magnet.png",
+      "普通鱼饵": "Bait.png",
+      "挑战鱼饵": "Challenge Bait.png",
+      "野生鱼饵": "Wild Bait.png",
+      "针对性鱼饵": "Targeted Bait.png",
+      "鸡": "White Chicken.png",
+      "鸭": "Duck.png",
+      "兔子": "Rabbit.png",
+      "牛": "White Cow.png",
+      "山羊": "Goat.png",
+      "绵羊": "Sheep.png",
+      "猪": "Pig.png",
+      "恐龙": "Dinosaur.png",
+      "虚空鸡": "Void Chicken.png",
+      "鸵鸟": "Ostrich.png",
+      "狗": "Dog.png",
+      "猫爬架": "Cat.png",
+      "鸟屋": "Birdie.png",
+      "建狗屋": "Pet Bowl.png",
       "鱼籽": "Roe.png",
       "陈年鱼籽": "Aged Roe.png",
       "鱿鱼墨汁": "Squid Ink.png",
@@ -18007,6 +18051,47 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       { id: "decor",     label: "装饰 & 杂项", icon: "🪔", cats: ["装饰 & 灯具", "其他"] },
     ];
 
+    // 购物车类别内的子分组规则：按 goal id 前缀/关键词归组，顺序即展示顺序
+    // 每条 [组标签, 匹配函数]；未命中任何组的归入「其他」
+    const CART_SUBGROUPS = {
+      upgrades: [
+        ["⛏️ 工具升级", g => g.id.startsWith("upgrade-") && !g.id.includes("trash")],
+        ["🗑️ 垃圾桶升级", g => g.id.includes("trash")],
+        ["🏠 房屋升级", g => g.id.startsWith("house-") || g.id === "community-upgrade" || g.id === "shortcuts-upgrade"],
+        ["🎒 背包 & 渔竿", g => g.id.startsWith("buy-backpack") || g.id.startsWith("rod-") || g.id.startsWith("buy-fiberglass") || g.id.startsWith("buy-iridium-rod")],
+      ],
+      "farm-eq": [
+        ["💦 洒水器", g => g.id.includes("sprinkler")],
+        ["🌟 肥料", g => g.id.includes("fertilizer")],
+        ["🌱 生长激素", g => g.id.includes("speed-gro")],
+        ["🟫 保湿土", g => g.id.includes("soil")],
+        ["🐦 稻草人", g => g.id.includes("scarecrow")],
+        ["🪴 其他", g => true],
+      ],
+      fishing: [
+        ["🎣 鱼竿", g => g.id.startsWith("rod-")],
+        ["🪤 蟹笼 & 机器", g => g.id.includes("crab-pot") || g.id.includes("bait-maker")],
+        ["🌀 钓具", g => g.id.includes("bobber") || g.id.includes("spinner") || g.id.includes("hook") || g.id.includes("lure") || g.id.includes("magnet") || g.id.includes("treasure-hunter")],
+        ["🪱 鱼饵", g => g.id.includes("bait")],
+      ],
+      animals: [
+        ["🐔 鸡舍系", g => ["animal-chicken","animal-duck","animal-rabbit","animal-dino","animal-void-chicken"].includes(g.id)],
+        ["🐄 畜棚系", g => ["animal-cow","animal-goat","animal-sheep","animal-pig","animal-ostrich"].includes(g.id)],
+        ["🐶 宠物 & 设施", g => g.id.startsWith("pet-") || g.id.startsWith("build-dog") || g.id.startsWith("build-cat") || g.id.startsWith("build-bird")],
+      ],
+      combat: [
+        ["🌀 传送图腾", g => g.id.includes("totem") || g.id.includes("obelisk") || g.id.includes("scepter")],
+        ["💣 炸弹", g => g.id.includes("bomb")],
+        ["🧪 消耗品 & 戒指", g => true],
+      ],
+      buildings: [
+        ["🐔 动物建筑", g => ["build-coop","build-coop2","build-coop3","build-barn","build-barn2","build-barn3","build-slime-hutch"].includes(g.id) || g.id.includes("coop") || g.id.includes("barn")],
+        ["🏚️ 功能建筑", g => g.id.includes("silo") || g.id.includes("mill") || g.id.includes("well") || g.id.includes("shed") || g.id.includes("shipping") || g.id.includes("stable") || g.id.includes("pond") || g.id.includes("cabin")],
+        ["🐾 宠物建筑", g => g.id.includes("pet-bowl")],
+      ],
+    };
+
+
     function findGoalCat(id) {
       for (const c of GOAL_TEMPLATES) {
         if (c.goals.some(g => g.id === id)) return c.cat;
@@ -18058,36 +18143,63 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       // 空状态
       if (!goals.length) {
         container.innerHTML = subTab === "fav"
-          ? `<div style="text-align:center;padding:30px 16px;color:var(--muted);font-size:13px;line-height:1.7;">「${escapeHtml(group.label)}」里还没有关注的物品<br>点开任意物品 → 资料卡右上角点 ☆ 关注<br>关注后会进入你的购物清单，原列表里也会描上金边</div>`
+          ? `<div style="text-align:center;padding:30px 16px;color:var(--muted);font-size:13px;line-height:1.7;">「${escapeHtml(group.label)}」里还没有关注的物品<br>点开任意物品 → 资料卡右上角点 ☆ 关注<br>关注后会进入你的设备清单，原列表里也会描上金边</div>`
           : `<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">该分类暂无物品</div>`;
         return;
       }
 
-      const chips = goals.map(g => {
+      // chip 渲染
+      const renderCartChip = (g) => {
         const miss = searchQ && !g.title.toLowerCase().includes(searchQ);
         const active = appState._activeCartItem === g.id;
         const fav = isCartFav(g.id);
         return `<button class="item-chip ${active ? 'active' : ''} ${miss ? 'search-miss' : ''} ${fav ? 'fav' : ''}" data-cart-chip="${escapeAttribute(g.id)}" type="button">${renderGoalIcon(g)}<span>${escapeHtml(g.title)}</span></button>`;
-      }).join("");
-
-      let detailHtml = "";
-      const activeGoal = goals.find(g => g.id === appState._activeCartItem);
-      if (activeGoal) {
+      };
+      // 资料卡（若展开项在本组内）
+      const detailFor = (list) => {
+        const activeGoal = list.find(g => g.id === appState._activeCartItem);
+        if (!activeGoal) return "";
         const stateGoal = appState.goals.find(x => x.id === activeGoal.id) || {};
         const fav = isCartFav(activeGoal.id);
         const favBar = `<div class="cart-detail-favbar">
-          <button type="button" class="detail-fav-btn ${fav?'on':''}" data-cart-fav="${escapeAttribute(activeGoal.id)}" title="${fav?'移出购物清单':'加入购物清单'}">${fav?'⭐ 已加入清单':'☆ 加入清单'}</button>
+          <button type="button" class="detail-fav-btn ${fav?'on':''}" data-cart-fav="${escapeAttribute(activeGoal.id)}" title="${fav?'移出设备清单':'加入设备清单'}">${fav?'⭐ 已加入清单':'☆ 加入清单'}</button>
         </div>`;
-        detailHtml = favBar + renderCartItemDetail({ ...activeGoal, ...stateGoal });
+        return favBar + renderCartItemDetail({ ...activeGoal, ...stateGoal });
+      };
+
+      const hint = subTab === "fav" ? "我的设备清单" : "点击查看资料卡，卡内★加入清单";
+      const subgroupDefs = CART_SUBGROUPS[catId];
+      let body = "";
+
+      if (subgroupDefs && subTab !== "fav") {
+        // 按子分组渲染
+        const used = new Set();
+        const blocks = [];
+        subgroupDefs.forEach(([label, match]) => {
+          const items = goals.filter(g => !used.has(g.id) && match(g));
+          items.forEach(g => used.add(g.id));
+          if (!items.length) return;
+          blocks.push(`<div class="item-lib-cat-group">
+            <div class="item-lib-cat-label">${label} <span class="subtle">${items.length}</span></div>
+            <div class="item-lib-chips">${items.map(renderCartChip).join("")}</div>${detailFor(items)}</div>`);
+        });
+        // 未归组的兜底
+        const rest = goals.filter(g => !used.has(g.id));
+        if (rest.length) {
+          blocks.push(`<div class="item-lib-cat-group">
+            <div class="item-lib-cat-label">🔸 其他 <span class="subtle">${rest.length}</span></div>
+            <div class="item-lib-chips">${rest.map(renderCartChip).join("")}</div>${detailFor(rest)}</div>`);
+        }
+        body = blocks.join("");
+      } else {
+        // 平铺
+        body = `<div class="item-lib-cat-group">
+          <div class="item-lib-chips">${goals.map(renderCartChip).join("")}</div>${detailFor(goals)}</div>`;
       }
 
-      const hint = subTab === "fav" ? "我的购物清单" : "点击查看资料卡，卡内★加入清单";
       container.innerHTML = `<div class="item-lib-fish-section">
         <div class="item-lib-cat-label" style="font-size:14px;border-bottom:2px solid var(--paper-deep);padding-bottom:4px;margin-bottom:8px;">${group.icon} ${escapeHtml(group.label)} <span class="subtle">${goals.length} 项 · ${hint}</span></div>
-        <div class="item-lib-cat-group">
-          <div class="item-lib-chips">${chips}</div>
-          ${detailHtml}
-        </div></div>`;
+        ${body}</div>`;
       container.querySelectorAll(".rc-swipe-card").forEach(c => {
         if (!c.dataset.swipeBound) { attachRcSwipe(c); c.dataset.swipeBound = "1"; }
       });
@@ -18161,7 +18273,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const inCart = appState.goals.some(g => g.id === cartId);
         // 仅在"未加入"时显示加购按钮；已加入的用左滑删除，不显示按钮
         if (!inCart) {
-          cartBtn = `<button class="cart-add-btn" data-cart-add="${escapeAttribute(cartId)}" type="button">${renderInvIcon("购物车")} 加入购物车</button>`;
+          cartBtn = `<button class="cart-add-btn" data-cart-add="${escapeAttribute(cartId)}" type="button">${renderInvIcon("购物车")} 加入设备间</button>`;
         }
       }
 
@@ -18552,8 +18664,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           ${producesBlock}
           ${verdictBlock}
           ${inCart
-            ? `<button class="cart-remove-btn" data-cart-remove="${escapeAttribute(goal.id)}" type="button">已在购物车 ✓ · 点击移除</button>`
-            : `<button class="cart-add-btn" data-cart-add="${escapeAttribute(goal.id)}" type="button">${renderInvIcon("购物车")} 加入购物车</button>`}
+            ? `<button class="cart-remove-btn" data-cart-remove="${escapeAttribute(goal.id)}" type="button">已在设备间 ✓ · 点击移除</button>`
+            : `<button class="cart-add-btn" data-cart-add="${escapeAttribute(goal.id)}" type="button">${renderInvIcon("购物车")} 加入设备间</button>`}
         </div>`;
     }
 
@@ -18633,7 +18745,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <div class="shop-product-body">
           <div class="shop-metric-grid">
             <div class="shop-metric"><span>价格/成本</span><b>${escapeHtml(entry.price || getGoalMoneyLabel(entry) || "按材料")}</b></div>
-            <div class="shop-metric"><span>状态</span><b>${escapeHtml(inCart ? "已加入购物车" : entry.type === "goal" ? "可加入购物车" : "资料卡")}</b></div>
+            <div class="shop-metric"><span>状态</span><b>${escapeHtml(inCart ? "已加入设备间" : entry.type === "goal" ? "可加入设备间" : "资料卡")}</b></div>
           </div>
           ${materialHtml}
           ${stepHtml}
@@ -18641,8 +18753,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           ${noteHtml}
           ${entry.type === "goal" ? `<div class="shop-product-actions">
             ${inCart
-              ? `<button class="shop-remove-btn" data-shop-remove="${entry.id}" type="button">已在购物车 ✓</button>`
-              : `<button class="shop-add-btn" data-shop-add="${entry.id}" type="button">${renderInvIcon("购物车")}加入购物车</button>`}
+              ? `<button class="shop-remove-btn" data-shop-remove="${entry.id}" type="button">已在设备间 ✓</button>`
+              : `<button class="shop-add-btn" data-shop-add="${entry.id}" type="button">${renderInvIcon("购物车")}加入设备间</button>`}
           </div>` : ""}
         </div>
       </article>`;
@@ -26726,10 +26838,21 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (title.includes("采石场桥") || title.includes("海滩桥")) return "木材";
       if (title.includes("料理图鉴") || title.includes("食谱")) return "烹饪";
       if (title.includes("社交") || title.includes("好感")) return "社交";
-      if (title.startsWith("做")) return title.slice(1);
-      if (title.startsWith("建")) return title.slice(1);
-      if (title.startsWith("升级")) return title.slice(2);
-      return title;
+      if (title.startsWith("做")) return stripIconSuffix(title.slice(1));
+      if (title.startsWith("建")) return stripIconSuffix(title.slice(1));
+      if (title.startsWith("升级")) return stripIconSuffix(title.slice(2));
+      if (title.startsWith("买")) return stripIconSuffix(title.slice(1));
+      if (title.startsWith("孵")) return stripIconSuffix(title.slice(1));
+      if (title.startsWith("领养宠物")) return "狗";
+      return stripIconSuffix(title);
+    }
+    // 去掉标题中的（1.5）等括号后缀和「：xxx」后缀，便于匹配图标键
+    function stripIconSuffix(s) {
+      return String(s || "")
+        .replace(/（[^）]*）/g, "")
+        .replace(/\([^)]*\)/g, "")
+        .replace(/：.*$/, "")
+        .trim();
     }
 
     function renderGoalIcon(goal) {
@@ -26864,7 +26987,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         <div class="modal-sheet">
           <div class="modal-grip"></div>
           <div class="modal-head">
-            <h3 class="modal-title">🛒 添加到购物车</h3>
+            <h3 class="modal-title">🧰 添加到设备间</h3>
             <button class="modal-close" onclick="closeCartPicker()">×</button>
           </div>
           <div style="padding:0 14px 8px;">
@@ -27752,7 +27875,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             appState.goals.push({ id, steps: (tpl.steps || []).map(() => ({ checked: false })), expanded: true });
             appState._activeCartItem = null;
             renderApp();
-            toast("已加入购物车");
+            toast("已加入设备间");
           }
         }
         return;
