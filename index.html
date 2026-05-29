@@ -6319,6 +6319,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
 }
 .detail-fav-btn.on { background: var(--gold); color: #3a2608; }
 .item-lib-fish-section { margin-bottom: 16px; }
+.cart-detail-favbar { display: flex; justify-content: flex-end; margin: 4px 0 6px; }
 
 .item-detail-card {
   margin-top: 10px;
@@ -14329,9 +14330,13 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <div class="tab-page" id="tabGoals" data-tab="goals">
 <section class="app-panel" id="goalsPanel">
   <h2 class="app-panel-title">🛒 我的购物车 <span class="subtle" id="cartCount"></span></h2>
+  <div class="sub-tabs" id="cartSubTabs" data-subtab-group="cart">
+    <button class="sub-tab active" data-subtab="all" type="button">全部</button>
+    <button class="sub-tab" data-subtab="fav" type="button">⭐ 我的关注</button>
+  </div>
+  <div class="item-cat-tabs" id="cartCatTabs"></div>
   <div class="item-lib-toolbar">
-    <input type="search" id="cartSearch" class="item-lib-search" placeholder="搜索已加购物品..." autocomplete="off" />
-    <button class="add-item-btn" id="openCartPickerBtn" type="button">+ 添加物品</button>
+    <input type="search" id="cartSearch" class="item-lib-search" placeholder="搜索物品..." autocomplete="off" />
   </div>
   <div id="shoppingCartContent"></div>
 </section>
@@ -17909,56 +17914,80 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       return null;
     }
 
+    // 购物车关注 = 是否在 appState.goals 里
+    function isCartFav(id) { return appState.goals.some(g => g.id === id); }
+    function toggleCartFav(id) {
+      if (isCartFav(id)) {
+        appState.goals = appState.goals.filter(g => g.id !== id);
+      } else {
+        const tpl = findGoalTemplate(id);
+        if (tpl) appState.goals.push({ id, steps: (tpl.steps || []).map(s => ({ ...s, checked: false })), expanded: true });
+      }
+      saveApp();
+    }
+
     function renderShoppingCart() {
       const container = document.getElementById("shoppingCartContent");
       if (!container) return;
       const searchQ = (document.getElementById("cartSearch")?.value || "").trim().toLowerCase();
 
-      const cartGoals = appState.goals;
-      const countEl = document.getElementById("cartCount");
-      if (countEl) countEl.textContent = cartGoals.length ? `${cartGoals.length} 项` : "";
+      const subTab = appState._cartSubTab || "all";
+      const catId = appState._cartCatTab || CART_GROUP_DEFS[0].id;
+      const group = CART_GROUP_DEFS.find(g => g.id === catId) || CART_GROUP_DEFS[0];
 
-      if (!cartGoals.length) {
-        container.innerHTML = `
-          <div class="cart-top-empty">
-            <div class="cart-empty-icon">🛒</div>
-            <div class="cart-empty-text">购物车还是空的</div>
-            <div class="cart-empty-sub">点右上角「+ 添加物品」挑选要做的工具 / 设备 / 建筑</div>
-          </div>`;
+      const countEl = document.getElementById("cartCount");
+      if (countEl) countEl.textContent = appState.goals.length ? `${appState.goals.length} 项` : "";
+
+      // 类别标签条
+      const catTabs = document.getElementById("cartCatTabs");
+      if (catTabs) {
+        catTabs.innerHTML = CART_GROUP_DEFS.map(g =>
+          `<button class="item-cat-tab ${g.id === catId ? 'active' : ''}" data-cart-cat-tab="${g.id}">${g.icon} ${escapeHtml(g.label)}</button>`
+        ).join("");
+      }
+
+      // 收集当前类别下的所有目标（全集）
+      let goals = [];
+      group.cats.forEach(catName => {
+        const cat = GOAL_TEMPLATES.find(c => c.cat === catName);
+        if (cat) cat.goals.forEach(g => goals.push(g));
+      });
+      // 我的关注：只保留已加入 goals 的
+      if (subTab === "fav") goals = goals.filter(g => isCartFav(g.id));
+
+      // 空状态
+      if (!goals.length) {
+        container.innerHTML = subTab === "fav"
+          ? `<div style="text-align:center;padding:30px 16px;color:var(--muted);font-size:13px;line-height:1.7;">「${escapeHtml(group.label)}」里还没有关注的物品<br>点开任意物品 → 资料卡右上角点 ☆ 关注<br>关注后会进入你的购物清单，原列表里也会描上金边</div>`
+          : `<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">该分类暂无物品</div>`;
         return;
       }
 
-      // 按 CART_GROUP_DEFS 分类显示已加购物品
-      const cartIds = new Set(cartGoals.map(g => g.id));
-      const groupsHtml = CART_GROUP_DEFS.map(group => {
-        const goals = [];
-        group.cats.forEach(catName => {
-          const cat = GOAL_TEMPLATES.find(c => c.cat === catName);
-          if (cat) cat.goals.forEach(g => { if (cartIds.has(g.id)) goals.push(g); });
-        });
-        if (!goals.length) return "";
-
-        const chips = goals.map(g => {
-          const miss = searchQ && !g.title.toLowerCase().includes(searchQ);
-          const active = appState._activeCartItem === g.id;
-          return `<button class="item-chip ${active ? 'active' : ''} ${miss ? 'search-miss' : ''}" data-cart-chip="${escapeAttribute(g.id)}" type="button">${renderGoalIcon(g)}<span>${escapeHtml(g.title)}</span></button>`;
-        }).join("");
-
-        let detailHtml = "";
-        const activeGoal = goals.find(g => g.id === appState._activeCartItem);
-        if (activeGoal) {
-          const stateGoal = cartGoals.find(x => x.id === activeGoal.id) || {};
-          detailHtml = renderCartItemDetail({ ...activeGoal, ...stateGoal });
-        }
-
-        return `<div class="item-lib-cat-group">
-          <div class="item-lib-cat-label">${group.icon} ${escapeHtml(group.label)}</div>
-          <div class="item-lib-chips">${chips}</div>
-          ${detailHtml}
-        </div>`;
+      const chips = goals.map(g => {
+        const miss = searchQ && !g.title.toLowerCase().includes(searchQ);
+        const active = appState._activeCartItem === g.id;
+        const fav = isCartFav(g.id);
+        return `<button class="item-chip ${active ? 'active' : ''} ${miss ? 'search-miss' : ''} ${fav ? 'fav' : ''}" data-cart-chip="${escapeAttribute(g.id)}" type="button">${renderGoalIcon(g)}<span>${escapeHtml(g.title)}</span></button>`;
       }).join("");
 
-      container.innerHTML = groupsHtml;
+      let detailHtml = "";
+      const activeGoal = goals.find(g => g.id === appState._activeCartItem);
+      if (activeGoal) {
+        const stateGoal = appState.goals.find(x => x.id === activeGoal.id) || {};
+        const fav = isCartFav(activeGoal.id);
+        const favBar = `<div class="cart-detail-favbar">
+          <button type="button" class="detail-fav-btn ${fav?'on':''}" data-cart-fav="${escapeAttribute(activeGoal.id)}" title="${fav?'移出购物清单':'加入购物清单'}">${fav?'⭐ 已加入清单':'☆ 加入清单'}</button>
+        </div>`;
+        detailHtml = favBar + renderCartItemDetail({ ...activeGoal, ...stateGoal });
+      }
+
+      const hint = subTab === "fav" ? "我的购物清单" : "点击查看资料卡，卡内★加入清单";
+      container.innerHTML = `<div class="item-lib-fish-section">
+        <div class="item-lib-cat-label" style="font-size:14px;border-bottom:2px solid var(--paper-deep);padding-bottom:4px;margin-bottom:8px;">${group.icon} ${escapeHtml(group.label)} <span class="subtle">${goals.length} 项 · ${hint}</span></div>
+        <div class="item-lib-cat-group">
+          <div class="item-lib-chips">${chips}</div>
+          ${detailHtml}
+        </div></div>`;
       container.querySelectorAll(".rc-swipe-card").forEach(c => {
         if (!c.dataset.swipeBound) { attachRcSwipe(c); c.dataset.swipeBound = "1"; }
       });
@@ -27582,6 +27611,31 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             appState._openCartGroups = appState._openCartGroups.filter(x => x !== gid);
           }
         }
+        return;
+      }
+      // 购物车关注按钮（资料卡内）
+      const cartFav = e.target.closest("[data-cart-fav]");
+      if (cartFav) {
+        preserveScrollPosition();
+        toggleCartFav(cartFav.dataset.cartFav);
+        renderShoppingCart();
+        return;
+      }
+      // 购物车子标签（全部/我的关注）
+      const cartSub = e.target.closest("#cartSubTabs [data-subtab]");
+      if (cartSub) {
+        appState._cartSubTab = cartSub.dataset.subtab;
+        appState._activeCartItem = null;
+        document.querySelectorAll("#cartSubTabs .sub-tab").forEach(b => b.classList.toggle("active", b === cartSub));
+        renderShoppingCart();
+        return;
+      }
+      // 购物车类别标签
+      const cartCat = e.target.closest("[data-cart-cat-tab]");
+      if (cartCat) {
+        appState._cartCatTab = cartCat.dataset.cartCatTab;
+        appState._activeCartItem = null;
+        renderShoppingCart();
         return;
       }
       // 购物车浏览区物品 chip 点击
