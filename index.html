@@ -5822,6 +5822,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   display: block; margin-top: 6px; font-size: 10.5px; line-height: 1.5;
   color: #9c620e; font-weight: 800; opacity: .92;
 }
+.scene-strategy-block { margin-top: 16px; }
+.scene-strategy-title { font-size: 14px; font-weight: 950; color: #9c620e; margin-bottom: 10px; padding-left: 2px; }
+.scene-strategy-list { display: grid; gap: 12px; }
 .cart-pick-btn {
   width: 100%; padding: 5px 8px; border-radius: 8px; font-size: 12px; font-weight: 900;
   border: 1.5px solid var(--gold, #d9a420); background: var(--gold, #d9a420); color: #fff;
@@ -20001,6 +20004,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       }
     };
 
+    function toggleSeasonFestival(id) {
+      appState._activeSeasonFestival = appState._activeSeasonFestival === id ? null : id;
+      renderSeasonMainline();
+    }
+    window.toggleSeasonFestival = toggleSeasonFestival;
     function renderSeasonMainline() {
       const root = document.getElementById("seasonOverview");
       if (!root) return;
@@ -20203,7 +20211,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
               const reasons = getSeasonFestivalReasonTags(entry, timing);
               const active = appState._activeSeasonFestival === entry.id;
               return `
-                <div class="festival-row season-festival-clickable ${active ? 'active' : ''}" data-season-festival="${escapeAttribute(entry.id)}"${seasonMiniAccentStyle(entry.iconName || entry.name, "festival")}>
+                <div class="festival-row season-festival-clickable ${active ? 'active' : ''}" onclick="toggleSeasonFestival('${escapeAttribute(entry.id)}')"${seasonMiniAccentStyle(entry.iconName || entry.name, "festival")}>
                   <span class="fish-icon">${renderOfficialIconContent(entry.iconName || entry.name || "节日", entry.name)}</span>
                   <div class="season-mini-body">
                     <div class="festival-name">${escapeHtml(entry.name)}</div>
@@ -21614,7 +21622,20 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           : "";
       }
 
-      greenhouse.innerHTML = renderPlantingGreenhouse();
+      greenhouse.innerHTML = renderPlantingGreenhouse() + renderSceneStrategies("planting");
+    }
+
+    /* 场景内"盈利路线"分区：直接复用 renderStrategyCard 原样搬入 */
+    function renderSceneStrategies(sceneId) {
+      const strategies = getScenesStrategies(sceneId);
+      if (!strategies.length) return "";
+      return `
+        <section class="scene-strategy-block">
+          <div class="scene-strategy-title">💰 盈利路线（流派）</div>
+          <div class="scene-strategy-list">
+            ${strategies.map(renderStrategyCard).join("")}
+          </div>
+        </section>`;
     }
 
     function getPlantingDisplaySeason() {
@@ -23429,6 +23450,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           </div>
         </section>
       `;
+      guide.innerHTML += renderSceneStrategies("fishing");
     }
 
     function getVisibleFishingFish() {
@@ -23736,6 +23758,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         </section>
         ${visibleTotal ? "" : `<div class="animal-empty">没有匹配的养殖内容，换个关键词或筛选试试。</div>`}
       `;
+      guide.innerHTML += renderSceneStrategies("animal");
     }
 
     function getVisibleAnimalItems(items) {
@@ -24072,6 +24095,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           ${visibleTotal ? "" : `<div class="skull-empty">没有匹配的沙漠矿洞内容，换个关键词或筛选试试。</div>`}
         </div>
       `;
+      guide.innerHTML += renderSceneStrategies("skull");
     }
 
     function getVisibleSkullItems(items) {
@@ -24356,6 +24380,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           ${visibleTotal ? "" : `<div class="skull-empty">没有匹配的普通矿洞内容，换个关键词或筛选试试。</div>`}
         </div>
       `;
+      guide.innerHTML += renderSceneStrategies("mine");
     }
 
     function getVisibleMineItems(items) {
@@ -24685,6 +24710,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           <div class="pond-note-list">${POND_TIPS.map((tip) => `<div class="pond-note">${escapeHtml(tip)}</div>`).join("")}</div>
         </section>
       `;
+      guide.innerHTML += renderSceneStrategies("pond");
     }
 
     function getVisiblePondFish() {
