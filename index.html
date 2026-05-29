@@ -14243,6 +14243,18 @@ body.modal-open { overflow: hidden; touch-action: none; }
 
 </div><!-- /tabHome -->
 
+<!-- 🍳 烹饪 Tab -->
+<div class="tab-page" id="tabCooking" data-tab="cooking">
+<section class="app-panel" id="cookingTabPanel">
+  <h2 class="app-panel-title">🍳 烹饪 <span class="subtle" id="cookTabCount"></span></h2>
+  <div class="item-lib-toolbar">
+    <input type="search" id="cookTabSearch" class="item-lib-search" placeholder="搜索已选料理..." autocomplete="off" />
+    <button class="add-item-btn" id="openCookPickerBtn" type="button">+ 添加料理</button>
+  </div>
+  <div id="cookingTabContent"></div>
+</section>
+</div><!-- /tabCooking -->
+
 <!-- 🎒 物品 Tab -->
 <div class="tab-page" id="tabItems" data-tab="items">
 <section class="app-panel" id="itemLibraryPanel">
@@ -14274,11 +14286,6 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <section class="app-panel">
   <h2 class="app-panel-title">📖 场景集</h2>
   <div class="guide-grid">
-    <button class="guide-entry" id="openCookingBtn" type="button">
-      <span class="guide-icon"><span class="official-ui-icon" data-official-icon="烹饪"></span></span>
-      <span class="guide-label">烹饪</span>
-      <span class="guide-desc">配方·Buff·材料</span>
-    </button>
     <button class="guide-entry" id="openPlantingBtn" type="button">
       <span class="guide-icon"><span class="official-ui-icon" data-official-icon="种植"></span></span>
       <span class="guide-label">种植和采集</span>
@@ -14350,6 +14357,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   <button class="app-tab" data-tab="guide"><span class="app-tab-icon">📖</span><span class="app-tab-label">场景集</span></button>
   <button class="app-tab" data-tab="progress"><span class="app-tab-icon">🎯</span><span class="app-tab-label">进度</span></button>
   <button class="app-tab" data-tab="goals"><span class="app-tab-icon">🛒</span><span class="app-tab-label">购物车</span></button>
+  <button class="app-tab" data-tab="cooking"><span class="app-tab-icon">🍳</span><span class="app-tab-label">烹饪</span></button>
   <button class="app-tab" data-tab="items"><span class="app-tab-icon">🎒</span><span class="app-tab-label">物品库</span></button>
 </nav>
 
@@ -16941,18 +16949,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         "紫水晶","海蓝宝石","钻石","翡翠","红宝石","黄水晶","五彩碎片","孔雀石","玉","黑曜石","虎眼石","冻泪","全能晶球"
       ]},
       { id: "monster", label: "怪物素材", iconName: "怪物素材", items: ["史莱姆","蝙蝠翅膀","太阳精华","虚空精华","骨头碎片","菌丝体","空灵之尘","史莱姆蛋（绿）","史莱姆蛋（蓝）","史莱姆蛋（红）","史莱姆蛋（紫）"]},
-      { id: "cook", label: "烹饪", iconName: "烹饪", items: [
-        "小麦粉","大麦粉","油","糖","醋","大米","米饭","面包","墨西哥薄饼","玉米饼","蛋黄酱","虚空蛋黄酱",
-        "煎鸡蛋","煎蛋","煎蛋卷","沙拉","乳酪花椰菜","烤鱼","防风草汤","蔬菜杂烩","完美早餐","炸鱿鱼","奇怪的小面包",
-        "幸运午餐","炒蘑菇","披萨","豆类火锅","琉璃山药","薯饼","薄煎饼","鲑鱼晚餐","鱼肉卷",
-        "香酥鲈鱼","爆炒青椒","椰汁汤","鳟鱼汤","巧克力蛋糕","粉红蛋糕","大黄派","饼干","意大利面",
-        "炒鳗鱼","香辣鳗鱼","生鱼片","生鱼寿司","红之盛宴","帕尔玛奶酪茄子","大米布丁","冰淇淋","蓝莓千层酥",
-        "秋日恩赐","南瓜汤","巨无霸餐","红莓酱","塞料面包","农夫午餐","救生汉堡","海之菜肴","矿工特供","块茎拼盘",
-        "三倍浓缩咖啡","海泡布丁","海藻汤","清汤","葡萄干布丁","水煮洋蓟","蔬菜什锦盖饭","烤榛子","南瓜派","萝卜沙拉",
-        "水果沙拉","黑莓脆皮饼","蔓越莓糖果","意式烤面包","卷心菜沙拉","意式蕨菜炖饭","虞美人籽松糕",
-        "海鲜杂烩汤","龙虾浓汤","法式田螺","烩鱼汤","枫糖棒","蟹黄糕","虾鸡尾酒","姜汁汽水","香蕉布丁",
-        "芒果糯米饭","夏威夷芋泥","热带咖喱","墨汁意大利饺","苔藓汤","星之果实茶"
-      ]},
       { id: "special", label: "特殊", iconName: "特殊", items: ["金币","古代玩偶","鹦鹉螺壳","鹦鹉螺化石","奖券","谜之盒","稜镜碎片","五彩碎片","泥土","虚空之蛋","金香蕉","咖啡豆","矮人卷轴I","矮人卷轴II","矮人卷轴III","矮人卷轴IV"]},
     ];
 
@@ -17831,7 +17827,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       { id: "fishing",   label: "钓鱼装备", icon: "🎣", cats: ["钓鱼装备"] },
       { id: "forge",     label: "锻造台", icon: "⚒️", cats: ["锻造台"] },
       { id: "decor",     label: "装饰 & 杂项", icon: "🪔", cats: ["装饰 & 灯具", "其他"] },
-      { id: "social",    label: "送礼里程碑", icon: "🎁", cats: ["送礼目标（按村民心数里程碑）"] },
     ];
 
     function findGoalCat(id) {
@@ -18093,6 +18088,166 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     }
 
     /* 工具间物品详情卡：统一走 renderResourceCard */
+    /* ════ 烹饪 tab（镜像物品库） ════ */
+    const COOK_BUFF_GROUPS = [
+      { id: "combat", label: "战斗/采矿", icon: "⚔️", match: e => e.effects.some(x => /攻击|防御|暴击/.test(x)) },
+      { id: "fish", label: "钓鱼", icon: "🎣", match: e => e.effects.some(x => /钓鱼/.test(x)) },
+      { id: "farm", label: "耕种/采集", icon: "🌱", match: e => e.effects.some(x => /耕种|采集|觅食/.test(x)) },
+      { id: "mine", label: "采矿/速度/运气", icon: "⛏️", match: e => e.effects.some(x => /采矿|速度|运气|魔力/.test(x)) },
+      { id: "energy", label: "纯回复", icon: "🍖", match: e => e.effects.length === 0 },
+    ];
+    function cookGroupOf(recipe) {
+      for (const g of COOK_BUFF_GROUPS) { if (g.match(recipe)) return g.id; }
+      return "energy";
+    }
+
+    function renderCookingTab() {
+      const container = document.getElementById("cookingTabContent");
+      if (!container) return;
+      const searchQ = (document.getElementById("cookTabSearch")?.value || "").trim().toLowerCase();
+      const picked = appState.cookGoals || [];
+      const countEl = document.getElementById("cookTabCount");
+      if (countEl) countEl.textContent = picked.length ? `${picked.length} 道` : "";
+
+      if (!picked.length) {
+        container.innerHTML = `
+          <div class="cart-top-empty">
+            <div class="cart-empty-icon">🍳</div>
+            <div class="cart-empty-text">还没有选料理</div>
+            <div class="cart-empty-sub">点右上角「+ 添加料理」挑选要做的菜，追踪所需食材进度</div>
+          </div>`;
+        return;
+      }
+
+      const pickedSet = new Set(picked);
+      const groupsHtml = COOK_BUFF_GROUPS.map(group => {
+        const recipes = COOKING_RECIPES.filter(r => pickedSet.has(r.id) && cookGroupOf(r) === group.id);
+        if (!recipes.length) return "";
+        const chips = recipes.map(r => {
+          const miss = searchQ && !r.name.toLowerCase().includes(searchQ);
+          const active = appState._activeCookItem === r.id;
+          return `<button class="item-chip ${active ? 'active' : ''} ${miss ? 'search-miss' : ''}" data-cook-chip="${escapeAttribute(r.id)}" type="button">${renderInvIcon(r.name)}<span>${escapeHtml(r.name)}</span></button>`;
+        }).join("");
+        let detailHtml = "";
+        const activeRecipe = recipes.find(r => r.id === appState._activeCookItem);
+        if (activeRecipe) detailHtml = renderCookItemDetail(activeRecipe);
+        return `<div class="item-lib-cat-group">
+          <div class="item-lib-cat-label">${group.icon} ${escapeHtml(group.label)}</div>
+          <div class="item-lib-chips">${chips}</div>
+          ${detailHtml}
+        </div>`;
+      }).join("");
+      container.innerHTML = groupsHtml;
+    }
+
+    /* 料理详情卡：用统一资料卡组件 */
+    function recipeToResourceCard(r) {
+      const sections = [];
+      // 增益
+      if (r.effects && r.effects.length) {
+        sections.push({ id: "buff", label: "✨ 增益", open: true, type: "lines",
+          data: [{ text: r.effects.join("、") + (r.duration && r.duration !== "无" ? ` · 持续 ${r.duration}` : "") }] });
+      }
+      // 食材清单（可勾选）
+      const checklist = (r.ingredients || []).map((ing, idx) => {
+        const ck = appState._cookChecks && appState._cookChecks[r.id] && appState._cookChecks[r.id][idx];
+        return { key: ing.name, need: ing.qty, idx, goalId: "__cook__" + r.id, checked: !!ck };
+      });
+      sections.push({ id: "ingredients", label: "🥘 食材", open: true, type: "checklist", data: checklist, badge: `${r.ingredients.length}` });
+      // 怎么学
+      if (r.sources && r.sources.length) {
+        sections.push({ id: "learn", label: "📖 怎么学", open: false, type: "lines",
+          data: r.sources.map(s => ({ text: s })) });
+      }
+      // 售价
+      if (r.price != null) {
+        sections.push({ id: "sell", label: "💰 售价", open: false, type: "lines", data: [{ text: `${r.price}g` }] });
+      }
+      return { id: "__cook__" + r.id, title: r.name, icon: r.name, sections };
+    }
+    function renderCookItemDetail(r) {
+      const card = recipeToResourceCard(r);
+      const inList = appState.cookGoals.includes(r.id);
+      const btn = inList
+        ? `<button class="cart-remove-btn" data-cook-remove="${escapeAttribute(r.id)}" type="button">已选 ✓ · 点击移除</button>`
+        : "";
+      return renderResourceCard(card, { foldKey: "cook" }).replace("</div>", btn + "</div>");
+    }
+
+    /* 料理选择浮窗 */
+    let currentCookTab = COOK_BUFF_GROUPS[0].id;
+    let cookPickerQuery = "";
+    function openCookPicker() {
+      document.body.classList.add("modal-open");
+      const modal = document.createElement("div");
+      modal.className = "modal-backdrop";
+      modal.id = "cookPickerModal";
+      modal.innerHTML = `
+        <div class="modal-sheet">
+          <div class="modal-grip"></div>
+          <div class="modal-head">
+            <h3 class="modal-title">🍳 添加料理</h3>
+            <button class="modal-close" onclick="closeCookPicker()">×</button>
+          </div>
+          <div style="padding:0 14px 8px;">
+            <input type="search" id="cookPickerSearch" class="item-lib-search" placeholder="搜索料理..." autocomplete="off" />
+          </div>
+          <div class="item-cat-tabs" id="cookPickerTabs">
+            ${COOK_BUFF_GROUPS.map(g => `<button class="item-cat-tab ${g.id === currentCookTab ? "active" : ""}" data-cook-tab="${g.id}">${g.icon} ${escapeHtml(g.label)}</button>`).join("")}
+          </div>
+          <div id="cookPickerBody"></div>
+        </div>
+      `;
+      modal.addEventListener("click", e => {
+        if (e.target === modal) { closeCookPicker(); return; }
+        const catTab = e.target.closest("[data-cook-tab]");
+        if (catTab) {
+          currentCookTab = catTab.dataset.cookTab;
+          modal.querySelectorAll("[data-cook-tab]").forEach(b => b.classList.toggle("active", b === catTab));
+          renderCookPickerBody();
+          return;
+        }
+        const pick = e.target.closest("[data-cook-pick]");
+        if (pick) {
+          const id = pick.dataset.cookPick;
+          const idx = appState.cookGoals.indexOf(id);
+          if (idx >= 0) appState.cookGoals.splice(idx, 1);
+          else appState.cookGoals.push(id);
+          saveApp();
+          renderCookPickerBody();
+          renderCookingTab();
+          return;
+        }
+      });
+      const si = modal.querySelector("#cookPickerSearch");
+      si.addEventListener("input", () => { cookPickerQuery = si.value.trim().toLowerCase(); renderCookPickerBody(); });
+      document.body.appendChild(modal);
+      attachSheetSwipe(modal, closeCookPicker);
+      renderCookPickerBody();
+    }
+    function closeCookPicker() {
+      const m = document.getElementById("cookPickerModal");
+      if (m) m.remove();
+      document.body.classList.remove("modal-open");
+    }
+    function renderCookPickerBody() {
+      const body = document.getElementById("cookPickerBody");
+      if (!body) return;
+      let recipes = COOKING_RECIPES.filter(r => cookGroupOf(r) === currentCookTab);
+      if (cookPickerQuery) recipes = recipes.filter(r => r.name.toLowerCase().includes(cookPickerQuery));
+      if (!recipes.length) { body.innerHTML = `<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">没有匹配的料理</div>`; return; }
+      body.innerHTML = `<div class="item-grid">${recipes.map(r => {
+        const picked = appState.cookGoals.includes(r.id);
+        return `<div class="item-tile ${picked ? "has" : ""}">
+          <div class="item-tile-icon">${renderInvIcon(r.name)}</div>
+          <span class="item-tile-name">${escapeHtml(r.name)}</span>
+          <div class="item-tile-ctrl">
+            <button class="cart-pick-btn ${picked ? 'added' : ''}" data-cook-pick="${escapeAttribute(r.id)}" type="button">${picked ? '✓ 已选' : '+ 添加'}</button>
+          </div>
+        </div>`;
+      }).join("")}</div>`;
+    }
+
     function renderCartItemDetail(goal) {
       return renderResourceCard(goalToResourceCard(goal), {
         showCartButton: true,
@@ -18991,6 +19146,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       buildings: _appLoaded.buildings || {},
       progress: _appLoaded.progress || { desertUnlocked: false, islandUnlocked: false, volcanoUnlocked: false, mineLevel: 0 },
       cookedRecipes: _appLoaded.cookedRecipes || {},
+      cookGoals: _appLoaded.cookGoals || [],
       festivalDone: _appLoaded.festivalDone || {},
       festivalPrepared: _appLoaded.festivalPrepared || {},
       strategyPinned: _appLoaded.strategyPinned || {},
@@ -19067,6 +19223,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       renderScenes();
       renderGoals();
       renderShoppingCart();
+      renderCookingTab();
       renderItemLibrary();
       const plantingOverlay = document.getElementById("planting-overlay");
       if (plantingOverlay && !plantingOverlay.hidden) renderPlanting();
@@ -27040,22 +27197,48 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         return;
       }
       // 种植图标点击展开
-      // 购物车材料勾选
+      // 购物车/料理材料勾选
       const cartCheck = e.target.closest("[data-cart-check]");
       if (cartCheck) {
         preserveScrollPosition();
         const [gid, idxStr] = cartCheck.dataset.cartCheck.split("|");
         const idx = parseInt(idxStr, 10);
-        const g = appState.goals.find(x => x.id === gid);
-        if (g) {
-          g.steps = g.steps || [];
-          while (g.steps.length <= idx) g.steps.push({ checked: false });
-          g.steps[idx].checked = !g.steps[idx].checked;
+        if (gid.startsWith("__cook__")) {
+          const rid = gid.slice(8);
+          appState._cookChecks = appState._cookChecks || {};
+          appState._cookChecks[rid] = appState._cookChecks[rid] || {};
+          appState._cookChecks[rid][idx] = !appState._cookChecks[rid][idx];
           saveApp();
-          renderShoppingCart();
+          renderCookingTab();
+        } else {
+          const g = appState.goals.find(x => x.id === gid);
+          if (g) {
+            g.steps = g.steps || [];
+            while (g.steps.length <= idx) g.steps.push({ checked: false });
+            g.steps[idx].checked = !g.steps[idx].checked;
+            saveApp();
+            renderShoppingCart();
+          }
         }
         return;
       }
+      // 料理 chip / 移除 / 添加浮窗
+      const cookChip = e.target.closest("[data-cook-chip]");
+      if (cookChip) {
+        preserveScrollPosition();
+        const id = cookChip.dataset.cookChip;
+        appState._activeCookItem = appState._activeCookItem === id ? null : id;
+        renderCookingTab();
+        return;
+      }
+      const cookRemove = e.target.closest("[data-cook-remove]");
+      if (cookRemove) {
+        appState.cookGoals = appState.cookGoals.filter(x => x !== cookRemove.dataset.cookRemove);
+        saveApp();
+        renderCookingTab();
+        return;
+      }
+      if (e.target.closest("#openCookPickerBtn")) { openCookPicker(); return; }
       // 打开添加物品浮窗
       if (e.target.closest("#openCartPickerBtn")) { openCartPicker(); return; }
       // 统一资料卡 section 折叠
@@ -27456,6 +27639,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     /* 物品库 —— 搜索过滤 */
     document.getElementById("itemLibSearch")?.addEventListener("input", () => renderItemLibrary());
     document.getElementById("cartSearch")?.addEventListener("input", () => renderShoppingCart());
+    document.getElementById("cookTabSearch")?.addEventListener("input", () => renderCookingTab());
 
     /* 物品库 —— 标签点击展开详情 / 数量加减 / 移除 */
     document.getElementById("itemLibGrid")?.addEventListener("click", e => {
