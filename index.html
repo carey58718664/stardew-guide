@@ -5819,6 +5819,14 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .season-festival-clickable.active { background: rgba(217,164,32,.12); border-radius: 10px; }
 .season-festival-detail { margin: 10px 0 4px; width: 100%; }
 .season-festival-detail .festival-card { width: 100%; max-width: 100%; }
+.season-festival-detail-panel {
+  width: 100%;
+  margin: 0;
+  grid-column: 1 / -1;
+}
+.season-festival-detail-panel .festival-card {
+  width: 100%; max-width: 100%; margin: 0;
+}
 .guide-strats {
   display: block; margin-top: 6px; font-size: 10.5px; line-height: 1.5;
   color: #9c620e; font-weight: 800; opacity: .92;
@@ -20015,10 +20023,15 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (!root) return;
       const season = appState.season;
       const meta = SEASON_MAIN_META[season] || SEASON_MAIN_META.spring;
+      const activeFest = FESTIVAL_DATA.find(e => e.id === appState._activeSeasonFestival && e.season === season);
+      const festDetailBlock = activeFest
+        ? `<section class="season-festival-detail-panel">${renderFestivalCard(activeFest)}</section>`
+        : "";
       root.innerHTML = `
         ${renderSeasonPlantingSummary(season)}
         ${renderSeasonFishingSummary(season, meta)}
         ${renderSeasonFestivalSummary(season)}
+        ${festDetailBlock}
         ${renderSeasonBirthdaysSummary(season)}
       `;
     }
@@ -20225,10 +20238,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
               `;
             }).join("")}
               </div>
-              ${(() => {
-                const af = festivals.find(e => e.id === appState._activeSeasonFestival);
-                return af ? `<div class="season-festival-detail">${renderFestivalCard(af)}</div>` : "";
-              })()}
             </div>
           </div>
         </article>
