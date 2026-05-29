@@ -5805,6 +5805,19 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .rc-produce-out { font-weight: 900; color: #6f4b22; }
 .rc-produce-value { font-size: 11px; color: var(--muted); width: 100%; padding-left: 2px; }
 .rc-verdict-text { font-size: 12.5px; color: #3d4a2a; line-height: 1.6; font-weight: 700; }
+.rc-swipe-wrap { position: relative; overflow: hidden; border-radius: 12px; margin-top: 10px; }
+.rc-swipe-delete {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 86px;
+  display: flex; align-items: center; justify-content: center;
+  background: #c25e3a; color: #fff; font-size: 13px; font-weight: 900;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.rc-swipe-card { position: relative; transition: transform .2s ease; background: var(--paper, #fffaf0); }
+.rc-swipe-card .resource-card { margin-top: 0; }
+.rc-swipe-card.revealed { transform: translateX(-86px); }
+.season-festival-clickable { cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background .12s; }
+.season-festival-clickable.active { background: rgba(217,164,32,.12); border-radius: 10px; }
+.season-festival-detail { margin: 6px 0 10px; }
 .cart-pick-btn {
   width: 100%; padding: 5px 8px; border-radius: 8px; font-size: 12px; font-weight: 900;
   border: 1.5px solid var(--gold, #d9a420); background: var(--gold, #d9a420); color: #fff;
@@ -14246,7 +14259,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <!-- 🍳 烹饪 Tab -->
 <div class="tab-page" id="tabCooking" data-tab="cooking">
 <section class="app-panel" id="cookingTabPanel">
-  <h2 class="app-panel-title">🍳 烹饪 <span class="subtle" id="cookTabCount"></span></h2>
+  <h2 class="app-panel-title">🍳 我的烹饪 <span class="subtle" id="cookTabCount"></span></h2>
   <div class="item-lib-toolbar">
     <input type="search" id="cookTabSearch" class="item-lib-search" placeholder="搜索已选料理..." autocomplete="off" />
     <button class="add-item-btn" id="openCookPickerBtn" type="button">+ 添加料理</button>
@@ -14272,7 +14285,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <!-- 🛒 购物车 Tab -->
 <div class="tab-page" id="tabGoals" data-tab="goals">
 <section class="app-panel" id="goalsPanel">
-  <h2 class="app-panel-title">🛒 购物车 <span class="subtle" id="cartCount"></span></h2>
+  <h2 class="app-panel-title">🛒 我的购物车 <span class="subtle" id="cartCount"></span></h2>
   <div class="item-lib-toolbar">
     <input type="search" id="cartSearch" class="item-lib-search" placeholder="搜索已加购物品..." autocomplete="off" />
     <button class="add-item-btn" id="openCartPickerBtn" type="button">+ 添加物品</button>
@@ -17845,25 +17858,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const countEl = document.getElementById("cartCount");
       if (countEl) countEl.textContent = cartGoals.length ? `${cartGoals.length} 项` : "";
 
-      // 料理入口卡（料理也是要做的，从烹饪面板加）
-      const cookingEntry = `
-        <button class="cart-cooking-entry" id="cartCookingEntry" type="button">
-          <span class="cart-cooking-icon">🍳</span>
-          <div class="cart-cooking-body">
-            <div class="cart-cooking-title">料理目标</div>
-            <div class="cart-cooking-sub">在烹饪面板挑选食谱，加入购物车追踪</div>
-          </div>
-          <span class="cart-cooking-arrow">›</span>
-        </button>`;
-
       if (!cartGoals.length) {
         container.innerHTML = `
           <div class="cart-top-empty">
             <div class="cart-empty-icon">🛒</div>
             <div class="cart-empty-text">购物车还是空的</div>
             <div class="cart-empty-sub">点右上角「+ 添加物品」挑选要做的工具 / 设备 / 建筑</div>
-          </div>
-          ${cookingEntry}`;
+          </div>`;
         return;
       }
 
@@ -17897,7 +17898,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         </div>`;
       }).join("");
 
-      container.innerHTML = groupsHtml + cookingEntry;
+      container.innerHTML = groupsHtml;
+      container.querySelectorAll(".rc-swipe-card").forEach(c => {
+        if (!c.dataset.swipeBound) { attachRcSwipe(c); c.dataset.swipeBound = "1"; }
+      });
     }
 
     /* ════════════════════════════════════════════════════════════
@@ -17966,12 +17970,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (options.showCartButton) {
         const cartId = options.cartId || card.id;
         const inCart = appState.goals.some(g => g.id === cartId);
-        cartBtn = inCart
-          ? `<button class="cart-remove-btn" data-cart-remove="${escapeAttribute(cartId)}" type="button">已在购物车 ✓ · 点击移除</button>`
-          : `<button class="cart-add-btn" data-cart-add="${escapeAttribute(cartId)}" type="button">${renderInvIcon("购物车")} 加入购物车</button>`;
+        // 仅在"未加入"时显示加购按钮；已加入的用左滑删除，不显示按钮
+        if (!inCart) {
+          cartBtn = `<button class="cart-add-btn" data-cart-add="${escapeAttribute(cartId)}" type="button">${renderInvIcon("购物车")} 加入购物车</button>`;
+        }
       }
 
-      return `
+      const cardInner = `
         <div class="resource-card" data-rc-id="${escapeAttribute(card.id || '')}">
           <div class="rc-head">
             <span class="rc-icon">${card.icon ? renderInvIcon(card.icon) : "📦"}</span>
@@ -17984,6 +17989,17 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           ${sectionsHtml ? `<div class="rc-sections">${sectionsHtml}</div>` : ""}
           ${cartBtn}
         </div>`;
+
+      // 左滑删除包装（购物车/烹饪/物品库已加入的物品）
+      if (options.swipeDelete) {
+        const da = options.swipeDelete; // { kind: 'cart'|'cook', id }
+        return `
+          <div class="rc-swipe-wrap">
+            <div class="rc-swipe-delete" data-rc-del="${escapeAttribute(da.kind)}|${escapeAttribute(da.id)}">🗑️ 删除</div>
+            <div class="rc-swipe-card" data-rc-swipe="${escapeAttribute(da.kind)}|${escapeAttribute(da.id)}">${cardInner}</div>
+          </div>`;
+      }
+      return cardInner;
     }
 
     function renderResourceCardSection(sec, card, options) {
@@ -18146,6 +18162,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         </div>`;
       }).join("");
       container.innerHTML = groupsHtml;
+      container.querySelectorAll(".rc-swipe-card").forEach(c => {
+        if (!c.dataset.swipeBound) { attachRcSwipe(c); c.dataset.swipeBound = "1"; }
+      });
     }
 
     /* 料理详情卡：用统一资料卡组件 */
@@ -18175,11 +18194,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     }
     function renderCookItemDetail(r) {
       const card = recipeToResourceCard(r);
-      const inList = appState.cookGoals.includes(r.id);
-      const btn = inList
-        ? `<button class="cart-remove-btn" data-cook-remove="${escapeAttribute(r.id)}" type="button">已选 ✓ · 点击移除</button>`
-        : "";
-      return renderResourceCard(card, { foldKey: "cook" }).replace("</div>", btn + "</div>");
+      return renderResourceCard(card, { foldKey: "cook", swipeDelete: { kind: "cook", id: r.id } });
     }
 
     /* 料理选择浮窗 */
@@ -18258,9 +18273,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
     function renderCartItemDetail(goal) {
       return renderResourceCard(goalToResourceCard(goal), {
-        showCartButton: true,
         cartId: goal.id,
-        foldKey: "cart"
+        foldKey: "cart",
+        swipeDelete: { kind: "cart", id: goal.id }
       });
     }
     function _renderCartItemDetail_legacy(goal) {
@@ -20176,8 +20191,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
                 ${festivals.map((entry) => {
               const timing = getFestivalTiming(entry);
               const reasons = getSeasonFestivalReasonTags(entry, timing);
+              const active = appState._activeSeasonFestival === entry.id;
               return `
-                <div class="festival-row"${seasonMiniAccentStyle(entry.iconName || entry.name, "festival")}>
+                <div class="festival-row season-festival-clickable ${active ? 'active' : ''}" data-season-festival="${escapeAttribute(entry.id)}"${seasonMiniAccentStyle(entry.iconName || entry.name, "festival")}>
                   <span class="fish-icon">${renderOfficialIconContent(entry.iconName || entry.name || "节日", entry.name)}</span>
                   <div class="season-mini-body">
                     <div class="festival-name">${escapeHtml(entry.name)}</div>
@@ -20187,6 +20203,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
                     </div>
                   </div>
                 </div>
+                ${active ? `<div class="season-festival-detail">${renderFestivalCard(entry)}</div>` : ""}
               `;
             }).join("")}
               </div>
@@ -26879,6 +26896,48 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
     /* 左滑显示删除按钮，点击按钮才真删 */
     let _revealedGoalCard = null;
+    function attachRcSwipe(card) {
+      let startX = 0, startY = 0, currentX = 0, currentY = 0;
+      let isDragging = false, direction = null, baseX = 0;
+      card.addEventListener("touchstart", (e) => {
+        startX = currentX = e.touches[0].clientX;
+        startY = currentY = e.touches[0].clientY;
+        isDragging = true; direction = null;
+        baseX = card.classList.contains("revealed") ? -86 : 0;
+        card.style.transition = "none";
+      }, { passive: true });
+      card.addEventListener("touchmove", (e) => {
+        if (!isDragging) return;
+        currentX = e.touches[0].clientX; currentY = e.touches[0].clientY;
+        const dx = currentX - startX, dy = currentY - startY;
+        if (direction === null) {
+          if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+            direction = (Math.abs(dx) > Math.abs(dy)) ? "horizontal" : "vertical";
+            if (direction === "vertical") { isDragging = false; card.style.transform = baseX === -86 ? "translateX(-86px)" : ""; return; }
+          } else return;
+        }
+        if (direction === "horizontal") {
+          if (e.cancelable) e.preventDefault();
+          const target = Math.max(-86, Math.min(0, baseX + dx));
+          card.style.transform = "translateX(" + target + "px)";
+        }
+      }, { passive: false });
+      const endHandler = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        const dx = currentX - startX;
+        card.style.transition = "transform 0.2s ease";
+        if (direction === "horizontal") {
+          if (baseX === 0 && dx < -30) { card.classList.add("revealed"); card.style.transform = ""; }
+          else if (baseX === -86 && dx > 30) { card.classList.remove("revealed"); card.style.transform = ""; }
+          else card.style.transform = "";
+        }
+        direction = null;
+      };
+      card.addEventListener("touchend", endHandler);
+      card.addEventListener("touchcancel", endHandler);
+    }
+
     function attachGoalSwipe(card, goalId) {
       let startX = 0, startY = 0, currentX = 0, currentY = 0;
       let isDragging = false;
@@ -27148,6 +27207,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (e.target.closest("#openBundleBtn") || e.target.closest("#openBundleBtn2")) { openBundle(); return; }
       if (e.target.closest("#openSocialBtn") || e.target.closest("#openSocialBtn2") || e.target.closest("[data-open-social]")) { openSocial(); return; }
       if (e.target.closest("#openCookingBtn")) { openCooking(); return; }
+      // 当季事节日行点击展开资料卡
+      const seasonFest = e.target.closest("[data-season-festival]");
+      if (seasonFest) {
+        const id = seasonFest.dataset.seasonFestival;
+        appState._activeSeasonFestival = appState._activeSeasonFestival === id ? null : id;
+        renderSeasonMainline();
+        return;
+      }
       if (e.target.closest("#openFestivalBtn") || e.target.closest("[data-open-festival]")) { openFestival(); return; }
       if (e.target.closest("#openPlantingBtn") || e.target.closest("[data-open-planting]")) { openPlanting(); return; }
       if (e.target.closest("#openFishingBtn") || e.target.closest("[data-open-fishing]")) { openFishing(); return; }
@@ -27202,6 +27269,23 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         return;
       }
       // 种植图标点击展开
+      // 资料卡左滑删除
+      const rcDel = e.target.closest("[data-rc-del]");
+      if (rcDel) {
+        const [kind, id] = rcDel.dataset.rcDel.split("|");
+        if (kind === "cart") {
+          appState.goals = appState.goals.filter(g => g.id !== id);
+          if (appState._activeCartItem === id) appState._activeCartItem = null;
+          saveApp();
+          renderShoppingCart();
+        } else if (kind === "cook") {
+          appState.cookGoals = appState.cookGoals.filter(x => x !== id);
+          if (appState._activeCookItem === id) appState._activeCookItem = null;
+          saveApp();
+          renderCookingTab();
+        }
+        return;
+      }
       // 购物车/料理材料勾选
       const cartCheck = e.target.closest("[data-cart-check]");
       if (cartCheck) {
