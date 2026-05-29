@@ -18089,18 +18089,24 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
     /* 工具间物品详情卡：统一走 renderResourceCard */
     /* ════ 烹饪 tab（镜像物品库） ════ */
+    /* 分类沿用烹饪年鉴的 classifyCookingRecipe，4 组按 buff 用途 */
+    function classifyCookingRecipe(entry) {
+      const fx = (entry.effects || []).join(" ");
+      if (!fx || entry.effects.length === 0) return "nobuff";
+      if (/钓鱼/.test(fx) && !/采矿|磁性|速度|防御|攻击/.test(fx)) return "fishing";
+      if (/速度|运气|防御|攻击|采矿|磁性/.test(fx)) return "mining";
+      if (/耕种|采集/.test(fx)) return "farming";
+      if (/钓鱼/.test(fx)) return "fishing";
+      return "mining";
+    }
     const COOK_BUFF_GROUPS = [
-      { id: "tv", label: "酱料女皇", icon: "📺" },
-      { id: "social", label: "好感配方", icon: "💝" },
-      { id: "skill", label: "技能解锁", icon: "📈" },
-      { id: "shop", label: "购买", icon: "🛒" },
-      { id: "island", label: "姜岛", icon: "🏝️" },
-      { id: "default", label: "初始 / 其他", icon: "🍳" },
+      { id: "mining",  label: "下矿 buff（速度·运气·防御·攻击·采矿）", icon: "⛏️" },
+      { id: "fishing", label: "钓鱼 buff", icon: "🎣" },
+      { id: "farming", label: "农耕·采集 buff", icon: "🌾" },
+      { id: "nobuff",  label: "无增益料理（回复·送礼·图鉴）", icon: "🍽️" },
     ];
     function cookGroupOf(recipe) {
-      const kinds = getRecipeSourceKinds(recipe);
-      for (const g of COOK_BUFF_GROUPS) { if (kinds.includes(g.id)) return g.id; }
-      return "default";
+      return classifyCookingRecipe(recipe);
     }
 
     function renderCookingTab() {
