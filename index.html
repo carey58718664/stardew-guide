@@ -5818,6 +5818,10 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .season-festival-clickable { cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background .12s; }
 .season-festival-clickable.active { background: rgba(217,164,32,.12); border-radius: 10px; }
 .season-festival-detail { margin: 6px 0 10px; }
+.guide-strats {
+  display: block; margin-top: 6px; font-size: 10.5px; line-height: 1.5;
+  color: #9c620e; font-weight: 800; opacity: .92;
+}
 .cart-pick-btn {
   width: 100%; padding: 5px 8px; border-radius: 8px; font-size: 12px; font-weight: 900;
   border: 1.5px solid var(--gold, #d9a420); background: var(--gold, #d9a420); color: #fff;
@@ -14303,31 +14307,37 @@ body.modal-open { overflow: hidden; touch-action: none; }
       <span class="guide-icon"><span class="official-ui-icon" data-official-icon="种植"></span></span>
       <span class="guide-label">种植和采集</span>
       <span class="guide-desc">作物·采集·果树</span>
+      <span class="guide-strats">🍷 酿酒 · 🍓 宝石甜莓 · 🫙 果酱 · 🍄 蘑菇树桩</span>
     </button>
     <button class="guide-entry" id="openFishingBtn" type="button">
       <span class="guide-icon"><span class="official-ui-icon" data-official-icon="钓鱼"></span></span>
       <span class="guide-label">钓鱼</span>
       <span class="guide-desc">鱼类·地点·时间</span>
+      <span class="guide-strats">🪤 蟹笼 · 🔥 熏鱼</span>
     </button>
     <button class="guide-entry" id="openAnimalBtn" type="button">
       <span class="guide-icon"><span class="official-ui-icon" data-official-icon="养殖"></span></span>
       <span class="guide-label">养殖</span>
       <span class="guide-desc">动物·产品·收益</span>
+      <span class="guide-strats">🐖 养猪松露 · 🐝 养蜂 · 🐑 绵羊 · 🟢 史莱姆</span>
     </button>
     <button class="guide-entry" id="openMineBtn" type="button">
       <span class="guide-icon"><span class="official-ui-icon" data-official-icon="普通矿洞"></span></span>
       <span class="guide-label">矿洞</span>
       <span class="guide-desc">0-120层·怪物·掉落</span>
+      <span class="guide-strats">💣 炸矿</span>
     </button>
     <button class="guide-entry" id="openSkullBtn" type="button">
       <span class="guide-icon"><span class="official-ui-icon" data-official-icon="沙漠矿洞"></span></span>
       <span class="guide-label">骷髅洞</span>
       <span class="guide-desc">铱矿·五彩·装备</span>
+      <span class="guide-strats">💎 宝石复制</span>
     </button>
     <button class="guide-entry" id="openPondBtn" type="button">
       <span class="guide-icon"><span class="official-ui-icon" data-official-icon="鱼塘"></span></span>
       <span class="guide-label">鱼塘</span>
       <span class="guide-desc">养鱼·产出·收益</span>
+      <span class="guide-strats">🐟 鱼塘鱼王</span>
     </button>
     <button class="guide-entry" id="openIslandBtn" type="button">
       <span class="guide-icon"><span class="official-ui-icon" data-official-icon="姜岛"></span></span>
@@ -25430,6 +25440,19 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           tags: ["late", "fishing", "artisan", "active"]
         })
     ];
+
+    /* 场景 → 流派 映射（跨场景的流派可重复出现） */
+    const SCENE_STRATEGY_MAP = {
+      planting: ["wine", "sweet-gem-berry", "jelly", "mushroom-log"],   // 种植和采集
+      animal:   ["pig", "bee", "sheep", "slime"],                        // 养殖
+      fishing:  ["crab-pot", "fish-smoker"],                             // 钓鱼
+      pond:     ["legend-pond"],                                         // 鱼塘
+      mine:     ["bomb-mining"],                                         // 矿洞
+      skull:    ["crystalarium"],                                        // 骷髅洞
+    };
+    function getScenesStrategies(sceneId) {
+      return (SCENE_STRATEGY_MAP[sceneId] || []).map(id => STRATEGY_DATA.find(s => s.id === id)).filter(Boolean);
+    }
 
     let strategyFilter = "all";
     let strategyQuery = "";
