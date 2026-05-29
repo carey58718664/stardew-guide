@@ -18090,15 +18090,17 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     /* 工具间物品详情卡：统一走 renderResourceCard */
     /* ════ 烹饪 tab（镜像物品库） ════ */
     const COOK_BUFF_GROUPS = [
-      { id: "combat", label: "战斗/采矿", icon: "⚔️", match: e => e.effects.some(x => /攻击|防御|暴击/.test(x)) },
-      { id: "fish", label: "钓鱼", icon: "🎣", match: e => e.effects.some(x => /钓鱼/.test(x)) },
-      { id: "farm", label: "耕种/采集", icon: "🌱", match: e => e.effects.some(x => /耕种|采集|觅食/.test(x)) },
-      { id: "mine", label: "采矿/速度/运气", icon: "⛏️", match: e => e.effects.some(x => /采矿|速度|运气|魔力/.test(x)) },
-      { id: "energy", label: "纯回复", icon: "🍖", match: e => e.effects.length === 0 },
+      { id: "tv", label: "酱料女皇", icon: "📺" },
+      { id: "social", label: "好感配方", icon: "💝" },
+      { id: "skill", label: "技能解锁", icon: "📈" },
+      { id: "shop", label: "购买", icon: "🛒" },
+      { id: "island", label: "姜岛", icon: "🏝️" },
+      { id: "default", label: "初始 / 其他", icon: "🍳" },
     ];
     function cookGroupOf(recipe) {
-      for (const g of COOK_BUFF_GROUPS) { if (g.match(recipe)) return g.id; }
-      return "energy";
+      const kinds = getRecipeSourceKinds(recipe);
+      for (const g of COOK_BUFF_GROUPS) { if (kinds.includes(g.id)) return g.id; }
+      return "default";
     }
 
     function renderCookingTab() {
