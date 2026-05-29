@@ -6300,8 +6300,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
 /* ── 子标签条（通用：全部/我的关注）── */
 .sub-tabs { display: flex; gap: 6px; margin: 6px 0 10px; }
 .sub-tab {
+  flex: 1; text-align: center;
   border: 1.5px solid var(--line); background: var(--paper); color: var(--muted);
-  border-radius: 9px; padding: 7px 16px; font: inherit; font-size: 13px;
+  border-radius: 9px; padding: 9px 8px; font: inherit; font-size: 14px;
   font-weight: 700; cursor: pointer; transition: all .12s;
 }
 .sub-tab.active { background: var(--wood); color: #fff7e8; border-color: var(--wood-dark); }
@@ -14313,6 +14314,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
     <button class="sub-tab active" data-subtab="all" type="button">全部</button>
     <button class="sub-tab" data-subtab="fav" type="button">⭐ 我的关注</button>
   </div>
+  <div class="item-cat-tabs" id="itemLibCatTabs"></div>
   <div class="item-lib-toolbar">
     <input type="search" id="itemLibSearch" class="item-lib-search" placeholder="搜索物品..." autocomplete="off" />
     <button class="add-item-btn" id="openInventoryBtn" type="button">+ 录入库存</button>
@@ -26340,18 +26342,49 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       saveFavorites();
     }
 
+    // 取作物/树果/采集的季节（来自种植数据 PLANTING_ALL_ITEMS）
+    function getPlantingSeasons(name) {
+      const entry = (typeof PLANTING_ALL_ITEMS !== "undefined")
+        ? PLANTING_ALL_ITEMS.find(e => e.name === name) : null;
+      if (entry && Array.isArray(entry.seasons) && entry.seasons.length) {
+        return entry.seasons.filter(s => ["spring","summer","fall","winter"].includes(s));
+      }
+      return [];
+    }
+
+    // 哪些类按季节分组
+    const SEASONAL_CATS = ["crop","fruit","forage","fish"];
+    // 通用季节分组定义
+    const SEASON_GROUP_DEFS = [
+      ["spring","🌱 春季"],["summer","☀️ 夏季"],["fall","🍂 秋季"],
+      ["winter","❄️ 冬季"],["multi","🔄 多季 · 全年"],["special","📍 特殊 · 全年"]
+    ];
+    // 取某物品的季节分组 key（鱼用 FISH_SEASON_MAP，作物/树果/采集用种植数据）
+    function itemGroupKey(name, catId) {
+      if (catId === "fish") return fishGroupKey(name);
+      const seasons = getPlantingSeasons(name);
+      if (!seasons || !seasons.length) return "special";
+      if (seasons.length > 1) return "multi";
+      return seasons[0];
+    }
+
     function renderItemLibrary() {
       const grid = document.getElementById("itemLibGrid");
       if (!grid) return;
       const searchQ = (document.getElementById("itemLibSearch")?.value || "").trim().toLowerCase();
       const inv = appState.inventory;
-      const itemNames = new Set(Object.keys(inv).filter(k => inv[k] > 0));
-      
-      const countEl = document.getElementById("itemLibCount");
-      if (countEl) countEl.textContent = itemNames.size ? `${itemNames.size} 种` : "";
-      
-      // 当前子标签（全部 / 仅关注），默认 all
+
       const subTab = appState._librarySubTab || "all";
+      const catId = appState._libraryCatTab || "crop";
+      const cat = INV_CATEGORIES.find(c => c.id === catId) || INV_CATEGORIES[0];
+
+      // 渲染类别标签条
+      const catTabs = document.getElementById("itemLibCatTabs");
+      if (catTabs) {
+        catTabs.innerHTML = INV_CATEGORIES.map(c =>
+          `<button class="item-cat-tab ${c.id === catId ? 'active' : ''}" data-cat-tab="${c.id}">${renderOfficialIcon(c.iconName || c.label, c.label)}${escapeHtml(c.label)}</button>`
+        ).join("");
+      }
 
       // chip：去角标，仅保留金边表示关注
       const renderChip = (name) => {
@@ -26362,70 +26395,45 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         return `<button class="item-chip ${active ? 'active' : ''} ${miss ? 'search-miss' : ''} ${fav ? 'fav' : ''}" data-item-chip="${escapeHtml(name)}" type="button">${renderInvIcon(name)}<span>${escapeHtml(name)}</span>${qty > 0 ? `<span class="chip-qty">×${qty}</span>` : ''}</button>`;
       };
 
-      // 鱼类：按季节分组渲染（数据范围由 names 决定：全部 or 仅关注）
-      const renderFishGroups = (names) => {
-        const blocks = [];
-        FISH_SEASON_GROUPS.forEach(([key, label]) => {
-          const items = names.filter(n => fishGroupKey(n) === key);
-          if (!items.length) return;
-          const chips = items.map(renderChip).join("");
-          let detail = "";
-          if (appState._activeDetailItem && items.includes(appState._activeDetailItem)) {
-            detail = renderItemDetailHtml(appState._activeDetailItem);
-          }
-          blocks.push(`<div class="item-lib-cat-group">
-            <div class="item-lib-cat-label">${label} <span class="subtle">${items.length}</span></div>
-            <div class="item-lib-chips">${chips}</div>${detail}</div>`);
-        });
-        return blocks.join("");
+      // 平铺一组 chip（含展开的资料卡）
+      const renderFlatChips = (names) => {
+        const chips = names.map(renderChip).join("");
+        let detail = "";
+        if (appState._activeDetailItem && names.includes(appState._activeDetailItem)) {
+          detail = renderItemDetailHtml(appState._activeDetailItem);
+        }
+        return `<div class="item-lib-chips">${chips}</div>${detail}`;
       };
 
-      const fishCat = INV_CATEGORIES.find(c => c.id === "fish");
-      const allFish = fishCat ? fishCat.items.slice() : [];
+      // 按季节分组渲染
+      const renderSeasonGroups = (names) => {
+        return SEASON_GROUP_DEFS.map(([key, label]) => {
+          const items = names.filter(n => itemGroupKey(n, catId) === key);
+          if (!items.length) return "";
+          return `<div class="item-lib-cat-group">
+            <div class="item-lib-cat-label">${label} <span class="subtle">${items.length}</span></div>
+            ${renderFlatChips(items)}</div>`;
+        }).join("");
+      };
 
-      // ── 子标签：我的关注 ──
-      if (subTab === "fav") {
-        const favFish = allFish.filter(isFavorite);
-        if (!favFish.length) {
-          grid.innerHTML = `<div style="text-align:center;padding:30px 16px;color:var(--muted);font-size:13px;line-height:1.7;">
-            还没有关注任何物品<br>点开任意物品 → 资料卡右上角点「☆ 关注」<br>关注后会出现在这里，原列表里也会描上金边</div>`;
-          return;
-        }
-        grid.innerHTML = `<div class="item-lib-fish-section">
-          <div class="item-lib-cat-label" style="font-size:14px;border-bottom:2px solid var(--paper-deep);padding-bottom:4px;margin-bottom:8px;">⭐ 我的关注 <span class="subtle">${favFish.length} 种</span></div>
-          ${renderFishGroups(favFish)}</div>`;
+      // 当前类的物品：全部 or 仅关注
+      let names = cat.items.slice();
+      if (subTab === "fav") names = names.filter(isFavorite);
+
+      // 空状态
+      if (!names.length) {
+        grid.innerHTML = subTab === "fav"
+          ? `<div style="text-align:center;padding:30px 16px;color:var(--muted);font-size:13px;line-height:1.7;">「${escapeHtml(cat.label)}」里还没有关注的物品<br>点开任意物品 → 资料卡右上角点 ☆ 关注<br>关注后会出现在这里，原列表里也会描上金边</div>`
+          : `<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">该分类暂无物品</div>`;
         return;
       }
 
-      // ── 子标签：全部 ──
-      const fishHtml = allFish.length ? `<div class="item-lib-fish-section">
-        <div class="item-lib-cat-label" style="font-size:14px;border-bottom:2px solid var(--paper-deep);padding-bottom:4px;margin-bottom:8px;">${fishCat.label} <span class="subtle">${allFish.length} 种 · 点击查看资料卡</span></div>
-        ${renderFishGroups(allFish)}</div>` : "";
-
-      // 其余类：保持原逻辑（只显示已拥有）
-      const otherGroups = INV_CATEGORIES.filter(c => c.id !== "fish").map(cat => {
-        const items = cat.items.filter(name => itemNames.has(name));
-        return { cat, items };
-      }).filter(g => g.items.length > 0);
-
-      const otherHtml = otherGroups.map(g => {
-        const chips = g.items.map(name => renderChip(name)).join("");
-        let detailHtml = "";
-        if (appState._activeDetailItem && g.items.includes(appState._activeDetailItem)) {
-          detailHtml = renderItemDetailHtml(appState._activeDetailItem);
-        }
-        return `<div class="item-lib-cat-group">
-          <div class="item-lib-cat-label">${g.cat.label}</div>
-          <div class="item-lib-chips">${chips}</div>
-          ${detailHtml}
-        </div>`;
-      }).join("");
-
-      if (!fishHtml && otherGroups.length === 0) {
-        grid.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">还没有物品，点击「+ 录入库存」开始添加</div>';
-        return;
-      }
-      grid.innerHTML = fishHtml + otherHtml;
+      const isSeasonal = SEASONAL_CATS.includes(catId);
+      const body = isSeasonal ? renderSeasonGroups(names) : `<div class="item-lib-cat-group">${renderFlatChips(names)}</div>`;
+      const hint = subTab === "fav" ? "我的关注" : (isSeasonal ? "点击查看资料卡 · 按季节分组" : "点击查看资料卡");
+      grid.innerHTML = `<div class="item-lib-fish-section">
+        <div class="item-lib-cat-label" style="font-size:14px;border-bottom:2px solid var(--paper-deep);padding-bottom:4px;margin-bottom:8px;">${escapeHtml(cat.label)} <span class="subtle">${names.length} 种 · ${hint}</span></div>
+        ${body}</div>`;
     }
     
     function renderItemDetailHtml(name) {
@@ -27954,6 +27962,15 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       appState._librarySubTab = btn.dataset.subtab;
       appState._activeDetailItem = null;
       document.querySelectorAll("#itemLibSubTabs .sub-tab").forEach(b => b.classList.toggle("active", b === btn));
+      renderItemLibrary();
+    });
+
+    // 类别标签切换（作物/树果/.../特殊）
+    document.getElementById("itemLibCatTabs")?.addEventListener("click", e => {
+      const btn = e.target.closest("[data-cat-tab]");
+      if (!btn) return;
+      appState._libraryCatTab = btn.dataset.catTab;
+      appState._activeDetailItem = null;
       renderItemLibrary();
     });
 
