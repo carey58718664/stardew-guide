@@ -15058,6 +15058,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "挑战鱼饵": "Challenge Bait.png",
       "野生鱼饵": "Wild Bait.png",
       "针对性鱼饵": "Targeted Bait.png",
+      "优质浮标": "Quality Bobber.png",
+      "精装旋式鱼饵": "Dressed Spinner.png",
+      "高级鱼饵": "Deluxe Bait.png",
+      "魔法鱼饵": "Magic Bait.png",
+      "饵料制作机": "Bait Maker.png",
       "鸡": "White Chicken.png",
       "鸭": "Duck.png",
       "兔子": "Rabbit.png",
@@ -17515,11 +17520,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         { id: "craft-bait-maker2", title: "做饵料制作机", emoji: "🪱", how: "craft", note: "钓鱼等级 6",
           steps: [goalItem("铁锭", 3), goalItem("珊瑚", 3), goalItem("海胆", 3)] },
         // —— 钓具 Tackle ——
-        { id: "craft-quality-bobber", title: "做品质浮标", emoji: "🎣", how: "craft", note: "钓鱼等级 9，提高品质",
+        { id: "craft-quality-bobber", title: "做优质浮标", emoji: "🎣", how: "craft", note: "钓鱼等级 9，提高品质",
           steps: [goalItem("铜锭", 1), goalItem("树液", 20), goalItem("太阳精华", 5)] },
         { id: "craft-sonar-bobber", title: "做声纳浮标", emoji: "📡", how: "craft", note: "下钩前显示鱼种",
           steps: [goalItem("铜锭", 1), goalItem("树液", 10), goalItem("蝙蝠翅膀", 5)] },
-        { id: "craft-dressed-spinner", title: "做华丽旋转器", emoji: "🌀", how: "craft", note: "钓鱼等级 8，提高咬钩",
+        { id: "craft-dressed-spinner", title: "做精装旋式鱼饵", emoji: "🌀", how: "craft", note: "钓鱼等级 8，提高咬钩",
           steps: [goalItem("铁锭", 2), goalItem("布料", 1)] },
         { id: "buy-spinner", title: "买旋式鱼饵", emoji: "🌀", how: "buy", note: "威利鱼店，提高咬钩速度", steps: [goalMoney(500)] },
         { id: "buy-trap-bobber", title: "买陷阱浮标", emoji: "🪝", how: "buy", note: "威利鱼店，鱼挣脱时减缓逃脱", steps: [goalMoney(500)] },
@@ -18153,7 +18158,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         const miss = searchQ && !g.title.toLowerCase().includes(searchQ);
         const active = appState._activeCartItem === g.id;
         const fav = isCartFav(g.id);
-        return `<button class="item-chip ${active ? 'active' : ''} ${miss ? 'search-miss' : ''} ${fav ? 'fav' : ''}" data-cart-chip="${escapeAttribute(g.id)}" type="button">${renderGoalIcon(g)}<span>${escapeHtml(g.title)}</span></button>`;
+        return `<button class="item-chip ${active ? 'active' : ''} ${miss ? 'search-miss' : ''} ${fav ? 'fav' : ''}" data-cart-chip="${escapeAttribute(g.id)}" type="button">${renderGoalIcon(g)}<span>${escapeHtml(goalDisplayTitle(g.title))}</span></button>`;
       };
       // 资料卡（若展开项在本组内）
       const detailFor = (list) => {
@@ -26853,6 +26858,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         .replace(/\([^)]*\)/g, "")
         .replace(/：.*$/, "")
         .trim();
+    }
+    // 设备间显示名：去掉开头动词（做/买/孵/建/升级/领养），保留物品名本身与（1.x）版本标注
+    function goalDisplayTitle(title) {
+      let t = String(title || "");
+      t = t.replace(/^(做|买|孵|建|升级|领养)/, "");
+      return t.trim();
     }
 
     function renderGoalIcon(goal) {
