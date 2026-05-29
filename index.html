@@ -5817,7 +5817,8 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .rc-swipe-card.revealed { transform: translateX(-86px); }
 .season-festival-clickable { cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background .12s; }
 .season-festival-clickable.active { background: rgba(217,164,32,.12); border-radius: 10px; }
-.season-festival-detail { margin: 6px 0 10px; }
+.season-festival-detail { margin: 10px 0 4px; width: 100%; }
+.season-festival-detail .festival-card { width: 100%; max-width: 100%; }
 .guide-strats {
   display: block; margin-top: 6px; font-size: 10.5px; line-height: 1.5;
   color: #9c620e; font-weight: 800; opacity: .92;
@@ -20221,10 +20222,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
                     </div>
                   </div>
                 </div>
-                ${active ? `<div class="season-festival-detail">${renderFestivalCard(entry)}</div>` : ""}
               `;
             }).join("")}
               </div>
+              ${(() => {
+                const af = festivals.find(e => e.id === appState._activeSeasonFestival);
+                return af ? `<div class="season-festival-detail">${renderFestivalCard(af)}</div>` : "";
+              })()}
             </div>
           </div>
         </article>
