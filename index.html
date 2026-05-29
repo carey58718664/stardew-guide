@@ -3,88 +3,127 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>统一物品结构 · 鱼类样例</title>
+<title>鱼类样板 · 关注交互</title>
 <style>
-  :root{ --bg:#f3f0e8; --paper:#fffaf0; --ink:#2b2118; --muted:#746657;
-    --line:#d8c59e; --wood:#8a5a35; --wood-dark:#5f3a22; --green:#2d8a5f;
-    --gold:#d89b2b; --blue:#2f6fb0; --spring:#6aa84f; --summer:#e0a52b;
-    --fall:#b15c2e; --winter:#4a86b8; --special:#7a5cab; }
+  :root{
+    --bg:#f3f0e8; --wood:#8a5a35; --wood-dark:#5f3a22; --paper:#fffaf0;
+    --paper-deep:#f4e7c9; --ink:#2b2118; --muted:#746657; --line:#d8c59e;
+    --green:#2d8a5f; --green-soft:#e8f6e8; --gold:#d89b2b; --blue:#2f6fb0;
+    --red:#b84532; --shadow:0 16px 38px rgba(76,49,29,0.14);
+    --spring:#6aa84f; --summer:#e0a52b; --fall:#b15c2e; --winter:#4a86b8; --special:#7a5cab;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.5;
-    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding:14px;}
-  .wrap{max-width:920px;margin:0 auto;}
-  h1{font-size:21px;margin:0 0 4px;}
-  .sub{color:var(--muted);font-size:13px;margin:0 0 16px;}
-  .note{background:var(--paper);border:1px solid var(--line);border-radius:8px;
-    padding:12px 14px;font-size:13px;margin-bottom:16px;}
-  .note b{color:var(--wood-dark);}
-  pre{background:#2b2118;color:#f0e6d2;border-radius:8px;padding:12px;
-    font-size:12px;overflow:auto;margin:8px 0 0;}
-  .season-block{margin-bottom:14px;border:1px solid var(--line);border-radius:10px;
-    background:var(--paper);overflow:hidden;}
-  .season-head{padding:8px 12px;font-weight:800;font-size:14px;color:#fff;
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.5;padding:12px;-webkit-tap-highlight-color:transparent;}
+  .wrap{max-width:680px;margin:0 auto;}
+  .demo-banner{background:#fff4d6;border:1px solid var(--gold);border-radius:8px;
+    padding:8px 12px;font-size:12px;color:#7a5a13;margin-bottom:12px;}
+  h1{font-size:19px;margin:0 0 10px;}
+
+  /* tab 入口 */
+  .tabs{display:flex;gap:6px;margin-bottom:12px;}
+  .tabs button{flex:1;border:1.5px solid var(--line);background:var(--paper);
+    border-radius:9px;padding:8px 4px;font:inherit;font-size:13px;font-weight:700;
+    cursor:pointer;color:var(--muted);}
+  .tabs button.active{background:var(--wood);color:#fff7e8;border-color:var(--wood-dark);}
+
+  /* 工具条：搜索 + 季节筛选 */
+  .toolbar{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;align-items:center;}
+  .search{flex:1;min-width:130px;border:1.5px solid var(--line);border-radius:8px;
+    padding:7px 10px;font:inherit;font-size:13px;background:var(--paper);}
+  .season-tabs{display:flex;gap:4px;flex-wrap:wrap;}
+  .season-tabs button{border:1.5px solid var(--line);background:var(--paper);
+    border-radius:7px;padding:5px 9px;font:inherit;font-size:12px;font-weight:700;
+    cursor:pointer;color:var(--muted);}
+  .season-tabs button.active{color:#fff;}
+  .season-tabs button.active[data-s="all"]{background:var(--wood);border-color:var(--wood-dark);}
+  .season-tabs button.active[data-s="spring"]{background:var(--spring);border-color:var(--spring);}
+  .season-tabs button.active[data-s="summer"]{background:var(--summer);border-color:var(--summer);}
+  .season-tabs button.active[data-s="fall"]{background:var(--fall);border-color:var(--fall);}
+  .season-tabs button.active[data-s="winter"]{background:var(--winter);border-color:var(--winter);}
+  .season-tabs button.active[data-s="special"]{background:var(--special);border-color:var(--special);}
+
+  /* 分组 */
+  .group{margin-bottom:14px;}
+  .group-label{font-size:13px;font-weight:800;color:var(--wood-dark);
+    padding:4px 2px;border-bottom:2px solid var(--paper-deep);margin-bottom:8px;
     display:flex;justify-content:space-between;align-items:center;}
-  .s-spring{background:var(--spring);} .s-summer{background:var(--summer);}
-  .s-fall{background:var(--fall);} .s-winter{background:var(--winter);}
-  .s-special{background:var(--special);}
-  .season-count{font-size:12px;font-weight:600;opacity:.9;}
-  .chips{display:flex;flex-wrap:wrap;gap:7px;padding:10px 12px;}
-  .chip{display:inline-flex;align-items:center;gap:5px;border:1.5px solid #e4d3ae;
-    border-radius:999px;background:#fffdf8;padding:5px 10px 5px 8px;font-size:13px;}
+  .group-label .cnt{font-size:11px;color:var(--muted);font-weight:600;}
+  .group.fav .group-label{color:var(--gold);border-bottom-color:#f0d99a;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;}
+
+  /* chip */
+  .chip{position:relative;display:inline-flex;align-items:center;gap:5px;
+    border:1.5px solid #e4d3ae;border-radius:999px;background:#fffdf8;
+    padding:5px 11px 5px 8px;font-size:13px;cursor:pointer;
+    transition:transform .08s,box-shadow .12s;}
+  .chip:active{transform:scale(.96);}
+  .chip.fav{border-color:var(--gold);background:#fffaf0;
+    box-shadow:inset 4px 0 0 var(--gold);padding-left:12px;}
+  .chip.active{box-shadow:0 0 0 2px var(--blue);}
   .chip .ic{width:22px;height:22px;border-radius:50%;background:#eadfc9;
-    display:inline-flex;align-items:center;justify-content:center;font-size:12px;}
-  .tag{font-size:10px;border-radius:999px;padding:1px 5px;margin-left:2px;font-weight:700;}
-  .t-multi{background:#e8f0ff;color:var(--blue);}
-  .t-legend{background:#ffe9c2;color:#9c620e;}
-  .t-bundle{background:#dff3e4;color:#1c6f45;}
-  .t-warn{background:#ffe1da;color:#b84532;}
-  .where{font-size:10px;color:var(--muted);margin-left:3px;}
-  .toggle{display:flex;gap:8px;margin-bottom:14px;}
-  .toggle button{border:1.5px solid var(--line);background:var(--paper);border-radius:8px;
-    padding:6px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;}
-  .toggle button.active{background:var(--wood);color:#fff7e8;border-color:var(--wood-dark);}
+    display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--wood-dark);}
+  .chip .star{font-size:12px;}
+  .chip .badge{font-size:10px;}
+  .chip.search-miss{opacity:.3;}
+
+  /* 资料卡（复用主文件视觉） */
+  .detail-card{margin-top:8px;background:var(--paper);border:1.5px solid var(--line);
+    border-radius:12px;box-shadow:var(--shadow);overflow:hidden;
+    animation:slide .16s ease;}
+  @keyframes slide{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+  .detail-head{display:flex;align-items:center;gap:10px;padding:12px 14px;
+    background:linear-gradient(135deg,var(--wood),var(--wood-dark));color:#fff7e8;}
+  .detail-head .big-ic{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.18);
+    display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;}
+  .detail-head .htitle{flex:1;}
+  .detail-head .hname{font-size:17px;font-weight:800;}
+  .detail-head .hsub{font-size:11px;opacity:.85;}
+  .fav-btn{border:none;background:rgba(255,255,255,.16);color:#fff;border-radius:9px;
+    padding:7px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;gap:4px;transition:background .12s;}
+  .fav-btn.on{background:var(--gold);color:#3a2608;}
+  .detail-body{padding:12px 14px;}
+  .d-section{margin-bottom:10px;}
+  .d-section:last-child{margin-bottom:0;}
+  .d-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;
+    letter-spacing:.04em;margin-bottom:5px;}
+  .d-row{font-size:13px;padding:4px 8px;background:#fdf8ee;border-radius:6px;
+    margin-bottom:4px;display:flex;justify-content:space-between;gap:8px;}
+  .d-row .tag-price{color:var(--green);font-weight:700;}
+  .warn-row{background:#ffece6;color:var(--red);font-size:12px;padding:5px 8px;border-radius:6px;}
+
+  .empty{text-align:center;color:var(--muted);font-size:13px;padding:30px 10px;}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>🐟 统一物品结构 · 鱼类样例</h1>
-  <p class="sub">把分散的"物品库名单"和"场景结构化数据"合并成一份权威数据，物品库按「类型 + 季节」投影。这是验证用，不是成品。</p>
+  <div class="demo-banner">🧪 交互样板：点鱼=展开资料卡 · 卡里★=关注 · 关注项浮顶带金边 · 季节筛选。数据是鱼类样例，资料卡内容为示意。</div>
+  <h1>🐟 物品速查</h1>
 
-  <div class="note">
-    <b>统一数据结构（每个物品一条）：</b>
-    <pre>{
-  name: "鲶鱼",            // 权威显示名（统一译名后）
-  en:   "Catfish",         // 英文 = 图标文件名（Catfish.png）
-  cat:  "fish",            // 物品库分类
-  owner:"library",         // 归属：library=物品库 / cart=购物车
-  seasons: ["spring","summer","fall"],  // 季节；["special"]=不分季节（地点性）
-  place: "河流",           // 场景用的元数据（地点/时间等都挂这）
-  bundle: true,            // 是否收集包需要
-  legend: false            // 是否鱼王
-}</pre>
-    <div style="margin-top:8px;">
-    一份数据同时喂三处：① <b>物品库</b>按 cat+seasons 分组（下方效果）；② <b>购物车</b>按 owner=cart 筛；③ <b>场景集</b>只读 place/time 等做攻略，不再自存物品清单。
-    </div>
+  <div class="tabs">
+    <button data-tab="library" class="active">📚 物品库</button>
+    <button data-tab="cart">⭐ 我关注的</button>
+    <button data-tab="cook">🍳 烹饪</button>
   </div>
 
-  <div class="toggle">
-    <button data-mode="repeat" class="active">多季鱼在每个季节都显示</button>
-    <button data-mode="single">多季鱼单列「多季·全年」</button>
+  <div class="toolbar">
+    <input class="search" id="search" placeholder="搜索鱼名…" />
+  </div>
+  <div class="season-tabs" id="seasonTabs">
+    <button data-s="all" class="active">全部</button>
+    <button data-s="spring">🌱春</button>
+    <button data-s="summer">☀️夏</button>
+    <button data-s="fall">🍂秋</button>
+    <button data-s="winter">❄️冬</button>
+    <button data-s="special">📍特殊</button>
   </div>
 
-  <div id="out"></div>
-
-  <div class="note" style="margin-top:16px;">
-    <b>样例里已经做掉的清理：</b><br>
-    • 删掉物品库 7 个查无对应的错条（草鱼/彩虹鱼/绿松石鱼/玻璃鱼/铁头鱼/午夜鳗/深海鱼）。<br>
-    • 统一译名（如 红鲫鱼→红鲻鱼）。<br>
-    • 补齐 5 个鱼王（👑）。<br>
-    • ⚠️ 标记的 4 条要你拍板：「鲷鱼」(special河流收集包，疑误)、「虾虎鱼」「冰柱鱼」(英文待核)、「鬼鱼/幽灵鱼」其实是<b>两条不同的鱼</b>(Ghostfish矿洞 / Spook Fish夜市)，译名要定。
-  </div>
+  <div id="list" style="margin-top:12px;"></div>
 </div>
 
 <script>
-// 鱼类统一数据（55种，季节已按鱼合并；owner 全是 library）
 const FISH = [
   {name:"鲶鱼",en:"Catfish",seasons:["spring","summer","fall"],place:"河流/秘密森林",bundle:true},
   {name:"西鲱",en:"Shad",seasons:["spring","summer","fall"],place:"河流",bundle:true},
@@ -120,7 +159,6 @@ const FISH = [
   {name:"河鲈",en:"Perch",seasons:["winter"],place:"深山湖泊/河流"},
   {name:"蛇齿单线鱼",en:"Lingcod",seasons:["winter"],place:"深山湖泊/河流"},
   {name:"冰川鱼",en:"Glacierfish",seasons:["winter"],place:"煤矿森林小岛",legend:true},
-  // —— special：不分季节的地点性鱼 ——
   {name:"鲤鱼",en:"Carp",seasons:["special"],place:"深山湖泊/秘密森林",bundle:true},
   {name:"大嘴鲈鱼",en:"Largemouth Bass",seasons:["special"],place:"深山湖泊",bundle:true},
   {name:"大头鱼",en:"Bullhead",seasons:["special"],place:"深山湖泊",bundle:true},
@@ -128,11 +166,11 @@ const FISH = [
   {name:"虚空鲑鱼",en:"Void Salmon",seasons:["special"],place:"女巫的沼泽"},
   {name:"蝎鲤鱼",en:"Scorpion Carp",seasons:["special"],place:"沙漠"},
   {name:"沙鱼",en:"Sandfish",seasons:["special"],place:"沙漠",bundle:true},
-  {name:"鬼鱼",en:"Ghostfish",seasons:["special"],place:"矿井20/60层",bundle:true,warn:"Ghostfish；与夜市幽灵鱼区分"},
+  {name:"鬼鱼",en:"Ghostfish",seasons:["special"],place:"矿井20/60层",bundle:true},
   {name:"石鱼",en:"Stonefish",seasons:["special"],place:"矿井20层"},
   {name:"冰柱鱼",en:null,seasons:["special"],place:"矿井60层",warn:"英文待核(疑Ice Pip)"},
   {name:"岩浆鳗鱼",en:"Lava Eel",seasons:["special"],place:"矿井100层"},
-  {name:"幽灵鱼",en:"Spook Fish",seasons:["special"],place:"夜市潜艇",warn:"Spook Fish；夜市鱼"},
+  {name:"幽灵鱼",en:"Spook Fish",seasons:["special"],place:"夜市潜艇"},
   {name:"水滴鱼",en:"Blobfish",seasons:["special"],place:"夜市潜艇"},
   {name:"午夜鱿鱼",en:"Midnight Squid",seasons:["special"],place:"夜市潜艇"},
   {name:"狮子鱼",en:"Lionfish",seasons:["special"],place:"姜岛海洋"},
@@ -141,73 +179,145 @@ const FISH = [
   {name:"变种鲤鱼",en:"Mutant Carp",seasons:["special"],place:"下水道",legend:true},
   {name:"史莱姆鱼",en:"Slimejack",seasons:["special"],place:"突变虫穴"},
   {name:"虾虎鱼",en:null,seasons:["special"],place:"煤矿森林",warn:"英文待核(疑Goby)"},
-  {name:"鲷鱼",en:null,seasons:["special"],place:"河流",bundle:true,warn:"疑误：special河流收集包，待核"},
+  {name:"鲷鱼",en:null,seasons:["special"],place:"河流",bundle:true,warn:"疑误待核"},
 ];
 
-const SEASON_DEFS = [
-  {key:"spring",label:"🌱 春季",cls:"s-spring"},
-  {key:"summer",label:"☀️ 夏季",cls:"s-summer"},
-  {key:"fall",label:"🍂 秋季",cls:"s-fall"},
-  {key:"winter",label:"❄️ 冬季",cls:"s-winter"},
-  {key:"special",label:"📍 特殊地点 · 全年",cls:"s-special"},
-];
+const SEASON_LABEL = {spring:"🌱 春季",summer:"☀️ 夏季",fall:"🍂 秋季",winter:"❄️ 冬季",special:"📍 特殊地点 · 全年"};
+const SEASON_ORDER = ["spring","summer","fall","winter","special"];
 
-let mode = "repeat";
+const state = { tab:"library", season:"all", search:"", fav:new Set(), open:null };
 
-function chipHtml(f){
+function isMulti(f){ return f.seasons.length>1 && !f.seasons.includes("special"); }
+
+function chip(f){
   const ic = f.en ? f.en.slice(0,1) : "?";
-  const multi = f.seasons.length>1 && !f.seasons.includes("special");
-  let tags = "";
-  if(f.legend) tags += `<span class="tag t-legend">👑鱼王</span>`;
-  if(multi && mode==="repeat") tags += `<span class="tag t-multi">多季</span>`;
-  if(f.bundle) tags += `<span class="tag t-bundle">📦</span>`;
-  if(f.warn) tags += `<span class="tag t-warn">⚠️</span>`;
-  return `<span class="chip" title="${f.warn||f.en||''}">
-    <span class="ic">${ic}</span>${f.name}${tags}
-    <span class="where">${f.place}</span></span>`;
+  const fav = state.fav.has(f.name);
+  const miss = state.search && !f.name.toLowerCase().includes(state.search);
+  let badges = "";
+  if(f.legend) badges += `<span class="badge" title="鱼王">👑</span>`;
+  if(f.bundle) badges += `<span class="badge" title="收集包需要">📦</span>`;
+  if(f.warn) badges += `<span class="badge" title="${f.warn}">⚠️</span>`;
+  return `<span class="chip ${fav?'fav':''} ${state.open===f.name?'active':''} ${miss?'search-miss':''}"
+    data-fish="${f.name}">
+    ${fav?'<span class="star">⭐</span>':''}
+    <span class="ic">${ic}</span>${f.name}${badges}</span>`;
+}
+
+function detailCard(f){
+  const fav = state.fav.has(f.name);
+  const seasonTxt = f.seasons.includes("special") ? "全年（特殊地点）"
+    : f.seasons.map(s=>SEASON_LABEL[s].replace(/^.. /,"")).join(" / ");
+  return `<div class="detail-card">
+    <div class="detail-head">
+      <div class="big-ic">${f.en?f.en.slice(0,1):"?"}</div>
+      <div class="htitle">
+        <div class="hname">${f.name}${f.legend?' 👑':''}</div>
+        <div class="hsub">${f.en||'英文待核'} · ${seasonTxt}</div>
+      </div>
+      <button class="fav-btn ${fav?'on':''}" data-fav="${f.name}">
+        ${fav?'⭐ 已关注':'☆ 关注'}</button>
+    </div>
+    <div class="detail-body">
+      ${f.warn?`<div class="warn-row">⚠️ ${f.warn}</div>`:''}
+      <div class="d-section">
+        <div class="d-label">📍 获取</div>
+        <div class="d-row"><span>地点</span><span>${f.place}</span></div>
+        <div class="d-row"><span>季节</span><span>${seasonTxt}</span></div>
+      </div>
+      <div class="d-section">
+        <div class="d-label">⚙️ 用途（示意 · 接数据后自动填）</div>
+        ${f.bundle?'<div class="d-row"><span>📦 收集包</span><span class="tag-price">鱼缸需要</span></div>':''}
+        <div class="d-row"><span>⚙️ 加工</span><span>熏鱼机 → 熏鱼</span></div>
+        <div class="d-row"><span>🥘 料理</span><span>取决于具体鱼</span></div>
+      </div>
+    </div>
+  </div>`;
 }
 
 function render(){
-  const out = document.getElementById("out");
-  const groups = {};
-  SEASON_DEFS.forEach(s=>groups[s.key]=[]);
+  const list = document.getElementById("list");
 
-  FISH.forEach(f=>{
-    const seas = f.seasons;
-    if(seas.includes("special")){ groups.special.push(f); return; }
-    if(mode==="single" && seas.length>1){
-      // 多季单列：塞进 special 区上面新建的"多季"——这里简单并入 special 区前用独立处理
-      (groups._multi = groups._multi||[]).push(f);
-    } else {
-      seas.forEach(s=>{ if(groups[s]) groups[s].push(f); });
-    }
+  // tab=烹饪：占位
+  if(state.tab==="cook"){
+    list.innerHTML = `<div class="empty">🍳 烹饪视图：与物品库共用同一套平铺+资料卡，<br>筛选条件改为"料理"。样板暂以鱼类演示交互，此处占位。</div>`;
+    return;
+  }
+
+  // 数据源：关注tab只看 fav
+  let data = FISH.slice();
+  if(state.tab==="cart") data = data.filter(f=>state.fav.has(f.name));
+  if(state.season!=="all"){
+    data = data.filter(f=>f.seasons.includes(state.season)
+      || (state.season!=="special" && false));
+  }
+
+  if(data.length===0){
+    list.innerHTML = state.tab==="cart"
+      ? `<div class="empty">还没有关注的鱼。<br>点开任意鱼 → 点「☆ 关注」，它就会出现在这里。</div>`
+      : `<div class="empty">该季节没有匹配的鱼。</div>`;
+    return;
+  }
+
+  // 分组：关注组置顶，其余按季节
+  const favList = data.filter(f=>state.fav.has(f.name));
+  const groups = [];
+  if(favList.length && state.tab!=="cart"){
+    groups.push({key:"fav",label:"⭐ 我关注的",items:favList,fav:true});
+  }
+  // 季节分组（多季单列）
+  const buckets = {}; SEASON_ORDER.forEach(s=>buckets[s]=[]); buckets._multi=[];
+  data.forEach(f=>{
+    if(state.tab!=="cart" && state.fav.has(f.name)) return; // 已在关注组
+    if(f.seasons.includes("special")){ buckets.special.push(f); return; }
+    if(isMulti(f)){ buckets._multi.push(f); return; }
+    f.seasons.forEach(s=>buckets[s] && buckets[s].push(f));
   });
-
-  let html = "";
-  const order = mode==="single"
+  const order = state.season==="all"
     ? ["spring","summer","fall","winter","_multi","special"]
-    : ["spring","summer","fall","winter","special"];
-
-  order.forEach(key=>{
-    const list = groups[key]; if(!list || !list.length) return;
-    const def = key==="_multi"
-      ? {label:"🔄 多季 · 全年", cls:"s-special"}
-      : SEASON_DEFS.find(s=>s.key===key);
-    html += `<div class="season-block">
-      <div class="season-head ${def.cls}"><span>${def.label}</span>
-        <span class="season-count">${list.length} 种</span></div>
-      <div class="chips">${list.map(chipHtml).join("")}</div></div>`;
+    : [state.season];
+  order.forEach(k=>{
+    const items = buckets[k]; if(!items||!items.length) return;
+    const label = k==="_multi" ? "🔄 多季 · 全年" : SEASON_LABEL[k];
+    groups.push({key:k,label,items});
   });
-  out.innerHTML = html;
+
+  list.innerHTML = groups.map(g=>{
+    const chips = g.items.map(chip).join("");
+    const open = g.items.find(f=>f.name===state.open);
+    return `<div class="group ${g.fav?'fav':''}">
+      <div class="group-label"><span>${g.label}</span><span class="cnt">${g.items.length} 种</span></div>
+      <div class="chips">${chips}</div>
+      ${open?detailCard(open):''}
+    </div>`;
+  }).join("");
 }
 
-document.querySelectorAll(".toggle button").forEach(b=>{
-  b.addEventListener("click",()=>{
-    document.querySelectorAll(".toggle button").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-    mode = b.dataset.mode;
+// 事件
+document.getElementById("list").addEventListener("click",e=>{
+  const favBtn = e.target.closest("[data-fav]");
+  if(favBtn){
+    const n=favBtn.dataset.fav;
+    state.fav.has(n)?state.fav.delete(n):state.fav.add(n);
+    render(); return;
+  }
+  const c = e.target.closest("[data-fish]");
+  if(c){
+    const n=c.dataset.fish;
+    state.open = state.open===n ? null : n;
     render();
-  });
+  }
+});
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active"); state.tab=b.dataset.tab; state.open=null; render();
+}));
+document.getElementById("seasonTabs").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b)return;
+  document.querySelectorAll("#seasonTabs button").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active"); state.season=b.dataset.s; render();
+});
+document.getElementById("search").addEventListener("input",e=>{
+  state.search=e.target.value.trim().toLowerCase(); render();
 });
 render();
 </script>
