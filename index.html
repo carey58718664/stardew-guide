@@ -5411,7 +5411,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
   flex-direction: column;
 }
 .modal-grip, .modal-head, .item-cat-tabs { flex-shrink: 0; }
-#invModalBody, #addGoalBody {
+#invModalBody, #addGoalBody, #cartPickerBody, #cookPickerBody {
   flex: 1;
   overflow-y: auto;
   padding-right: 3px;
@@ -26465,9 +26465,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           </div>
           <div class="item-cat-tabs" id="invTabs">
             ${INV_CATEGORIES.map(c => `<button class="item-cat-tab ${c.id === currentInvTab ? "active" : ""}" data-cat-tab="${c.id}">${renderOfficialIcon(c.iconName || c.label, c.label)}${escapeHtml(c.label)}</button>`).join("")}
-            <button class="item-cat-tab" data-cat-tab="_tools">${renderOfficialIcon("工具", "工")}工具</button>
-            <button class="item-cat-tab" data-cat-tab="_equipment">${renderOfficialIcon("设备", "设")}设备</button>
-            <button class="item-cat-tab" data-cat-tab="_buildings">${renderOfficialIcon("建筑", "建")}建筑</button>
           </div>
           <div id="invModalBody"></div>
         </div>
