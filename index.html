@@ -8029,7 +8029,20 @@ body.modal-open { overflow: hidden; touch-action: none; }
 
 /* ── 作物 wiki 扩展板块（信息行版） ── */
 .planting-card.has-wiki .planting-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
   padding: 12px 14px 10px;
+}
+.planting-card.has-wiki .planting-card-head > .planting-crop-icon {
+  flex: 0 0 auto;
+}
+.planting-card.has-wiki .planting-card-head > div[style*="flex:1"],
+.planting-card.has-wiki .planting-card-head > div[style*="flex: 1"] {
+  min-width: 0;
+}
+.planting-card.has-wiki .planting-card-head .detail-head-actions {
+  flex: 0 0 auto;
 }
 .planting-crop-cat {
   flex-shrink: 0;
@@ -8048,6 +8061,9 @@ body.modal-open { overflow: hidden; touch-action: none; }
   font-size: 11.5px;
   font-weight: 800;
   font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   letter-spacing: 0.4px;
   line-height: 1.2;
 }
@@ -14641,7 +14657,7 @@ body.modal-open { overflow: hidden; touch-action: none; }
       <button type="button" id="closeIslandBtn">← 返回牧场</button>
     </div>
     <div class="island-toolbar">
-      <input type="search" id="islandSearch" class="island-search" placeholder="搜索解锁、金核桃、区域、火山、海盗湾或谜题" autocomplete="off" />
+      <input type="search" id="islandSearch" class="island-search" placeholder="搜索解锁、金色核桃、区域、火山、海盗湾或谜题" autocomplete="off" />
       <div class="island-filter-row" id="islandFilters"></div>
       <div class="island-summary" id="islandSummary"></div>
     </div>
@@ -14981,7 +14997,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "泪晶": "Frozen Tear.png",
       "地晶": "Earth Crystal.png",
       "火水晶": "Fire Quartz.png",
-      "史莱姆": "Slime.png",
+      "史莱姆泥": "Slime.png",
       "蝙蝠翅膀": "Bat Wing.png",
       "太阳精华": "Solar Essence.png",
       "虚空精华": "Void Essence.png",
@@ -14991,13 +15007,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "生鱼寿司": "Maki Roll.png",
       "海胆": "Sea Urchin.png",
       "向日葵": "Sunflower.png",
-      "羽毛": "Duck Feather.png",
-      "鹦鹉螺壳": "Nautilus Shell.png",
+      "鹦鹉螺": "Nautilus Shell.png",
       "鹦鹉螺化石": "Nautilus Fossil.png",
       "小麦": "Wheat.png",
       "干草": "Hay.png",
       "兔子脚": "Rabbit's Foot.png",
-      "鱼子酱": "Caviar.png",
+      "鱼籽酱": "Caviar.png",
       "葡萄酒": "Wine.png",
       "恐龙蛋黄酱": "Dinosaur Mayonnaise.png",
       "五彩碎片": "Prismatic Shard.png",
@@ -15029,7 +15044,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "石榴石": "Garnet.png",
       "放射性矿石": "Radioactive Ore.png",
       "放射性锭": "Radioactive Bar.png",
-      "齐之宝石": "Qi Gem.png",
       "冬青": "Holly.png",
       "野梅": "Wild Plum.png",
       "大葱": "Spring Onion.png",
@@ -15097,7 +15111,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "鸟屋": "Birdie.png",
       "建狗屋": "Pet Bowl.png",
       "鱼籽": "Roe.png",
-      "陈年鱼籽": "Aged Roe.png",
+      "腌鱼籽": "Aged Roe.png",
       "鱿鱼墨汁": "Squid Ink.png",
       "郁金香": "Tulip.png",
       "蓝爵": "Blue Jazz.png",
@@ -15138,10 +15152,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "美洲大树莓": "Salmonberry.png",
       "曲奇": "Cookie.png",
       "古代玩偶": "Ancient Doll.png",
-      "冰淇淋": "Ice Cream.png",
+      "冰激凌": "Ice Cream.png",
       "小麦粉": "Wheat Flour.png",
       "生鱼寿司": "Maki Roll.png",
-      "奖券": "Prize Ticket.png",
+      "兑奖券": "Prize Ticket.png",
       "谜之盒": "Mystery Box.png",
       "星之果实茶": "Stardrop Tea.png",
       "南瓜灯": "Jack-O-Lantern.png",
@@ -15151,13 +15165,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "恐龙蛋黄酱": "Dinosaur Mayonnaise.png",
       "五彩碎片": "Prismatic Shard.png",
       "虚空鲑鱼": "Void Salmon.png",
-      "鱼子酱": "Caviar.png",
+      "鱼籽酱": "Caviar.png",
       "草莓": "Strawberry.png",
       "咖啡豆": "Coffee Bean.png",
       "春之洋葱": "Spring Onion.png",
       "煤炭": "Coal.png",
       "粘土": "Clay.png",
-      "泥土": "Clay.png",
       "草鱼": "Carp.png",
       "彩虹鱼": "Rainbow Trout.png",
       "绿松石鱼": "Blue Discus.png",
@@ -15170,8 +15183,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "史莱姆杰克": "Slimejack.png",
       "海草": "Seaweed.png",
       "绿藻": "Green Algae.png",
-      "海洋果冻": "Sea Jelly.png",
-      "河流果冻": "River Jelly.png",
+      "海凝胶": "Sea Jelly.png",
+      "河凝胶": "River Jelly.png",
       "彩虹贝": "Rainbow Shell.png",
       "珍珠": "Pearl.png",
       "珊瑚": "Coral.png",
@@ -15179,15 +15192,15 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "羊奶": "Goat Milk.png",
       "鸡蛋(白)": "Egg.png",
       "鸡蛋(棕)": "Brown Egg.png",
-      "鸭羽": "Duck Feather.png",
+      "鸭毛": "Duck Feather.png",
       "虚空蛋": "Void Egg.png",
       "虚空之蛋": "Void Egg.png",
       "恐龙蛋": "Dinosaur Egg.png",
-      "金色鸡蛋": "Golden Egg.png",
+      "金蛋": "Golden Egg.png",
       "蛋黄酱": "Mayonnaise.png",
       "咖啡": "Coffee.png",
       "菌丝体": "Mycelium.png",
-      "空灵之尘": "Ectoplasm.png",
+      "灵外质": "Ectoplasm.png",
       "史莱姆蛋（绿）": "Green Slime Egg.png",
       "史莱姆蛋（蓝）": "Blue Slime Egg.png",
       "史莱姆蛋（红）": "Red Slime Egg.png",
@@ -15221,16 +15234,16 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "渔竿": "Bamboo Pole.png",
       "竹鱼竿": "Bamboo Pole.png",
       "初始渔竿": "Bamboo Pole.png",
-      "训练渔竿": "Training Rod.png",
-      "玻璃纤维渔竿": "Fiberglass Rod.png",
-      "铱渔竿": "Iridium Rod.png",
+      "训练鱼竿": "Training Rod.png",
+      "玻璃纤维鱼竿": "Fiberglass Rod.png",
+      "铱金鱼竿": "Iridium Rod.png",
       "熔炉": "Furnace.png",
       "罐头瓶": "Preserves Jar.png",
       "小桶": "Keg.png",
       "蜂房": "Bee House.png",
       "产油机": "Oil Maker.png",
       "蛋黄酱机": "Mayonnaise Machine.png",
-      "奶酪压榨机": "Cheese Press.png",
+      "压酪机": "Cheese Press.png",
       "织布机": "Loom.png",
       "树液采集器": "Tapper.png",
       "蟹笼": "Crab Pot.png",
@@ -15243,7 +15256,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "高级畜棚": "Deluxe Barn.png",
       "水井": "Well.png",
       "磨坊": "Mill.png",
-      "出货箱": "ShippingBox.png",
+      "出货箱": "Shipping Bin.png",
       "马厩": "Horse Stable.png",
       "鱼塘": "Fish Pond.png",
       "温室": "Greenhouse.png",
@@ -15251,7 +15264,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "大棚屋": "Big Shed.png",
       "史莱姆屋": "Slime Hutch.png",
       "宠物碗": "Pet Bowl Stone.png",
-      "鱼熏机": "Fish Smoker.png",
+      "熏鱼机": "Fish Smoker.png",
       "脱水机": "Dehydrator.png",
       "烘干机": "Dehydrator.png",
       "鱼饵制造机": "Bait Maker.png",
@@ -15273,7 +15286,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "海之菜肴": "Dish O' The Sea.png",
       "幸运午餐": "Lucky Lunch.png",
       "海参": "Sea Cucumber.png",
-      "洞穴果冻": "Cave Jelly.png",
+      "洞穴凝胶": "Cave Jelly.png",
       "伯蒂": "Birdie.png",
       "保镖": "Bouncer.png",
       "菲兹": "Fizz.png",
@@ -15299,7 +15312,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     Object.assign(iconFiles, {
       "醋": "Vinegar.png",
       "大米": "Rice.png",
-      "大麦粉": "Wheat Flour.png",
       "西红柿": "Tomato.png",
       "墨西哥薄饼": "Tortilla.png",
       "虚空蛋黄酱": "Void Mayonnaise.png",
@@ -15415,7 +15427,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "雌鮟鱇鱼": "Ms. Angler.png",
       "冰川鱼二代": "Glacierfish Jr..png",
       "放射性鲤鱼": "Radioactive Carp.png",
-      "鱼籽酱": "Aged Roe.png",
       "腌鱼籽": "Aged Roe.png",
       "腌菜": "Pickles.png",
       "水果干": "Dried Fruit.png",
@@ -15544,7 +15555,6 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "黑莓馅饼": "Blackberry Cobbler.png",
       "炒菜": "Stir Fry.png",
       "什锦蔬菜": "Vegetable Medley.png",
-      "冻泪": "Frozen Tear.png",
       "果沙拉": "Fruit Salad.png",
       "求生汉堡": "Survival Burger.png",
       "矮人小工具": "Dwarf Gadget.png",
@@ -15601,7 +15611,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "船票": "Gold.png",
       "金币": "Gold.png",
       "乔家鹦鹉": "Golden Joja Parrot.png",
-      "金核桃": "Golden Walnut.png",
+      "金色核桃": "Golden Walnut.png",
       "桃花心木种子": "Mahogany Seed.png",
       "姜岛传送图腾": "Warp Totem Island.png",
       "姜岛": "Warp Totem Island.png",
@@ -15738,7 +15748,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "石碳幽灵": "Carbon Ghost.png",
       "霸王喷火龙": "Pepper Rex.png",
       "皇家飞蛇": "Royal Serpent.png",
-      "鱿鱼娃": "Squid Kid Dangerous.png"
+      "鱿鱼娃": "Squid Kid.png"
     });
 
     Object.assign(iconFiles, {
@@ -15981,6 +15991,80 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "任意鱼": "Sardine.png"
     });
 
+
+    // ── 加工衍生物图标回退（果酱/果酒/果汁/腌菜/熏鱼/果干等，游戏内为合成图标，统一回退到基底图）──
+    Object.assign(iconFiles, {
+      "上古果酒": "Wine.png",
+      "上古果酱": "Jelly.png",
+      "上古水果酒": "Wine.png",
+      "南瓜汁": "Juice.png",
+      "向日葵汁": "Juice.png",
+      "大蛋黄酱": "Mayonnaise.png",
+      "干上古水果": "Dried Fruit.png",
+      "干杨桃": "Dried Fruit.png",
+      "干紫蘑菇": "Dried Mushrooms.png",
+      "干羊肚菌": "Dried Mushrooms.png",
+      "杏子果酱": "Jelly.png",
+      "杏子酒": "Wine.png",
+      "杨桃果酱": "Jelly.png",
+      "杨桃酒": "Wine.png",
+      "桃子果酱": "Jelly.png",
+      "桃子酒": "Wine.png",
+      "樱桃果酱": "Jelly.png",
+      "樱桃酒": "Wine.png",
+      "橙子果酱": "Jelly.png",
+      "橙子酒": "Wine.png",
+      "熏大嘴鲈鱼": "Smoked Fish.png",
+      "熏大眼鱼": "Smoked Fish.png",
+      "熏河豚": "Smoked Fish.png",
+      "熏章鱼": "Smoked Fish.png",
+      "熏虎纹鳟鱼": "Smoked Fish.png",
+      "熏鲈鱼": "Smoked Fish.png",
+      "熏鲑鱼": "Smoked Fish.png",
+      "熏鲟鱼": "Smoked Fish.png",
+      "熏鲤鱼": "Smoked Fish.png",
+      "熏鲶鱼": "Smoked Fish.png",
+      "熏鳗鱼": "Smoked Fish.png",
+      "玉米油": "Oil.png",
+      "甜瓜果酱": "Jelly.png",
+      "甜瓜酒": "Wine.png",
+      "石榴果酱": "Jelly.png",
+      "石榴酒": "Wine.png",
+      "紫蘑菇酱": "Jelly.png",
+      "腌南瓜": "Pickles.png",
+      "腌土豆": "Pickles.png",
+      "腌山药": "Pickles.png",
+      "腌朝鲜蓟": "Pickles.png",
+      "腌玉米": "Pickles.png",
+      "腌甘蓝菜": "Pickles.png",
+      "腌花椰菜": "Pickles.png",
+      "腌茄子": "Pickles.png",
+      "腌西红柿": "Pickles.png",
+      "腌野山葵": "Pickles.png",
+      "腌防风草": "Pickles.png",
+      "腌鲈鱼": "Pickles.png",
+      "花椰菜汁": "Juice.png",
+      "苹果果酱": "Jelly.png",
+      "苹果酒": "Wine.png",
+      "草莓果酱": "Jelly.png",
+      "草莓酒": "Wine.png",
+      "葡萄果酱": "Jelly.png",
+      "蓝莓果酱": "Jelly.png",
+      "蓝莓酒": "Wine.png",
+      "蔓越莓果酱": "Jelly.png",
+      "蔓越莓酒": "Wine.png",
+      "蘑菇酱": "Jelly.png",
+      "西红柿汁": "Juice.png",
+      "辣椒果酱": "Jelly.png",
+      "辣椒酒": "Wine.png",
+      "金星奶酪": "Cheese.png",
+      "金星山羊奶酪": "Goat Cheese.png",
+      "霜瓜果酱": "Jelly.png",
+      "霜瓜酒": "Wine.png",
+      "黑莓果酱": "Jelly.png",
+      "黑莓酒": "Wine.png"
+    });
+
     const rooms = [
       room("crafts", "工艺室", "工艺室", "初始开放", "修复采石场桥梁", [
         bundle("spring-forage", "春季采集收集包", "4选4", "春季种子×30", [
@@ -16016,7 +16100,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         bundle("quality-crops", "优质作物收集包", "4选3", "罐头瓶×1", [
           item("防风草", "crop", 5, "gold"), item("甜瓜", "crop", 5, "gold"), item("南瓜", "crop", 5, "gold"), item("玉米", "crop", 5, "gold")
         ]),
-        bundle("animal", "动物收集包", "6选5", "奶酪压榨机×1", [
+        bundle("animal", "动物收集包", "6选5", "压酪机×1", [
           item("大壶牛奶", "animal"), item("大鸡蛋(白)", "animal", 1, "", "大鸡蛋"), item("大鸡蛋(棕)", "animal", 1, "", "大鸡蛋"), item("大瓶羊奶", "animal"), item("羊毛", "animal"), item("鸭蛋", "animal")
         ]),
         bundle("artisan", "工匠收集包", "12选6", "小桶×1", [
@@ -16061,10 +16145,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           item("枫糖浆", "forage"), item("蕨菜", "forage"), item("松露", "animal"), item("虞美人花", "crop"), item("生鱼寿司", "cooking"), item("煎蛋", "cooking")
         ]),
         bundle("dye", "染料收集包", "6选6", "种子生产器×1", [
-          item("红蘑菇", "forage"), item("海胆", "shellfish"), item("向日葵", "crop"), item("鸭羽", "animal"), item("海蓝宝石", "mine"), item("红叶卷心菜", "crop")
+          item("红蘑菇", "forage"), item("海胆", "shellfish"), item("向日葵", "crop"), item("鸭毛", "animal"), item("海蓝宝石", "mine"), item("红叶卷心菜", "crop")
         ]),
         bundle("field-research", "土地研究收集包", "4选4", "回收机×1", [
-          item("紫蘑菇", "forage"), item("鹦鹉螺壳", "shellfish"), item("鲢鱼", "fish"), item("冰封晶球", "mine")
+          item("紫蘑菇", "forage"), item("鹦鹉螺", "shellfish"), item("鲢鱼", "fish"), item("冰封晶球", "mine")
         ]),
         bundle("fodder", "饲料收集包", "3选3", "加热器×1", [
           item("小麦", "crop", 10), item("干草", "resource", 10), item("苹果", "crop", 3)
@@ -16086,7 +16170,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           item("五彩碎片", "mine"),
           item("上古水果", "crop", 5, "gold"),
           item("虚空鲑鱼", "fish", 1, "gold"),
-          item("鱼子酱", "animal")
+          item("鱼籽酱", "animal")
         ])
       ])
     ];
@@ -17122,24 +17206,24 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       ]},
       { id: "shellfish", label: "贝类", iconName: "贝类", items: [
         "龙虾","小龙虾","螃蟹","鸟蛤","蚌","虾","蜗牛","玉黍螺","牡蛎","蛤","海胆","白藻",
-        "海草","绿藻","海洋果冻","河流果冻","洞穴果冻","彩虹贝","珍珠","珊瑚"
+        "海草","绿藻","海凝胶","河凝胶","洞穴凝胶","彩虹贝","珍珠","珊瑚"
       ]},
       { id: "animal", label: "动物产物", iconName: "动物产物", items: [
         "牛奶","大壶牛奶","羊奶","大瓶羊奶",
         "鸡蛋(白)","鸡蛋(棕)","大鸡蛋(白)","大鸡蛋(棕)",
-        "羊毛","鸭蛋","鸭羽","羽毛","兔子脚","松露","鸵鸟蛋",
-        "虚空蛋","恐龙蛋","金色鸡蛋"
+        "羊毛","鸭蛋","鸭毛","兔子脚","松露","鸵鸟蛋",
+        "虚空蛋","恐龙蛋","金蛋"
       ]},
       { id: "artisan", label: "工匠加工", iconName: "工匠加工", items: [
-        "松露油","布料","山羊奶酪","奶酪","蜂蜜","果酱","腌菜","蜂蜜酒","啤酒","淡啤酒","葡萄酒","果酒","蔬菜汁","绿茶","鱼籽","陈年鱼籽","鱿鱼墨汁","鱼子酱","蛋黄酱","恐龙蛋黄酱","鸭蛋黄酱","虚空蛋黄酱","果干","蘑菇干","葡萄干","熏鱼","南瓜灯","咖啡","枫糖浆","橡树树脂","松焦油"
+        "松露油","布料","山羊奶酪","奶酪","蜂蜜","果酱","腌菜","蜂蜜酒","啤酒","淡啤酒","葡萄酒","果酒","蔬菜汁","绿茶","鱼籽","腌鱼籽","鱿鱼墨汁","鱼籽酱","蛋黄酱","恐龙蛋黄酱","鸭蛋黄酱","虚空蛋黄酱","果干","蘑菇干","葡萄干","熏鱼","南瓜灯","咖啡","枫糖浆","橡树树脂","松焦油"
       ]},
       { id: "mine", label: "矿物锭", iconName: "矿物锭", items: [
         "铜矿石","铁矿石","金矿石","铜锭","铁锭","金锭","铱矿石","铱锭","放射性矿石","放射性锭","精炼石英","电池组",
         "石英","泪晶","地晶","火水晶","冰封晶球","晶球","岩浆晶球","万象晶球",
-        "紫水晶","海蓝宝石","钻石","翡翠","红宝石","黄水晶","石榴石","孔雀石","玉","黑曜石","虎眼石","冻泪"
+        "紫水晶","海蓝宝石","钻石","翡翠","红宝石","黄水晶","石榴石","孔雀石","玉","黑曜石","虎眼石"
       ]},
-      { id: "monster", label: "怪物素材", iconName: "怪物素材", items: ["史莱姆","蝙蝠翅膀","太阳精华","虚空精华","骨头碎片","虫肉","菌丝体","空灵之尘","史莱姆蛋（绿）","史莱姆蛋（蓝）","史莱姆蛋（红）","史莱姆蛋（紫）"]},
-      { id: "special", label: "特殊", iconName: "特殊", items: ["金币","古代玩偶","鹦鹉螺壳","鹦鹉螺化石","奖券","谜之盒","五彩碎片","泥土","虚空之蛋","金香蕉","金核桃","齐之宝石","矮人卷轴I","矮人卷轴II","矮人卷轴III","矮人卷轴IV"]},
+      { id: "monster", label: "怪物素材", iconName: "怪物素材", items: ["史莱姆泥","蝙蝠翅膀","太阳精华","虚空精华","骨头碎片","虫肉","菌丝体","灵外质","史莱姆蛋（绿）","史莱姆蛋（蓝）","史莱姆蛋（红）","史莱姆蛋（紫）"]},
+      { id: "special", label: "特殊", iconName: "特殊", items: ["金币","古代玩偶","鹦鹉螺","鹦鹉螺化石","兑奖券","谜之盒","五彩碎片","虚空之蛋","金香蕉","金色核桃","齐钻","矮人卷轴I","矮人卷轴II","矮人卷轴III","矮人卷轴IV"]},
     ];
 
     /* 工具升级数据 */
@@ -17160,12 +17244,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       { id: "keg", name: "小桶", emoji: "🪣" },
       { id: "bee_house", name: "蜂房", emoji: "🐝" },
       { id: "oil_maker", name: "产油机", emoji: "🛢️" },
-      { id: "cheese_press", name: "奶酪压榨机", emoji: "🧀" },
+      { id: "cheese_press", name: "压酪机", emoji: "🧀" },
       { id: "loom", name: "织布机", emoji: "🧵" },
       { id: "mayonnaise_machine", name: "蛋黄酱机", emoji: "🥫" },
       { id: "tapper", name: "树液采集器", emoji: "💧" },
       { id: "crab_pot", name: "蟹笼", emoji: "🪤" },
-      { id: "fish_smoker", name: "鱼熏机", emoji: "🔥" },
+      { id: "fish_smoker", name: "熏鱼机", emoji: "🔥" },
       { id: "dehydrator", name: "脱水机", emoji: "🍄" },
       { id: "bait_maker", name: "鱼饵制造机", emoji: "🪱" },
       { id: "worm_bin", name: "虫饵盒", emoji: "🪱" },
@@ -17298,8 +17382,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       { cat: "背包/商店购买", goals: [
         { id: "buy-backpack-large", title: "买大背包", emoji: "🎒", how: "buy", note: "背包扩到24格，在皮埃尔柜台购买", steps: [goalMoney(2000)] },
         { id: "buy-backpack-deluxe", title: "买豪华背包", emoji: "🎒", how: "buy", note: "背包扩到36格，在皮埃尔柜台购买", steps: [goalMoney(10000)] },
-        { id: "buy-fiberglass-rod", title: "买玻璃纤维渔竿", emoji: "🎣", how: "buy", note: "钓鱼等级2后在威利鱼店购买，可使用鱼饵", steps: [goalMoney(1800)] },
-        { id: "buy-iridium-rod", title: "买铱渔竿", emoji: "🎣", how: "buy", note: "钓鱼等级6后在威利鱼店购买，可装鱼饵和钓具", steps: [goalMoney(7500)] },
+        { id: "buy-fiberglass-rod", title: "买玻璃纤维鱼竿", emoji: "🎣", how: "buy", note: "钓鱼等级2后在威利鱼店购买，可使用鱼饵", steps: [goalMoney(1800)] },
+        { id: "buy-iridium-rod", title: "买铱金鱼竿", emoji: "🎣", how: "buy", note: "钓鱼等级6后在威利鱼店购买，可装鱼饵和钓具", steps: [goalMoney(7500)] },
       ]},
       { cat: "加工设备", goals: [
         { id: "craft-furnace", title: "做熔炉", emoji: "🔥", how: "craft", note: "Clint在你首次获得铜矿石后教你",
@@ -17324,10 +17408,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         { id: "craft-bee-house", title: "做蜂房", emoji: "🐝", how: "craft", note: "耕种等级 3",
           steps: [goalItem("木材", 40), goalItem("煤炭", 8), goalItem("铁锭", 1), goalItem("枫糖浆", 1)] },
         { id: "craft-oil-maker", title: "做产油机", emoji: "🛢️", how: "craft", note: "耕种等级 8",
-          steps: [goalItem("硬木", 20), goalItem("史莱姆", 50), goalItem("金锭", 1)] },
+          steps: [goalItem("硬木", 20), goalItem("史莱姆泥", 50), goalItem("金锭", 1)] },
         { id: "craft-mayo-machine", title: "做蛋黄酱机", emoji: "🥫", how: "craft", note: "畜牧等级 2",
           steps: [goalItem("木材", 15), goalItem("石头", 15), goalItem("地晶", 1), goalItem("铜锭", 1)] },
-        { id: "craft-cheese-press", title: "做奶酪压榨机", emoji: "🧀", how: "craft", note: "畜牧等级 6",
+        { id: "craft-cheese-press", title: "做压酪机", emoji: "🧀", how: "craft", note: "畜牧等级 6",
           steps: [goalItem("木材", 45), goalItem("石头", 45), goalItem("硬木", 10), goalItem("铜锭", 1)] },
         { id: "craft-loom", title: "做织布机", emoji: "🧵", how: "craft", note: "耕种等级 7",
           steps: [goalItem("木材", 60), goalItem("纤维", 30), goalItem("松焦油", 1)] },
@@ -17335,8 +17419,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           steps: [goalItem("木材", 40), goalItem("铜锭", 2)] },
         { id: "craft-crab-pot", title: "做蟹笼", emoji: "🪤", how: "craft", note: "钓鱼等级 3",
           steps: [goalItem("木材", 40), goalItem("铁锭", 3)] },
-        { id: "craft-fish-smoker", title: "做鱼熏机", emoji: "🔥", how: "craft", note: "配方在威利鱼店购买；可把鱼加工成熏鱼",
-          steps: [goalItem("硬木", 10), goalItem("海洋果冻", 1), goalItem("河流果冻", 1), goalItem("洞穴果冻", 1)] },
+        { id: "craft-fish-smoker", title: "做熏鱼机", emoji: "🔥", how: "craft", note: "配方在威利鱼店购买；可把鱼加工成熏鱼",
+          steps: [goalItem("硬木", 10), goalItem("海凝胶", 1), goalItem("河凝胶", 1), goalItem("洞穴凝胶", 1)] },
         { id: "craft-dehydrator", title: "做脱水机", emoji: "🍄", how: "craft", note: "配方在皮埃尔杂货店购买；蘑菇洞也会自带1台",
           steps: [goalItem("木材", 30), goalItem("粘土", 2), goalItem("火水晶", 1)] },
         { id: "craft-bait-maker", title: "做鱼饵制造机", emoji: "🪱", how: "craft", note: "钓鱼等级 6",
@@ -17423,7 +17507,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         { id: "craft-solar-panel", title: "做太阳能板", emoji: "🔆", how: "craft", note: "完成卡罗琳的特殊订单",
           steps: [goalItem("精炼石英", 10), goalItem("铁锭", 5), goalItem("金锭", 5)] },
         { id: "craft-slime-incubator", title: "做史莱姆孵化器", emoji: "🟢", how: "craft", note: "战斗等级 8",
-          steps: [goalItem("铱锭", 2), goalItem("史莱姆", 100)] },
+          steps: [goalItem("铱锭", 2), goalItem("史莱姆泥", 100)] },
         { id: "craft-slime-egg-press", title: "做史莱姆蛋压制机", emoji: "🥚", how: "craft", note: "战斗等级 6",
           steps: [goalItem("煤炭", 25), goalItem("火水晶", 1), goalItem("电池组", 1)] },
         { id: "craft-farm-computer", title: "做农场电脑", emoji: "💻", how: "craft", note: "完成德米特里厄斯的特殊订单",
@@ -17561,7 +17645,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         { id: "craft-life-elixir", title: "做生命药剂", emoji: "🧪", how: "craft", note: "战斗等级 2，回满血",
           steps: [goalItem("红蘑菇", 1), goalItem("紫蘑菇", 1), goalItem("羊肚菌", 1), goalItem("鸡油菌", 1)] },
         { id: "craft-warrior-ring", title: "做战士戒指", emoji: "🔴", how: "craft", note: "战斗等级 4，连杀加攻击",
-          steps: [goalItem("铁锭", 10), goalItem("煤炭", 25), goalItem("冻泪", 10)] },
+          steps: [goalItem("铁锭", 10), goalItem("煤炭", 25), goalItem("泪晶", 10)] },
         { id: "craft-glowstone-ring", title: "做发光戒指", emoji: "💡", how: "craft", note: "光照+磁力",
           steps: [goalItem("太阳精华", 5), goalItem("铁锭", 5)] },
       ]},
@@ -17602,7 +17686,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         { id: "craft-challenge-bait", title: "做挑战鱼饵（1.6）", emoji: "🎯", how: "craft", note: "1.6齐先生配方，连钓提升",
           steps: [goalItem("骨头碎片", 5), goalItem("虫肉", 3)] },
         { id: "craft-wild-bait", title: "做野生鱼饵", emoji: "🪱", how: "craft", note: "琳达任务获得配方，可能一次钓两条",
-          steps: [goalItem("史莱姆", 10), goalItem("蝙蝠翅膀", 5), goalItem("太阳精华", 5)] },
+          steps: [goalItem("史莱姆泥", 10), goalItem("蝙蝠翅膀", 5), goalItem("太阳精华", 5)] },
         { id: "buy-targeted-bait", title: "做针对性鱼饵（1.6）", emoji: "🐟", how: "craft", note: "鱼饵制作机用某鱼制成专属饵，更易钓该鱼",
           steps: [goalItem("任意鱼", 3)] },
       ]},
@@ -17793,17 +17877,17 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             goalManual("→ 3 心 = 煎蘑菇"),
             goalManual("→ 7 心 = 秋之硕果"),
             goalItem("草莓", 5, "他的最爱（春季）"),
-            goalItem("冰淇淋", 3, "他的最爱") ] },
+            goalItem("冰激凌", 3, "他的最爱") ] },
         { id: "heart-lewis-37", title: "刘易斯 → 3/7 心：拿意大利面+茄子帕马森", emoji: "🍝", how: "gift", note: "3 心意大利面（罗宾最爱）、7 心茄子帕马森（采矿+2 防御+1，朱迪最爱）。生日春 7",
           steps: [
             goalManual("→ 3 心 = 意大利面"),
             goalManual("→ 7 心 = 茄子帕马森"),
             goalItem("辣椒", 4, "他的最爱（夏季作物）"),
             goalItem("秋之硕果", 3, "他的最爱") ] },
-        { id: "heart-jodi-37", title: "朱迪 → 3/7 心：拿炸鱿鱼+冰淇淋", emoji: "🦑", how: "gift", note: "3 心炸鱿鱼（皮埃尔最爱！）、7 心冰淇淋（德米特里厄斯最爱）。生日秋 11",
+        { id: "heart-jodi-37", title: "朱迪 → 3/7 心：拿炸鱿鱼+冰激凌", emoji: "🦑", how: "gift", note: "3 心炸鱿鱼（皮埃尔最爱！）、7 心冰激凌（德米特里厄斯最爱）。生日秋 11",
           steps: [
             goalManual("→ 3 心 = 炸鱿鱼"),
-            goalManual("→ 7 心 = 冰淇淋"),
+            goalManual("→ 7 心 = 冰激凌"),
             goalItem("钻石", 3, "她的最爱"),
             goalItem("巧克力蛋糕", 3, "她的最爱") ] },
         { id: "heart-evelyn-47", title: "伊芙琳 → 4/7 心：拿曲奇+米布丁", emoji: "🍪", how: "gift", note: "4 心曲奇、7 心米布丁（德米特里厄斯最爱）。生日冬 20",
@@ -17846,14 +17930,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             goalManual("先解锁姜岛"),
             goalManual("当前心数 → 7 心"),
             goalItem("芒果", 4, "他的最爱（姜岛树果）"),
-            goalItem("鸭羽", 3, "他的最爱"),
+            goalItem("鸭毛", 3, "他的最爱"),
             goalManual("收到配方邮件 ✓") ] },
 
         // ═══ 🎬 经典剧情里程碑 ═══
         { id: "heart-sebastian-10", title: "塞巴斯蒂安 → 10 心：飞车看星", emoji: "🏍️", how: "gift", note: "公认最浪漫剧情之一；需先约会（送花束）。生日冬 10",
           steps: [
             goalManual("当前心数 → 8 心"),
-            goalItem("冻泪", 6, "他的最爱（矿井 40-79 层）"),
+            goalItem("泪晶", 6, "他的最爱（矿井 40-79 层）"),
             goalItem("黑曜石", 4, "他的最爱（矿井深层）"),
             goalManual("8 心后送花束开始约会"),
             goalManual("达 10 心，山顶 20-24 点触发飞车剧情 ✓") ] },
@@ -17873,7 +17957,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           steps: [
             goalManual("当前心数 → 6 心"),
             goalItem("石榴", 3, "他的最爱"),
-            goalItem("鸭羽", 3, "他的最爱"),
+            goalItem("鸭毛", 3, "他的最爱"),
             goalManual("看完 6 心剧情 ✓") ] },
         { id: "heart-harvey-10", title: "哈维 → 10 心：热气球", emoji: "🎈", how: "gift", note: "哈维线最经典剧情。生日冬 14",
           steps: [
@@ -18007,13 +18091,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         })() },
       { id: "willy", name: "渔店（威利）", icon: "威利",
         accent: "#2f8fb0",
-        hours: "9:00AM-5:00PM", closed: "周六休", location: "海滩码头", focus: "鱼竿 / 鱼饵 / 鱼熏机",
-        intro: ["营业 9:00AM-5:00PM；周六不营业。", "鱼竿、鱼饵、钓具在这里购买；鱼熏机配方也在这里。", "想走钓鱼赚钱，玻璃纤维竿和鱼饵是第一波质变。"],
-        chips: ["鱼竿", "钓具", "鱼熏机", "蟹笼"],
+        hours: "9:00AM-5:00PM", closed: "周六休", location: "海滩码头", focus: "鱼竿 / 鱼饵 / 熏鱼机",
+        intro: ["营业 9:00AM-5:00PM；周六不营业。", "鱼竿、鱼饵、钓具在这里购买；熏鱼机配方也在这里。", "想走钓鱼赚钱，玻璃纤维竿和鱼饵是第一波质变。"],
+        chips: ["鱼竿", "钓具", "熏鱼机", "蟹笼"],
         goods: [
           shopGood("willy-bait", "鱼饵", "鱼饵", "消耗品", "5g", "玻璃纤维竿后可使用", ["缩短上钩等待时间；蟹笼每天也会消耗鱼饵。"], ["starter"]),
           shopGood("willy-trout-soup", "鳟鱼汤", "鳟鱼汤", "料理", "250g", "全年出售", ["钓鱼 +1，早期冲高难鱼或补体力时很好用。"], ["food"]),
-          shopGood("willy-smoker-recipe", "鱼熏机配方", "鱼熏机", "配方", "10000g", "1.6 可购买", ["熏鱼售价为鱼基础售价的 2 倍，是钓鱼流派的重要加工设备。"], ["profit"])
+          shopGood("willy-smoker-recipe", "熏鱼机配方", "熏鱼机", "配方", "10000g", "1.6 可购买", ["熏鱼售价为鱼基础售价的 2 倍，是钓鱼流派的重要加工设备。"], ["profit"])
         ],
         goalIds: ["buy-fiberglass-rod","buy-iridium-rod","craft-fish-smoker","craft-crab-pot","craft-bait-maker","craft-worm-bin","craft-deluxe-worm-bin"] },
       { id: "marnie", name: "玛妮牧场", icon: "玛妮",
@@ -18071,7 +18155,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       { id: "crafting", name: "配方合成", icon: "合成",
         accent: "#6f4b22",
         hours: "随时", closed: "不受营业时间限制", location: "合成菜单", focus: "加工设备",
-        intro: ["在合成菜单（ESC → 合成标签）制作。", "需要对应技能等级解锁配方 + 足够材料。加工设备是赚钱的核心。", "罐头瓶、小桶、鱼熏机、脱水机和动物加工设备决定中后期现金流。"],
+        intro: ["在合成菜单（ESC → 合成标签）制作。", "需要对应技能等级解锁配方 + 足够材料。加工设备是赚钱的核心。", "罐头瓶、小桶、熏鱼机、脱水机和动物加工设备决定中后期现金流。"],
         chips: ["加工设备", "技能解锁", "材料规划", "赚钱核心"],
         goods: [
           shopGood("crafting-furnace-tip", "熔炉", "熔炉", "基础设备", "铜矿石×20 石头×25", "获得铜矿石后解锁", ["工具升级、洒水器和多数设备都离不开金属锭。"], ["starter"]),
@@ -18121,7 +18205,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         ["⛏️ 工具升级", g => g.id.startsWith("upgrade-") && !g.id.includes("trash")],
         ["🗑️ 垃圾桶升级", g => g.id.includes("trash")],
         ["🏠 房屋升级", g => g.id.startsWith("house-") || g.id === "community-upgrade" || g.id === "shortcuts-upgrade"],
-        ["🎒 背包 & 渔竿", g => g.id.startsWith("buy-backpack") || g.id.startsWith("rod-") || g.id.startsWith("buy-fiberglass") || g.id.startsWith("buy-iridium-rod")],
+        ["🎒 背包 & 鱼竿", g => g.id.startsWith("buy-backpack") || g.id.startsWith("rod-") || g.id.startsWith("buy-fiberglass") || g.id.startsWith("buy-iridium-rod")],
       ],
       "farm-eq": [
         ["💦 洒水器", g => g.id.includes("sprinkler")],
@@ -18950,12 +19034,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "布料": "织布机加工羊毛，或回收湿报纸/沙漠商人等来源",
       "海草": "海洋钓鱼常见杂物，也可在蟹笼/鱼塘相关来源获得",
       "绿藻": "淡水钓鱼常见杂物，矿井水域也能钓到",
-      "海洋果冻": "海洋钓鱼低概率获得，1.6鱼熏机材料",
-      "河流果冻": "淡水钓鱼低概率获得，1.6鱼熏机材料",
-      "洞穴果冻": "矿井/洞穴水域钓鱼低概率获得，1.6鱼熏机材料",
+      "海凝胶": "海洋钓鱼低概率获得，1.6熏鱼机材料",
+      "河凝胶": "淡水钓鱼低概率获得，1.6熏鱼机材料",
+      "洞穴凝胶": "矿井/洞穴水域钓鱼低概率获得，1.6熏鱼机材料",
       "珊瑚": "夏季海滩潮汐池采集，或旅行货车等来源",
       "海胆": "海滩东侧潮汐池采集，需要先修复海滩桥或雨天可进入",
-      "史莱姆": "击杀史莱姆，史莱姆屋也可稳定获得",
+      "史莱姆泥": "击杀史莱姆，史莱姆屋也可稳定获得",
       "小麦": "夏/秋种植小麦",
       "小麦粉": "皮埃尔杂货店购买，或磨坊把小麦磨成小麦粉",
       "油": "皮埃尔杂货店购买，或产油机加工玉米/向日葵/葵花籽",
@@ -18972,7 +19056,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "矮人卷轴II": "矿井 40-80 层怪物掉落",
       "矮人卷轴III": "矿井 80+ 层怪物掉落",
       "矮人卷轴IV": "矿井全层怪物低概率掉落，最稀有",
-      "冻泪": "矿井 40-79 层的冰层采集/晶球开出；塞巴斯蒂安最爱",
+      "泪晶": "矿井 40-79 层的冰层采集/晶球开出；塞巴斯蒂安最爱",
       "黑曜石": "矿井深层/晶球开出；塞巴斯蒂安最爱",
       "虎眼石": "晶球开出（万象晶球概率较高）；山姆最爱",
       "玉": "矿井/晶球开出；可在沙漠商人处周日用 1 玉换 1 楼梯",
@@ -18998,18 +19082,17 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "大鸡蛋(棕)": "高心情棕鸡产出，价值更高",
       "羊毛": "绵羊用剪刀剪取，或安哥拉兔产出",
       "鸭蛋": "鸭子产蛋，需先有大鸡舍",
-      "鸭羽": "鸭子低概率产出，艾米丽最爱",
-      "羽毛": "鸭子低概率产出（与鸭羽同物）",
+      "鸭毛": "鸭子低概率产出，艾米丽最爱",
       "兔子脚": "兔子低概率产出，可作万能送礼",
       "松露": "猪在户外拱土产出，需先有大畜棚并放养",
       "鸵鸟蛋": "鸵鸟孵化后产出，或姜岛挖掘获得（1.5+）",
       "虚空蛋": "虚空鸡产出；女巫沼泽/旅行货车获得虚空蛋孵化",
       "恐龙蛋": "锄地古物点、敲恐龙化石、岩石蟹掉落；可孵恐龙",
-      "金色鸡蛋": "完美评定后旅行货车/星之果实购买；可孵金鸡",
+      "金蛋": "完美评定后旅行货车/星之果实购买；可孵金鸡",
       // —— 工匠加工 ——
       "松露油": "产油机加工松露",
-      "山羊奶酪": "奶酪压榨机加工羊奶",
-      "奶酪": "奶酪压榨机加工牛奶",
+      "山羊奶酪": "压酪机加工羊奶",
+      "奶酪": "压酪机加工牛奶",
       "蜂蜜": "蜂房产出，附近有花则染上对应花蜜",
       "果酱": "罐头瓶加工水果（价值=2×原料+50）",
       "腌菜": "罐头瓶加工蔬菜（价值=2×原料+50）",
@@ -19020,10 +19103,10 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "果酒": "小桶加工水果（与葡萄酒同机制）",
       "蔬菜汁": "小桶加工蔬菜（价值=2.25×原料）",
       "绿茶": "小桶加工茶叶，固定 100g",
-      "鱼籽": "鱼塘产出，或鱼籽放罐头瓶得鱼子酱前体",
-      "陈年鱼籽": "鱼籽放罐头瓶/陈酿产出",
+      "鱼籽": "鱼塘产出，或鱼籽放罐头瓶得鱼籽酱前体",
+      "腌鱼籽": "鱼籽放罐头瓶/陈酿产出",
       "鱿鱼墨汁": "击杀鱿鱼/章鱼，或鱼塘产出",
-      "鱼子酱": "鲟鱼鱼塘的鱼籽放罐头瓶加工",
+      "鱼籽酱": "鲟鱼鱼塘的鱼籽放罐头瓶加工",
       "蛋黄酱": "蛋黄酱机加工鸡蛋",
       "恐龙蛋黄酱": "蛋黄酱机加工恐龙蛋",
       "鸭蛋黄酱": "蛋黄酱机加工鸭蛋",
@@ -19031,7 +19114,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "果干": "脱水机加工水果（5 个/次，1.6 新增）",
       "蘑菇干": "脱水机加工蘑菇（1.6 新增）",
       "葡萄干": "脱水机加工葡萄（1.6 新增）",
-      "熏鱼": "鱼熏机加工鱼，价值翻倍（1.6 新增）",
+      "熏鱼": "熏鱼机加工鱼，价值翻倍（1.6 新增）",
       "南瓜灯": "万灵节制作，或工作台用南瓜+火把合成",
       "咖啡": "小桶加工 5 个咖啡豆，或厨房做三倍浓缩咖啡",
       // —— 鱼类（季节·地点）——
@@ -19130,23 +19213,22 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "骨头碎片": "击杀骷髅/恐龙系怪物，或沙漠挖掘",
       "虫肉": "击杀虫类/蝙蝠/蛆掉落，蟹笼也可得",
       "菌丝体": "蘑菇树桩偶尔产出（1.6 新增）",
-      "空灵之尘": "击杀幽灵掉落，金色之路相关",
+      "灵外质": "击杀幽灵掉落，金色之路相关",
       "史莱姆蛋（绿）": "史莱姆压泥机加工绿史莱姆，或孵化器孵化",
       "史莱姆蛋（蓝）": "史莱姆压泥机加工蓝史莱姆",
       "史莱姆蛋（红）": "史莱姆压泥机加工红史莱姆",
       "史莱姆蛋（紫）": "史莱姆压泥机加工紫史莱姆，最高级",
       // —— 特殊 ——
       "古代玩偶": "锄地古物点、晶球、鱼塘等；可捐博物馆",
-      "鹦鹉螺壳": "冬季海滩采集，或鱼塘产出",
+      "鹦鹉螺": "冬季海滩采集，或鱼塘产出",
       "鹦鹉螺化石": "锄地古物点/沙漠挖掘；可捐博物馆",
-      "奖券": "完成怪物狩猎/特定成就，或星之果实抽奖机",
+      "兑奖券": "完成怪物狩猎/特定成就，或星之果实抽奖机",
       "谜之盒": "1.6 新增：锄地、钓鱼、割草等随机获得，工作台开启得奖励",
       "五彩碎片": "骷髅洞/神秘矿点稀有掉落、超级炸弹、姜岛；可换铱镐/激光剑",
-      "泥土": "锄地/敲石头随机获得（与粘土不同，1.6 装饰素材）",
       "虚空之蛋": "女巫沼泽商店/旅行货车购买，放孵化器孵虚空鸡",
       "金香蕉": "姜岛火山顶宝箱/金椰子开出；香蕉神龛供品",
-      "金核桃": "姜岛各处探索（挖掘、战斗、解谜）获得，用于解锁内容",
-      "齐之宝石": "齐先生的walnut房间挑战奖励，用于兑换稀有物品"
+      "金色核桃": "姜岛各处探索（挖掘、战斗、解谜）获得，用于解锁内容",
+      "齐钻": "齐先生的walnut房间挑战奖励，用于兑换稀有物品"
     };
 
     /* ── 加工映射（数据来自宝贝的需求） ──
@@ -19208,12 +19290,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         { method: "小桶", out: "葡萄酒", price: 240, gain: "+200%" },
         { method: "罐头瓶", out: "葡萄果酱", price: 210, gain: "+163%" },
       ],
-      "牛奶": [{ method: "奶酪压榨机", out: "奶酪", price: 230, gain: "+77%" }],
-      "大壶牛奶": [{ method: "奶酪压榨机", out: "金星奶酪", price: 345, gain: "+82%" }],
+      "牛奶": [{ method: "压酪机", out: "奶酪", price: 230, gain: "+77%" }],
+      "大壶牛奶": [{ method: "压酪机", out: "金星奶酪", price: 345, gain: "+82%" }],
       "羊毛": [{ method: "织布机", out: "布料", price: 470, gain: "+58%" }],
-      "山羊奶": [{ method: "奶酪压榨机", out: "山羊奶酪", price: 400, gain: "+108%" }],
-      "羊奶": [{ method: "奶酪压榨机", out: "山羊奶酪", price: 400, gain: "+78%" }],
-      "大瓶羊奶": [{ method: "奶酪压榨机", out: "金星山羊奶酪", price: 600, gain: "+74%" }],
+      "山羊奶": [{ method: "压酪机", out: "山羊奶酪", price: 400, gain: "+108%" }],
+      "羊奶": [{ method: "压酪机", out: "山羊奶酪", price: 400, gain: "+78%" }],
+      "大瓶羊奶": [{ method: "压酪机", out: "金星山羊奶酪", price: 600, gain: "+74%" }],
       "鸭蛋": [{ method: "蛋黄酱机", out: "鸭蛋黄酱", price: 375, gain: "+295%" }],
       // 采集物可加工
       "黑莓": [{ method: "罐头瓶", out: "黑莓果酱", price: 90, gain: "+350%" }, { method: "小桶", out: "黑莓酒", price: 60, gain: "+200%" }],
@@ -19257,18 +19339,18 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "杨桃": [{ method: "小桶", out: "杨桃酒", price: 2250, gain: "+200%·最赚" }, { method: "脱水机", out: "干杨桃", price: 1900, gain: "+153%·5个一组" }, { method: "罐头瓶", out: "杨桃果酱", price: 1550, gain: "+107%" }],
       "上古水果": [{ method: "小桶", out: "上古果酒", price: 4620, gain: "+200%·极品" }, { method: "脱水机", out: "干上古水果", price: 3875, gain: "+152%·5个一组" }, { method: "罐头瓶", out: "上古果酱", price: 3130, gain: "+103%" }],
 
-      // ═══ 1.6 鱼熏机（1鱼→1熏鱼，售价 = 基价×2） ═══
-      "鲤鱼": [{ method: "鱼熏机", out: "熏鲤鱼", price: 60, gain: "+100%·处理废鱼" }],
-      "鲈鱼": [{ method: "鱼熏机", out: "熏鲈鱼", price: 200, gain: "+100%" }, { method: "罐头瓶", out: "腌鲈鱼", price: 150, gain: "+50%" }],
-      "鲶鱼": [{ method: "鱼熏机", out: "熏鲶鱼", price: 400, gain: "+100%" }],
-      "鲑鱼": [{ method: "鱼熏机", out: "熏鲑鱼", price: 150, gain: "+100%" }],
-      "鲟鱼": [{ method: "鱼熏机", out: "熏鲟鱼", price: 400, gain: "+100%·高价值" }],
-      "河豚": [{ method: "鱼熏机", out: "熏河豚", price: 400, gain: "+100%" }],
-      "鳗鱼": [{ method: "鱼熏机", out: "熏鳗鱼", price: 170, gain: "+100%·不如做香辣鳗鱼" }],
-      "大嘴鲈鱼": [{ method: "鱼熏机", out: "熏大嘴鲈鱼", price: 150, gain: "+100%" }],
-      "虎纹鳟鱼": [{ method: "鱼熏机", out: "熏虎纹鳟鱼", price: 300, gain: "+100%" }],
-      "大眼鱼": [{ method: "鱼熏机", out: "熏大眼鱼", price: 210, gain: "+100%" }],
-      "章鱼": [{ method: "鱼熏机", out: "熏章鱼", price: 300, gain: "+100%" }],
+      // ═══ 1.6 熏鱼机（1鱼→1熏鱼，售价 = 基价×2） ═══
+      "鲤鱼": [{ method: "熏鱼机", out: "熏鲤鱼", price: 60, gain: "+100%·处理废鱼" }],
+      "鲈鱼": [{ method: "熏鱼机", out: "熏鲈鱼", price: 200, gain: "+100%" }, { method: "罐头瓶", out: "腌鲈鱼", price: 150, gain: "+50%" }],
+      "鲶鱼": [{ method: "熏鱼机", out: "熏鲶鱼", price: 400, gain: "+100%" }],
+      "鲑鱼": [{ method: "熏鱼机", out: "熏鲑鱼", price: 150, gain: "+100%" }],
+      "鲟鱼": [{ method: "熏鱼机", out: "熏鲟鱼", price: 400, gain: "+100%·高价值" }],
+      "河豚": [{ method: "熏鱼机", out: "熏河豚", price: 400, gain: "+100%" }],
+      "鳗鱼": [{ method: "熏鱼机", out: "熏鳗鱼", price: 170, gain: "+100%·不如做香辣鳗鱼" }],
+      "大嘴鲈鱼": [{ method: "熏鱼机", out: "熏大嘴鲈鱼", price: 150, gain: "+100%" }],
+      "虎纹鳟鱼": [{ method: "熏鱼机", out: "熏虎纹鳟鱼", price: 300, gain: "+100%" }],
+      "大眼鱼": [{ method: "熏鱼机", out: "熏大眼鱼", price: 210, gain: "+100%" }],
+      "章鱼": [{ method: "熏鱼机", out: "熏章鱼", price: 300, gain: "+100%" }],
 
       // ═══ 脱水机：蘑菇（5个→5个干蘑菇） ═══
       "普通蘑菇": [{ method: "脱水机", out: "干蘑菇", price: 100, gain: "+150%·5个一组" }],
@@ -19312,14 +19394,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "铜锭":60,"铁锭":120,"金锭":250,"铱锭":1000,
       "煤炭":15,"石英":25,"精炼石英":50,
       "紫水晶":100,"海蓝宝石":180,"翡翠":250,"红宝石":250,"钻石":750,"黄水晶":75,
-      "孔雀石":100,"玉":200,"黑曜石":200,"虎眼石":275,"冻泪":75,"万象晶球":0,
+      "孔雀石":100,"玉":200,"黑曜石":200,"虎眼石":275,"泪晶":75,"万象晶球":0,
       // 原材料
       "木材":2,"石头":2,"硬木":15,"纤维":1,"粘土":20,"苔藓":3,
       "树液":2,"橡子":20,"枫树种子":35,"松果":5,"桃花心木种子":100,"混合种子":0,"干草":50,
       // 树脂
       "枫糖浆":200,"橡树树脂":150,"松焦油":100,"神秘树液":1000,
       // 动物
-      "牛奶":125,"羊毛":340,"蜂蜜":100,"鸭蛋":95,"羽毛":250,"鸭羽":250,"兔子脚":565,
+      "牛奶":125,"羊毛":340,"蜂蜜":100,"鸭蛋":95,"鸭毛":250,"兔子脚":565,
       "大壶牛奶":190,"大瓶羊奶":345,"大鸡蛋(白)":95,"大鸡蛋(棕)":95,"鸵鸟蛋":600,
       // 鱼
       "太阳鱼":30,"鲶鱼":200,"西鲱":45,"虎纹鳟鱼":150,"鲢鱼":75,
@@ -19339,27 +19421,27 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "蜗牛":65,"玉黍螺":20,"牡蛎":40,"蛤":50,"海胆":160,"白藻":75,
       // 工匠
       "山羊奶酪":400,"奶酪":230,"果酒":160,"葡萄酒":240,"啤酒":200,
-      "鱼籽":30,"陈年鱼籽":150,"鱼子酱":500,
+      "鱼籽":30,"腌鱼籽":150,"鱼籽酱":500,
       "松露油":1065,"布料":470,
       "绿茶":100,"鱿鱼墨汁":110,"虚空蛋黄酱":275,"鸭蛋黄酱":375,"恐龙蛋黄酱":800,
       "淡啤酒":300,
       // 怪物
-      "史莱姆":5,"蝙蝠翅膀":15,"太阳精华":40,"虚空精华":60,
+      "史莱姆泥":5,"蝙蝠翅膀":15,"太阳精华":40,"虚空精华":60,
       // 特殊
-      "古代玩偶":100,"鹦鹉螺壳":120,"鹦鹉螺化石":80,"五彩碎片":2000,"金香蕉":150,
+      "古代玩偶":100,"鹦鹉螺":120,"鹦鹉螺化石":80,"五彩碎片":2000,"金香蕉":150,
       // 补充贝类
-      "海草":20,"绿藻":15,"海洋果冻":200,"河流果冻":125,"洞穴果冻":180,"彩虹贝":300,"珍珠":2500,"珊瑚":80,
+      "海草":20,"绿藻":15,"海凝胶":200,"河凝胶":125,"洞穴凝胶":180,"彩虹贝":300,"珍珠":2500,"珊瑚":80,
       // 补充鱼类
       "草鱼":150,"彩虹鱼":100,"绿松石鱼":30,"玻璃鱼":75,"铁头鱼":75,
       "午夜鳗":150,"狮子鱼":100,"蓝铁饼":75,"深海鱼":75,"海参":75,"史莱姆杰克":100,
       // 补充怪物素材
-      "骨头碎片":15,"菌丝体":15,"空灵之尘":50,
+      "骨头碎片":15,"菌丝体":15,"灵外质":50,
       "史莱姆蛋（绿）":1000,"史莱姆蛋（蓝）":1750,"史莱姆蛋（红）":2500,"史莱姆蛋（紫）":5000,
       // 补充采集
       "大葱":8,"熔岩菇":80,
       // 补充动物
       "鸡蛋(白)":50,"鸡蛋(棕)":50,"羊奶":225,
-      "虚空蛋":65,"恐龙蛋":350,"金色鸡蛋":500,
+      "虚空蛋":65,"恐龙蛋":350,"金蛋":500,
       // 补充工匠
       "蛋黄酱":190,"生鱼片":75,"生鱼寿司":220,"寿司卷":220,"煎蛋":35,"咖啡":150,
       "小麦粉":50,"油":100,"糖":50,"米饭":100,"薯饼":120,"玉米饼":50,
@@ -19374,8 +19456,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "鸡蛋(棕)": [{ dish: "煎蛋/煎蛋卷", note: "常用基础料理" }],
       "大鸡蛋(白)": [{ dish: "煎蛋/煎蛋卷", note: "料理不吃品质，通常优先加工蛋黄酱" }],
       "大鸡蛋(棕)": [{ dish: "煎蛋/煎蛋卷", note: "料理不吃品质，通常优先加工蛋黄酱" }],
-      "牛奶": [{ dish: "煎蛋卷/冰淇淋", note: "部分料理需要牛奶" }],
-      "大壶牛奶": [{ dish: "煎蛋卷/冰淇淋", note: "料理不吃品质，通常优先做奶酪" }],
+      "牛奶": [{ dish: "煎蛋卷/冰激凌", note: "部分料理需要牛奶" }],
+      "大壶牛奶": [{ dish: "煎蛋卷/冰激凌", note: "料理不吃品质，通常优先做奶酪" }],
       "羊奶": [{ dish: "奶类料理", note: "更常见做法是压成山羊奶酪" }],
       "花椰菜": [{ dish: "奶酪花椰菜", note: "可作为食物/送礼料理" }],
       "辣椒": [{ dish: "爆炒青椒/辣椒奶酪", note: "部分料理带速度或实用回复" }],
@@ -19450,7 +19532,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "万象晶球": [{ who: "克林特/矮人/利奥", note: "3 人最爱" }],
       "黑曜石": [{ who: "塞巴斯蒂安", note: "最爱（矿井深层/晶球）" }],
       "虎眼石": [{ who: "山姆", note: "最爱（晶球开出）" }],
-      "冻泪": [{ who: "塞巴斯蒂安", note: "最爱（冰天雪地区域采集）" }],
+      "泪晶": [{ who: "塞巴斯蒂安", note: "最爱（冰天雪地区域采集）" }],
 
       // —— 农作物 ——
       "防风草": [{ who: "帕姆", note: "最爱（春季最早作物）" }],
@@ -19485,7 +19567,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "仙人掌果子": [{ who: "山姆/莱纳斯/帕姆", note: "都是最爱（沙漠采集）" }],
       "嫩蕨菜": [{ who: "肯特", note: "最爱（春末森林采集）" }],
       "紫蘑菇": [{ who: "巫师", note: "最爱（矿井深层/秘密森林）" }],
-      // 鹦鹉螺壳：艾米丽不最爱此物（wiki 核实），已删除错误条目
+      // 鹦鹉螺：艾米丽不最爱此物（wiki 核实），已删除错误条目
       "虚空精华": [{ who: "巫师", note: "最爱（虚空怪掉落）" }],
       "太阳精华": [{ who: "巫师", note: "最爱（怪物掉落/冬季阳光石膏）" }],
       "野山葵": [{ who: "克罗布斯", note: "最爱（春季森林采集）" }],
@@ -19499,7 +19581,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "超级黄瓜": [{ who: "巫师", note: "最爱（夜钓深海稀有鱼）" }],
 
       // —— 动物产品 ——
-      "鸭羽": [{ who: "艾利欧特/利奥", note: "都是最爱" }],
+      "鸭毛": [{ who: "艾利欧特/利奥", note: "都是最爱" }],
       "鹌鹑蛋": [{ who: "潘妮", note: "最爱（1.6 新增）" }],
       "虚空蛋": [{ who: "克罗布斯/塞巴斯蒂安", note: "都是最爱" }],
       "蛙蛋": [{ who: "塞巴斯蒂安", note: "最爱（1.6 新增，雨天池塘）" }],
@@ -19563,7 +19645,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "幸运午餐": [{ who: "刘易斯", note: "「秋之硕果」他最爱；幸运午餐其实是巫师喜欢" }],
       "秋之硕果": [{ who: "刘易斯", note: "最爱（西红柿+山药）" }],
       "釉烤山药": [{ who: "刘易斯/帕姆", note: "都是最爱（山药+糖）" }],
-      "鱼子酱": [{ who: "克罗布斯", note: "「鱼子酱」是失踪收集包，他喜欢" }],
+      "鱼籽酱": [{ who: "克罗布斯", note: "「鱼籽酱」是失踪收集包，他喜欢" }],
       "海泡水石青": [{ who: "威利", note: "威利最爱（鱿鱼+西红柿+海蜇）" }],
 
       // —— 以下为核对 wiki 后补全的缺失条目 ——
@@ -19594,7 +19676,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
       // 德米特里厄斯补全
       "豆子炖菜": [{ who: "德米特里厄斯", note: "最爱（青豆+油+西红柿）" }],
-      "冰淇淋": [{ who: "德米特里厄斯", note: "最爱（牛奶+糖）" }],
+      "冰激凌": [{ who: "德米特里厄斯", note: "最爱（牛奶+糖）" }],
       "米布丁": [{ who: "德米特里厄斯", note: "最爱（牛奶+糖+米饭）" }],
 
       // 克林特补全
@@ -19669,21 +19751,21 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "五彩碎片": [{ use: "银河之剑/博物馆/失踪收集包", note: "极稀有，通常不建议卖" }],
       "恐龙蛋": [{ use: "博物馆/孵化恐龙/恐龙蛋黄酱", note: "先留至少1个，别急着卖" }],
       "虚空蛋": [{ use: "孵化虚空鸡/虚空蛋黄酱", note: "可持续产出后再加工" }],
-      "鱼子酱": [{ use: "失踪收集包", note: "由鲟鱼鱼籽在罐头瓶加工获得" }],
-      "海洋果冻": [{ use: "鱼熏机", note: "1.6鱼熏机材料之一，建议至少留1个" }],
-      "河流果冻": [{ use: "鱼熏机", note: "1.6鱼熏机材料之一，建议至少留1个" }],
-      "洞穴果冻": [{ use: "鱼熏机", note: "1.6鱼熏机材料之一，建议至少留1个" }],
-      "鲟鱼": [{ use: "鱼塘", note: "产鲟鱼鱼籽，可做鱼子酱" }],
+      "鱼籽酱": [{ use: "失踪收集包", note: "由鲟鱼鱼籽在罐头瓶加工获得" }],
+      "海凝胶": [{ use: "熏鱼机", note: "1.6熏鱼机材料之一，建议至少留1个" }],
+      "河凝胶": [{ use: "熏鱼机", note: "1.6熏鱼机材料之一，建议至少留1个" }],
+      "洞穴凝胶": [{ use: "熏鱼机", note: "1.6熏鱼机材料之一，建议至少留1个" }],
+      "鲟鱼": [{ use: "鱼塘", note: "产鲟鱼鱼籽，可做鱼籽酱" }],
       "岩浆鳗鱼": [{ use: "鱼塘", note: "高价值鱼塘候选" }],
       "水滴鱼": [{ use: "鱼塘", note: "高价值鱼塘候选" }],
       "木跃鱼": [{ use: "特色鱼类收集包/鱼塘", note: "献祭前先留1条" }],
       "沙鱼": [{ use: "特色鱼类收集包", note: "沙漠解锁前不易取得" }],
       "河豚": [{ use: "特色鱼类收集包/送礼", note: "献祭和阿比盖尔礼物都可用" }],
       "兔子脚": [{ use: "魔法师收集包/秘密事件/送礼", note: "稀有，建议保留" }],
-      "鸭羽": [{ use: "染料收集包/送礼", note: "献祭前先留1个" }],
+      "鸭毛": [{ use: "染料收集包/送礼", note: "献祭前先留1个" }],
       "红叶卷心菜": [{ use: "染料收集包", note: "第一年标准情况下较难获得" }],
       "海蓝宝石": [{ use: "染料收集包/博物馆/送礼", note: "先留献祭和博物馆首捐" }],
-      "鹦鹉螺壳": [{ use: "土地研究收集包", note: "冬季海滩采集，别和鹦鹉螺化石混淆" }],
+      "鹦鹉螺": [{ use: "土地研究收集包", note: "冬季海滩采集，别和鹦鹉螺化石混淆" }],
       "古代玩偶": [{ use: "博物馆/特殊彩蛋", note: "首个建议先捐博物馆" }],
       "鹦鹉螺化石": [{ use: "博物馆", note: "不是土地研究收集包所需物" }],
       "冰封晶球": [{ use: "土地研究收集包/开晶球", note: "献祭前先留1个" }],
@@ -19969,7 +20051,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           {h:10, icon:"💍", d:"约会"}
         ]},
       { id:"elliott", name:"艾利欧特", emoji:"📚", marry:true, birthday:{season:"fall",day:5},
-        loved:["石榴","鸭羽","龙虾","蟹黄糕","墨鱼","冬阴功汤"],
+        loved:["石榴","鸭毛","龙虾","蟹黄糕","墨鱼","冬阴功汤"],
         milestones:[
           {h:4, icon:"🎬", d:"海边小屋弹钢琴"},
           {h:6, icon:"🎬", d:"写小说（选诗/小说影响后续）"},
@@ -20043,7 +20125,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           {h:10, icon:"💍", d:"约会"}
         ]},
       { id:"sebastian", name:"塞巴斯蒂安", emoji:"🏍️", marry:true, birthday:{season:"winter",day:10},
-        loved:["冻泪","黑曜石","南瓜汤","生鱼片","虚空蛋","蛙蛋"],
+        loved:["泪晶","黑曜石","南瓜汤","生鱼片","虚空蛋","蛙蛋"],
         milestones:[
           {h:2, icon:"🎬", d:"地下室编程"},
           {h:4, icon:"🎬", d:"修摩托车"},
@@ -20145,7 +20227,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           {h:8, icon:"🎬", d:"春葱事件"}
         ]},
       { id:"demetrius", name:"德米特里厄斯", emoji:"🔬", marry:false, birthday:{season:"summer",day:19},
-        loved:["草莓","豆类火锅","冰淇淋","米布丁"],
+        loved:["草莓","豆类火锅","冰激凌","米布丁"],
         milestones:[
           {h:3, icon:"📜", d:"寄「炒蘑菇」配方"}
         ]},
@@ -20373,7 +20455,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         liked: []
       },
       demetrius: {
-        loved: ["草莓", "大米布丁", "冰淇淋", "豆类火锅"],
+        loved: ["草莓", "大米布丁", "冰激凌", "豆类火锅"],
         liked: ["恐龙蛋", "紫蘑菇"]
       },
       dwarf: {
@@ -20431,7 +20513,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
        数据来源对齐官方维基的村民喜好表。 */
     // 送礼物品名别名 → 物品库标准名
     const GIFT_NAME_ALIAS = {
-      "墨鱼": "鱿鱼墨汁", "鸭毛": "鸭羽", "绿宝石": "翡翠", "仙人掌": "仙人掌果子",
+      "墨鱼": "鱿鱼墨汁", "鸭毛": "鸭毛", "绿宝石": "翡翠", "仙人掌": "仙人掌果子",
       "超级黄瓜": "大海参", "桃": "桃子", "青蛙蛋": "蛙蛋", "茶叶": "绿茶",
       "仙女蔷薇": "玫瑰仙子", "虞美人花": "虞美人花", "万象晶球": "万象晶球"
     };
@@ -20444,7 +20526,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     const GEM_ITEMS = ["紫水晶","海蓝宝石","翡翠","红宝石","钻石","黄水晶","石榴石"];
     const FRUIT_ITEMS = invItemsOf("fruit"); // 树果
     const FLOWER_ITEMS = ["郁金香","蓝爵","虞美人花","夏季亮片","向日葵","玫瑰仙子"];
-    const ARTIFACT_ITEMS = ["古代玩偶","矮人卷轴I","矮人卷轴II","矮人卷轴III","矮人卷轴IV","鹦鹉螺化石","鹦鹉螺壳"];
+    const ARTIFACT_ITEMS = ["古代玩偶","矮人卷轴I","矮人卷轴II","矮人卷轴III","矮人卷轴IV","鹦鹉螺化石","鹦鹉螺"];
     function expandGiftShorthand(name) {
       if (name === "所有宝石") return GEM_ITEMS;
       if (name === "所有水果") return FRUIT_ITEMS;
@@ -20525,14 +20607,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       }
       if (catId === "monster") return { label: "不喜欢", text: "怪物素材为通用不喜欢/讨厌" };
       if (catId === "special") {
-        if (["古代玩偶","鹦鹉螺化石","鹦鹉螺壳"].includes(name)) return { label: "不喜欢", text: "古物为通用不喜欢（潘妮/矮人喜欢古物）" };
+        if (["古代玩偶","鹦鹉螺化石","鹦鹉螺"].includes(name)) return { label: "不喜欢", text: "古物为通用不喜欢（潘妮/矮人喜欢古物）" };
       }
       if (catId === "shellfish") {
         if (["海胆"].includes(name)) return { label: "讨厌", text: "海胆为通用讨厌（艾利欧特/威利除外）" };
         if (["珊瑚","彩虹贝"].includes(name)) return { label: "中立", text: "该贝类为通用中立" };
       }
       if (catId === "animal") {
-        if (["鸭羽","羽毛","松露","羊毛"].includes(name)) return { label: "中立", text: "该动物产物为通用中立" };
+        if (["鸭毛","松露","羊毛"].includes(name)) return { label: "中立", text: "该动物产物为通用中立" };
       }
       return null;
     }
@@ -21153,32 +21235,32 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       recipe("omelet", "煎蛋卷", [ing("蛋"), ing("牛奶")], [], "无", ["酱料女皇 奇数年春季28日", "星之果实餐吧 500金购买"], 125),
       recipe("salad", "沙拉", [ing("韭葱"), ing("蒲公英"), ing("醋")], [], "无", ["艾米丽 好感度3"], 110),
       recipe("cheese-cauliflower", "乳酪花椰菜", [ing("花椰菜"), ing("奶酪")], [], "无", ["潘姆 好感度3"], 300),
-      recipe("baked-fish", "烤鱼", [ing("太阳鱼"), ing("鲷鱼"), ing("大麦粉")], [], "无", ["酱料女皇 奇数年夏季7日"], 100),
+      recipe("baked-fish", "烤鱼", [ing("太阳鱼"), ing("鲷鱼"), ing("小麦粉")], [], "无", ["酱料女皇 奇数年夏季7日"], 100),
       recipe("parsnip-soup", "防风草汤", [ing("防风草"), ing("牛奶"), ing("醋")], [], "无", ["卡洛琳 好感度3"], 120),
       recipe("vegetable-medley", "蔬菜杂烩", [ing("西红柿"), ing("甜菜")], [], "无", ["卡洛琳 好感度7"], 120),
       recipe("complete-breakfast", "完美早餐", [ing("煎鸡蛋"), ing("牛奶"), ing("薯饼"), ing("薄煎饼")], ["耕种+2", "体力值上限+50"], "7分钟", ["酱料女皇 偶数年春季21日"], 350),
-      recipe("fried-calamari", "炸鱿鱼", [ing("鱿鱼"), ing("大麦粉"), ing("油")], [], "无", ["乔迪 好感度3"], 150),
-      recipe("strange-bun", "奇怪的小面包", [ing("大麦粉"), ing("玉黍螺"), ing("虚空蛋黄酱")], [], "无", ["谢恩 好感度7"], 225),
+      recipe("fried-calamari", "炸鱿鱼", [ing("鱿鱼"), ing("小麦粉"), ing("油")], [], "无", ["乔迪 好感度3"], 150),
+      recipe("strange-bun", "奇怪的小面包", [ing("小麦粉"), ing("玉黍螺"), ing("虚空蛋黄酱")], [], "无", ["谢恩 好感度7"], 225),
       recipe("lucky-lunch", "幸运午餐", [ing("海参"), ing("墨西哥薄饼"), ing("蓝爵")], ["运气+3"], "11分11秒", ["酱料女皇 偶数年春季28日"], 250),
       recipe("fried-mushroom", "炒蘑菇", [ing("普通蘑菇"), ing("羊肚菌"), ing("油")], ["攻击+2"], "7分钟", ["德米特里厄斯 好感度3"], 200),
-      recipe("pizza", "披萨", [ing("大麦粉"), ing("西红柿"), ing("奶酪")], [], "无", ["酱料女皇 偶数年春季7日", "星之果实餐吧 150金购买"], 300),
+      recipe("pizza", "披萨", [ing("小麦粉"), ing("西红柿"), ing("奶酪")], [], "无", ["酱料女皇 偶数年春季7日", "星之果实餐吧 150金购买"], 300),
       recipe("bean-hotpot", "豆类火锅", [ing("青豆", 2)], ["体力值上限+30", "磁性+32"], "7分钟", ["克林特 好感度7"], 100),
       recipe("glazed-yams", "琉璃山药", [ing("山药"), ing("糖")], [], "无", ["酱料女皇 奇数年秋季21日"], 200),
       recipe("carp-surprise", "惊喜鲤鱼", [ing("鲤鱼", 4)], [], "无", ["酱料女皇 偶数年夏季7日"], 150),
       recipe("hashbrowns", "薯饼", [ing("土豆"), ing("油")], ["耕种+1"], "5分35秒", ["酱料女皇 偶数年夏季7日", "星之果实餐吧 50金购买"], 120),
-      recipe("pancakes", "薄煎饼", [ing("大麦粉"), ing("蛋")], ["采集+2"], "11分11秒", ["酱料女皇 奇数年夏季14日", "星之果实餐吧 100金购买"], 80),
+      recipe("pancakes", "薄煎饼", [ing("小麦粉"), ing("蛋")], ["采集+2"], "11分11秒", ["酱料女皇 奇数年夏季14日", "星之果实餐吧 100金购买"], 80),
       recipe("salmon-dinner", "鲑鱼晚餐", [ing("鲑鱼"), ing("苋菜"), ing("甘蓝菜")], [], "无", ["格斯 好感度3"], 300),
       recipe("fish-taco", "鱼肉卷", [ing("金枪鱼"), ing("墨西哥薄饼"), ing("红叶卷心菜"), ing("蛋黄酱")], ["钓鱼+2"], "7分钟", ["莱纳斯 好感度7"], 500),
-      recipe("crispy-bass", "香酥鲈鱼", [ing("大嘴鲈鱼"), ing("大麦粉"), ing("油")], ["磁性+64"], "7分钟", ["肯特 好感度3"], 150),
+      recipe("crispy-bass", "香酥鲈鱼", [ing("大嘴鲈鱼"), ing("小麦粉"), ing("油")], ["磁性+64"], "7分钟", ["肯特 好感度3"], 150),
       recipe("pepper-poppers", "爆炒青椒", [ing("辣椒"), ing("奶酪")], ["耕种+2", "速度+1"], "7分钟", ["谢恩 好感度3"], 200),
-      recipe("bread", "面包", [ing("大麦粉")], [], "无", ["酱料女皇 奇数年夏季28日", "星之果实餐吧 100金购买"], 60),
+      recipe("bread", "面包", [ing("小麦粉")], [], "无", ["酱料女皇 奇数年夏季28日", "星之果实餐吧 100金购买"], 60),
       recipe("tom-kha-soup", "椰汁汤", [ing("椰子"), ing("虾"), ing("普通蘑菇")], ["耕种+2", "体力值上限+30"], "7分钟", ["桑迪 好感度7"], 250),
       recipe("trout-soup", "鳟鱼汤", [ing("虹鳟鱼"), ing("绿藻")], ["钓鱼+1"], "4分39秒", ["酱料女皇 奇数年秋季14日"], 100),
-      recipe("chocolate-cake", "巧克力蛋糕", [ing("大麦粉"), ing("糖"), ing("蛋")], [], "无", ["酱料女皇 奇数年冬季14日"], 200),
-      recipe("pink-cake", "粉红蛋糕", [ing("甜瓜"), ing("大麦粉"), ing("糖"), ing("蛋")], [], "无", ["酱料女皇 偶数年夏季21日"], 480),
-      recipe("rhubarb-pie", "大黄派", [ing("大黄"), ing("大麦粉"), ing("糖")], [], "无", ["玛妮 好感度7"], 400),
-      recipe("cookie", "饼干", [ing("大麦粉"), ing("糖"), ing("蛋")], [], "无", ["伊芙琳 好感度4"], 140),
-      recipe("spaghetti", "意大利面", [ing("大麦粉"), ing("西红柿")], [], "无", ["刘易斯 好感度3"], 120),
+      recipe("chocolate-cake", "巧克力蛋糕", [ing("小麦粉"), ing("糖"), ing("蛋")], [], "无", ["酱料女皇 奇数年冬季14日"], 200),
+      recipe("pink-cake", "粉红蛋糕", [ing("甜瓜"), ing("小麦粉"), ing("糖"), ing("蛋")], [], "无", ["酱料女皇 偶数年夏季21日"], 480),
+      recipe("rhubarb-pie", "大黄派", [ing("大黄"), ing("小麦粉"), ing("糖")], [], "无", ["玛妮 好感度7"], 400),
+      recipe("cookie", "饼干", [ing("小麦粉"), ing("糖"), ing("蛋")], [], "无", ["伊芙琳 好感度4"], 140),
+      recipe("spaghetti", "意大利面", [ing("小麦粉"), ing("西红柿")], [], "无", ["刘易斯 好感度3"], 120),
       recipe("fried-eel", "炒鳗鱼", [ing("鳗鱼"), ing("油")], ["运气+1"], "7分钟", ["乔治 好感度3"], 120),
       recipe("spicy-eel", "香辣鳗鱼", [ing("鳗鱼"), ing("辣椒")], ["运气+1", "速度+1"], "7分钟", ["乔治 好感度7"], 175),
       recipe("sashimi", "生鱼片", [ing("任意鱼")], [], "无", ["莱纳斯 好感度3"], 75),
@@ -21187,8 +21269,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       recipe("red-plate", "红之盛宴", [ing("红叶卷心菜"), ing("萝卜")], ["体力值上限+50"], "3分30秒", ["艾米丽 好感度7"], 400),
       recipe("eggplant-parmesan", "帕尔玛奶酪茄子", [ing("茄子"), ing("西红柿")], ["采矿+1", "防御+3"], "4分39秒", ["刘易斯 好感度7"], 200),
       recipe("rice-pudding", "大米布丁", [ing("牛奶"), ing("糖"), ing("大米")], [], "无", ["伊芙琳 好感度7"], 260),
-      recipe("ice-cream", "冰淇淋", [ing("牛奶"), ing("糖")], [], "无", ["乔迪 好感度7"], 120),
-      recipe("blueberry-tart", "蓝莓千层酥", [ing("蓝莓"), ing("大麦粉"), ing("糖"), ing("蛋")], [], "无", ["皮埃尔 好感度3"], 150),
+      recipe("ice-cream", "冰激凌", [ing("牛奶"), ing("糖")], [], "无", ["乔迪 好感度7"], 120),
+      recipe("blueberry-tart", "蓝莓千层酥", [ing("蓝莓"), ing("小麦粉"), ing("糖"), ing("蛋")], [], "无", ["皮埃尔 好感度3"], 150),
       recipe("autumns-bounty", "秋日恩赐", [ing("山药"), ing("南瓜")], ["采集+2", "防御+2"], "7分41秒", ["德米特里厄斯 好感度7"], 350),
       recipe("pumpkin-soup", "南瓜汤", [ing("南瓜"), ing("牛奶")], ["防御+2", "运气+2"], "7分41秒", ["罗宾 好感度7"], 300),
       recipe("super-meal", "巨无霸餐", [ing("小白菜"), ing("蔓越莓"), ing("洋蓟")], ["体力值上限+40", "速度+1"], "3分30秒", ["肯特 好感度7"], 220),
@@ -21203,32 +21285,32 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       recipe("seafoam-pudding", "海泡布丁", [ing("比目鱼"), ing("午夜鲤鱼"), ing("鱿鱼墨汁")], ["钓鱼+4"], "3分30秒", ["钓鱼9级"], 300),
       recipe("algae-soup", "海藻汤", [ing("绿藻", 4)], [], "无", ["克林特 好感度3"], 100),
       recipe("pale-broth", "清汤", [ing("白藻", 2)], [], "无", ["玛妮 好感度3"], 150),
-      recipe("plum-pudding", "葡萄干布丁", [ing("野梅", 2), ing("大麦粉"), ing("糖")], [], "无", ["酱料女皇 奇数年冬季7日"], 260),
+      recipe("plum-pudding", "葡萄干布丁", [ing("野梅", 2), ing("小麦粉"), ing("糖")], [], "无", ["酱料女皇 奇数年冬季7日"], 260),
       recipe("artichoke-dip", "水煮洋蓟", [ing("洋蓟"), ing("牛奶")], [], "无", ["酱料女皇 奇数年秋季28日"], 210),
       recipe("stir-fry", "蔬菜什锦盖饭", [ing("山洞萝卜"), ing("普通蘑菇"), ing("甘蓝菜"), ing("油")], [], "无", ["酱料女皇 奇数年春季7日"], 335),
       recipe("roasted-hazelnuts", "烤榛子", [ing("榛子", 3)], [], "无", ["酱料女皇 偶数年夏季28日"], 270),
-      recipe("pumpkin-pie", "南瓜派", [ing("南瓜"), ing("大麦粉"), ing("牛奶"), ing("糖")], [], "无", ["酱料女皇 奇数年冬季21日"], 385),
+      recipe("pumpkin-pie", "南瓜派", [ing("南瓜"), ing("小麦粉"), ing("牛奶"), ing("糖")], [], "无", ["酱料女皇 奇数年冬季21日"], 385),
       recipe("radish-salad", "萝卜沙拉", [ing("油"), ing("醋"), ing("萝卜")], [], "无", ["酱料女皇 奇数年春季21日"], 300),
       recipe("fruit-salad", "水果沙拉", [ing("蓝莓"), ing("甜瓜"), ing("杏子")], [], "无", ["酱料女皇 偶数年秋季7日"], 450),
-      recipe("blackberry-cobbler", "黑莓脆皮饼", [ing("黑莓", 2), ing("糖"), ing("大麦粉")], [], "无", ["酱料女皇 偶数年秋季14日"], 260),
+      recipe("blackberry-cobbler", "黑莓脆皮饼", [ing("黑莓", 2), ing("糖"), ing("小麦粉")], [], "无", ["酱料女皇 偶数年秋季14日"], 260),
       recipe("cranberry-candy", "蔓越莓糖果", [ing("蔓越莓"), ing("苹果"), ing("糖")], [], "无", ["酱料女皇 奇数年冬季28日"], 175),
       recipe("bruschetta", "意式烤面包", [ing("面包"), ing("油"), ing("西红柿")], [], "无", ["酱料女皇 偶数年冬季21日"], 210),
       recipe("coleslaw", "卷心菜沙拉", [ing("红叶卷心菜"), ing("醋"), ing("蛋黄酱")], [], "无", ["酱料女皇 奇数年春季14日"], 345),
       recipe("fiddlehead-risotto", "意式蕨菜炖饭", [ing("油"), ing("蕨菜"), ing("蒜")], [], "无", ["酱料女皇 偶数年秋季28日"], 350),
-      recipe("poppyseed-muffin", "虞美人籽松糕", [ing("虞美人"), ing("大麦粉"), ing("糖")], [], "无", ["酱料女皇 偶数年冬季7日"], 250),
+      recipe("poppyseed-muffin", "虞美人籽松糕", [ing("虞美人花"), ing("小麦粉"), ing("糖")], [], "无", ["酱料女皇 偶数年冬季7日"], 250),
       recipe("chowder", "海鲜杂烩汤", [ing("蛤"), ing("牛奶")], ["钓鱼+1"], "16分47秒", ["威利 好感度3"], 135),
       recipe("lobster-bisque", "龙虾浓汤", [ing("龙虾"), ing("牛奶")], ["钓鱼+3", "体力值上限+50"], "16分47秒", ["酱料女皇 偶数年冬季14日", "威利 好感度9"], 205),
       recipe("escargot", "法式田螺", [ing("蜗牛"), ing("蒜")], ["钓鱼+2"], "16分47秒", ["威利 好感度5"], 125),
       recipe("fish-stew", "烩鱼汤", [ing("小龙虾"), ing("蚌"), ing("玉黍螺"), ing("西红柿")], ["钓鱼+3"], "16分47秒", ["威利 好感度7"], 175),
-      recipe("maple-bar", "枫糖棒", [ing("枫糖浆"), ing("糖"), ing("大麦粉")], ["耕种+1", "钓鱼+1", "采矿+1"], "16分47秒", ["酱料女皇 偶数年夏季14日"], 300),
-      recipe("crab-cakes", "蟹黄糕", [ing("螃蟹"), ing("大麦粉"), ing("蛋"), ing("油")], ["速度+1", "防御+1"], "16分47秒", ["酱料女皇 偶数年秋季21日"], 275),
+      recipe("maple-bar", "枫糖棒", [ing("枫糖浆"), ing("糖"), ing("小麦粉")], ["耕种+1", "钓鱼+1", "采矿+1"], "16分47秒", ["酱料女皇 偶数年夏季14日"], 300),
+      recipe("crab-cakes", "蟹黄糕", [ing("螃蟹"), ing("小麦粉"), ing("蛋"), ing("油")], ["速度+1", "防御+1"], "16分47秒", ["酱料女皇 偶数年秋季21日"], 275),
       recipe("shrimp-cocktail", "虾鸡尾酒", [ing("西红柿"), ing("虾"), ing("野山葵")], ["钓鱼+1", "运气+1"], "10分钟", ["酱料女皇 偶数年冬季28日"], 160),
       recipe("ginger-ale", "姜汁汽水", [ing("姜", 3), ing("糖")], ["运气+1"], "5分钟", ["姜岛火山地牢商店 1000金购买"], 200),
       recipe("banana-pudding", "香蕉布丁", [ing("香蕉"), ing("牛奶"), ing("糖")], ["采矿+1", "运气+1", "防御+1"], "5分1秒", ["姜岛商人 30骨头碎片购买"], 260),
       recipe("mango-sticky-rice", "芒果糯米饭", [ing("芒果"), ing("椰子"), ing("大米")], ["防御+3"], "5分1秒", ["雷欧 好感度7"], 250),
       recipe("poi", "夏威夷芋泥", [ing("芋头", 4)], [], "无", ["雷欧 好感度3"], 400),
       recipe("tropical-curry", "热带咖喱", [ing("椰子"), ing("菠萝"), ing("辣椒")], ["采集+4"], "5分1秒", ["姜岛度假村"], 500),
-      recipe("squid-ink-ravioli", "墨汁意大利饺", [ing("鱿鱼墨汁"), ing("大麦粉"), ing("西红柿")], ["采矿+1", "墨汁意大利饺 3分钟"], "4分39秒", ["战斗9级"], 150),
+      recipe("squid-ink-ravioli", "墨汁意大利饺", [ing("鱿鱼墨汁"), ing("小麦粉"), ing("西红柿")], ["采矿+1", "墨汁意大利饺 3分钟"], "4分39秒", ["战斗9级"], 150),
       recipe("moss-soup", "苔藓汤", [ing("苔藓", 20)], [], "无", ["采集3级"], 80)
     ];
 
@@ -22126,7 +22208,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       forageItem("forage-winter-snow-yam", "雪山药", ["winter"], 100, "冬季锄地/冬季种子", ["冬季采集收集包物品。"], { bundle:"冬季采集收集包", tags:["bundle"] }),
       forageItem("forage-winter-crocus", "番红花", ["winter"], 60, "冬季地面采集/冬季种子", ["冬季采集收集包物品，桑迪最爱。"], { bundle:"冬季采集收集包", tags:["bundle","gift"] }),
       forageItem("forage-winter-holly", "冬青", ["winter"], 80, "冬季地面采集", ["多数村民不喜欢，偏向卖钱或收藏。"], { tags:["avoid"] }),
-      forageItem("forage-winter-nautilus", "鹦鹉螺壳", ["winter"], 120, "冬季海滩采集", ["研究收集包会用到，冬季海滩注意捡。"], { bundle:"研究收集包", tags:["bundle"] })
+      forageItem("forage-winter-nautilus", "鹦鹉螺", ["winter"], 120, "冬季海滩采集", ["研究收集包会用到，冬季海滩注意捡。"], { bundle:"研究收集包", tags:["bundle"] })
     ];
 
     const PLANTING_FRUIT_TREES = [
@@ -25493,8 +25575,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
     const POND_RECOMMENDS = [
       pondFish("sturgeon", "鲟鱼", "湖泊；夏季/冬季 6:00AM-7:00PM",
-        "鲟鱼鱼籽是唯一可以做鱼子酱的鱼籽，超市收集包也需要。",
-        ["鱼籽", "鱼子酱"],
+        "鲟鱼鱼籽是唯一可以做鱼籽酱的鱼籽，超市收集包也需要。",
+        ["鱼籽", "鱼籽酱"],
         ["新手优先级很高，稳定养起来后把鱼籽放进罐头瓶。"],
         ["starter", "profit"]),
       pondFish("flounder", "比目鱼", "海洋；春季/夏季 6:00AM-8:00PM",
@@ -25731,7 +25813,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       { id: "east", label: "东部" },
       { id: "volcano", label: "火山" },
       { id: "west", label: "西部" },
-      { id: "walnut", label: "金核桃" },
+      { id: "walnut", label: "金色核桃" },
       { id: "puzzle", label: "谜题" }
     ];
 
@@ -25742,7 +25824,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       east: "东部",
       volcano: "火山",
       west: "西部",
-      walnut: "金核桃",
+      walnut: "金色核桃",
       puzzle: "谜题",
       travel: "传送",
       farm: "农场",
@@ -25755,7 +25837,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       ["鹦鹉特快", "鹦鹉特快"], ["姜岛农舍", "姜岛农场"], ["岛屿办事处", "岛屿办事处"], ["姜岛商人", "姜岛商人"],
       ["硬木", "硬木"], ["电池组", "电池组"], ["铱锭", "铱锭"], ["铱矿石", "铱矿石"], ["煤炭", "煤炭"],
       ["威利", "威利"], ["鱼店", "鱼店"], ["旧船", "旧船"], ["船票", "船票"], ["10000金", "金币"], ["1000金", "金币"],
-      ["金核桃", "金核桃"], ["鹦鹉", "鹦鹉"], ["雷欧", "雷欧"], ["码头", "码头"], ["传送点", "姜岛传送图腾"],
+      ["金色核桃", "金色核桃"], ["鹦鹉", "鹦鹉"], ["雷欧", "雷欧"], ["码头", "码头"], ["传送点", "姜岛传送图腾"],
       ["度假村", "度假村"], ["秘密森林", "硬木"], ["斧头", "斧"], ["桃花心木", "桃花心木种子"], ["避雷针", "避雷针"],
       ["紫色史莱姆", "紫色史莱姆"], ["史莱姆", "史莱姆"], ["美人鱼", "美人鱼"], ["长笛", "长笛块"],
       ["海盗酒保", "海盗酒保"], ["海盗帽", "海盗帽"], ["豪华海盗帽", "豪华海盗帽"], ["眼罩", "眼罩"], ["鹦鹉蛋", "鹦鹉蛋"],
@@ -25779,7 +25861,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       west: "姜岛农场"
     };
 
-    const ISLAND_HERO_QUICK_ITEMS = ["硬木×200", "电池组×5", "铱锭×5", "船票1000金", "金核桃开图"];
+    const ISLAND_HERO_QUICK_ITEMS = ["硬木×200", "电池组×5", "铱锭×5", "船票1000金", "金色核桃开图"];
 
     const ISLAND_INFO_CARDS = [
       {
@@ -25820,30 +25902,30 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         iconName: "金色鹦鹉",
         title: "鹦鹉特快",
         notes: [
-          "用10个金核桃可以解锁鹦鹉特快，快速传送到姜岛各地。",
+          "用10个金色核桃可以解锁鹦鹉特快，快速传送到姜岛各地。",
           "常用站点包括火山、农场、挖掘场、丛林和码头。",
           "前期开图时优先解锁，可以少走很多绕路。"
         ],
-        chips: ["10金核桃", "火山", "农场", "挖掘场", "丛林", "码头"]
+        chips: ["10金色核桃", "火山", "农场", "挖掘场", "丛林", "码头"]
       }
     ];
 
     const ISLAND_TIPS = [
       "第一次来姜岛会有剧情，需要追随新居民雷欧前往东部丛林小屋。",
-      "先喂给雷欧小屋里的鹦鹉1个金核桃，才能继续解锁姜岛其他区域。",
+      "先喂给雷欧小屋里的鹦鹉1个金色核桃，才能继续解锁姜岛其他区域。",
       "姜岛天气和星露谷天气不同步；宝石鸟谜题需要在岛上下雨时观察。",
       "前往火山地牢记得带喷壶，可以在岩浆里浇出路。",
       "度假村修复后，非节日晴天会随机有几位居民来游玩。",
       "姜岛农场不需要稻草人，但杂草和碎石仍要清理。",
-      "金核桃优先花在农舍、桥、鹦鹉特快和商人这些能扩大探索效率的节点。"
+      "金色核桃优先花在农舍、桥、鹦鹉特快和商人这些能扩大探索效率的节点。"
     ];
 
     const ISLAND_ROUTE = [
       "修复威利旧船：硬木×200、电池组×5、铱锭×5。",
-      "首次登岛后跟随雷欧，到东部小屋喂鹦鹉1个金核桃。",
+      "首次登岛后跟随雷欧，到东部小屋喂鹦鹉1个金色核桃。",
       "先解锁北部通路和火山，再逐步修桥、开挖掘场和农场。",
-      "攒够10个金核桃后优先考虑鹦鹉特快或挖掘场桥。",
-      "20个金核桃修复西部农舍，100个金核桃进入齐先生核桃房。"
+      "攒够10个金色核桃后优先考虑鹦鹉特快或挖掘场桥。",
+      "20个金色核桃修复西部农舍，100个金色核桃进入齐先生核桃房。"
     ];
 
     function islandRegion(id, name, emoji, subtitle, summary, landmarks, rewards, notes, tags) {
@@ -25855,11 +25937,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         "玩家最初登岛的位置，返航、传送图腾落点、度假村和鹦鹉特快都集中在这里。",
         [
           ["小船码头", "上岛地点，返回星露谷也从这里坐船回去。"],
-          ["度假村", "花费20个金核桃修复，修复后居民会来姜岛。"],
-          ["鹦鹉特快", "花费10个金核桃解锁，可快速传送姜岛各地。"],
+          ["度假村", "花费20个金色核桃修复，修复后居民会来姜岛。"],
+          ["鹦鹉特快", "花费10个金色核桃解锁，可快速传送姜岛各地。"],
           ["传送点", "使用姜岛传送图腾后会出现在这里。"]
         ],
-        ["20金核桃度假村", "10金核桃鹦鹉特快", "返航码头"],
+        ["20金色核桃度假村", "10金色核桃鹦鹉特快", "返航码头"],
         [
           "度假村解锁后，非节日晴天会随机几位居民穿泳装游玩，通常上午11点到达，下午6点离开。",
           "可以切换更衣室之间的牌子决定是否营业；关闭营业后居民不会来。",
@@ -25867,14 +25949,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         ],
         ["south", "unlock", "travel", "walnut"]),
       islandRegion("southeast", "姜岛东南部", "🏴‍☠️", "美人鱼 / 海盗湾 / 黄貂鱼",
-        "东南部藏着美人鱼谜题、海盗湾事件和黄貂鱼钓点，是金核桃和特殊鱼类的重要区域。",
+        "东南部藏着美人鱼谜题、海盗湾事件和黄貂鱼钓点，是金色核桃和特殊鱼类的重要区域。",
         [
-          ["美人鱼", "下雨天会坐在礁石上，用长笛演奏正确旋律可获得金核桃。"],
+          ["美人鱼", "下雨天会坐在礁石上，用长笛演奏正确旋律可获得金色核桃。"],
           ["海盗湾", "度假村解锁后，偶数天且非雨天晚上8点，海盗会出现在海盗湾。"],
-          ["飞镖小游戏", "与海盗湾右侧海盗对话开始飞镖小游戏，可获得金核桃。"],
+          ["飞镖小游戏", "与海盗湾右侧海盗对话开始飞镖小游戏，可获得金色核桃。"],
           ["钓鱼点", "海盗湾右下角水池是唯一可以钓到黄貂鱼的地方。"]
         ],
-        ["美人鱼金核桃", "飞镖小游戏金核桃", "蜂蜜酒", "黄貂鱼"],
+        ["美人鱼金色核桃", "飞镖小游戏金色核桃", "蜂蜜酒", "黄貂鱼"],
         [
           "带着海盗帽、眼罩、豪华海盗帽、鹦鹉蛋或海盗酒保相关装扮与海盗酒保对话，每天可触发一次赠送蜂蜜酒。",
           "艾利欧特前往姜岛时对话，会提到岛上藏着海盗湾的提示。",
@@ -25885,11 +25967,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         "东部是雷欧居住的丛林区域，也是最早推动姜岛探索的剧情区域。",
         [
           ["雷欧小屋", "雷欧和鹦鹉生活在这里。首次探索时要先到这里推进剧情。"],
-          ["鹦鹉特快", "花费10个金核桃可解锁快速传送。"],
-          ["祭坛", "放一个香蕉，会有大猩猩奖励3个金核桃。"],
-          ["宝石鸟神龛", "解密四只宝石鸟的颜色和方位，放上对应宝石后获得5个金核桃。"]
+          ["鹦鹉特快", "花费10个金色核桃可解锁快速传送。"],
+          ["祭坛", "放一个香蕉，会有大猩猩奖励3个金色核桃。"],
+          ["宝石鸟神龛", "解密四只宝石鸟的颜色和方位，放上对应宝石后获得5个金色核桃。"]
         ],
-        ["香蕉祭坛3金核桃", "神龛5金核桃", "起始礼物"],
+        ["香蕉祭坛3金色核桃", "神龛5金色核桃", "起始礼物"],
         [
           "岛上每逢下雨，会有一只宝石鸟出现在某个方位，记住四只宝石鸟的颜色和位置。",
           "神龛方位提示：南部在码头西北，东部在地图中间小路旁，北部在姜岛商人东北，西部在池塘右边。",
@@ -25900,14 +25982,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         "挖掘场是骨头、黏土和调查任务相关资源点，修桥后才方便进入。",
         [
           ["挖掘场", "每天有概率生成石头、骨头矿和黏土矿。"],
-          ["修复桥", "通往挖掘场的桥需要10个金核桃修复。"],
+          ["修复桥", "通往挖掘场的桥需要10个金色核桃修复。"],
           ["姜岛蘑菇洞", "用炸弹炸开巨石，解救蜗牛教授。"],
           ["岛屿办事处", "救出蜗牛教授后，完成调查任务可以获得奖励。"],
-          ["姜岛商人", "花费10个金核桃建造商人小摊后解锁，可进行物品互换。"]
+          ["姜岛商人", "花费10个金色核桃建造商人小摊后解锁，可进行物品互换。"]
         ],
         ["蜗牛教授", "调查奖励", "桃花心木种子", "生姜"],
         [
-          "挖掘场附近需要10个金核桃修桥。",
+          "挖掘场附近需要10个金色核桃修桥。",
           "挖掘场区域还有机会生成桃花心木树种子和生姜。",
           "姜岛商人解锁后会成为香蕉、金色椰子等资源交换点。"
         ],
@@ -25917,8 +25999,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         [
           ["火山地牢", "共有10层，层数随机生成，终点有锻造台。"],
           ["第5层商店", "火山第5层是矮人商店。"],
-          ["鹦鹉特快", "花费10个金核桃解锁后可快速到达火山。"],
-          ["金色Joja鹦鹉", "可花费10000金购买未找到的金核桃，第二天增加。"]
+          ["鹦鹉特快", "花费10个金色核桃解锁后可快速到达火山。"],
+          ["金色Joja鹦鹉", "可花费10000金购买未找到的金色核桃，第二天增加。"]
         ],
         ["锻造台", "矮人商店", "龙牙", "火山晶石"],
         [
@@ -25930,13 +26012,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       islandRegion("west", "姜岛西部", "🌾", "农舍 / 农场 / 齐先生核桃房",
         "西部是长期经营姜岛的核心，农场全年可种作物，农舍和齐先生核桃房都在这里。",
         [
-          ["姜岛农舍", "初始是破旧小屋，需要20个金核桃解锁。"],
-          ["齐先生核桃房", "收集100个金核桃即可解锁进入。"],
+          ["姜岛农舍", "初始是破旧小屋，需要20个金色核桃解锁。"],
+          ["齐先生核桃房", "收集100个金色核桃即可解锁进入。"],
           ["贝啼小屋", "不可进入，对话贝啼触发“海盗的妻子”任务。"],
           ["姜岛农场", "像温室一样全年种植，不受季节影响，也不会出现乌鸦。"],
-          ["谜题与小游戏", "饕餮青蛙、五彩水晶谜题、沉船和打地鼠小游戏完成后都会给金核桃。"]
+          ["谜题与小游戏", "饕餮青蛙、五彩水晶谜题、沉船和打地鼠小游戏完成后都会给金色核桃。"]
         ],
-        ["20金核桃农舍", "100金核桃房", "海盗的妻子任务", "全年农场"],
+        ["20金色核桃农舍", "100金色核桃房", "海盗的妻子任务", "全年农场"],
         [
           "农场不需要稻草人，但会长杂草，需要留出清理空间。",
           "西部适合作为长期种植和加工补给区。",
@@ -25978,7 +26060,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       const unlockCount = ISLAND_REGIONS.filter((entry) => entry.tags.includes("unlock")).length;
       summary.innerHTML = `
         <span class="island-stat">区域 <b>${ISLAND_REGIONS.length}</b></span>
-        <span class="island-stat">金核桃节点 <b>${walnutCount}</b></span>
+        <span class="island-stat">金色核桃节点 <b>${walnutCount}</b></span>
         <span class="island-stat">谜题 <b>${puzzleCount}</b></span>
         <span class="island-stat">解锁点 <b>${unlockCount}</b></span>
         <span class="island-stat">当前显示 <b>${visible.length}</b></span>
@@ -25994,13 +26076,13 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           <div class="island-note-list">${ISLAND_ROUTE.map(renderIslandNote).join("")}</div>
         </section>
         <section>
-          <h3 class="island-section-title">${renderIslandTitleIcon("金核桃", "🗺️")}姜岛区域</h3>
+          <h3 class="island-section-title">${renderIslandTitleIcon("金色核桃", "🗺️")}姜岛区域</h3>
           <div class="island-region-grid">
             ${visible.length ? visible.map(renderIslandRegionCard).join("") : `<div class="island-empty">没有匹配的姜岛内容，换个关键词或筛选试试。</div>`}
           </div>
         </section>
         <section class="island-tip-card">
-          <h3 class="island-section-title">${renderIslandTitleIcon("金核桃", "💡")}探索贴士</h3>
+          <h3 class="island-section-title">${renderIslandTitleIcon("金色核桃", "💡")}探索贴士</h3>
           <div class="island-note-list">${ISLAND_TIPS.map(renderIslandNote).join("")}</div>
         </section>
       `;
@@ -26073,7 +26155,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           <div class="island-hero-icon" aria-hidden="true">${renderIslandIcon("姜岛传送图腾", "姜岛")}</div>
           <div>
             <h2 class="island-hero-title">姜岛地图讲解及新手攻略</h2>
-            <p class="island-hero-copy">把解锁旧船、姜岛地理、鹦鹉特快、海盗湾、火山地牢、农场和金核桃优先级整理成可查询板块。</p>
+            <p class="island-hero-copy">把解锁旧船、姜岛地理、鹦鹉特快、海盗湾、火山地牢、农场和金色核桃优先级整理成可查询板块。</p>
             <div class="island-quick-row">
               ${ISLAND_HERO_QUICK_ITEMS.map((item) => renderIslandChip(item, "island-quick", 1)).join("")}
             </div>
@@ -26349,17 +26431,17 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         }),
       strategy("fish-smoker", "熏鱼流", "🔥", "late", "钓鱼 / 工匠",
         "河流农场和海滩农场可选，前期钓高价值鱼，后期熏岩浆鳗鱼和鱼王。",
-        "Fish Smoker.png", ["鱼熏机", "高级虫饵盒", "虫饵盒", "鱼饵制造机", "岩浆鳗鱼", "熏鱼"], {
-          summary: "把鱼放进鱼熏机加工后出售。鱼价可叠加钓鱼职业和工匠职业加成，但每条熏鱼要消耗煤炭，规划不好容易亏本。",
+        "Fish Smoker.png", ["熏鱼机", "高级虫饵盒", "虫饵盒", "鱼饵制造机", "岩浆鳗鱼", "熏鱼"], {
+          summary: "把鱼放进熏鱼机加工后出售。鱼价可叠加钓鱼职业和工匠职业加成，但每条熏鱼要消耗煤炭，规划不好容易亏本。",
           core: ["前期可钓高价值鱼进行熏制。", "后期专钓岩浆鳗鱼、姜岛鱼王等高价鱼更适合熏制。", "熏鱼基础价格是鱼基础价格的2倍，并可受钓鱼职业与工匠职业影响。"],
-          tools: ["鱼熏机：威利鱼店10000g买配方，硬木10、海洋果冻1、河流果冻1、洞穴果冻1。", "高级虫饵盒：产鱼饵，钓鱼8级。", "虫饵盒：钓鱼4级，硬木15、金锭1、铁锭1、纤维50。", "鱼饵制造机：钓鱼6级，铁锭3、珊瑚3、海胆1。"],
+          tools: ["熏鱼机：威利鱼店10000g买配方，硬木10、海凝胶1、河凝胶1、洞穴凝胶1。", "高级虫饵盒：产鱼饵，钓鱼8级。", "虫饵盒：钓鱼4级，硬木15、金锭1、铁锭1、纤维50。", "鱼饵制造机：钓鱼6级，铁锭3、珊瑚3、海胆1。"],
           products: [
             ["熏鱼", "鱼基础价格×2。"],
             ["渔夫/垂钓者职业", "鱼价+25%或+50%。"],
             ["工匠职业", "熏鱼再加成，可与钓鱼职业叠加。"],
             ["高价值鱼推荐", "大海参、石鱼、岩浆鳗鱼、绯红鱼之子、传说之鱼二代等。"]
           ],
-          route: ["先买鱼熏机配方。", "用虫饵盒和鱼饵制造机降低鱼饵压力。", "中后期转高价值鱼熏制。"],
+          route: ["先买熏鱼机配方。", "用虫饵盒和鱼饵制造机降低鱼饵压力。", "中后期转高价值鱼熏制。"],
           tips: ["每次熏鱼消耗1块煤，前期凝胶和煤炭成本都不低。", "图片笔记明确说它不适合纯新手，更适合有规划的钓鱼玩家。"],
           tags: ["late", "fishing", "artisan", "active"]
         })
@@ -26631,7 +26713,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         }
       },
       { id: "island-explore", icon: "🏝️", title: "姜岛探险", urgency: 1,
-        desc: "晴天可坐船去姜岛探索/种植/挖金核桃",
+        desc: "晴天可坐船去姜岛探索/种植/挖金色核桃",
         trigger(s) {
           if (!s.progress.islandUnlocked) return false;
           return s.weather === "sunny";
@@ -27414,9 +27496,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       level = normalizeToolLevel(level);
       if (level === "初始") return tool.name;
       if (tool.id === "rod") {
-        if (level === "训练") return "训练渔竿";
-        if (level === "玻璃纤维") return "玻璃纤维渔竿";
-        return "铱渔竿";
+        if (level === "训练") return "训练鱼竿";
+        if (level === "玻璃纤维") return "玻璃纤维鱼竿";
+        return "铱金鱼竿";
       }
       return `${level}${tool.name}`;
     }
@@ -27432,7 +27514,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         "香辣鳗鱼", "蟹黄糕", "爆炒青椒", "矿工特供", "矿工餐", "三倍浓缩咖啡",
         "海之菜肴", "幸运午餐", "南瓜汤", "农夫午餐", "生鱼片", "奶酪", "咖啡",
         "炸弹", "超级炸弹", "楼梯", "铱矿石", "五彩碎片", "铱锭",
-        "罐头瓶", "小桶", "烘干机", "脱水机", "鱼熏机", "水晶复制机"
+        "罐头瓶", "小桶", "烘干机", "脱水机", "熏鱼机", "水晶复制机"
       ];
       const keywordIcon = keywordIcons.find((name) => title.includes(name));
       if (keywordIcon) return keywordIcon === "矿工餐" ? "矿工特供" : keywordIcon;
@@ -27445,9 +27527,9 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         return "垃圾桶";
       }
       if (title.includes("渔竿")) {
-        if (title.includes("铱")) return "铱渔竿";
-        if (title.includes("玻璃")) return "玻璃纤维渔竿";
-        if (title.includes("训练")) return "训练渔竿";
+        if (title.includes("铱")) return "铱金鱼竿";
+        if (title.includes("玻璃")) return "玻璃纤维鱼竿";
+        if (title.includes("训练")) return "训练鱼竿";
         return "竹鱼竿";
       }
       if (title.includes("温室")) return "温室";
