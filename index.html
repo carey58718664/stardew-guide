@@ -20378,6 +20378,117 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       villager.liked = uniqueGiftList(update.liked || villager.liked || []);
     });
 
+    /* ── 送礼反向索引：由村民清单推出「每个物品被谁喜爱」 ──
+       依据游戏真实机制：村民显式清单 + 类别通用口味（所有宝石/水果/花…）。
+       数据来源对齐官方维基的村民喜好表。 */
+    // 送礼物品名别名 → 物品库标准名
+    const GIFT_NAME_ALIAS = {
+      "墨鱼": "鱿鱼墨汁", "鸭毛": "鸭羽", "绿宝石": "翡翠", "仙人掌": "仙人掌果子",
+      "超级黄瓜": "大海参", "桃": "桃子", "青蛙蛋": "蛙蛋", "茶叶": "绿茶",
+      "仙女蔷薇": "玫瑰仙子", "虞美人花": "罂粟", "万象晶球": "万象晶球"
+    };
+    const normGiftName = (n) => GIFT_NAME_ALIAS[n] || n;
+    // 类别集合（用于展开「所有宝石」等简写）
+    function invItemsOf(catId) {
+      const c = INV_CATEGORIES.find(x => x.id === catId);
+      return c ? c.items.slice() : [];
+    }
+    const GEM_ITEMS = ["紫水晶","海蓝宝石","翡翠","红宝石","钻石","黄水晶","石榴石"];
+    const FRUIT_ITEMS = invItemsOf("fruit"); // 树果
+    const FLOWER_ITEMS = ["郁金香","蓝爵","罂粟","夏季亮片","向日葵","玫瑰仙子"];
+    const ARTIFACT_ITEMS = ["古代玩偶","矮人卷轴I","矮人卷轴II","矮人卷轴III","矮人卷轴IV","鹦鹉螺化石","鹦鹉螺壳"];
+    function expandGiftShorthand(name) {
+      if (name === "所有宝石") return GEM_ITEMS;
+      if (name === "所有水果") return FRUIT_ITEMS;
+      if (name === "所有水果（除了美洲大树莓）") return FRUIT_ITEMS;
+      if (name === "所有花") return FLOWER_ITEMS;
+      if (name === "所有花（除了虞美人）") return FLOWER_ITEMS.filter(f => f !== "罂粟");
+      if (name === "所有古物") return ARTIFACT_ITEMS;
+      if (name === "所有书") return [];
+      return [normGiftName(name)];
+    }
+    // 通用口味（游戏内 universal）：所有村民对这些物品的默认反应
+    const UNIVERSAL_LOVE = ["五彩碎片","兔子脚","蓝水晶"]; // 兔子脚=兔子的脚别名见下
+    const UNIVERSAL_LIKE_FORAGE = ["黑莓","蒲公英","韭葱","美洲大树莓","野山葵","冬根","雪山药","水晶果","榛子","普通蘑菇","紫蘑菇"];
+    const ITEM_GIFT_INDEX = (function buildGiftIndex() {
+      const idx = {};
+      const add = (item, villager, kind) => {
+        const key = normGiftName(item);
+        if (!idx[key]) idx[key] = { love: [], like: [], dislike: [] };
+        if (!idx[key][kind].includes(villager)) idx[key][kind].push(villager);
+      };
+      VILLAGER_DATA.forEach((v) => {
+        if (!v.trackable && v.trackable !== undefined && v.marry === false && !(v.loved||[]).length && !(v.liked||[]).length) return;
+        (v.loved || []).forEach((g) => expandGiftShorthand(g).forEach(it => add(it, v.name, "love")));
+        (v.liked || []).forEach((g) => expandGiftShorthand(g).forEach(it => add(it, v.name, "like")));
+      });
+      // 通用最爱：五彩碎片、兔子脚（除少数例外）适用于所有可结婚/普通村民
+      const giftableVillagers = VILLAGER_DATA.filter(v => v.birthday).map(v => v.name);
+      ["五彩碎片","兔子脚"].forEach((it) => {
+        giftableVillagers.forEach((vn) => {
+          const key = normGiftName(it === "兔子脚" ? "兔子的脚" : it);
+          if (!idx[key]) idx[key] = { love: [], like: [], dislike: [] };
+          if (!idx[key].love.includes(vn)) idx[key].love.push(vn);
+        });
+      });
+      return idx;
+    })();
+    function getItemGifting(name) {
+      const g = ITEM_GIFT_INDEX[name] || ITEM_GIFT_INDEX[normGiftName(name)];
+      if (!g) return null;
+      const out = {};
+      if (g.love && g.love.length) out.love = { label: "最爱", value: 80, villagers: g.love };
+      if (g.like && g.like.length) out.like = { label: "喜欢", value: 45, villagers: g.like };
+      if (g.dislike && g.dislike.length) out.dislike = { label: "不喜欢", value: -20, villagers: g.dislike };
+      return (out.love || out.like || out.dislike) ? out : null;
+    }
+
+    /* 通用口味（官方 universal taste，作为类别默认；仅展示横幅，避免堆砌全部村民）*/
+    function getUniversalTaste(name) {
+      const catId = itemCatIdOf(name);
+      // 个别通用最爱
+      if (["五彩碎片","珍珠","金香蕉","兔子脚","兔子的脚"].includes(name)) return null; // 已有具体最爱
+      if (catId === "fish") {
+        if (["鲤鱼","蜗牛"].includes(name)) return { label: "中立", text: "多数村民对其态度中立" };
+        return { label: "不喜欢", text: "鱼类通常为通用不喜欢（鲤鱼/蜗牛除外），仅个别村民例外" };
+      }
+      if (catId === "fruit") {
+        if (["香蕉","芒果"].includes(name)) return { label: "中立", text: "香蕉/芒果为通用中立" };
+        return { label: "喜欢", text: "树果为通用喜欢，多数村民接受" };
+      }
+      if (catId === "mine") {
+        if (GEM_ITEMS.includes(name)) return { label: "喜欢", text: "宝石为通用喜欢（五彩碎片除外），部分村民最爱具体宝石" };
+        if (["晶球","冰封晶球","岩浆晶球","万象晶球"].includes(name)) return { label: "不喜欢", text: "晶球类为通用不喜欢" };
+        if (["铜锭","铁锭","金锭","铱锭","精炼石英","电池组","虎眼石"].includes(name)) return { label: "中立", text: "该矿物锭为通用中立" };
+        if (["石英"].includes(name)) return { label: "喜欢", text: "采集矿物多为通用喜欢（石英为中立例外）" };
+        return { label: "喜欢", text: "采集矿物为通用喜欢（石英、地晶等少数例外）" };
+      }
+      if (catId === "resource") {
+        if (["木材","石头","纤维","硬木","苔藓","粘土","树液"].includes(name)) return { label: "不喜欢", text: "基础建材为通用不喜欢" };
+        return { label: "中立", text: "该原材料多为通用中立/不喜欢" };
+      }
+      if (catId === "tap") {
+        if (["枫糖浆","橡树树脂","松焦油"].includes(name)) return { label: "喜欢", text: "树脂为通用喜欢" };
+        return { label: "中立", text: "神秘树液为通用中立" };
+      }
+      if (catId === "artisan") {
+        if (["虚空蛋黄酱"].includes(name)) return { label: "讨厌", text: "虚空蛋黄酱为通用讨厌（克罗布斯/塞巴斯蒂安除外）" };
+        return { label: "喜欢", text: "工匠加工品为通用喜欢（油、虚空蛋黄酱除外）" };
+      }
+      if (catId === "monster") return { label: "不喜欢", text: "怪物素材为通用不喜欢/讨厌" };
+      if (catId === "special") {
+        if (["古代玩偶","鹦鹉螺化石","鹦鹉螺壳"].includes(name)) return { label: "不喜欢", text: "古物为通用不喜欢（潘妮/矮人喜欢古物）" };
+      }
+      if (catId === "shellfish") {
+        if (["海胆"].includes(name)) return { label: "讨厌", text: "海胆为通用讨厌（艾利欧特/威利除外）" };
+        if (["珊瑚","彩虹贝"].includes(name)) return { label: "中立", text: "该贝类为通用中立" };
+      }
+      if (catId === "animal") {
+        if (["鸭羽","羽毛","松露","羊毛"].includes(name)) return { label: "中立", text: "该动物产物为通用中立" };
+      }
+      return null;
+    }
+
     const SEASON_MAIN_META = {
       spring: {
         label: "春季",
@@ -23406,6 +23517,213 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       return html.join("");
     }
 
+    /* ════════ 非作物物品 · 维基资料卡（对齐防风草格式）════════ */
+    const ITEM_CAT_LABEL = {
+      fruit: "树果", forage: "采集", resource: "原材料", tap: "树脂",
+      fish: "鱼类", shellfish: "贝类", animal: "动物产物", artisan: "工匠加工",
+      mine: "矿物", monster: "怪物素材", special: "特殊"
+    };
+    function itemEnName(name) {
+      const f = iconFiles[name];
+      if (!f) return "";
+      let en = f.replace(/\.png$/i, "");
+      // 去掉品质/数字前缀等无关项
+      if (/^\d/.test(en)) return "";
+      return en;
+    }
+    function itemCatIdOf(name) {
+      const c = INV_CATEGORIES.find(cat => cat.items.includes(name));
+      return c ? c.id : "";
+    }
+    function renderItemWikiCard(name) {
+      const catId = itemCatIdOf(name);
+      const catLabel = ITEM_CAT_LABEL[catId] || "物品";
+      const enName = itemEnName(name);
+      const qty = appState.inventory[name] || 0;
+      const sell = SELL_PRICES[name];
+      const source = ITEM_SOURCE_HINTS[name] || "";
+      const procs = PROCESS_MAP[name] || [];
+      const fav = isFavorite(name);
+      const goldIcon = renderPlantingIcon("金币");
+      const priceHtml = (v) => `<span class="crop-price-tight">${goldIcon}<b>${escapeHtml(String(v))}</b></span>`;
+
+      const folds = [];
+
+      /* 📍 获取来源 */
+      if (source) {
+        folds.push(`
+          <div class="crop-fold-section open">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span><span class="crop-fold-title">📍 获取来源</span>
+            </div>
+            <div class="crop-fold-body">
+              <div class="crop-source-method-row">
+                <span class="crop-wiki-mini-tag">来源</span>
+                <span class="crop-source-method-content">${renderInvIcon(name)} ${escapeHtml(source)}</span>
+              </div>
+            </div>
+          </div>`);
+      }
+
+      /* 📊 售价（鱼/动物产物/采集等有品质，矿物/工匠多为固定价） */
+      if (sell != null) {
+        const hasQuality = ["fish","forage","fruit","animal"].includes(catId);
+        let priceBody;
+        if (hasQuality) {
+          const tiller = ["forage","fruit"].includes(catId);
+          const rows = [["普通",1],["银",1.25],["金",1.5],["铱",2]].map(([q,mult]) => {
+            const base = Math.floor(sell * mult);
+            const farmer = tiller ? Math.floor(base * 1.1) : null;
+            return `<tr>
+              <td>${renderCropWikiQualityIcon(q, iconFiles[name] || "", name)}</td>
+              <td>${farmer ? `<span class="crop-quality-price">${priceHtml(base)}<span class="crop-price-arrow">→</span><span class="crop-tiller-price">${farmer}</span></span>` : priceHtml(base)}</td>
+            </tr>`;
+          }).join("");
+          const tillerNote = tiller ? renderCropWikiProfessionNote("Tiller.png", "农耕人 +10%", "compact-profession") : "";
+          priceBody = `<table class="crop-quality-table"><thead><tr><th>品质</th><th><span class="crop-table-headline">售价</span>${tillerNote}</th></tr></thead><tbody>${rows}</tbody></table>`;
+        } else {
+          priceBody = `<div class="crop-wiki-bundle">${priceHtml(sell)} <span style="color:var(--muted);font-size:12px;">基础售价（普通品质）</span></div>`;
+        }
+        folds.push(`
+          <div class="crop-fold-section open">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span><span class="crop-fold-title">💰 售价</span>
+            </div>
+            <div class="crop-fold-body">${priceBody}</div>
+          </div>`);
+      }
+
+      /* ⚙️ 加工 */
+      if (procs.length) {
+        const rows = procs.map((p, i) => {
+          const pIcon = iconFiles[p.out] ? `<img class="crop-source-seed-icon" src="${iconUrl(iconFiles[p.out])}" alt="" loading="lazy" />` : "";
+          return `<div class="crop-wiki-bundle" style="border-left-color:#6fae43;">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              ${pIcon}<b>${escapeHtml(p.method)}</b><span style="color:var(--muted);">→</span><b>${escapeHtml(p.out)}</b>
+              ${i === 0 ? '<span class="crop-process-priority">最优</span>' : ''}
+            </div>
+            <div style="margin-top:4px;font-size:12.5px;">${priceHtml(p.price)} <span style="color:var(--muted);font-size:11px;">${escapeHtml(p.gain || "")}</span></div>
+          </div>`;
+        }).join("");
+        folds.push(`
+          <div class="crop-fold-section open">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span><span class="crop-fold-title">⚙️ 加工</span>
+              <span class="crop-fold-badge">${procs.length} 种</span>
+            </div>
+            <div class="crop-fold-body">${rows}</div>
+          </div>`);
+      }
+
+      /* 📦 收集包 */
+      const bundleEntries = getBundleEntriesForName(name);
+      if (bundleEntries.length) {
+        const bundleIcon = `<img class="crop-source-seed-icon" src="${iconUrl("Bundle Blue.png")}" alt="" loading="lazy" />`;
+        const rows = bundleEntries.map((e) => {
+          const checked = isChecked(e.uid);
+          return `<div class="crop-bundle-line">${checked ? "✅" : bundleIcon} ${escapeHtml(e.roomName)} - <b>${escapeHtml(e.bundleName)}</b> - ${escapeHtml(describeItem(e))}</div>`;
+        }).join("");
+        folds.push(`
+          <div class="crop-fold-section open">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span><span class="crop-fold-title">📦 收集包</span>
+              <span class="crop-fold-badge">${bundleEntries.length} 条</span>
+            </div>
+            <div class="crop-fold-body">${rows}</div>
+          </div>`);
+      }
+
+      /* 🍳 烹饪 */
+      const foods = (typeof getFoodUses === "function" ? getFoodUses(name) : []);
+      if (foods.length) {
+        const rows = foods.map((u) => `<div class="crop-wiki-mini-row"><span class="crop-wiki-mini-tag">${escapeHtml(u.dish)}</span><span>${escapeHtml(u.note || "")}</span></div>`).join("");
+        folds.push(`
+          <div class="crop-fold-section">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span><span class="crop-fold-title">🍳 烹饪</span>
+              <span class="crop-fold-badge">${foods.length} 项</span>
+            </div>
+            <div class="crop-fold-body"><div class="crop-wiki-mini-list">${rows}</div></div>
+          </div>`);
+      }
+
+      /* 🎁 送礼（按官方村民喜好反向索引 + 通用口味横幅） */
+      const gifting = getItemGifting(name);
+      const universal = getUniversalTaste(name);
+      if (gifting || universal) {
+        const banner = universal ? `<div class="crop-wiki-bundle" style="border-left-color:#c89b3c;"><b>通用口味 · ${escapeHtml(universal.label)}</b><div style="margin-top:3px;font-size:12px;color:var(--muted);">${escapeHtml(universal.text)}</div></div>` : "";
+        let loveHtml = "";
+        if (gifting && gifting.love) {
+          loveHtml = `<div class="crop-wiki-gift love" style="margin:0 12px 4px;">
+            <div class="crop-wiki-gift-head"><span class="crop-wiki-gift-label love">最爱 <b>+${gifting.love.value}</b></span><small>${gifting.love.villagers.length} 人</small></div>
+            <div class="crop-wiki-villager-grid">${gifting.love.villagers.map(renderCropWikiVillagerChip).join("")}</div>
+          </div>`;
+        }
+        let body = "";
+        if (gifting && gifting.like) {
+          body += `<div class="crop-wiki-gift love"><div class="crop-wiki-gift-head"><span class="crop-wiki-gift-label love">喜欢 <b>+${gifting.like.value}</b></span><small>${gifting.like.villagers.length} 人</small></div><div class="crop-wiki-villager-grid">${gifting.like.villagers.map(renderCropWikiVillagerChip).join("")}</div></div>`;
+        }
+        if (gifting && gifting.dislike) {
+          body += `<div class="crop-wiki-gift dislike"><div class="crop-wiki-gift-head"><span class="crop-wiki-gift-label dislike">不喜欢 <b>${gifting.dislike.value}</b></span><small>${gifting.dislike.villagers.length} 人</small></div><div class="crop-wiki-villager-grid">${gifting.dislike.villagers.map(renderCropWikiVillagerChip).join("")}</div></div>`;
+        }
+        const cnt = gifting ? ((gifting.love?.villagers.length || 0) + (gifting.like?.villagers.length || 0) + (gifting.dislike?.villagers.length || 0)) : 0;
+        folds.push(`
+          <div class="crop-fold-section">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span><span class="crop-fold-title">🎁 送礼</span>
+              ${cnt ? `<span class="crop-fold-badge">${cnt} 人</span>` : (universal ? `<span class="crop-fold-badge">${escapeHtml(universal.label)}</span>` : "")}
+            </div>
+            ${banner ? `<div style="padding:0 12px 4px;">${banner}</div>` : ""}
+            ${loveHtml}
+            ${body ? `<div class="crop-fold-body"><div class="crop-wiki-gift-stack">${body}</div></div>` : ""}
+          </div>`);
+      }
+
+      /* ✨ 特殊用途 */
+      const specials = (typeof getSpecialUses === "function" ? getSpecialUses(name) : []);
+      if (specials.length) {
+        const rows = specials.map((u) => `<div class="crop-wiki-mini-row"><span class="crop-wiki-mini-tag">特殊</span><span>${escapeHtml(typeof formatSpecialUse === "function" ? formatSpecialUse(u) : (u.use || ""))}</span></div>`).join("");
+        folds.push(`
+          <div class="crop-fold-section">
+            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+              <span class="crop-fold-arrow"></span><span class="crop-fold-title">✨ 特殊用途</span>
+            </div>
+            <div class="crop-fold-body"><div class="crop-wiki-mini-list">${rows}</div></div>
+          </div>`);
+      }
+
+      const favBtn = `<button type="button" class="detail-fav-btn ${fav ? 'on' : ''}" data-detail-fav="${escapeAttribute(name)}" title="${fav ? '取消关注' : '关注'}">${fav ? '⭐' : '☆'}</button>`;
+      const isFish = catId === "fish";
+      const qtyCtrl = isFish ? "" : `
+        <div class="planting-stock-controls">
+          <button type="button" data-detail-minus="${escapeAttribute(name)}">−</button>
+          <input type="number" min="0" value="${qty}" data-detail-qty="${escapeAttribute(name)}" />
+          <button type="button" data-detail-plus="${escapeAttribute(name)}">+</button>
+        </div>`;
+
+      return `
+        <article class="planting-card has-wiki">
+          <header class="planting-card-head">
+            <div class="planting-crop-icon">${renderInvIcon(name)}</div>
+            <div style="flex:1;">
+              <div class="planting-crop-title">
+                <b title="${escapeAttribute(name)}">${escapeHtml(name)}</b>
+                <span class="planting-crop-cat cat-class">${escapeHtml(catLabel)}</span>
+              </div>
+              ${enName ? `<div class="planting-crop-en">${escapeHtml(enName)}</div>` : ""}
+            </div>
+            <div class="detail-head-actions">${favBtn}</div>
+          </header>
+          <div class="planting-card-body">
+            ${folds.length ? `<div class="crop-fold-stack">${folds.join("")}</div>` : `<div style="padding:12px;color:var(--muted);font-size:13px;">暂无更多资料</div>`}
+          </div>
+          <div class="planting-card-footer wiki-card-footer">
+            ${qtyCtrl}
+            ${isFish ? "" : `<button type="button" class="planting-card-remove" data-detail-remove="${escapeAttribute(name)}">🗑️ 移除</button>`}
+          </div>
+        </article>`;
+    }
+
     function renderCropWikiCard(entry, season, classes, seasonText, statusTag) {
       const wikiDetail = CROP_WIKI_DETAILS[entry.name];
       return `
@@ -23455,8 +23773,23 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       ].filter(Boolean).join(" ");
       const seasonText = entry.seasons.map((s) => SEASON_CN[s]).join("/");
       const statusTag = getPlantingStatusTag(entry, status);
-      if (CROP_WIKI_DETAILS[entry.name] && !editableQty && !showRemove) {
-        return renderCropWikiCard(entry, displaySeason, classes, seasonText, statusTag);
+      if (CROP_WIKI_DETAILS[entry.name]) {
+        const wikiCard = renderCropWikiCard(entry, displaySeason, classes, seasonText, statusTag);
+        if (!editableQty && !showRemove) return wikiCard;
+        // 物品库：在维基卡下方补库存编辑 / 移除
+        const q = appState.inventory[entry.name] || 0;
+        const footer = `
+          <div class="planting-card-footer wiki-card-footer">
+            ${editableQty ? `
+              <div class="planting-stock-controls">
+                <button type="button" data-detail-minus="${escapeAttribute(entry.name)}">−</button>
+                <input type="number" min="0" value="${q}" data-detail-qty="${escapeAttribute(entry.name)}" />
+                <button type="button" data-detail-plus="${escapeAttribute(entry.name)}">+</button>
+              </div>` : ""}
+            ${showRemove ? `<button type="button" class="planting-card-remove" data-detail-remove="${escapeAttribute(entry.name)}">🗑️ 移除</button>` : ""}
+          </div>`;
+        // 把 footer 插入到 article 结束标签之前
+        return wikiCard.replace(/<\/article>\s*$/, footer + "</article>");
       }
       const extra = buildUnifiedCropExtras(entry.name);
       return `
@@ -26886,6 +27219,16 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     }
     
     function renderItemDetailHtml(name) {
+      // 作物/树果/采集：用种植维基卡（防风草格式本体）
+      const plantingEntry = findPlantingEntryByName(name, itemCatIdOf(name) || "crop");
+      if (plantingEntry && CROP_WIKI_DETAILS[plantingEntry.name]) {
+        return renderUnifiedCropCard(plantingEntry, appState.season, { editableQty: true, showRemove: true, showInventoryBadge: false });
+      }
+      // 其它所有物品：用对齐防风草格式的物品维基卡
+      return renderItemWikiCard(name);
+    }
+
+    function renderItemDetailHtmlLegacy(name) {
       const cropEntry = findPlantingEntryByName(name, "crop");
       if (cropEntry) {
         return renderUnifiedCropCard(cropEntry, appState.season, { editableQty: true, showRemove: true, showInventoryBadge: false });
