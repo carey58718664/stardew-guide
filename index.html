@@ -5790,12 +5790,12 @@ body.modal-open { overflow: hidden; touch-action: none; }
 .rc-line { font-size: 12.5px; color: var(--ink); line-height: 1.55; margin-bottom: 3px; }
 .rc-line b { color: #9c620e; font-size: 11px; font-weight: 900; margin-right: 6px; }
 .rc-mat-list { display: grid; gap: 0; margin-top: 6px; border: 1.5px solid #f0e3c8; border-radius: 9px; overflow: hidden; }
-.rc-mat { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; font-size: 12.5px; color: var(--ink); font-weight: 700; background: #fff; }
+.rc-mat { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 10px; font-size: 12.5px; color: var(--ink); font-weight: 700; background: #fff; }
 .rc-mat + .rc-mat { border-top: 1px dashed #ece0c8; }
 .rc-mat.manual { color: var(--muted); }
-.rc-mat-name { display: flex; align-items: center; gap: 5px; }
+.rc-mat-name { display: flex; align-items: center; gap: 5px; flex: 1 1 auto; min-width: 0; flex-wrap: wrap; word-break: break-word; }
 .rc-mat-sub { font-size: 11px; color: var(--muted); }
-.rc-mat-qty { font-weight: 900; color: #c25e3a; font-size: 12px; }
+.rc-mat-qty { font-weight: 900; color: #c25e3a; font-size: 12px; flex: 0 0 auto; white-space: nowrap; }
 .rc-mat-qty.ready { color: #6fae43; }
 .rc-produce-list { display: grid; gap: 0; border: 1.5px solid #f0e3c8; border-radius: 9px; overflow: hidden; }
 .rc-produce-row { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; padding: 7px 10px; font-size: 12px; background: #fff; }
@@ -15933,6 +15933,42 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "生锈的钥匙": "Rusty Key.png"
     });
 
+    // ── 设备间 1.6 设备/建筑/物品图标补全（官方英文名）──
+    Object.assign(iconFiles, {
+      "重型熔炉": "Heavy Furnace.png",
+      "木炭窑": "Charcoal Kiln.png",
+      "晶球破碎机": "Geode Crusher.png",
+      "骨磨": "Bone Mill.png",
+      "太阳能板": "Solar Panel.png",
+      "史莱姆蛋压制机": "Slime Egg-Press.png",
+      "农场电脑": "Farm Computer.png",
+      "漏斗": "Hopper.png",
+      "迷你方尖碑": "Mini-Obelisk.png",
+      "迷你锻炉": "Mini-Forge.png",
+      "鸵鸟孵化器": "Ostrich Incubator.png",
+      "大地方尖碑": "Earth Obelisk.png",
+      "水之方尖碑": "Water Obelisk.png",
+      "沙漠方尖碑": "Desert Obelisk.png",
+      "姜岛方尖碑": "Island Obelisk.png",
+      "黄金钟": "Gold Clock.png",
+      "祝尼魔小屋": "Junimo Hut.png",
+      "木屋": "Cabin (log).png",
+      "狗屋": "Pet Bowl.png",
+      "篝火": "Campfire.png",
+      "野营炊具": "Cookout Kit.png",
+      "萤火虫灯": "Firefly Lamp.png",
+      "仙尘": "Fairy Dust.png",
+      "生命药剂": "Life Elixir.png",
+      "战士戒指": "Warrior Ring.png",
+      "发光戒指": "Glow Ring.png",
+      "雨水图腾": "Rain Totem.png",
+      "迷你图腾尖塔": "Warp Totem Farm.png",
+      "回程魔杖": "Return Scepter.png",
+      "史莱姆屋": "Slime Hutch.png",
+      "银河之魂": "Galaxy Soul.png",
+      "任意鱼": "Sardine.png"
+    });
+
     const rooms = [
       room("crafts", "工艺室", "工艺室", "初始开放", "修复采石场桥梁", [
         bundle("spring-forage", "春季采集收集包", "4选4", "春季种子×30", [
@@ -17387,7 +17423,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         { id: "craft-mini-forge", title: "做迷你锻炉", emoji: "⚒️", how: "craft", note: "战斗精通解锁，等于随身火山锻炉",
           steps: [goalItem("龙牙", 5), goalItem("铁锭", 10), goalItem("金锭", 10), goalItem("铱锭", 5)] },
         { id: "craft-ostrich-incubator", title: "做鸵鸟孵化器", emoji: "🥚", how: "craft", note: "姜岛捐赠全部动物化石给蜗牛教授",
-          steps: [goalItem("骨头碎片", 50), goalItem("硬木", 50), goalItem("煤渣碎片", 20)] },
+          steps: [goalItem("骨头碎片", 50), goalItem("硬木", 50), goalItem("火山晶石", 20)] },
         { id: "craft-anvil", title: "做铁砧（1.6）", emoji: "🔨", how: "craft", note: "战斗精通解锁，回收武器/打造无限武器",
           steps: [goalItem("铱锭", 50)] },
         { id: "craft-big-chest", title: "做大箱子（1.6）", emoji: "📦", how: "craft", note: "70格容量",
@@ -17454,7 +17490,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         { id: "build-earth-obelisk", title: "建大地方尖碑", emoji: "🗿", how: "build", note: "瞬移到山区",
           steps: [goalItem("铱锭", 10), goalItem("地晶", 10), goalMoney(500000)] },
         { id: "build-water-obelisk", title: "建水之方尖碑", emoji: "🗿", how: "build", note: "瞬移到海滩",
-          steps: [goalItem("铱锭", 5), goalItem("蛤蜊", 10), goalItem("珊瑚", 10), goalMoney(500000)] },
+          steps: [goalItem("铱锭", 5), goalItem("蛤", 10), goalItem("珊瑚", 10), goalMoney(500000)] },
         { id: "build-desert-obelisk", title: "建沙漠方尖碑", emoji: "🗿", how: "build", note: "瞬移到沙漠",
           steps: [goalItem("铱锭", 20), goalItem("椰子", 10), goalItem("仙人掌果子", 10), goalMoney(1000000)] },
         { id: "build-island-obelisk", title: "建姜岛方尖碑", emoji: "🗿", how: "build", note: "瞬移到姜岛，需先到访姜岛",
@@ -17467,26 +17503,26 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
           steps: [
             goalManual("持有要强化的近战武器"),
             goalManual("宝石 ×1（红宝石+攻击 / 海蓝宝石+暴击 / 翡翠+速度 / 玉+暴伤 / 紫水晶+击退 / 黄玉+防御 / 钻石随机）"),
-            goalItem("煤渣碎片", 45, "三次锻造共需 10+15+20")] },
+            goalItem("火山晶石", 45, "三次锻造共需 10+15+20")] },
         { id: "forge-infinity", title: "锻造无限武器", emoji: "🌌", how: "self", note: "银河武器→无限武器，需先持有银河剑/锤/匕首",
           steps: [
             goalManual("持有银河武器"),
             goalItem("银河之魂", 3, "齐先生 40 Qi 币 / 危险矿大史莱姆 / 姜岛商人 10 放射性锭"),
-            goalItem("煤渣碎片", 60, "三次各 20")] },
+            goalItem("火山晶石", 60, "三次各 20")] },
         { id: "forge-enchant", title: "附魔武器/工具", emoji: "✨", how: "self", note: "随机附魔效果",
           steps: [
             goalManual("持有要附魔的武器或工具"),
             goalItem("五彩碎片", 1),
-            goalItem("煤渣碎片", 20)] },
+            goalItem("火山晶石", 20)] },
         { id: "forge-innate", title: "内在附魔（武器）", emoji: "🔮", how: "self", note: "为武器追加内在词条",
           steps: [
             goalManual("持有要附魔的武器"),
             goalItem("龙牙", 1, "火山地牢 / 熔岩潜伏者 / 9 黄貂鱼鱼塘"),
-            goalItem("煤渣碎片", 20)] },
+            goalItem("火山晶石", 20)] },
         { id: "forge-combine-rings", title: "合并两枚戒指", emoji: "💍", how: "self", note: "两枚戒指效果叠加成一枚",
           steps: [
             goalManual("持有要合并的两枚戒指"),
-            goalItem("煤渣碎片", 20)] },
+            goalItem("火山晶石", 20)] },
       ]},
       { cat: "传送图腾 & 消耗品", goals: [
         { id: "craft-totem-beach", title: "做传送图腾：海滩", emoji: "🏖️", how: "craft", note: "一次性消耗",
@@ -17696,7 +17732,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
             goalManual("先解锁沙漠（修巴士/金库捐款）"),
             goalManual("当前心数 → 7 心"),
             goalItem("黄水仙", 4, "她的最爱（春季城镇采集）"),
-            goalItem("甜豌豆花", 4, "她的最爱（夏季花朵）"),
+            goalItem("甜豌豆", 4, "她的最爱（夏季花朵）"),
             goalManual("收到配方邮件 ✓") ] },
 
         // ═══ 📨 实用配方里程碑 ═══
@@ -23091,17 +23127,23 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (CROP_GIFT_DETAILS[name]) return CROP_GIFT_DETAILS[name];
       const specific = buildCropWikiGifting(name);
       if (specific) return specific;
+      // 用全站统一的村民反向索引，得到真实的最爱/喜欢村民（与防风草一致）
+      if (typeof getItemGifting === "function") {
+        const idx = getItemGifting(name);
+        if (idx && (idx.love || idx.like || idx.dislike)) return idx;
+      }
       if (meta.category === "蔬菜") {
+        // 蔬菜为通用喜欢；不喜欢蔬菜的村民（官方）：阿比盖尔/海莉/贾斯/山姆/文森特
         return {
-          like: { label: "喜欢", value: 45, villagers: ["多数村民"] },
+          like: { label: "喜欢", value: 45, villagers: ["通用喜欢 · 多数村民"] },
           dislike: { label: "不喜欢", value: -20, villagers: ["阿比盖尔","海莉","贾斯","山姆","文森特"] }
         };
       }
       if (meta.category === "水果") {
-        return { like: { label: "喜欢", value: 45, villagers: ["多数村民"] } };
+        return { like: { label: "喜欢", value: 45, villagers: ["通用喜欢 · 多数村民"] } };
       }
       if (meta.category === "花") {
-        return { like: { label: "喜欢", value: 45, villagers: ["多数村民"] } };
+        return { like: { label: "喜欢", value: 45, villagers: ["通用喜欢 · 多数村民"] } };
       }
       return null;
     }
@@ -23343,28 +23385,39 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       }
 
       /* 收集包（默认展开） */
-      if (detail.bundle || CROP_BUNDLE_DETAILS[entry.name]) {
+      {
         const bundleRows = CROP_BUNDLE_DETAILS[entry.name];
+        const liveEntries = (typeof getBundleEntriesForName === "function") ? getBundleEntriesForName(entry.name) : [];
+        const bundleIcon = `<img class="crop-source-seed-icon" src="${iconUrl("Bundle Blue.png")}" alt="" loading="lazy" />`;
         let bundleContent = "";
+        let badge = "";
         if (bundleRows && bundleRows.length) {
-          const bundleIcon = `<img class="crop-source-seed-icon" src="${iconUrl("Bundle Blue.png")}" alt="" loading="lazy" />`;
           bundleContent = bundleRows.map((b) => {
             const noteTag = b.note ? ` <span class="crop-source-badge secondary">${escapeHtml(b.note)}</span>` : "";
             return `<div class="crop-bundle-line">${escapeHtml(b.room)} - ${bundleIcon} <b>${escapeHtml(b.bundle)}</b> - ${escapeHtml(b.item)} ×${b.qty}${noteTag}</div>`;
           }).join("");
-        } else {
+          badge = `<span class="crop-fold-badge">${bundleRows.length} 条</span>`;
+        } else if (liveEntries.length) {
+          bundleContent = liveEntries.map((e) => {
+            const checked = (typeof isChecked === "function" && isChecked(e.uid));
+            return `<div class="crop-bundle-line">${checked ? "✅" : bundleIcon} ${escapeHtml(e.roomName)} - <b>${escapeHtml(e.bundleName)}</b> - ${escapeHtml(describeItem(e))}</div>`;
+          }).join("");
+          badge = `<span class="crop-fold-badge">${liveEntries.length} 条</span>`;
+        } else if (detail.bundle) {
           bundleContent = `<div class="crop-wiki-bundle">${renderCropWikiBundleText(detail.bundle)}</div>`;
         }
-        folds.push(`
-          <div class="crop-fold-section open">
-            <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
-              <span class="crop-fold-arrow"></span>
-              <span class="crop-fold-title">📦 收集包</span>
-              ${bundleRows ? `<span class="crop-fold-badge">${bundleRows.length} 条</span>` : ""}
+        if (bundleContent) {
+          folds.push(`
+            <div class="crop-fold-section open">
+              <div class="crop-fold-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="crop-fold-arrow"></span>
+                <span class="crop-fold-title">📦 收集包</span>
+                ${badge}
+              </div>
+              <div class="crop-fold-body">${bundleContent}</div>
             </div>
-            <div class="crop-fold-body">${bundleContent}</div>
-          </div>
-        `);
+          `);
+        }
       }
 
       /* 烹饪（默认展开，菜名可点击） */
@@ -27394,6 +27447,18 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (title.includes("采石场桥") || title.includes("海滩桥")) return "木材";
       if (title.includes("料理图鉴") || title.includes("食谱")) return "烹饪";
       if (title.includes("社交") || title.includes("好感")) return "社交";
+      // 心数里程碑 / 配方好感目标（含「→ N 心」「N/N 心」）
+      if (/[\d]\s*心/.test(title) || title.includes("→")) return "社交";
+      if (title.includes("通用礼物")) {
+        if (title.includes("兔子脚")) return "兔子脚";
+        if (title.includes("星之果实茶")) return "星之果实茶";
+        return "社交";
+      }
+      if (title.includes("矿洞") || title.includes("矿井")) return "普通矿洞";
+      if (title.includes("锻造") || title.includes("武器")) return "剑";
+      if (title.includes("附魔")) return "五彩碎片";
+      if (title.includes("戒指")) return "战士戒指";
+      if (title.includes("社区升级") || title.includes("捷径")) return "社交";
       if (title.startsWith("做")) return stripIconSuffix(title.slice(1));
       if (title.startsWith("建")) return stripIconSuffix(title.slice(1));
       if (title.startsWith("升级")) return stripIconSuffix(title.slice(2));
