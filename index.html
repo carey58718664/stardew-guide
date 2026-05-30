@@ -14299,6 +14299,11 @@ body.modal-open { overflow: hidden; touch-action: none; }
 <div class="tab-page" id="tabCooking" data-tab="cooking">
 <section class="app-panel" id="cookingTabPanel">
   <h2 class="app-panel-title">🍳 我的烹饪 <span class="subtle" id="cookTabCount"></span></h2>
+  <div class="sub-tabs" id="cookSubTabs" data-subtab-group="cook">
+    <button class="sub-tab active" data-subtab="all" type="button">全部</button>
+    <button class="sub-tab" data-subtab="fav" type="button">⭐ 我的关注</button>
+  </div>
+  <div class="item-cat-tabs" id="cookCatTabs"></div>
   <div class="item-lib-toolbar">
     <input type="search" id="cookTabSearch" class="item-lib-search" placeholder="搜索已选料理..." autocomplete="off" />
     <button class="add-item-btn" id="openCookPickerBtn" type="button">+ 添加料理</button>
@@ -15169,14 +15174,14 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "金色鸡蛋": "Golden Egg.png",
       "蛋黄酱": "Mayonnaise.png",
       "咖啡": "Coffee.png",
-      "菌丝体": "Bug Meat.png",
+      "菌丝体": "Mycelium.png",
       "空灵之尘": "Ectoplasm.png",
       "史莱姆蛋（绿）": "Green Slime Egg.png",
       "史莱姆蛋（蓝）": "Blue Slime Egg.png",
       "史莱姆蛋（红）": "Red Slime Egg.png",
       "史莱姆蛋（紫）": "Purple Slime Egg.png",
       "香蕉": "Banana.png",
-      "金香蕉": "Banana.png",
+      "金香蕉": "Golden Banana.png",
       "镐": "Pickaxe.png",
       "铜镐": "Copper Pickaxe.png",
       "铁镐": "Steel Pickaxe.png",
@@ -15726,7 +15731,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
 
     Object.assign(iconFiles, {
       "动物毛": "Wool.png",
-      "翡翠": "Jade.png",
+      "玉": "Jade.png",
+      "孔雀石": "Malachite.png",
+      "矮人卷轴I": "Dwarf Scroll I.png",
+      "矮人卷轴II": "Dwarf Scroll II.png",
+      "矮人卷轴III": "Dwarf Scroll III.png",
+      "矮人卷轴IV": "Dwarf Scroll IV.png",
       "兔子的脚": "Rabbit's Foot.png",
       "螃蟹的爪子": "Crab Claw.png",
       "骨笛": "Bone Flute.png",
@@ -17077,7 +17087,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       ]},
       { id: "mine", label: "矿物锭", iconName: "矿物锭", items: [
         "铜矿石","铁矿石","金矿石","铜锭","铁锭","金锭","铱矿石","铱锭","放射性矿石","放射性锭","精炼石英","电池组",
-        "石英","泪晶","地晶","火水晶","冰封晶球","晶球","岩浆晶球","全能晶球",
+        "石英","泪晶","地晶","火水晶","冰封晶球","晶球","岩浆晶球","万象晶球",
         "紫水晶","海蓝宝石","钻石","翡翠","红宝石","黄水晶","石榴石","孔雀石","玉","黑曜石","虎眼石","冻泪"
       ]},
       { id: "monster", label: "怪物素材", iconName: "怪物素材", items: ["史莱姆","蝙蝠翅膀","太阳精华","虚空精华","骨头碎片","虫肉","菌丝体","空灵之尘","史莱姆蛋（绿）","史莱姆蛋（蓝）","史莱姆蛋（红）","史莱姆蛋（紫）"]},
@@ -18436,38 +18446,51 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       if (!container) return;
       const searchQ = (document.getElementById("cookTabSearch")?.value || "").trim().toLowerCase();
       const picked = appState.cookGoals || [];
+      const pickedSet = new Set(picked);
       const countEl = document.getElementById("cookTabCount");
       if (countEl) countEl.textContent = picked.length ? `${picked.length} 道` : "";
 
-      if (!picked.length) {
-        container.innerHTML = `
-          <div class="cart-top-empty">
-            <div class="cart-empty-icon">🍳</div>
-            <div class="cart-empty-text">还没有选料理</div>
-            <div class="cart-empty-sub">点右上角「+ 添加料理」挑选要做的菜，追踪所需食材进度</div>
-          </div>`;
+      const subTab = appState._cookSubTab || "all";
+      const catId = appState._cookCatTab || COOK_BUFF_GROUPS[0].id;
+      const group = COOK_BUFF_GROUPS.find(g => g.id === catId) || COOK_BUFF_GROUPS[0];
+
+      // 类别标签条（镜像物品库/设备间）
+      const catTabs = document.getElementById("cookCatTabs");
+      if (catTabs) {
+        catTabs.innerHTML = COOK_BUFF_GROUPS.map(g =>
+          `<button class="item-cat-tab ${g.id === catId ? 'active' : ''}" data-cook-cat-tab="${g.id}">${g.icon} ${escapeHtml(g.label)}</button>`
+        ).join("");
+      }
+
+      // 当前类别下的料理：全部 or 仅关注（已加入清单）
+      let recipes = COOKING_RECIPES.filter(r => cookGroupOf(r) === group.id);
+      if (subTab === "fav") recipes = recipes.filter(r => pickedSet.has(r.id));
+
+      // 空状态
+      if (!recipes.length) {
+        container.innerHTML = subTab === "fav"
+          ? `<div style="text-align:center;padding:30px 16px;color:var(--muted);font-size:13px;line-height:1.7;">「${escapeHtml(group.label)}」里还没有关注的料理<br>点开任意料理 → 资料卡右上角点 ☆ 关注<br>关注后会进入你的烹饪清单，原列表里也会描上金边</div>`
+          : `<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">该分类暂无料理</div>`;
         return;
       }
 
-      const pickedSet = new Set(picked);
-      const groupsHtml = COOK_BUFF_GROUPS.map(group => {
-        const recipes = COOKING_RECIPES.filter(r => pickedSet.has(r.id) && cookGroupOf(r) === group.id);
-        if (!recipes.length) return "";
-        const chips = recipes.map(r => {
-          const miss = searchQ && !r.name.toLowerCase().includes(searchQ);
-          const active = appState._activeCookItem === r.id;
-          return `<button class="item-chip ${active ? 'active' : ''} ${miss ? 'search-miss' : ''}" data-cook-chip="${escapeAttribute(r.id)}" type="button">${renderInvIcon(r.name)}<span>${escapeHtml(r.name)}</span></button>`;
-        }).join("");
-        let detailHtml = "";
-        const activeRecipe = recipes.find(r => r.id === appState._activeCookItem);
-        if (activeRecipe) detailHtml = renderCookItemDetail(activeRecipe);
-        return `<div class="item-lib-cat-group">
-          <div class="item-lib-cat-label">${group.icon} ${escapeHtml(group.label)}</div>
+      const chips = recipes.map(r => {
+        const miss = searchQ && !r.name.toLowerCase().includes(searchQ);
+        const active = appState._activeCookItem === r.id;
+        const fav = pickedSet.has(r.id);
+        return `<button class="item-chip ${active ? 'active' : ''} ${miss ? 'search-miss' : ''} ${fav ? 'fav' : ''}" data-cook-chip="${escapeAttribute(r.id)}" type="button">${renderInvIcon(r.name)}<span>${escapeHtml(r.name)}</span></button>`;
+      }).join("");
+      let detailHtml = "";
+      const activeRecipe = recipes.find(r => r.id === appState._activeCookItem);
+      if (activeRecipe) detailHtml = renderCookItemDetail(activeRecipe);
+
+      const hint = subTab === "fav" ? "我的烹饪清单" : "点击查看资料卡，卡内★加入清单";
+      container.innerHTML = `<div class="item-lib-fish-section">
+        <div class="item-lib-cat-label" style="font-size:14px;border-bottom:2px solid var(--paper-deep);padding-bottom:4px;margin-bottom:8px;">${group.icon} ${escapeHtml(group.label)} <span class="subtle">${recipes.length} 道 · ${hint}</span></div>
+        <div class="item-lib-cat-group">
           <div class="item-lib-chips">${chips}</div>
           ${detailHtml}
-        </div>`;
-      }).join("");
-      container.innerHTML = groupsHtml;
+        </div></div>`;
       container.querySelectorAll(".rc-swipe-card").forEach(c => {
         if (!c.dataset.swipeBound) { attachRcSwipe(c); c.dataset.swipeBound = "1"; }
       });
@@ -18500,7 +18523,11 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     }
     function renderCookItemDetail(r) {
       const card = recipeToResourceCard(r);
-      return renderResourceCard(card, { foldKey: "cook", swipeDelete: { kind: "cook", id: r.id } });
+      const picked = (appState.cookGoals || []).includes(r.id);
+      const favBar = `<div class="cart-detail-favbar">
+        <button type="button" class="detail-fav-btn ${picked?'on':''}" data-cook-fav="${escapeAttribute(r.id)}" title="${picked?'移出烹饪清单':'加入烹饪清单'}">${picked?'⭐ 已加入清单':'☆ 加入清单'}</button>
+      </div>`;
+      return favBar + renderResourceCard(card, { foldKey: "cook", swipeDelete: { kind: "cook", id: r.id } });
     }
 
     /* 料理选择浮窗 */
@@ -18899,8 +18926,179 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "矮人卷轴IV": "矿井全层怪物低概率掉落，最稀有",
       "冻泪": "矿井 40-79 层的冰层采集/晶球开出；塞巴斯蒂安最爱",
       "黑曜石": "矿井深层/晶球开出；塞巴斯蒂安最爱",
-      "虎眼石": "晶球开出（全能晶球概率较高）；山姆最爱",
-      "玉": "矿井/晶球开出；可在沙漠商人处周日用 1 玉换 1 楼梯"
+      "虎眼石": "晶球开出（万象晶球概率较高）；山姆最爱",
+      "玉": "矿井/晶球开出；可在沙漠商人处周日用 1 玉换 1 楼梯",
+      // —— 原材料 ——
+      "纤维": "割杂草、藤蔓、枯枝，或纤维制造机产出",
+      "树液": "砍树、树枝随机产出；可在熔炉炼电池前作黏合材料",
+      "苔藓": "砍长苔藓的树/原木，或潮湿环境刮取（1.6 新增）",
+      "橡子": "砍橡树掉落，秋季较多；可种回橡树",
+      "枫树种子": "砍枫树掉落，秋季较多；可种回枫树",
+      "松果": "砍松树掉落；可种回松树",
+      "桃花心木种子": "砍桃花心木、秘密森林、姜岛掉落；可种植",
+      "混合种子": "割杂草随机掉落，种下后按季节长出随机作物",
+      // —— 树脂 ——
+      "神秘树液": "高级树液采集器挂任意树（需大型树液采集器升级，1.6 新增）",
+      // —— 动物产物 ——
+      "牛奶": "鸡舍/畜棚的奶牛，用挤奶器每日采集",
+      "大壶牛奶": "高心情高品质奶牛产出，价值更高",
+      "羊奶": "山羊产出，需先有大畜棚",
+      "大瓶羊奶": "高心情高品质山羊产出",
+      "鸡蛋(白)": "白鸡每日产蛋",
+      "鸡蛋(棕)": "棕鸡每日产蛋",
+      "大鸡蛋(白)": "高心情白鸡产出，价值更高",
+      "大鸡蛋(棕)": "高心情棕鸡产出，价值更高",
+      "羊毛": "绵羊用剪刀剪取，或安哥拉兔产出",
+      "鸭蛋": "鸭子产蛋，需先有大鸡舍",
+      "鸭羽": "鸭子低概率产出，艾米丽最爱",
+      "羽毛": "鸭子低概率产出（与鸭羽同物）",
+      "兔子脚": "兔子低概率产出，可作万能送礼",
+      "松露": "猪在户外拱土产出，需先有大畜棚并放养",
+      "鸵鸟蛋": "鸵鸟孵化后产出，或姜岛挖掘获得（1.5+）",
+      "虚空蛋": "虚空鸡产出；女巫沼泽/旅行货车获得虚空蛋孵化",
+      "恐龙蛋": "锄地古物点、敲恐龙化石、岩石蟹掉落；可孵恐龙",
+      "金色鸡蛋": "完美评定后旅行货车/星之果实购买；可孵金鸡",
+      // —— 工匠加工 ——
+      "松露油": "产油机加工松露",
+      "山羊奶酪": "奶酪压榨机加工羊奶",
+      "奶酪": "奶酪压榨机加工牛奶",
+      "蜂蜜": "蜂房产出，附近有花则染上对应花蜜",
+      "果酱": "罐头瓶加工水果（价值=2×原料+50）",
+      "腌菜": "罐头瓶加工蔬菜（价值=2×原料+50）",
+      "蜂蜜酒": "小桶加工蜂蜜",
+      "啤酒": "小桶加工小麦",
+      "淡啤酒": "小桶加工啤酒花，固定 300g",
+      "葡萄酒": "小桶加工水果（价值=3×原料）",
+      "果酒": "小桶加工水果（与葡萄酒同机制）",
+      "蔬菜汁": "小桶加工蔬菜（价值=2.25×原料）",
+      "绿茶": "小桶加工茶叶，固定 100g",
+      "鱼籽": "鱼塘产出，或鱼籽放罐头瓶得鱼子酱前体",
+      "陈年鱼籽": "鱼籽放罐头瓶/陈酿产出",
+      "鱿鱼墨汁": "击杀鱿鱼/章鱼，或鱼塘产出",
+      "鱼子酱": "鲟鱼鱼塘的鱼籽放罐头瓶加工",
+      "蛋黄酱": "蛋黄酱机加工鸡蛋",
+      "恐龙蛋黄酱": "蛋黄酱机加工恐龙蛋",
+      "鸭蛋黄酱": "蛋黄酱机加工鸭蛋",
+      "虚空蛋黄酱": "蛋黄酱机加工虚空蛋，或女巫任务获得",
+      "果干": "脱水机加工水果（5 个/次，1.6 新增）",
+      "蘑菇干": "脱水机加工蘑菇（1.6 新增）",
+      "葡萄干": "脱水机加工葡萄（1.6 新增）",
+      "熏鱼": "鱼熏机加工鱼，价值翻倍（1.6 新增）",
+      "南瓜灯": "万灵节制作，或工作台用南瓜+火把合成",
+      "咖啡": "小桶加工 5 个咖啡豆，或厨房做三倍浓缩咖啡",
+      // —— 鱼类（季节·地点）——
+      "太阳鱼": "春夏河流，晴天 6:00-19:00",
+      "小嘴鲈鱼": "春秋河流/森林池塘，全天",
+      "鳀鱼": "春秋海洋，全天",
+      "传说之鱼": "春季山顶湖泊，雨天，钓鱼10级（传说鱼）",
+      "虹鳟鱼": "夏季河流/山湖，晴天 6:00-19:00",
+      "河豚": "夏季海洋，晴天 12:00-16:00",
+      "章鱼": "夏季海洋，6:00-13:00（难钓）",
+      "麻哈脂鲤": "夏季森林池塘，6:00-19:00",
+      "绯红鱼": "夏季海洋东侧码头，钓鱼5级（传说鱼）",
+      "鲑鱼": "秋季河流，6:00-19:00",
+      "鮟鱇鱼": "秋季镇区河流北段，钓鱼3级（传说鱼）",
+      "鱿鱼": "冬季海洋，18:00-2:00",
+      "河鲈": "冬季河流/湖泊，全天",
+      "蛇齿单线鱼": "冬季河流/山湖，全天",
+      "冰川鱼": "冬季森林南端尖角，钓鱼6级（传说鱼）",
+      "鲶鱼": "春夏秋河流/秘密森林/女巫沼泽，雨天",
+      "西鲱": "春夏秋河流，雨天 9:00-2:00",
+      "鳗鱼": "春秋海洋，雨天 16:00-2:00",
+      "沙丁鱼": "春秋冬海洋，6:00-19:00",
+      "比目鱼": "春夏海洋，6:00-20:00",
+      "鲱鱼": "春冬海洋，全天",
+      "大比目鱼": "春夏冬海洋，6:00-11:00 与 19:00-2:00",
+      "红鲷鱼": "夏秋海洋，雨天 6:00-19:00",
+      "金枪鱼": "夏冬海洋/姜岛，6:00-19:00",
+      "红鲻鱼": "夏冬海洋，6:00-19:00",
+      "大海参": "夏秋海洋/姜岛，18:00-2:00",
+      "罗非鱼": "夏秋海洋/姜岛，6:00-14:00",
+      "狗鱼": "夏冬河流/森林池塘，全天",
+      "鲟鱼": "夏冬山顶湖泊，6:00-19:00",
+      "大眼鱼": "秋季河流/湖泊，雨天 12:00-2:00",
+      "虎纹鳟鱼": "秋冬河流，6:00-19:00",
+      "午夜鲤鱼": "秋冬山湖/姜岛，22:00-2:00",
+      "青花鱼": "秋冬海洋，6:00-11:00 与 18:00-2:00",
+      "鲤鱼": "山湖/秘密森林/下水道，全天",
+      "大嘴鲈鱼": "山顶湖泊，6:00-19:00",
+      "大头鱼": "山顶湖泊，全天",
+      "木跃鱼": "秘密森林池塘，全天",
+      "虚空鲑鱼": "女巫沼泽，全天",
+      "蝎鲤鱼": "沙漠，6:00-20:00（难钓）",
+      "沙鱼": "沙漠，6:00-20:00",
+      "鬼鱼": "矿井20/60层水域，全天",
+      "石鱼": "矿井20层水域，全天",
+      "冰柱鱼": "矿井60层水域，全天",
+      "岩浆鳗鱼": "矿井100层/火山熔岩，全天（高价）",
+      "幽灵鱼": "冬季夜市潜水艇，17:00-2:00",
+      "水滴鱼": "冬季夜市潜水艇（高价）",
+      "午夜鱿鱼": "冬季夜市潜水艇，17:00-2:00",
+      "狮子鱼": "姜岛海域，全天",
+      "蓝铁饼鱼": "姜岛河流，6:00-20:00",
+      "黄貂鱼": "姜岛海域/码头，6:00-2:00",
+      "变种鲤鱼": "下水道，全天（传说鱼家族）",
+      "史莱姆鱼": "史莱姆铜钱秘境/姜岛，全天",
+      "虾虎鱼": "姜岛水域，全天",
+      "鲷鱼": "河流，18:00-2:00",
+      // —— 贝类（多数蟹笼/海滩）——
+      "龙虾": "海洋蟹笼",
+      "小龙虾": "淡水蟹笼",
+      "螃蟹": "海洋蟹笼",
+      "鸟蛤": "海滩采集/海洋蟹笼",
+      "蚌": "海洋蟹笼/海滩采集",
+      "虾": "海洋蟹笼",
+      "蜗牛": "淡水蟹笼",
+      "玉黍螺": "淡水蟹笼",
+      "牡蛎": "海滩北侧采集/海洋蟹笼",
+      "蛤": "海滩采集/海洋蟹笼",
+      "白藻": "矿井/下水道水域钓鱼，蟹笼也可得",
+      "彩虹贝": "夏季海滩采集",
+      "珍珠": "潜水艇宝箱、夜市、蚌鱼塘罕见产出",
+      // —— 矿物锭/宝石 ——
+      "铱矿石": "骷髅洞各层、岩浆/铱矿点、晶球开出；5+1 煤炼铱锭",
+      "放射性矿石": "危险矿井/危险骷髅洞的放射性矿点（1.6 新增）",
+      "放射性锭": "熔炉熔炼 5 放射性矿石+1 煤炭（1.6 新增）",
+      "精炼石英": "熔炉精炼石英/萤石，或回收机处理破灯泡",
+      "电池组": "避雷针在雷雨天充电产出",
+      "石英": "矿井敲石头常见，可熔炉炼精炼石英",
+      "泪晶": "矿井 40-79 层冰层采集/晶球开出",
+      "火水晶": "矿井 80+ 层岩浆区采集/晶球开出",
+      "冰封晶球": "矿井 41-79 层敲石头/冬季农场石头；铁匠砸开",
+      "晶球": "矿井 1-39 层敲石头；铁匠 25g 砸开取内容物",
+      "岩浆晶球": "矿井 81-119 层敲石头；铁匠砸开",
+      "万象晶球": "深层矿井/骷髅洞/淘金、章鱼鱼塘；铁匠砸开（含稀有矿）",
+      "紫水晶": "矿井紫水晶矿点/晶球，阿比盖尔喜欢",
+      "海蓝宝石": "矿井宝石矿点/晶球开出",
+      "钻石": "矿井 50+ 层钻石矿点/晶球，万能送礼",
+      "翡翠": "矿井 40+ 层翡翠/宝石矿点；4 人最爱",
+      "红宝石": "矿井宝石矿点/晶球开出",
+      "黄水晶": "矿井黄水晶矿点/晶球，前期常见",
+      "石榴石": "矿井宝石矿点/晶球开出（1.6 新增矿物）",
+      // —— 怪物素材 ——
+      "蝙蝠翅膀": "击杀蝙蝠类怪物掉落",
+      "太阳精华": "击杀岩浆/沙漠系怪物（虫、蝙蝠）掉落",
+      "虚空精华": "击杀虚空/暗影系怪物（暗影怪、幽灵）掉落",
+      "骨头碎片": "击杀骷髅/恐龙系怪物，或沙漠挖掘",
+      "虫肉": "击杀虫类/蝙蝠/蛆掉落，蟹笼也可得",
+      "菌丝体": "蘑菇树桩偶尔产出（1.6 新增）",
+      "空灵之尘": "击杀幽灵掉落，金色之路相关",
+      "史莱姆蛋（绿）": "史莱姆压泥机加工绿史莱姆，或孵化器孵化",
+      "史莱姆蛋（蓝）": "史莱姆压泥机加工蓝史莱姆",
+      "史莱姆蛋（红）": "史莱姆压泥机加工红史莱姆",
+      "史莱姆蛋（紫）": "史莱姆压泥机加工紫史莱姆，最高级",
+      // —— 特殊 ——
+      "古代玩偶": "锄地古物点、晶球、鱼塘等；可捐博物馆",
+      "鹦鹉螺壳": "冬季海滩采集，或鱼塘产出",
+      "鹦鹉螺化石": "锄地古物点/沙漠挖掘；可捐博物馆",
+      "奖券": "完成怪物狩猎/特定成就，或星之果实抽奖机",
+      "谜之盒": "1.6 新增：锄地、钓鱼、割草等随机获得，工作台开启得奖励",
+      "五彩碎片": "骷髅洞/神秘矿点稀有掉落、超级炸弹、姜岛；可换铱镐/激光剑",
+      "泥土": "锄地/敲石头随机获得（与粘土不同，1.6 装饰素材）",
+      "虚空之蛋": "女巫沼泽商店/旅行货车购买，放孵化器孵虚空鸡",
+      "金香蕉": "姜岛火山顶宝箱/金椰子开出；香蕉神龛供品",
+      "金核桃": "姜岛各处探索（挖掘、战斗、解谜）获得，用于解锁内容",
+      "齐之宝石": "齐先生的walnut房间挑战奖励，用于兑换稀有物品"
     };
 
     /* ── 加工映射（数据来自宝贝的需求） ──
@@ -19044,35 +19242,37 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
     const SELL_PRICES = {
       // 作物
       "玉米":50,"南瓜":320,"番茄":60,"甜瓜":250,"杨桃":750,
-      "上古水果":550,"热辣椒":40,"辣椒":40,"蓝莓":50,
+      "上古水果":550,"辣椒":40,"蓝莓":50,
       "土豆":80,"花椰菜":175,"防风草":35,"青豆":40,"甘蓝菜":110,
       "胡萝卜":35,"郁金香":30,"蓝爵":50,"罂粟":140,
       "茄子":60,"山药":160,"葡萄":80,"小麦":25,"啤酒花":25,
       "向日葵":80,"夏南瓜":45,"夏季亮片":90,
-      "蔓越莓":75,"朝鲜蓟":160,"红叶卷心菜":260,"苋菜":150,
+      "蔓越莓":75,"洋蓟":160,"红叶卷心菜":260,"苋菜":150,
       "甜菜":100,"西兰花":70,"宝石甜莓":3000,"草莓":120,"霜瓜":60,
+      "大黄":220,"咖啡豆":15,"小白菜":80,"萝卜":90,"蒜":60,"菠萝":300,
+      "芋头":100,"玫瑰仙子":290,"齐瓜":1,"未碾米":30,
       // 树果
-      "苹果":100,"杏子":50,"橙子":100,"桃子":140,"石榴":140,"樱桃":80,
+      "苹果":100,"杏子":50,"橙子":100,"桃子":140,"石榴":140,"樱桃":80,"香蕉":150,"芒果":130,
       // 采集
       "野山葵":30,"黄水仙":30,"韭葱":60,"蒲公英":40,"春葱":8,
       "香味浆果":80,"甜豌豆":50,"美洲大树莓":20,
       "普通蘑菇":40,"野梅":80,"榛子":90,"黑莓":20,
       "冬根":70,"水晶果":150,"雪山药":100,"番红花":140,"冬青":80,
-      "椰子":100,"仙人掌果子":75,"山洞萝卜":25,"红蘑菇":75,"紫蘑菇":250,"羊肚菌":150,"蕨菜":90,"松露":625,
+      "椰子":100,"仙人掌果子":75,"山洞萝卜":25,"红蘑菇":75,"紫蘑菇":250,"羊肚菌":150,"蕨菜":90,"松露":625,"姜":60,"鸡油菌":90,
       // 矿物
       "铜矿石":5,"铁矿石":10,"金矿石":25,"铱矿石":100,
       "铜锭":60,"铁锭":120,"金锭":250,"铱锭":1000,
       "煤炭":15,"石英":25,"精炼石英":50,
       "紫水晶":100,"海蓝宝石":180,"翡翠":250,"红宝石":250,"钻石":750,"黄水晶":75,
-      "孔雀石":100,"玉":200,"黑曜石":200,"虎眼石":275,"冻泪":75,"全能晶球":0,
+      "孔雀石":100,"玉":200,"黑曜石":200,"虎眼石":275,"冻泪":75,"万象晶球":0,
       // 原材料
       "木材":2,"石头":2,"硬木":15,"纤维":1,"粘土":20,"苔藓":3,
-      "树液":2,"橡子":20,"枫树种子":35,
+      "树液":2,"橡子":20,"枫树种子":35,"松果":5,"桃花心木种子":100,"混合种子":0,"干草":50,
       // 树脂
-      "枫糖浆":200,"橡树树脂":150,"松焦油":100,
+      "枫糖浆":200,"橡树树脂":150,"松焦油":100,"神秘树液":1000,
       // 动物
       "牛奶":125,"羊毛":340,"蜂蜜":100,"鸭蛋":95,"羽毛":250,"鸭羽":250,"兔子脚":565,
-      "大壶牛奶":190,"大瓶羊奶":345,"大鸡蛋(白)":95,"大鸡蛋(棕)":95,
+      "大壶牛奶":190,"大瓶羊奶":345,"大鸡蛋(白)":95,"大鸡蛋(棕)":95,"鸵鸟蛋":600,
       // 鱼
       "太阳鱼":30,"鲶鱼":200,"西鲱":45,"虎纹鳟鱼":150,"鲢鱼":75,
       "大嘴鲈鱼":100,"鲤鱼":30,"大头鱼":135,"鲟鱼":200,
@@ -19080,6 +19280,12 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "鲷鱼":75,"大眼鱼":105,"鳗鱼":85,"河豚":200,
       "岩浆鳗鱼":700,"虚空鲑鱼":150,"鬼鱼":45,"沙鱼":75,"木跃鱼":50,
       "蝎鲤鱼":225,"章鱼":150,"水滴鱼":500,
+      // 补充鱼类（官方基础售价 1.6.15）
+      "小嘴鲈鱼":50,"鳀鱼":30,"传说之鱼":5000,"虹鳟鱼":65,"麻哈脂鲤":100,"绯红鱼":1500,
+      "鲑鱼":75,"鮟鱇鱼":900,"鱿鱼":80,"河鲈":55,"蛇齿单线鱼":120,"冰川鱼":1000,
+      "比目鱼":100,"鲱鱼":30,"大比目鱼":80,"红鲷鱼":50,"红鲻鱼":75,"大海参":250,
+      "狗鱼":100,"午夜鲤鱼":150,"青花鱼":75,"石鱼":300,"冰柱鱼":500,"幽灵鱼":220,
+      "午夜鱿鱼":100,"蓝铁饼鱼":120,"黄貂鱼":180,"变种鲤鱼":1000,"史莱姆鱼":100,"虾虎鱼":10,
       // 贝
       "龙虾":120,"小龙虾":75,"螃蟹":100,"鸟蛤":50,"蚌":30,"虾":60,
       "蜗牛":65,"玉黍螺":20,"牡蛎":40,"蛤":50,"海胆":160,"白藻":75,
@@ -19087,6 +19293,8 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "山羊奶酪":400,"奶酪":230,"果酒":160,"葡萄酒":240,"啤酒":200,
       "鱼籽":30,"陈年鱼籽":150,"鱼子酱":500,
       "松露油":1065,"布料":470,
+      "绿茶":100,"鱿鱼墨汁":110,"虚空蛋黄酱":275,"鸭蛋黄酱":375,"恐龙蛋黄酱":800,
+      "淡啤酒":300,
       // 怪物
       "史莱姆":5,"蝙蝠翅膀":15,"太阳精华":40,"虚空精华":60,
       // 特殊
@@ -19102,7 +19310,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       // 补充采集
       "大葱":8,"琥珀蘑菇":80,"古卷轴":80,
       // 补充动物
-      "鸡蛋(白)":50,"鸡蛋(棕)":50,"羊奶":225,"鸭羽":250,
+      "鸡蛋(白)":50,"鸡蛋(棕)":50,"羊奶":225,
       "虚空蛋":65,"恐龙蛋":350,"金色鸡蛋":500,
       // 补充工匠
       "蛋黄酱":190,"生鱼片":75,"生鱼寿司":220,"寿司卷":220,"煎蛋":35,"咖啡":150,
@@ -19191,7 +19399,7 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
       "黄水晶": [{ who: "克林特/矮人/艾米丽", note: "3 人最爱" }],
       "玉": [{ who: "克林特/矮人/艾米丽/克罗布斯", note: "4 人最爱" }],
       "钻石": [{ who: "克林特/矮人/玛妮/朱迪/克罗布斯/玛鲁/伊芙琳", note: "7 人最爱；高价值通用礼物" }],
-      "全能晶球": [{ who: "克林特/矮人/利奥", note: "3 人最爱" }],
+      "万象晶球": [{ who: "克林特/矮人/利奥", note: "3 人最爱" }],
       "黑曜石": [{ who: "塞巴斯蒂安", note: "最爱（矿井深层/晶球）" }],
       "虎眼石": [{ who: "山姆", note: "最爱（晶球开出）" }],
       "冻泪": [{ who: "塞巴斯蒂安", note: "最爱（冰天雪地区域采集）" }],
@@ -27794,6 +28002,35 @@ const STORAGE_KEY = "stardew.communityCenter.checkedItems.v3";
         return;
       }
       // 料理 chip / 移除 / 添加浮窗
+      // 烹饪子标签（全部/我的关注）
+      const cookSub = e.target.closest("#cookSubTabs [data-subtab]");
+      if (cookSub) {
+        appState._cookSubTab = cookSub.dataset.subtab;
+        appState._activeCookItem = null;
+        document.querySelectorAll("#cookSubTabs .sub-tab").forEach(b => b.classList.toggle("active", b === cookSub));
+        renderCookingTab();
+        return;
+      }
+      // 烹饪类别标签
+      const cookCat = e.target.closest("[data-cook-cat-tab]");
+      if (cookCat) {
+        appState._cookCatTab = cookCat.dataset.cookCatTab;
+        appState._activeCookItem = null;
+        renderCookingTab();
+        return;
+      }
+      // 料理关注按钮（资料卡内：加入/移出烹饪清单）
+      const cookFav = e.target.closest("[data-cook-fav]");
+      if (cookFav) {
+        preserveScrollPosition();
+        const id = cookFav.dataset.cookFav;
+        const idx = appState.cookGoals.indexOf(id);
+        if (idx >= 0) appState.cookGoals.splice(idx, 1);
+        else appState.cookGoals.push(id);
+        saveApp();
+        renderCookingTab();
+        return;
+      }
       const cookChip = e.target.closest("[data-cook-chip]");
       if (cookChip) {
         preserveScrollPosition();
